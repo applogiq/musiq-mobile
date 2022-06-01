@@ -4,12 +4,12 @@ import '../../../../helpers/constants/color.dart';
 import '../../../widgets/custom_color_container.dart';
 
 class CustomSongVerticalList extends StatelessWidget {
-  const CustomSongVerticalList({
-    Key? key,
-    required this.images,
-  }) : super(key: key);
+  CustomSongVerticalList(
+      {Key? key, required this.images, this.playButton = true})
+      : super(key: key);
 
   final List images;
+  bool playButton;
 
   @override
   Widget build(BuildContext context) {
@@ -17,22 +17,26 @@ class CustomSongVerticalList extends StatelessWidget {
         children: List.generate(
       images.length,
       (index) => Container(
-        padding: EdgeInsets.only(bottom: 5),
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.all(8),
         child: Row(
           children: [
             Expanded(
-              flex: 2,
-              child: CustomColorContainer(
-                child: Image.asset(
-                  images[index].imageURL,
-                  height: 55,
-                  // width: 70,
-                  fit: BoxFit.fill,
+              flex: 3,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: CustomColorContainer(
+                  child: Image.asset(
+                    images[index].imageURL,
+                    height: 70,
+                    width: 70,
+                    fit: BoxFit.fill,
+                  ),
                 ),
               ),
             ),
             Expanded(
-                flex: 8,
+                flex: 9,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -55,9 +59,12 @@ class CustomSongVerticalList extends StatelessWidget {
                   ),
                 )),
             Expanded(
-                child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Icon(Icons.play_arrow_rounded))),
+                child: playButton
+                    ? Align(
+                        alignment: Alignment.centerRight,
+                        child: Icon(Icons.play_arrow_rounded),
+                      )
+                    : Container()),
             Expanded(
                 child: Align(
                     alignment: Alignment.centerRight,

@@ -95,7 +95,7 @@ class HorizonalListViewWidget extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 0.0),
+          padding: EdgeInsets.fromLTRB(12.0, 20.0, 12.0, 0.0),
           child: ListHeaderWidget(title: title, actionTitle: actionTitle),
         ),
         listWidget
@@ -120,13 +120,13 @@ class ListHeaderWidget extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
         Spacer(),
         Text(
           actionTitle,
           style: TextStyle(
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.w400,
               color: CustomColor.secondaryColor),
         )

@@ -88,7 +88,7 @@ class HomePage extends StatelessWidget {
             ),
             HorizonalListViewWidget(
                 title: "Recently Played",
-                actionTitle: "",
+                actionTitle: "View All",
                 listWidget: Container(
                     alignment: Alignment.center,
                     child: CustomHorizontalListview(

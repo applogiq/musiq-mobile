@@ -99,4 +99,97 @@ class Images {
         title: "Peace",
         subTitle: ""),
   ];
+
+  List<ImageModel> favList = [
+    ImageModel(
+        imageURL: "assets/images/fav/f1.webp",
+        title: "Sunflower",
+        subTitle: "Post malone - Spiderman.."),
+    ImageModel(
+        imageURL: "assets/images/fav/f2.jpg",
+        title: "All we know",
+        subTitle: "The chainsmokers"),
+    ImageModel(
+        imageURL: "assets/images/fav/f8.webp",
+        title: "Lean on ft. MO",
+        subTitle: "Charlie Puth"),
+    ImageModel(
+        imageURL: "assets/images/fav/f3.jpg",
+        title: "One kiss",
+        subTitle: "Dua lipa & calvin harris"),
+    ImageModel(
+        imageURL: "assets/images/fav/f4.jfif",
+        title: "In the end",
+        subTitle: "Tommee profitt"),
+    ImageModel(
+        imageURL: "assets/images/fav/f5.jpg",
+        title: "No tears left to cry",
+        subTitle: "Ariana grande"),
+    ImageModel(
+        imageURL: "assets/images/fav/f6.jpg",
+        title: "Rise",
+        subTitle: "Katy perry"),
+    ImageModel(
+        imageURL: "assets/images/fav/f7.jpg",
+        title: "Roar",
+        subTitle: "Katy perry"),
+    ImageModel(
+        imageURL: "assets/images/fav/f1.webp",
+        title: "Sunflower",
+        subTitle: "Post malone - Spiderman.."),
+    ImageModel(
+        imageURL: "assets/images/fav/f2.jpg",
+        title: "All we know",
+        subTitle: "The chainsmokers"),
+    ImageModel(
+        imageURL: "assets/images/fav/f8.webp",
+        title: "Lean on ft. MO",
+        subTitle: "Charlie Puth"),
+  ];
+  List<ImageModel> playList = [
+    ImageModel(
+        imageURL: "assets/images/playlist/pl1.jpg",
+        title: "Selena",
+        subTitle: "Playlist - 14 songs"),
+    ImageModel(
+        imageURL: "assets/images/playlist/pl2.jpg",
+        title: "SUriya",
+        subTitle: "Playlist - 12 songs"),
+    ImageModel(
+        imageURL: "assets/images/playlist/pl3.webp",
+        title: "Melody",
+        subTitle: "Playlist - 20 songs"),
+    ImageModel(
+        imageURL: "assets/images/playlist/pl4.webp",
+        title: "Driving",
+        subTitle: "Playlist - 2 songs"),
+    ImageModel(
+        imageURL: "assets/images/playlist/pl5.jpg",
+        title: "Sleep",
+        subTitle: "Playlist - 30 songs"),
+    ImageModel(
+        imageURL: "assets/images/playlist/pl6.jpg",
+        title: "Workout",
+        subTitle: "Playlist - 15 songs"),
+    ImageModel(
+        imageURL: "assets/images/playlist/pl7.webp",
+        title: "Motivation",
+        subTitle: "Playlist - 16 songs"),
+    ImageModel(
+        imageURL: "assets/images/playlist/pl8.webp",
+        title: "Workout 2",
+        subTitle: "Playlist - 16 songs"),
+    ImageModel(
+        imageURL: "assets/images/playlist/pl1.jpg",
+        title: "Selena",
+        subTitle: "Playlist - 14 songs"),
+    ImageModel(
+        imageURL: "assets/images/playlist/pl2.jpg",
+        title: "SUriya",
+        subTitle: "Playlist - 12 songs"),
+    ImageModel(
+        imageURL: "assets/images/playlist/pl3.webp",
+        title: "Melody",
+        subTitle: "Playlist - 20 songs"),
+  ];
 }

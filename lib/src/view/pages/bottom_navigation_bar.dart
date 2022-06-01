@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/view/pages/home/home_screen.dart';
 import 'package:musiq/src/view/pages/library/library.dart';
+import 'package:musiq/src/view/pages/profile/profile.dart';
 
 class CustomBottomBar extends StatefulWidget {
   const CustomBottomBar({Key? key}) : super(key: key);
@@ -16,9 +17,9 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
   int _selectedScreenIndex = 0;
   final List _screens = [
     {"screen": HomePage(), "title": "Screen A Title"},
-    {"screen": const Library(), "title": "Screen B Title"},
+    {"screen": Library(), "title": "Screen B Title"},
     {"screen": HomePage(), "title": "Screen A Title"},
-    {"screen": const Library(), "title": "Screen B Title"}
+    {"screen": ProfilePage(), "title": "Screen B Title"}
   ];
 
   selectScreen(int index) {
@@ -32,8 +33,9 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
     return Scaffold(
       body: _screens[_selectedScreenIndex]["screen"],
       bottomNavigationBar: Container(
-        margin: EdgeInsets.only(top: 4),
-        height: 60,
+        padding: EdgeInsets.only(top: 4),
+        height: 70,
+        color: Color.fromRGBO(27, 27, 35, 1),
         child: Row(
           children: [
             InkWell(

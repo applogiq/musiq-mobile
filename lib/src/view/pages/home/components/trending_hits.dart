@@ -11,7 +11,7 @@ class TrendingHitsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 2),
+      padding: EdgeInsets.fromLTRB(12.0, 12, 12.0, 0),
       child: Column(
         children: [
           ListHeaderWidget(
@@ -20,7 +20,7 @@ class TrendingHitsWidget extends StatelessWidget {
           ),
           Container(
             padding: EdgeInsets.only(top: 16, right: 12, left: 12),
-            height: 280,
+            height: 240,
             child: IntrinsicHeight(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
