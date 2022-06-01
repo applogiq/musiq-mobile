@@ -17,17 +17,22 @@ class CustomSongVerticalList extends StatelessWidget {
         children: List.generate(
       images.length,
       (index) => Container(
+        padding: EdgeInsets.only(bottom: 5),
         child: Row(
           children: [
             Expanded(
-              flex: 1,
+              flex: 2,
               child: CustomColorContainer(
-                // bgColor: Colors.green,
-                child: Image.asset(images[index].imageURL, height: 60),
+                child: Image.asset(
+                  images[index].imageURL,
+                  height: 55,
+                  // width: 70,
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
             Expanded(
-                flex: 4,
+                flex: 8,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -49,7 +54,10 @@ class CustomSongVerticalList extends StatelessWidget {
                     ],
                   ),
                 )),
-            Expanded(child: Icon(Icons.play_arrow_rounded)),
+            Expanded(
+                child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Icon(Icons.play_arrow_rounded))),
             Expanded(
                 child: Align(
                     alignment: Alignment.centerRight,

@@ -24,7 +24,8 @@ class ArtistListView extends StatelessWidget {
           ),
         ),
         Container(
-          height: 270,
+          padding: EdgeInsets.only(top: 4),
+          height: 300,
           child: ListView.builder(
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,

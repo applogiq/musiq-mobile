@@ -19,7 +19,7 @@ class CustomHorizontalListview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // padding: EdgeInsets.only(top: 4),
+      padding: EdgeInsets.only(top: 8),
       height: alignText == TextAlign.center ? 180 : 200,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,

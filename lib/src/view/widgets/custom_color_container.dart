@@ -23,7 +23,7 @@ class CustomColorContainer extends StatelessWidget {
     return Container(
         padding: EdgeInsets.symmetric(
             horizontal: horizontalPadding, vertical: verticalPadding),
-        clipBehavior: Clip.antiAlias,
+        clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
             borderRadius:
                 shape == BoxShape.circle ? null : BorderRadius.circular(12),
