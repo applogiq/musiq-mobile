@@ -151,82 +151,141 @@ class TrendingHitsWidget extends StatelessWidget {
             actionTitle: "View All",
           ),
           Container(
-            height: 180,
+            padding: EdgeInsets.only(top: 16),
+            height: 240,
             child: IntrinsicHeight(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Expanded(
-                    flex: 7,
+                    flex: 3,
                     child: Container(
-                      alignment: Alignment.center,
-                      child: CustomColorContainer(
-                        child: Stack(
-                          alignment: Alignment.bottomRight,
-                          children: [
-                            Image.asset(
-                              "assets/images/homepage/th1.png",
-                              // height: 280,
-                              fit: BoxFit.cover,
-                            ),
-                            PlayButtonWidget()
-                          ],
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        image: DecorationImage(
+                          image: AssetImage("assets/images/t1.png"),
+                          fit: BoxFit.fill,
                         ),
                       ),
+                      child: Align(
+                        alignment: Alignment.bottomRight,
+                        child: PlayButtonWidget(),
+                      ),
                     ),
+                  ),
+                  SizedBox(
+                    width: 12,
                   ),
                   Expanded(
-                    flex: 4,
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: IntrinsicWidth(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Expanded(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Stack(
-                                  alignment: Alignment.bottomRight,
-                                  children: [
-                                    CustomColorContainer(
-                                      child: Image.asset(
-                                        "assets/images/t2.png",
-                                        fit: BoxFit.fitHeight,
-                                      ),
-                                    ),
-                                    PlayButtonWidget()
-                                  ],
-                                ),
+                    flex: 2,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              image: DecorationImage(
+                                image: AssetImage("assets/images/t2.png"),
+                                fit: BoxFit.fill,
                               ),
                             ),
-                            SizedBox(
-                              height: 8,
+                            child: Align(
+                              alignment: Alignment.bottomRight,
+                              child: PlayButtonWidget(),
                             ),
-                            Expanded(
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Stack(
-                                  alignment: Alignment.bottomRight,
-                                  children: [
-                                    CustomColorContainer(
-                                      child: Image.asset(
-                                        "assets/images/t3.png",
-                                        fit: BoxFit.fitWidth,
-                                      ),
-                                    ),
-                                    PlayButtonWidget()
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Expanded(
+                            child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            image: DecorationImage(
+                              image: AssetImage("assets/images/t3.png"),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: PlayButtonWidget(),
+                          ),
+                        )),
+                      ],
                     ),
                   ),
+                  // Expanded(
+                  //   flex: 7,
+                  //   child: Container(
+                  //     alignment: Alignment.center,
+                  //     child: CustomColorContainer(
+                  //       child: Stack(
+                  //         alignment: Alignment.bottomRight,
+                  //         children: [
+                  //           Image.asset(
+                  //             "assets/images/homepage/th1.png",
+                  //             // height: 280,
+                  //             fit: BoxFit.cover,
+                  //           ),
+                  //           PlayButtonWidget()
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // Expanded(
+                  //   flex: 4,
+                  //   child: Align(
+                  //     alignment: Alignment.centerRight,
+                  //     child: IntrinsicWidth(
+                  //       child: Column(
+                  //         mainAxisAlignment: MainAxisAlignment.end,
+                  //         crossAxisAlignment: CrossAxisAlignment.stretch,
+                  //         children: [
+                  //           Expanded(
+                  //             child: Align(
+                  //               alignment: Alignment.center,
+                  //               child: Stack(
+                  //                 alignment: Alignment.bottomRight,
+                  //                 children: [
+                  //                   CustomColorContainer(
+                  //                     child: Image.asset(
+                  //                       "assets/images/t2.png",
+                  //                       fit: BoxFit.fitHeight,
+                  //                     ),
+                  //                   ),
+                  //                   PlayButtonWidget()
+                  //                 ],
+                  //               ),
+                  //             ),
+                  //           ),
+                  //           SizedBox(
+                  //             height: 8,
+                  //           ),
+                  //           Expanded(
+                  //             child: Align(
+                  //               alignment: Alignment.center,
+                  //               child: Stack(
+                  //                 alignment: Alignment.bottomRight,
+                  //                 children: [
+                  //                   CustomColorContainer(
+                  //                     child: Image.asset(
+                  //                       "assets/images/t3.png",
+                  //                       fit: BoxFit.fitWidth,
+                  //                     ),
+                  //                   ),
+                  //                   PlayButtonWidget()
+                  //                 ],
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

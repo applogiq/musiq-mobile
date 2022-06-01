@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/view/pages/bottom_navigation_bar.dart';
-import 'package:musiq/src/view/pages/home/home_screen.dart';
 
 void main() => runApp(MyApp());
 
