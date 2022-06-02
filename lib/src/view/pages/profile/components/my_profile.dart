@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 
 import '../../../../helpers/constants/color.dart';
 import '../../../widgets/custom_app_bar.dart';
+import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_color_container.dart';
 
 class MyProfile extends StatelessWidget {
@@ -68,18 +69,9 @@ class MyProfile extends StatelessWidget {
                   ),
                 ),
                 Spacer(),
-                Container(
-                    margin: EdgeInsets.all(16),
-                    width: MediaQuery.of(context).size.width,
-                    height: 52,
-                    decoration: BoxDecoration(
-                        color: CustomColor.secondaryColor,
-                        borderRadius: BorderRadius.circular(12)),
-                    child: Center(
-                        child: Text(
-                      "Save",
-                      style: TextStyle(fontWeight: FontWeight.w500),
-                    )))
+                CustomButton(
+                  label: "Save",
+                )
               ],
             )),
       ),

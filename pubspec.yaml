@@ -33,6 +33,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/fav/
+    - assets/images/artist/
     - assets/images/playlist/
     - assets/icons/
     - assets/images/homepage/

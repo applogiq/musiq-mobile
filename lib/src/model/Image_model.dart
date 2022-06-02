@@ -8,3 +8,16 @@ class ImageModel {
     required this.subTitle,
   });
 }
+
+class ArtistImageModel {
+  String imageURL;
+  String title;
+  String subTitle;
+  bool isFollowing;
+  ArtistImageModel({
+    required this.imageURL,
+    required this.title,
+    required this.subTitle,
+    required this.isFollowing,
+  });
+}

@@ -1,6 +1,59 @@
 import 'package:musiq/src/model/Image_model.dart';
 
 class Images {
+  List<ArtistImageModel> artistPrefList = [
+    ArtistImageModel(
+        imageURL: "assets/images/artist/a1.png",
+        isFollowing: true,
+        title: "Taylor Swift",
+        subTitle: "3.25M followers"),
+    ArtistImageModel(
+        imageURL: "assets/images/artist/a2.png",
+        isFollowing: true,
+        title: "Justin Beiber",
+        subTitle: "3.25M followers"),
+    ArtistImageModel(
+        imageURL: "assets/images/artist/a3.png",
+        isFollowing: true,
+        title: "Ed Shereen",
+        subTitle: "3.25M followers"),
+    ArtistImageModel(
+        imageURL: "assets/images/artist/a4.png",
+        isFollowing: true,
+        title: "Harry Styles",
+        subTitle: "3.25M followers"),
+    ArtistImageModel(
+        imageURL: "assets/images/artist/a5.png",
+        isFollowing: false,
+        title: "Justi Timberlake",
+        subTitle: "3.25M followers"),
+    ArtistImageModel(
+        imageURL: "assets/images/artist/a6.png",
+        isFollowing: false,
+        title: "Drake",
+        subTitle: "3.25M followers"),
+    ArtistImageModel(
+        imageURL: "assets/images/artist/a7.png",
+        isFollowing: false,
+        title: "Bruno Mars",
+        subTitle: "3.25M followers"),
+    ArtistImageModel(
+        imageURL: "assets/images/artist/a8.png",
+        isFollowing: false,
+        title: "Katy Perry",
+        subTitle: "3.25M followers"),
+    ArtistImageModel(
+        imageURL: "assets/images/artist/a1.png",
+        isFollowing: false,
+        title: "Eminem",
+        subTitle: "3.25M followers"),
+    ArtistImageModel(
+        imageURL: "assets/images/artist/a1.png",
+        isFollowing: false,
+        title: "Drake",
+        subTitle: "3.25M followers"),
+  ];
+
   List<ImageModel> recentlyPlayed = [
     ImageModel(
         imageURL: "assets/images/homepage/rp1.jpeg",

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:musiq/src/helpers/constants/color.dart';
+import 'package:musiq/src/view/widgets/custom_switch.dart';
 
 import '../../../widgets/custom_app_bar.dart';
 
@@ -10,6 +12,7 @@ class PreferenceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isSwitched = false;
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size(double.maxFinite, 60),
@@ -18,27 +21,195 @@ class PreferenceScreen extends StatelessWidget {
         ),
       ),
       body: ListView(children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-              child: Text(
-                "Music Preference",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-              ),
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.symmetric(vertical: 2, horizontal: 16),
-              title: Text("Artist Preference"),
-              trailing: Icon(
-                Icons.arrow_forward_ios_rounded,
-                size: 20,
-              ),
-            )
-          ],
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+          child: PreferenceMainHeaderWidget(
+            mainTitle: "Music Preference",
+            subTitle1: "Artist Preference",
+            navigationScreen1: "artistPreference",
+            subTitle2: "Audio Quality",
+            navigationScreen2: "audioQuality",
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
+          child: PreferenceMainHeaderWidget(
+            mainTitle: "Podcast Preference",
+            subTitle1: "Artist Preference",
+            navigationScreen1: "artistPreference",
+            subTitle2: "Audio Quality",
+            navigationScreen2: "audioQuality",
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
+          child: NotificationPreferenceHeaderWidget(
+            mainTitle: "Notification Preference",
+            subTitle1: "New Releases",
+            subTitle2: "Artist Updates",
+          ),
         ),
       ]),
     );
+  }
+}
+
+class PreferenceMainHeaderWidget extends StatelessWidget {
+  const PreferenceMainHeaderWidget({
+    Key? key,
+    required this.mainTitle,
+    required this.subTitle1,
+    required this.subTitle2,
+    required this.navigationScreen1,
+    required this.navigationScreen2,
+  }) : super(key: key);
+  final String mainTitle;
+  final String subTitle1;
+  final String navigationScreen1;
+  final String subTitle2;
+  final String navigationScreen2;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Text(
+          mainTitle,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 21.0),
+          child: PreferenceListTile(
+            label: subTitle1,
+            navigationRoute: navigationScreen1,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 24.0),
+          child: PreferenceListTile(
+            label: subTitle2,
+            navigationRoute: navigationScreen2,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class NotificationPreferenceHeaderWidget extends StatelessWidget {
+  NotificationPreferenceHeaderWidget({
+    Key? key,
+    required this.mainTitle,
+    required this.subTitle1,
+    required this.subTitle2,
+  }) : super(key: key);
+  final String mainTitle;
+  final String subTitle1;
+  final String subTitle2;
+
+  bool isNewReleaseSwitched = false;
+  bool isArtistUpdateSwitched = false;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Text(
+          mainTitle,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+        ),
+        NotificationPreferenceListTile(
+            title: subTitle1, isSwitched: isNewReleaseSwitched),
+        NotificationPreferenceListTile(
+            title: subTitle2, isSwitched: isArtistUpdateSwitched),
+      ],
+    );
+  }
+}
+
+class NotificationPreferenceListTile extends StatefulWidget {
+  NotificationPreferenceListTile({
+    Key? key,
+    required this.title,
+    this.isSwitched = false,
+  }) : super(key: key);
+
+  final String title;
+  bool isSwitched;
+
+  @override
+  State<NotificationPreferenceListTile> createState() =>
+      _NotificationPreferenceListTileState();
+}
+
+class _NotificationPreferenceListTileState
+    extends State<NotificationPreferenceListTile> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            widget.title,
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          ),
+          Switch(
+            value: widget.isSwitched,
+            onChanged: (value) {
+              setState(() {
+                widget.isSwitched = value;
+              });
+            },
+            activeTrackColor: Colors.white,
+            activeColor: CustomColor.subTitle,
+            inactiveTrackColor: CustomColor.subTitle,
+            inactiveThumbColor: CustomColor.secondaryColor,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class PreferenceListTile extends StatelessWidget {
+  const PreferenceListTile({
+    Key? key,
+    required this.label,
+    required this.navigationRoute,
+  }) : super(key: key);
+  final String label;
+  final String navigationRoute;
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).pushNamed(navigationRoute);
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          ),
+          Icon(
+            Icons.arrow_forward_ios_rounded,
+            size: 20,
+          ),
+        ],
+      ),
+    );
+    // return ListTile(
+    //   contentPadding: EdgeInsets.symmetric(vertical: 1, horizontal: 16),
+    //   title: Text(label),
+    // trailing: Icon(
+    //   Icons.arrow_forward_ios_rounded,
+    //   size: 20,
+    // ),
+    // );
   }
 }
