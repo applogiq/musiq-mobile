@@ -4,6 +4,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 import '../../../../helpers/constants/color.dart';
+import '../../../../helpers/constants/style.dart';
 import '../../../widgets/custom_app_bar.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_color_container.dart';
@@ -90,18 +91,27 @@ class ProfileFormTextFieldWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title),
-          CustomColorContainer(
-            horizontalPadding: 8,
-            verticalPadding: 0,
-            bgColor: CustomColor.textfieldBg,
-            child: ConstrainedBox(
-              constraints:
-                  BoxConstraints.expand(height: 46, width: double.maxFinite),
-              child: TextField(
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintStyle: TextStyle(fontSize: 14),
+          Padding(
+            padding: const EdgeInsets.only(left: 8),
+            child: Text(
+              title,
+              style: fontWeight500(size: 14.0),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: CustomColorContainer(
+              horizontalPadding: 8,
+              verticalPadding: 0,
+              bgColor: CustomColor.textfieldBg,
+              child: ConstrainedBox(
+                constraints:
+                    BoxConstraints.expand(height: 46, width: double.maxFinite),
+                child: TextField(
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(fontSize: 14),
+                  ),
                 ),
               ),
             ),

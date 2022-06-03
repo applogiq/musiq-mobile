@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/helpers/constants/images.dart';
 import 'package:musiq/src/helpers/constants/style.dart';
+import 'package:musiq/src/model/Image_model.dart';
 
 import '../../../../helpers/constants/color.dart';
 import '../../../widgets/custom_app_bar.dart';
@@ -31,7 +32,7 @@ class ArtistPreferenceScreen extends StatelessWidget {
   }
 }
 
-class CustomArtistVerticalList extends StatelessWidget {
+class CustomArtistVerticalList extends StatefulWidget {
   CustomArtistVerticalList(
       {Key? key, required this.images, this.playButton = true})
       : super(key: key);
@@ -40,10 +41,16 @@ class CustomArtistVerticalList extends StatelessWidget {
   bool playButton;
 
   @override
+  State<CustomArtistVerticalList> createState() =>
+      _CustomArtistVerticalListState();
+}
+
+class _CustomArtistVerticalListState extends State<CustomArtistVerticalList> {
+  @override
   Widget build(BuildContext context) {
     return Column(
         children: List.generate(
-      images.length,
+      widget.images.length,
       (index) => Container(
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.all(8),
@@ -55,7 +62,7 @@ class CustomArtistVerticalList extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: CustomColorContainer(
                   child: Image.asset(
-                    images[index].imageURL,
+                    widget.images[index].imageURL,
                     height: 70,
                     width: 70,
                     fit: BoxFit.fill,
@@ -72,7 +79,7 @@ class CustomArtistVerticalList extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        images[index].title,
+                        widget.images[index].title,
                         style: TextStyle(
                             fontWeight: FontWeight.w400, fontSize: 14),
                       ),
@@ -83,7 +90,7 @@ class CustomArtistVerticalList extends StatelessWidget {
                             width: 8,
                           ),
                           Text(
-                            images[index].subTitle,
+                            widget.images[index].subTitle,
                             style: TextStyle(
                                 color: CustomColor.subTitle,
                                 fontWeight: FontWeight.w400,
@@ -98,22 +105,50 @@ class CustomArtistVerticalList extends StatelessWidget {
                 flex: 3,
                 child: Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: images[index].isFollowing ? 8 : 16,
+                      horizontal: widget.images[index].isFollowing ? 8 : 16,
                       vertical: 4),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: images[index].isFollowing ? 8 : 16,
-                        vertical: 4),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6),
-                      color: images[index].isFollowing
-                          ? CustomColor.followingColor
-                          : CustomColor.secondaryColor,
-                    ),
-                    child: Center(
-                      child: Text(
-                        images[index].isFollowing ? "Following" : "Follow",
-                        style: fontWeight400(),
+                  child: InkWell(
+                    onTap: () {
+                      var temp1 = widget.images[index].isFollowing;
+                      var temp2 = widget.images[index].subTitle;
+                      var temp3 = widget.images[index].title;
+                      var temp4 = widget.images[index].imageURL;
+                      print(temp1);
+                      print(temp2);
+                      print(temp3);
+                      // String imageUrl=widget.images[index].
+
+                      widget.images.removeAt(index);
+                      widget.images.insert(
+                          index,
+                          ArtistImageModel(
+                              imageURL: temp4,
+                              title: temp3,
+                              subTitle: temp2,
+                              isFollowing: temp1 != temp1));
+                      print(widget.images[index].isFollowing);
+                      setState(() {
+                        widget.images[index].isFollowing !=
+                            widget.images[index].isFollowing;
+                      });
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: widget.images[index].isFollowing ? 8 : 16,
+                          vertical: 4),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        color: widget.images[index].isFollowing
+                            ? CustomColor.followingColor
+                            : CustomColor.secondaryColor,
+                      ),
+                      child: Center(
+                        child: Text(
+                          widget.images[index].isFollowing
+                              ? "Following"
+                              : "Follow",
+                          style: fontWeight400(),
+                        ),
                       ),
                     ),
                   ),

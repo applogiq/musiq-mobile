@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../helpers/constants/color.dart';
+import '../../../../../helpers/constants/color.dart';
 
 class PlayButtonWidget extends StatelessWidget {
   const PlayButtonWidget({

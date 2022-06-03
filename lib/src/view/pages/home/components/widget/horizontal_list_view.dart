@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/helpers/constants/images.dart';
+import 'package:musiq/src/view/pages/home/components/pages/artist_view_all_screen.dart';
+import 'package:musiq/src/view/pages/home/components/pages/view_all_screen.dart';
 import 'package:musiq/src/view/widgets/custom_color_container.dart';
 
-import '../../../../helpers/constants/color.dart';
+import '../../../../../helpers/constants/color.dart';
 
 class CustomHorizontalListview extends StatelessWidget {
   CustomHorizontalListview(
@@ -105,15 +107,16 @@ class HorizonalListViewWidget extends StatelessWidget {
 }
 
 class ListHeaderWidget extends StatelessWidget {
-  const ListHeaderWidget({
-    Key? key,
-    required this.title,
-    required this.actionTitle,
-  }) : super(key: key);
+  ListHeaderWidget(
+      {Key? key,
+      required this.title,
+      required this.actionTitle,
+      this.isArtist = false})
+      : super(key: key);
 
   final String title;
   final String actionTitle;
-
+  bool isArtist;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -123,12 +126,20 @@ class ListHeaderWidget extends StatelessWidget {
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
         Spacer(),
-        Text(
-          actionTitle,
-          style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: CustomColor.secondaryColor),
+        InkWell(
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => isArtist
+                    ? ArtistListViewAll()
+                    : ViewAllScreen(title: title)));
+          },
+          child: Text(
+            actionTitle,
+            style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: CustomColor.secondaryColor),
+          ),
         )
       ],
     );

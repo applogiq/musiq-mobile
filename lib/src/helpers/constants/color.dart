@@ -4,6 +4,7 @@ class CustomColor {
   static var bg = Color.fromRGBO(22, 21, 28, 1);
   static var textfieldBg = Color.fromRGBO(255, 255, 255, 0.1);
   static var subTitle = Color.fromRGBO(255, 255, 255, 0.4);
+  static var subTitle2 = Color.fromRGBO(255, 255, 255, 0.6);
 
   static var playIconBg = Color.fromRGBO(255, 255, 255, 0.8);
 

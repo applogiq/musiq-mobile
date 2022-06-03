@@ -34,6 +34,7 @@ flutter:
     - assets/images/
     - assets/images/fav/
     - assets/images/artist/
+    - assets/images/artistList/
     - assets/images/playlist/
     - assets/icons/
     - assets/images/homepage/

@@ -3,24 +3,31 @@ import 'package:flutter/material.dart';
 import '../../helpers/constants/color.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({
-    Key? key,
-    required this.label,
-  }) : super(key: key);
+  CustomButton(
+      {Key? key, required this.label, this.margin = 16, this.isIcon = false})
+      : super(key: key);
   final String label;
+  double margin;
+  bool isIcon;
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.all(16),
+        margin: EdgeInsets.all(margin),
         width: MediaQuery.of(context).size.width,
         height: 52,
         decoration: BoxDecoration(
             color: CustomColor.secondaryColor,
             borderRadius: BorderRadius.circular(12)),
         child: Center(
-            child: Text(
-          label,
-          style: TextStyle(fontWeight: FontWeight.w500),
+            child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            isIcon ? Icon(Icons.play_arrow_rounded) : SizedBox(),
+            Text(
+              label,
+              style: TextStyle(fontWeight: FontWeight.w500),
+            ),
+          ],
         )));
   }
 }

@@ -6,8 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:musiq/src/helpers/constants/style.dart';
 import 'package:musiq/src/view/widgets/custom_button.dart';
 
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+class OnboardingScreen extends StatelessWidget {
+  const OnboardingScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,59 +16,7 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Stack(
-            children: [
-              BackgroundImageWidget(),
-              Container(
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomCenter,
-                        stops: [
-                      0.1,
-                      0.65
-                    ],
-                        colors: [
-                      Color.fromRGBO(22, 21, 28, 0),
-                      Color.fromRGBO(2, 0, 1, 1),
-                    ])),
-              )
-              // Column(
-              //   children: [
-              //     Expanded(
-              //       flex: 7,
-              //       child: Container(
-              //         decoration: BoxDecoration(
-              //           gradient: LinearGradient(
-              //             colors: [
-              //               Color.fromRGBO(22, 21, 28, 0),
-              //               Color.fromRGBO(2, 0, 1, 1),
-              //             ],
-              //             begin: Alignment.topLeft,
-              //             end: Alignment.bottomRight,
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //     Expanded(
-              //       flex: 6,
-              //       child: Container(
-              //         decoration: BoxDecoration(
-              //           gradient: LinearGradient(
-              //             colors: [
-              //               Color.fromRGBO(2, 0, 1, 0.9),
-              //               Color.fromRGBO(2, 0, 1, 1),
-              //             ],
-              //             begin: Alignment.topLeft,
-              //             end: Alignment.bottomRight,
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // )
-            ],
-          ),
+          Background(),
           Container(
             width: MediaQuery.of(context).size.width,
             child: Column(
@@ -83,13 +31,8 @@ class SplashScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        height: 80,
-                        width: 80,
-                        child: Image.asset(
-                          "assets/icons/logo.png",
-                          fit: BoxFit.cover,
-                        ),
+                      LogoWidget(
+                        size: 80,
                       ),
                       Text(
                         "MUSIQ",
@@ -116,7 +59,11 @@ class SplashScreen extends StatelessWidget {
                         ),
                       ),
                       Spacer(),
-                      CustomButton(label: "Register"),
+                      InkWell(
+                          onTap: () {
+                            Navigator.of(context).pushNamed("register");
+                          },
+                          child: CustomButton(label: "Register")),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -125,9 +72,15 @@ class SplashScreen extends StatelessWidget {
                             "Already have an account?",
                             style: fontWeight500(size: 14.0),
                           ),
-                          Text(
-                            " Log In",
-                            style: fontWeight500(size: 14.0, color: Colors.red),
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).pushNamed("login");
+                            },
+                            child: Text(
+                              " Log In",
+                              style:
+                                  fontWeight500(size: 14.0, color: Colors.red),
+                            ),
                           ),
                         ],
                       ),
@@ -184,6 +137,90 @@ class SplashScreen extends StatelessWidget {
       //     )
       //   ],
       // ),
+    );
+  }
+}
+
+class Background extends StatelessWidget {
+  const Background({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        BackgroundImageWidget(),
+        Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomCenter,
+                  stops: [
+                0.1,
+                0.65
+              ],
+                  colors: [
+                Color.fromRGBO(22, 21, 28, 0),
+                Color.fromRGBO(2, 0, 1, 1),
+              ])),
+        )
+        // Column(
+        //   children: [
+        //     Expanded(
+        //       flex: 7,
+        //       child: Container(
+        //         decoration: BoxDecoration(
+        //           gradient: LinearGradient(
+        //             colors: [
+        //               Color.fromRGBO(22, 21, 28, 0),
+        //               Color.fromRGBO(2, 0, 1, 1),
+        //             ],
+        //             begin: Alignment.topLeft,
+        //             end: Alignment.bottomRight,
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //     Expanded(
+        //       flex: 6,
+        //       child: Container(
+        //         decoration: BoxDecoration(
+        //           gradient: LinearGradient(
+        //             colors: [
+        //               Color.fromRGBO(2, 0, 1, 0.9),
+        //               Color.fromRGBO(2, 0, 1, 1),
+        //             ],
+        //             begin: Alignment.topLeft,
+        //             end: Alignment.bottomRight,
+        //           ),
+        //         ),
+        //       ),
+        //     ),
+        //   ],
+        // )
+      ],
+    );
+  }
+}
+
+class LogoWidget extends StatelessWidget {
+  const LogoWidget({
+    Key? key,
+    required this.size,
+  }) : super(key: key);
+  final double size;
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: size,
+      width: size,
+      child: Center(
+        child: Image.asset(
+          "assets/icons/logo.png",
+          fit: BoxFit.fill,
+        ),
+      ),
     );
   }
 }

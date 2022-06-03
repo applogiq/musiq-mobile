@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/view/pages/home/components/play_button_widget.dart';
+import 'package:musiq/src/view/pages/home/components/widget/play_button_widget.dart';
 
 import 'horizontal_list_view.dart';
 

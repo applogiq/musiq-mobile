@@ -10,5 +10,5 @@ TextStyle fontWeight500({size = 18.0, color = Colors.white}) {
 }
 
 TextStyle fontWeight400({size = 14.0, color = Colors.white}) {
-  return TextStyle(fontWeight: FontWeight.w400, fontSize: size);
+  return TextStyle(fontWeight: FontWeight.w400, fontSize: size, color: color);
 }

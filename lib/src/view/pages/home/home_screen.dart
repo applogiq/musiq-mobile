@@ -3,12 +3,12 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/constants/images.dart';
+import 'package:musiq/src/view/pages/home/components/pages/search_screen.dart';
+import 'package:musiq/src/view/pages/home/components/widget/artist_list_view.dart';
+import 'package:musiq/src/view/pages/home/components/widget/horizontal_list_view.dart';
+import 'package:musiq/src/view/pages/home/components/widget/trending_hits.dart';
+import 'package:musiq/src/view/pages/home/components/widget/vertical_list_view.dart';
 import 'package:musiq/src/view/widgets/custom_color_container.dart';
-
-import 'components/artist_list_view.dart';
-import 'components/horizontal_list_view.dart';
-import 'components/trending_hits.dart';
-import 'components/vertical_list_view.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -32,29 +32,14 @@ class HomePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Expanded(
-                      child: CustomColorContainer(
-                        horizontalPadding: 1,
-                        verticalPadding: 2,
-                        bgColor: CustomColor.textfieldBg,
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints.expand(
-                              height: 40, width: double.maxFinite),
-                          child: TextField(
-                            decoration: InputDecoration(
-                                prefixIcon: Container(
-                                  padding: EdgeInsets.all(12),
-                                  child: Image.asset(
-                                    "assets/icons/search.png",
-                                    height: 16,
-                                    width: 16,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                border: InputBorder.none,
-                                hintStyle: TextStyle(fontSize: 14),
-                                hintText: "Search Music and Podcasts"),
-                          ),
-                        ),
+                      child: SearchTextWidget(
+                        isReadOnly: true,
+                        onTap: () {
+                          print("DATA");
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => SearchScreen()));
+                        },
+                        hint: "Search Music and Podcasts",
                       ),
                     ),
                     SizedBox(
@@ -101,7 +86,7 @@ class HomePage extends StatelessWidget {
                     CustomHorizontalListview(images: images.recommendedSong)),
             ArtistListView(images: images.artistList),
             HorizonalListViewWidget(
-                title: "Top Podcasts",
+                title: "New Releases",
                 actionTitle: "",
                 listWidget: CustomHorizontalListview(
                   images: images.podcastList,
@@ -135,6 +120,47 @@ class HomePage extends StatelessWidget {
                   images: images.topAlbumList,
                 )),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class SearchTextWidget extends StatelessWidget {
+  SearchTextWidget(
+      {Key? key,
+      required this.hint,
+      this.isReadOnly = false,
+      required this.onTap})
+      : super(key: key);
+  final String hint;
+  bool isReadOnly;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomColorContainer(
+      horizontalPadding: 1,
+      verticalPadding: 2,
+      bgColor: CustomColor.textfieldBg,
+      child: ConstrainedBox(
+        constraints: BoxConstraints.expand(height: 40, width: double.maxFinite),
+        child: TextField(
+          onTap: onTap,
+          readOnly: isReadOnly,
+          decoration: InputDecoration(
+              prefixIcon: Container(
+                padding: EdgeInsets.all(12),
+                child: Image.asset(
+                  "assets/icons/search.png",
+                  height: 16,
+                  width: 16,
+                  color: Colors.white,
+                ),
+              ),
+              border: InputBorder.none,
+              hintStyle: TextStyle(fontSize: 14),
+              hintText: hint),
         ),
       ),
     );

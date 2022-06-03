@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/view/pages/home/home_screen.dart';
 
-import '../../../widgets/custom_color_container.dart';
+import '../../../../widgets/custom_color_container.dart';
 import 'horizontal_list_view.dart';
 
 class ArtistListView extends StatelessWidget {
@@ -21,6 +21,7 @@ class ArtistListView extends StatelessWidget {
           child: ListHeaderWidget(
             title: "Artists",
             actionTitle: "View All",
+            isArtist: true,
           ),
         ),
         Container(

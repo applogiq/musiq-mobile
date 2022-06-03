@@ -4,8 +4,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/constants/images.dart';
-
-import '../home/components/vertical_list_view.dart';
+import 'package:musiq/src/view/pages/home/components/widget/vertical_list_view.dart';
 
 class Library extends StatelessWidget {
   Library({Key? key}) : super(key: key);

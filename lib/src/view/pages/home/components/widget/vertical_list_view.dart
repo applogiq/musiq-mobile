@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../../../../helpers/constants/color.dart';
-import '../../../widgets/custom_color_container.dart';
+import 'package:musiq/src/helpers/constants/color.dart';
+import 'package:musiq/src/view/widgets/custom_color_container.dart';
 
 class CustomSongVerticalList extends StatelessWidget {
   CustomSongVerticalList(

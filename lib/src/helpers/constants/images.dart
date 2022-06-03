@@ -82,7 +82,40 @@ class Images {
         title: "Una vez",
         subTitle: "Single - Selena go..."),
   ];
-
+  List<ImageModel> artistSearchList = [
+    ImageModel(
+        imageURL: "assets/images/homepage/a1.jpg",
+        title: "The Weekend",
+        subTitle: ""),
+    ImageModel(
+        imageURL: "assets/images/artistList/A2.jpg",
+        title: "Zyan Malik",
+        subTitle: ""),
+    ImageModel(
+        imageURL: "assets/images/artistList/A3.webp",
+        title: "Harry Styles",
+        subTitle: ""),
+    ImageModel(
+        imageURL: "assets/images/artistList/A4.png",
+        title: "Taylor Swift",
+        subTitle: ""),
+    ImageModel(
+        imageURL: "assets/images/artistList/A5.jfif",
+        title: "Camila Cabello",
+        subTitle: ""),
+    ImageModel(
+        imageURL: "assets/images/artistList/A6.jpg",
+        title: "Charlie puth",
+        subTitle: ""),
+    ImageModel(
+        imageURL: "assets/images/artistList/A7.jfif",
+        title: "Shawn Mendes",
+        subTitle: ""),
+    ImageModel(
+        imageURL: "assets/images/homepage/a2.jpg",
+        title: "Selena Gomez",
+        subTitle: ""),
+  ];
   List<ImageModel> artistList = [
     ImageModel(
         imageURL: "assets/images/homepage/a1.jpg",
@@ -97,16 +130,16 @@ class Images {
   List<ImageModel> podcastList = [
     ImageModel(
         imageURL: "assets/images/homepage/p1.jpg",
-        title: "Monday Podcast",
-        subTitle: "Morning FM"),
+        title: "Pastlife",
+        subTitle: "Trevor daniel"),
     ImageModel(
         imageURL: "assets/images/homepage/p4.webp",
-        title: "Coversation With c..",
-        subTitle: "The katie carlson.."),
+        title: "In my blood",
+        subTitle: "Miley cyrus"),
     ImageModel(
         imageURL: "assets/images/homepage/p3.png",
-        title: "Office Ladies",
-        subTitle: "Earwolf FM"),
+        title: "Love yourself",
+        subTitle: "Yony"),
   ];
   List<ImageModel> topAlbumList = [
     ImageModel(
