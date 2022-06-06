@@ -127,14 +127,15 @@ class HomePage extends StatelessWidget {
 }
 
 class SearchTextWidget extends StatelessWidget {
-  SearchTextWidget(
-      {Key? key,
-      required this.hint,
-      this.isReadOnly = false,
-      required this.onTap})
-      : super(key: key);
+  SearchTextWidget({
+    Key? key,
+    required this.hint,
+    this.isReadOnly = false,
+    required this.onTap,
+  }) : super(key: key);
   final String hint;
   bool isReadOnly;
+
   final VoidCallback onTap;
 
   @override
@@ -148,6 +149,8 @@ class SearchTextWidget extends StatelessWidget {
         child: TextField(
           onTap: onTap,
           readOnly: isReadOnly,
+          onChanged: (val) {},
+          cursorColor: Colors.white,
           decoration: InputDecoration(
               prefixIcon: Container(
                 padding: EdgeInsets.all(12),
