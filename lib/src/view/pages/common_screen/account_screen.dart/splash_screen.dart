@@ -12,7 +12,7 @@ class OnboardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-
+// FocusManager.instance.primaryFocus?.unfocus();
     return Scaffold(
       body: Stack(
         children: [

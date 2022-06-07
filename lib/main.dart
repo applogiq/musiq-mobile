@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/themes/theme.dart';
+import 'package:musiq/src/view-model/cubit/login_bloc.dart';
 import 'package:musiq/src/view/pages/bottom_navigation_bar.dart';
 import 'package:musiq/src/view/pages/common_screen/account_screen.dart/login_screen.dart';
 import 'package:musiq/src/view/pages/common_screen/account_screen.dart/select_your%20fav_artist.dart';
@@ -21,19 +23,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: themeData(context),
-      home: OnboardingScreen(),
-      routes: {
-        'login': (BuildContext ctx) => LoginScreen(),
-        'register': (BuildContext ctx) => RegisterScreen(),
-        'audioQuality': (BuildContext ctx) => AudioQualitySettingScreen(),
-        'artistPreference': (BuildContext ctx) => ArtistPreferenceScreen(),
-        'myProfile': (BuildContext ctx) => MyProfile(),
-        'preferences': (BuildContext ctx) => PreferenceScreen(),
-        // 'about': (BuildContext ctx) => PageC(),
-      },
+// FocusScope.of(context).requestFocus(FocusNode());
+    return MultiBlocProvider(
+       providers: [
+          BlocProvider<LoginBloc>(create: (context) => LoginBloc()),
+       ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: themeData(context),
+        home: OnboardingScreen(),
+        routes: {
+          'login': (BuildContext ctx) => LoginScreen(),
+          'register': (BuildContext ctx) => RegisterScreen(),
+          'audioQuality': (BuildContext ctx) => AudioQualitySettingScreen(),
+          'artistPreference': (BuildContext ctx) => ArtistPreferenceScreen(),
+          'myProfile': (BuildContext ctx) => MyProfile(),
+          'preferences': (BuildContext ctx) => PreferenceScreen(),
+          // 'about': (BuildContext ctx) => PageC(),
+        },
+      ),
     );
   }
 }

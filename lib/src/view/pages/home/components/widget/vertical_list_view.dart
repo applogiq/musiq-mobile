@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
+import 'package:musiq/src/helpers/constants/style.dart';
 import 'package:musiq/src/view/pages/play/play_screen.dart';
 import 'package:musiq/src/view/widgets/custom_color_container.dart';
 
@@ -10,6 +11,7 @@ class CustomSongVerticalList extends StatelessWidget {
 
   final List images;
   bool playButton;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +23,10 @@ class CustomSongVerticalList extends StatelessWidget {
         padding: EdgeInsets.all(8),
         child: InkWell(
           onTap: () {
+            print(index);
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => PlayScreen(
+                  index: index,
                       imageURL: images[index].imageURL,
                       songName: images[index].title,
                       artistName: images[index].subTitle,
@@ -30,6 +34,7 @@ class CustomSongVerticalList extends StatelessWidget {
           },
           child: Row(
             children: [
+       
               Expanded(
                 flex: 3,
                 child: Align(
@@ -54,15 +59,11 @@ class CustomSongVerticalList extends StatelessWidget {
                       children: [
                         Text(
                           images[index].title,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 14),
+                          style: fontWeight400(),
                         ),
                         Text(
                           images[index].subTitle,
-                          style: TextStyle(
-                              color: CustomColor.subTitle,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14),
+                          style: fontWeight400(size: 12.0,),
                         ),
                       ],
                     ),

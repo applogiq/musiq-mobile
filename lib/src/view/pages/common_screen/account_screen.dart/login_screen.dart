@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/constants/style.dart';
+import 'package:musiq/src/view-model/cubit/login_bloc.dart';
 import 'package:musiq/src/view/pages/common_screen/account_screen.dart/splash_screen.dart';
+import 'package:musiq/src/view/pages/home/home_screen.dart';
 import 'package:musiq/src/view/widgets/custom_button.dart';
 
 import '../../profile/components/my_profile.dart';
@@ -14,9 +15,13 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   LoginBloc _loginScreenCubit = BlocProvider.of<LoginBloc>(
+      context,
+      listen: false,
+    );
     return Scaffold(
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           child: Stack(
@@ -51,12 +56,36 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    ProfileFormTextFieldWidget(
-                      title: "Email Address",
+                    StreamBuilder(
+                      stream: _loginScreenCubit.userNameStream,
+                      builder: (context, snapshot) {
+                        return ProfileFormTextFieldWidget(
+                          onChange: (text){
+                            _loginScreenCubit.updateUserName(text);
+                          },
+                          title: "Email Address",
+                        );
+                      }
                     ),
-                    ProfileFormTextFieldWidget(
-                      title: "Password",
+                    StreamBuilder(stream: _loginScreenCubit.userNameStream,builder: (context,snapshot){
+                     return snapshot.hasError==true? Text(snapshot.error.toString(),style: TextStyle(color: Colors.red),):SizedBox(width: 0,height: 0,);
+
+                    }),
+                    StreamBuilder(
+                      stream:_loginScreenCubit.passwordStream,
+                      builder: (context, snapshot) {
+                        return ProfileFormTextFieldWidget(
+                          title: "Password",
+                          onChange: (text){
+                            _loginScreenCubit.updatePassword(text);
+                          },
+                        );
+                      }
                     ),
+                      StreamBuilder(stream: _loginScreenCubit.passwordStream,builder: (context,snapshot){
+                     return snapshot.hasError==true? Text(snapshot.error.toString(),style: TextStyle(color: Colors.red),):SizedBox(width: 0,height: 0,);
+
+                    }),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Align(
@@ -70,9 +99,29 @@ class LoginScreen extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 50.0),
-                      child: CustomButton(
-                        label: "Log In",
-                        margin: 0,
+                      child: StreamBuilder(
+                        stream: _loginScreenCubit.validateForm,
+                        builder: (context, snapshot) {
+                          return InkWell(
+                            onTap: ()async{_loginScreenCubit.updateValidator(true);
+                            // _loginScreenCubit.updateUserName(_loginScreenCubit.userNameStream.toString());
+                            // _loginScreenCubit.updatePassword(_loginScreenCubit.passwordStream.toString());
+                            print(snapshot.data);
+                              if(snapshot.data==true){
+                               var isLog=await _loginScreenCubit.loginAPI();
+                               print(isLog);
+                               if(isLog){
+                                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>HomePage()));
+                               }
+                              }
+                              
+                            },
+                            child: CustomButton(
+                              label: "Log In",
+                              margin: 0,
+                            ),
+                          );
+                        }
                       ),
                     ),
                   ],

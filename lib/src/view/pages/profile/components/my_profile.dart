@@ -81,9 +81,10 @@ class MyProfile extends StatelessWidget {
 }
 
 class ProfileFormTextFieldWidget extends StatelessWidget {
-  const ProfileFormTextFieldWidget({Key? key, required this.title})
+  const ProfileFormTextFieldWidget({Key? key, required this.title, this.onChange})
       : super(key: key);
   final String title;
+  final ValueSetter<String>? onChange;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -101,13 +102,15 @@ class ProfileFormTextFieldWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: CustomColorContainer(
-              horizontalPadding: 8,
+              horizontalPadding: 16,
               verticalPadding: 0,
               bgColor: CustomColor.textfieldBg,
               child: ConstrainedBox(
                 constraints:
                     BoxConstraints.expand(height: 46, width: double.maxFinite),
                 child: TextField(
+                  cursorColor: Colors.white,
+                  onChanged: onChange,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintStyle: TextStyle(fontSize: 14),

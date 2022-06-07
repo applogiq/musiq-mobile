@@ -12,6 +12,7 @@ ThemeData themeData(BuildContext context) {
       titleSpacing: 23,
       titleTextStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
     ),
+    
     floatingActionButtonTheme: FloatingActionButtonThemeData(
         splashColor: Colors.white.withOpacity(0.25),
         foregroundColor: Colors.white,
