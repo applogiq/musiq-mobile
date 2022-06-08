@@ -9,7 +9,7 @@ class ConstantText{
   static String register= "Register";
   static String login= "Login";
   static String loginPrefix= "Already have an account?";
-  // static String login= "Login";
+  static String invalidEmailAndPassword= "Your email or password is Incorrect";
   // static String login= "Login";
 
 

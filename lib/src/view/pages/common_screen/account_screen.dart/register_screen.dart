@@ -51,16 +51,16 @@ class RegisterScreen extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                ProfileFormTextFieldWidget(
+                CustomTextField(
                   title: "Full Name",
                 ),
-                ProfileFormTextFieldWidget(
+                CustomTextField(
                   title: "Username",
                 ),
-                ProfileFormTextFieldWidget(
+                CustomTextField(
                   title: "Email Address",
                 ),
-                ProfileFormTextFieldWidget(
+                CustomTextField(
                   title: "Password",
                 ),
                 Padding(

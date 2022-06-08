@@ -56,13 +56,13 @@ class MyProfile extends StatelessWidget {
                   child: Form(
                     child: Column(
                       children: [
-                        ProfileFormTextFieldWidget(
+                        CustomTextField(
                           title: "Name",
                         ),
-                        ProfileFormTextFieldWidget(
+                        CustomTextField(
                           title: "Username",
                         ),
-                        ProfileFormTextFieldWidget(
+                        CustomTextField(
                           title: "Email",
                         ),
                       ],
@@ -80,18 +80,18 @@ class MyProfile extends StatelessWidget {
   }
 }
 
-class ProfileFormTextFieldWidget extends StatefulWidget {
-  const ProfileFormTextFieldWidget({Key? key, required this.title, this.onChange, this.obsecureText = false})
+class CustomTextField extends StatefulWidget {
+  const CustomTextField({Key? key, required this.title, this.onChange, this.obsecureText = false})
       : super(key: key);
   final String title;
   final ValueSetter<String>? onChange;
   final bool obsecureText;
 
   @override
-  State<ProfileFormTextFieldWidget> createState() => _ProfileFormTextFieldWidgetState();
+  State<CustomTextField> createState() => _CustomTextFieldState();
 }
 
-class _ProfileFormTextFieldWidgetState extends State<ProfileFormTextFieldWidget> {
+class _CustomTextFieldState extends State<CustomTextField> {
  bool obsecure = false;
   @override
   void initState() {
@@ -141,7 +141,7 @@ class _ProfileFormTextFieldWidgetState extends State<ProfileFormTextFieldWidget>
                           });
                         },
                         icon: Icon(
-                            obsecure ? Icons.visibility_off : Icons.visibility))
+                            obsecure ? Icons.visibility_off : Icons.visibility,color: Colors.white,))
                     : const SizedBox(
                         width: 0,
                         height: 0,

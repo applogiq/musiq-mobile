@@ -9,6 +9,8 @@ import 'package:musiq/src/view/pages/common_screen/account_screen.dart/on_boardi
 import 'package:musiq/src/view/pages/home/home_screen.dart';
 import 'package:musiq/src/view/widgets/custom_button.dart';
 
+import '../../../widgets/custom_text_field_with_error.dart';
+import '../../../widgets/empty_box.dart';
 import '../../profile/components/my_profile.dart';
 import 'components/background_image.dart';
 import 'components/logo_image.dart';
@@ -37,9 +39,7 @@ class LoginScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Spacer(),
-                    const SizedBox(
-                      height: 200,
-                    ),
+                    
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8.0),
                       child: LogoWidget(
@@ -59,48 +59,19 @@ class LoginScreen extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-                    StreamBuilder(
-                      stream: _loginScreenCubit.userNameStream,
-                      builder: (context, snapshot) {
-                        return ProfileFormTextFieldWidget(
-                          onChange: (text){
-                            _loginScreenCubit.updateUserName(text);
-                          },
-                          title: ConstantText.email,
-                        );
-                      }
-                    ),
-                    StreamBuilder(stream: _loginScreenCubit.userNameStream,builder: (context,snapshot){
-                     return snapshot.hasError==true? Text(snapshot.error.toString(),style: const TextStyle(color: Colors.red),):const SizedBox(width: 0,height: 0,);
+                    TextFieldWithError(label: ConstantText.email,loginScreenCubit: _loginScreenCubit,stream: _loginScreenCubit.userNameStream,isValidatorEnable: true,onChange:(text){
 
+                    _loginScreenCubit.updateUserName(text);
+                    } ),
+                   TextFieldWithError(label: ConstantText.password,loginScreenCubit: _loginScreenCubit,stream: _loginScreenCubit.passwordStream,isValidatorEnable: true,onChange:(text){
+
+                    _loginScreenCubit.updatePassword(text);
                     }),
-                    StreamBuilder(
-                      stream:_loginScreenCubit.passwordStream,
-                      builder: (context, snapshot) {
-                        return ProfileFormTextFieldWidget(
-                          obsecureText: true,
-                          title: ConstantText.password,
-                          onChange: (text){
-                            _loginScreenCubit.updatePassword(text);
-                          },
-                        );
-                      }
-                    ),
-                    //   StreamBuilder(stream: _loginScreenCubit.passwordStream,builder: (context,snapshot){
-                    //  return snapshot.hasError==true? Text(snapshot.error.toString(),style: const TextStyle(color: Colors.red),):const SizedBox(width: 0,height: 0,);
+                  
+                    
+                    ForgotPassword(),
 
-                    // }),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                         ConstantText.forgotPassword,
-                          style: fontWeight500(
-                              color: CustomColor.subTitle2, size: 14.0),
-                        ),
-                      ),
-                    ),
+                 ErrorContainer(),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 50.0),
                       child: StreamBuilder(
@@ -109,6 +80,9 @@ class LoginScreen extends StatelessWidget {
                           return InkWell(
                             onTap:snapshot.hasError?(){
                               print("Please Validate");
+                              print(_loginScreenCubit.userNameStream.toString());
+                               _loginScreenCubit.updateUserName(_loginScreenCubit.userNameStream.toString());
+                            _loginScreenCubit.updatePassword(_loginScreenCubit.passwordStream.toString());
                             }: ()
                             
                             
@@ -126,13 +100,14 @@ class LoginScreen extends StatelessWidget {
                                }
                               }
                               else{
-                              
+                                  _loginScreenCubit.updateUserName(_loginScreenCubit.userNameStream.toString());
+                            _loginScreenCubit.updatePassword(_loginScreenCubit.passwordStream.toString());
+                           
                               }
                               
                             },
                             child: CustomButton(
-                              isValid: snapshot.hasData,
-                              label: "Log In",
+                               label: "Log In",
                               margin: 0,
                             ),
                           );
@@ -146,6 +121,62 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class ForgotPassword extends StatelessWidget {
+  const ForgotPassword({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: Text(
+         ConstantText.forgotPassword,
+          style: fontWeight500(
+              color: CustomColor.subTitle2, size: 14.0),
+        ),
+      ),
+    );
+  }
+}
+
+class ErrorContainer extends StatelessWidget {
+  const ErrorContainer({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+     LoginBloc _loginScreenCubit = BlocProvider.of<LoginBloc>(
+      context,
+      listen: false,
+    );
+    return StreamBuilder(
+      stream: _loginScreenCubit.errorStream,
+      builder: (context, snapshot) {
+        return snapshot.hasData?EmptyBox(): Container(width: MediaQuery.of(context).size.width,
+        height: 50,
+        margin: EdgeInsets.symmetric(vertical:16),
+        padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(color: CustomColor.errorStatusColor,
+        borderRadius: BorderRadius.circular(8.0)
+        ,)
+        ,child: Row(children: [Icon(Icons.info,color: Colors.red,),
+        SizedBox(width: 8,),
+        Text(ConstantText.invalidEmailAndPassword,style: fontWeight400(size: 14.0,color: CustomColor.subTitle2,)
+        ,
+        
+        ),
+        Spacer(),
+        InkWell(onTap: (){_loginScreenCubit.isInvalidCred.add(false);},child: Icon(Icons.close))
+        ],),);
+      }
     );
   }
 }

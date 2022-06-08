@@ -13,8 +13,10 @@ class LoginBloc extends Cubit<LoginState> with InputValidationMixin{
    final _userEmailController = BehaviorSubject<String>();
   final _passwordController = BehaviorSubject<String>();
   final validator=BehaviorSubject<bool>();
+  final isInvalidCred=BehaviorSubject<bool>();
   Stream<String> get userNameStream => _userEmailController.stream;
   Stream<String> get passwordStream => _passwordController.stream;
+  Stream<bool> get errorStream => isInvalidCred.stream;
 
  void clearStreams() {
     updateUserName('');
@@ -36,6 +38,9 @@ class LoginBloc extends Cubit<LoginState> with InputValidationMixin{
   }
   void updateValidator(bool val){
     validator.sink.add(val);
+  }
+   void updateError(){
+    isInvalidCred.sink.add(true);
   }
 
   void updatePassword(String password) {
@@ -64,6 +69,7 @@ class LoginBloc extends Cubit<LoginState> with InputValidationMixin{
      "email": _userEmailController.stream.value,
      "password": _passwordController.stream.value
     };
+    
     var url=Uri.parse(APIConstants.BASE_URL.toString()+APIConstants.LOGIN.toString());
    
     
@@ -71,6 +77,13 @@ class LoginBloc extends Cubit<LoginState> with InputValidationMixin{
               'Accept': 'application/json',
               });
   print(response.statusCode);
+  if(response.statusCode==200){
+    isInvalidCred.sink.add(false);
+  }
+  else if(response.statusCode==404){
+    isInvalidCred.sink.addError(true);
+   //
+  }
  return response.statusCode;
   }
   catch(e){
