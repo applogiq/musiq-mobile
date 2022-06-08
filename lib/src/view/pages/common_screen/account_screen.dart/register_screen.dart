@@ -5,10 +5,12 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/constants/style.dart';
 import 'package:musiq/src/view/pages/common_screen/account_screen.dart/select_your%20fav_artist.dart';
-import 'package:musiq/src/view/pages/common_screen/account_screen.dart/splash_screen.dart';
+import 'package:musiq/src/view/pages/common_screen/account_screen.dart/on_boarding_screen.dart';
 import 'package:musiq/src/view/widgets/custom_button.dart';
 
-import '../profile/components/my_profile.dart';
+import '../../profile/components/my_profile.dart';
+import 'components/background_image.dart';
+import 'components/logo_image.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({Key? key}) : super(key: key);

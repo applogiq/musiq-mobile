@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/helpers/constants/style.dart';
 
 import '../../helpers/constants/color.dart';
 
 class CustomButton extends StatelessWidget {
   CustomButton(
-      {Key? key, required this.label, this.margin = 16, this.isIcon = false})
+      {Key? key, required this.label, this.margin = 16, this.isIcon = false,this.isValid=true,this.radius=12})
       : super(key: key);
   final String label;
   double margin;
+  double radius;
   bool isIcon;
+  bool isValid;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,8 +19,8 @@ class CustomButton extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         height: 52,
         decoration: BoxDecoration(
-            color: CustomColor.secondaryColor,
-            borderRadius: BorderRadius.circular(12)),
+            color:isValid? CustomColor.secondaryColor:CustomColor.subTitle,
+            borderRadius: BorderRadius.circular(radius)),
         child: Center(
             child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -25,7 +28,7 @@ class CustomButton extends StatelessWidget {
             isIcon ? Icon(Icons.play_arrow_rounded) : SizedBox(),
             Text(
               label,
-              style: TextStyle(fontWeight: FontWeight.w500),
+              style: fontWeight500(),
             ),
           ],
         )));

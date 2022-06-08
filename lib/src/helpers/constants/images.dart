@@ -1,6 +1,12 @@
 import 'package:musiq/src/model/Image_model.dart';
 
 class Images {
+  static String logoImage="assets/icons/logo.png";
+  static String logoImageWithName="assets/icons/logowithname.png";
+
+
+
+
   List<ArtistImageModel> artistPrefList = [
     ArtistImageModel(
         imageURL: "assets/images/artist/a1.png",

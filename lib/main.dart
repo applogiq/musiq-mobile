@@ -7,8 +7,9 @@ import 'package:musiq/src/view-model/cubit/login_bloc.dart';
 import 'package:musiq/src/view/pages/bottom_navigation_bar.dart';
 import 'package:musiq/src/view/pages/common_screen/account_screen.dart/login_screen.dart';
 import 'package:musiq/src/view/pages/common_screen/account_screen.dart/select_your%20fav_artist.dart';
-import 'package:musiq/src/view/pages/common_screen/account_screen.dart/splash_screen.dart';
-import 'package:musiq/src/view/pages/common_screen/register_screen.dart';
+import 'package:musiq/src/view/pages/common_screen/account_screen.dart/on_boarding_screen.dart';
+import 'package:musiq/src/view/pages/common_screen/account_screen.dart/register_screen.dart';
+import 'package:musiq/src/view/pages/common_screen/splash_screen.dart';
 import 'package:musiq/src/view/pages/home/components/pages/view_all_screen.dart';
 import 'package:musiq/src/view/pages/home/home_screen.dart';
 import 'package:musiq/src/view/pages/profile/components/artist_preference_screen.dart';
@@ -31,10 +32,11 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: themeData(context),
-        home: OnboardingScreen(),
+        home: SplashScreen(),
         routes: {
-          'login': (BuildContext ctx) => LoginScreen(),
-          'register': (BuildContext ctx) => RegisterScreen(),
+          'onboarding/':(BuildContext ctx)=>OnboardingScreen(),
+          'login/': (BuildContext ctx) => LoginScreen(),
+          'register/': (BuildContext ctx) => RegisterScreen(),
           'audioQuality': (BuildContext ctx) => AudioQualitySettingScreen(),
           'artistPreference': (BuildContext ctx) => ArtistPreferenceScreen(),
           'myProfile': (BuildContext ctx) => MyProfile(),

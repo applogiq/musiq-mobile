@@ -80,11 +80,31 @@ class MyProfile extends StatelessWidget {
   }
 }
 
-class ProfileFormTextFieldWidget extends StatelessWidget {
-  const ProfileFormTextFieldWidget({Key? key, required this.title, this.onChange})
+class ProfileFormTextFieldWidget extends StatefulWidget {
+  const ProfileFormTextFieldWidget({Key? key, required this.title, this.onChange, this.obsecureText = false})
       : super(key: key);
   final String title;
   final ValueSetter<String>? onChange;
+  final bool obsecureText;
+
+  @override
+  State<ProfileFormTextFieldWidget> createState() => _ProfileFormTextFieldWidgetState();
+}
+
+class _ProfileFormTextFieldWidgetState extends State<ProfileFormTextFieldWidget> {
+ bool obsecure = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    obsecure = widget.obsecureText;
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    obsecure = false;
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -95,7 +115,7 @@ class ProfileFormTextFieldWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 8),
             child: Text(
-              title,
+              widget.title,
               style: fontWeight500(size: 14.0),
             ),
           ),
@@ -110,8 +130,22 @@ class ProfileFormTextFieldWidget extends StatelessWidget {
                     BoxConstraints.expand(height: 46, width: double.maxFinite),
                 child: TextField(
                   cursorColor: Colors.white,
-                  onChanged: onChange,
+                  obscureText: obsecure,
+                  onChanged: widget.onChange,
                   decoration: InputDecoration(
+                     suffixIcon: widget.obsecureText
+                    ? IconButton(
+                        onPressed: () {
+                          setState(() {
+                            obsecure = !obsecure;
+                          });
+                        },
+                        icon: Icon(
+                            obsecure ? Icons.visibility_off : Icons.visibility))
+                    : const SizedBox(
+                        width: 0,
+                        height: 0,
+                      ),
                     border: InputBorder.none,
                     hintStyle: TextStyle(fontSize: 14),
                   ),

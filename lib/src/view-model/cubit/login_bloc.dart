@@ -43,9 +43,7 @@ class LoginBloc extends Cubit<LoginState> with InputValidationMixin{
       if (password.isEmpty) {
       _passwordController.sink.addError("Password is mandatory");
     }
-    else if(!validateStructure(password)){
-      _passwordController.sink.addError("Invalid Password");
-    }
+   
      else {
       _passwordController.sink.add(password);
     }
@@ -67,26 +65,17 @@ class LoginBloc extends Cubit<LoginState> with InputValidationMixin{
      "password": _passwordController.stream.value
     };
     var url=Uri.parse(APIConstants.BASE_URL.toString()+APIConstants.LOGIN.toString());
-    print(params);
+   
     
     var response=await http.post(url, body: jsonEncode(params), headers: { 'Content-type': 'application/json',
               'Accept': 'application/json',
               });
   print(response.statusCode);
-  if(response.statusCode==200){
-    return true;
-  }
-  else if (response.statusCode==404){
-    print("INVALID");
-    return false;
-  }
-  else{
-    return false;
-  }
+ return response.statusCode;
   }
   catch(e){
     print(e.toString());
-    return false;
+    return http.Response("Error", 1);
   }
 }
 }
