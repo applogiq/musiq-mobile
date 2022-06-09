@@ -128,11 +128,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
               child: ConstrainedBox(
                 constraints:
                     BoxConstraints.expand(height: 46, width: double.maxFinite),
-                child: TextField(
+                child: TextFormField(
                   cursorColor: Colors.white,
                   obscureText: obsecure,
+                  
                   onChanged: widget.onChange,
                   decoration: InputDecoration(
+                  
                      suffixIcon: widget.obsecureText
                     ? IconButton(
                         onPressed: () {

@@ -12,4 +12,6 @@ class CustomColor {
   static var secondaryLightColor = Color.fromRGBO(254, 86, 49, 0.8);
   static var followingColor = Color.fromRGBO(254, 86, 49, 0.4);
   static var errorStatusColor=Color.fromRGBO(96, 20, 20, 1);
+  static var successStatusColor=Color.fromRGBO(28, 58, 23, 1);
+  
 }

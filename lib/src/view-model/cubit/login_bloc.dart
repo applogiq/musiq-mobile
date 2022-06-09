@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musiq/src/helpers/constants/api.dart';
+import 'package:musiq/src/helpers/constants/string.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../helpers/utils/validation.dart';
@@ -10,10 +11,11 @@ part 'login_state.dart';
 
 class LoginBloc extends Cubit<LoginState> with InputValidationMixin{
   LoginBloc():super(LoginInitialState());
-   final _userEmailController = BehaviorSubject<String>();
-  final _passwordController = BehaviorSubject<String>();
-  final validator=BehaviorSubject<bool>();
-  final isInvalidCred=BehaviorSubject<bool>();
+   final _userEmailController = BehaviorSubject<String>.seeded("");
+  final _passwordController = BehaviorSubject<String>.seeded("");
+  final validator=BehaviorSubject<bool>.seeded(false)
+  ;
+  final isInvalidCred=BehaviorSubject<bool>.seeded(false);
   Stream<String> get userNameStream => _userEmailController.stream;
   Stream<String> get passwordStream => _passwordController.stream;
   Stream<bool> get errorStream => isInvalidCred.stream;
@@ -24,7 +26,8 @@ class LoginBloc extends Cubit<LoginState> with InputValidationMixin{
   }
 
   void updateUserName(String userName) {
-   if(validator.hasValue){
+     isInvalidCred.sink.add(false);
+   if(validator.value==true){
      if(userName.isEmpty){
      _userEmailController.sink.addError("Email Id is mandatory");
    }
@@ -35,6 +38,10 @@ class LoginBloc extends Cubit<LoginState> with InputValidationMixin{
       _userEmailController.sink.add(userName);
     }
    }
+   else{
+
+   print("Check");
+   }
   }
   void updateValidator(bool val){
     validator.sink.add(val);
@@ -44,7 +51,11 @@ class LoginBloc extends Cubit<LoginState> with InputValidationMixin{
   }
 
   void updatePassword(String password) {
-   if(validator.hasValue){
+     isInvalidCred.sink.add(false);
+  
+   if(validator.value==true){
+     print("MAKE");
+     print(password);
       if (password.isEmpty) {
       _passwordController.sink.addError("Password is mandatory");
     }
@@ -52,6 +63,11 @@ class LoginBloc extends Cubit<LoginState> with InputValidationMixin{
      else {
       _passwordController.sink.add(password);
     }
+
+   }
+   else{
+
+   print("Check");
    }
   }
 
@@ -70,19 +86,24 @@ class LoginBloc extends Cubit<LoginState> with InputValidationMixin{
      "password": _passwordController.stream.value
     };
     
+    print(params);
+    
     var url=Uri.parse(APIConstants.BASE_URL.toString()+APIConstants.LOGIN.toString());
-   
+   print(url);
     
     var response=await http.post(url, body: jsonEncode(params), headers: { 'Content-type': 'application/json',
               'Accept': 'application/json',
               });
   print(response.statusCode);
   if(response.statusCode==200){
-    isInvalidCred.sink.add(false);
+    isInvalidCred.sink.add(true);
   }
   else if(response.statusCode==404){
-    isInvalidCred.sink.addError(true);
+    isInvalidCred.sink.addError(ConstantText.invalidEmailAndPassword);
    //
+  }
+  else{
+    isInvalidCred.sink.add(true);
   }
  return response.statusCode;
   }

@@ -63,7 +63,7 @@ class LoginScreen extends StatelessWidget {
 
                     _loginScreenCubit.updateUserName(text);
                     } ),
-                   TextFieldWithError(label: ConstantText.password,loginScreenCubit: _loginScreenCubit,stream: _loginScreenCubit.passwordStream,isValidatorEnable: true,onChange:(text){
+                   TextFieldWithError(isPassword: true,label: ConstantText.password,loginScreenCubit: _loginScreenCubit,stream: _loginScreenCubit.passwordStream,isValidatorEnable: true,onChange:(text){
 
                     _loginScreenCubit.updatePassword(text);
                     }),
@@ -71,41 +71,72 @@ class LoginScreen extends StatelessWidget {
                     
                     ForgotPassword(),
 
-                 ErrorContainer(),
+                StatusContainer(),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 50.0),
                       child: StreamBuilder(
-                        stream: _loginScreenCubit.validateForm,
+                         stream: _loginScreenCubit.validateForm,
                         builder: (context, snapshot) {
                           return InkWell(
-                            onTap:snapshot.hasError?(){
-                              print("Please Validate");
-                              print(_loginScreenCubit.userNameStream.toString());
-                               _loginScreenCubit.updateUserName(_loginScreenCubit.userNameStream.toString());
-                            _loginScreenCubit.updatePassword(_loginScreenCubit.passwordStream.toString());
-                            }: ()
-                            
-                            
-                            
-                            async{_loginScreenCubit.updateValidator(true);
-                            
-                              if(snapshot.data==true){
-                               var isLog=await _loginScreenCubit.loginAPI();
+                            onTap: ()async{
+                              print(_loginScreenCubit.validator.value);
+                              if(_loginScreenCubit.validator.value==true){
+                                if(snapshot.data==null||snapshot.data==false){
+                                  print("ERR");
+                                    _loginScreenCubit.updateUserName(_loginScreenCubit.userNameStream.toString());
+                              _loginScreenCubit.updatePassword(_loginScreenCubit.passwordStream.toString());
+
+                                }
+                                else{
+                                  print("SUC");
+                                       var isLog=await _loginScreenCubit.loginAPI();
                                print(isLog);
-                               if(isLog==200){
-                                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>HomePage()));
-                               }
-                               else{
-                           print("404");    
-                               }
+
+                                }
+                              // print(_loginScreenCubit.validator.value);
+                             
+                         
                               }
                               else{
-                                  _loginScreenCubit.updateUserName(_loginScreenCubit.userNameStream.toString());
-                            _loginScreenCubit.updatePassword(_loginScreenCubit.passwordStream.toString());
-                           
+                                _loginScreenCubit.validator.sink.add(true);
+                            //   print(_loginScreenCubit.validator.value);
+                            // _loginScreenCubit.updatePassword(_loginScreenCubit.passwordStream.toString());
+                         
                               }
-                              
                             },
+                          //   onTap:snapshot.data==false ?(){
+
+                          //     print("Please Validate");
+                          //     print(_loginScreenCubit.userNameStream.toString());
+                          //      _loginScreenCubit.updateUserName(_loginScreenCubit.userNameStream.toString());
+                          //   _loginScreenCubit.updatePassword(_loginScreenCubit.passwordStream.toString());
+                          //   }: ()
+                            
+                            
+                            
+                          //   async{
+                              
+                          //     print('dsdsds');
+                          //     _loginScreenCubit.updateValidator(true);
+                            
+                          //     if(snapshot.data==true){
+                          //      var isLog=await _loginScreenCubit.loginAPI();
+                          //      print(isLog);
+                          //      if(isLog==200){
+                          //        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>HomePage()));
+                          //      }
+                          //      else{
+                          //  print("404");    
+                          //      }
+                          //     }
+                          //     else{
+                          //       print("object");
+                          //         _loginScreenCubit.updateUserName(_loginScreenCubit.userNameStream.toString());
+                          //   _loginScreenCubit.updatePassword(_loginScreenCubit.passwordStream.toString());
+                           
+                          //     }
+                              
+                          //   },
                             child: CustomButton(
                                label: "Log In",
                               margin: 0,
@@ -146,9 +177,9 @@ class ForgotPassword extends StatelessWidget {
   }
 }
 
-class ErrorContainer extends StatelessWidget {
-  const ErrorContainer({
-    Key? key,
+class StatusContainer extends StatelessWidget {
+  const StatusContainer({
+    Key? key, 
   }) : super(key: key);
 
   @override
@@ -158,18 +189,19 @@ class ErrorContainer extends StatelessWidget {
       listen: false,
     );
     return StreamBuilder(
+      
       stream: _loginScreenCubit.errorStream,
       builder: (context, snapshot) {
-        return snapshot.hasData?EmptyBox(): Container(width: MediaQuery.of(context).size.width,
+        return snapshot.data==false?EmptyBox(): Container(width: MediaQuery.of(context).size.width,
         height: 50,
         margin: EdgeInsets.symmetric(vertical:16),
         padding: EdgeInsets.all(12),
-        decoration: BoxDecoration(color: CustomColor.errorStatusColor,
+        decoration: BoxDecoration(color:snapshot.hasError? CustomColor.errorStatusColor:CustomColor.successStatusColor,
         borderRadius: BorderRadius.circular(8.0)
         ,)
-        ,child: Row(children: [Icon(Icons.info,color: Colors.red,),
+        ,child: Row(children: [Icon(Icons.info,color:snapshot.hasError? Colors.red:Colors.green),
         SizedBox(width: 8,),
-        Text(ConstantText.invalidEmailAndPassword,style: fontWeight400(size: 14.0,color: CustomColor.subTitle2,)
+        Text(snapshot.hasError? snapshot.error.toString():"Login Success",style: fontWeight400(size: 14.0,color: CustomColor.subTitle2,)
         ,
         
         ),

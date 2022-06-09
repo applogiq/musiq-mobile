@@ -10,11 +10,13 @@ class TextFieldWithError extends StatelessWidget {
    TextFieldWithError({
     Key? key,
     required LoginBloc loginScreenCubit,
+    this.isPassword=false,
     this.isValidatorEnable=false, required this.stream, required this.label, this.onChange
   }) : _loginScreenCubit = loginScreenCubit, super(key: key);
 
   final LoginBloc _loginScreenCubit;
   bool isValidatorEnable;
+  bool isPassword;
   final Stream stream;
   final String label;
   final ValueSetter<String>? onChange;
@@ -31,6 +33,7 @@ class TextFieldWithError extends StatelessWidget {
             CustomTextField(
               onChange: onChange,
               title: label  ,
+              obsecureText: isPassword,
             ),
         isValidatorEnable? snapshot.hasError? Padding(
              padding: const EdgeInsets.only(left:8.0),
