@@ -75,59 +75,68 @@ class LoginScreen extends StatelessWidget {
                     ForgotPassword(),
 
                 StatusContainer(),
+               
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 50.0),
                       child: StreamBuilder(
                          stream: _loginScreenCubit.validateForm,
                         builder: (context, snapshot) {
-                          return InkWell(
-                            onTap: ()async{
-                              
-                              _loginScreenCubit.isLoading.sink.add(true);
-                              print(_loginScreenCubit.validator.value);
-                              if(_loginScreenCubit.validator.value==true){
-                                if(snapshot.data==null||snapshot.data==false){
-                                  print("ERR");
-                                    _loginScreenCubit.updateUserName(_loginScreenCubit.userNameStream.toString());
-                              _loginScreenCubit.updatePassword(_loginScreenCubit.passwordStream.toString());
-
-                                }
-                                else{
+                          return StreamBuilder(
+                           builder: (context, snapshot) {
+                              return InkWell(
+                                onTap: (){
+                                  _loginScreenCubit.isLoading.sink.add(true);
+                                },
+                                child: CustomProgressButton(
+                                  isLoading: _loginScreenCubit.isLoading.value,
                                   
-                                  if(_loginScreenCubit.userNameStream.toString().isEmpty||_loginScreenCubit.passwordStream.toString().isEmpty){
-                                    print("Err");
-                                  }
-                                  else{
-                                    print("Err");
+                                    
+                                  // onChanged: ()async{
+                              //                                   _loginScreenCubit.isLoading.sink.add(true);
+                              //                                print(_loginScreenCubit.validator.value);
+                              //                                if(_loginScreenCubit.validator.value==true){
+                              //                                  if(snapshot.data==null||snapshot.data==false){
+                              //                                    print("ERR");
+                              //                                      _loginScreenCubit.updateUserName(_loginScreenCubit.userNameStream.toString());
+                              //                                _loginScreenCubit.updatePassword(_loginScreenCubit.passwordStream.toString());
+                              
+                              //                                  }
+                              //                                  else{
+                                     
+                              //                                    if(_loginScreenCubit.userNameStream.toString().isEmpty||_loginScreenCubit.passwordStream.toString().isEmpty){
+                              //                                      print("Err");
+                              //                                    }
+                              //                                    else{
+                              //                                      print("Err");
+                              
+                              // print(_loginScreenCubit.userNameStream.toString());
+                              //                                         var isLog=await _loginScreenCubit.loginAPI();
+                              //                                 print(isLog);
+                              //                                    }
+                              
+                              //                                  }
+                              //                                // print(_loginScreenCubit.validator.value);
+                                
+                                                        
+                              //                                }
+                              //                                else{
+                              //                                  _loginScreenCubit.validator.sink.add(true);
+                                                           
+                              //                                }
+                              //                                 _loginScreenCubit.isLoading.sink.add(false);
+                              //                                 print(_loginScreenCubit.isLoading.value);
+                                
+                                                          //  },
+                                 
+                                ),
+                              );
 
-print(_loginScreenCubit.userNameStream.toString());
-                                       var isLog=await _loginScreenCubit.loginAPI();
-                               print(isLog);
-                                  }
-
-                                }
-                              // print(_loginScreenCubit.validator.value);
-                             
-                         
-                              }
-                              else{
-                                _loginScreenCubit.validator.sink.add(true);
-                            
-                              }
-                               _loginScreenCubit.isLoading.sink.add(false);
-                               print(_loginScreenCubit.isLoading.value);
-                             
-                            },
-                         child: StreamBuilder(
-                          builder: (context, snapshot) {
-                             return CustomProgressButton();
-
-                           }
-                         ),
+                            }
                           );
                         }
                       ),
                     ),
+               
                   ],
                 ),
               )
@@ -136,6 +145,9 @@ print(_loginScreenCubit.userNameStream.toString());
         ),
       ),
     );
+  }
+ Future<int> getValue() async {
+    return Future.value(5);
   }
 }
 class ForgotPassword extends StatelessWidget {
