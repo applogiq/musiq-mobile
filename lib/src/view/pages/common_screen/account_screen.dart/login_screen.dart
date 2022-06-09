@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
@@ -13,6 +15,7 @@ import '../../../widgets/custom_text_field_with_error.dart';
 import '../../../widgets/empty_box.dart';
 import '../../profile/components/my_profile.dart';
 import 'components/background_image.dart';
+import 'components/custom_loading_button.dart';
 import 'components/logo_image.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -79,6 +82,8 @@ class LoginScreen extends StatelessWidget {
                         builder: (context, snapshot) {
                           return InkWell(
                             onTap: ()async{
+                              
+                              _loginScreenCubit.isLoading.sink.add(true);
                               print(_loginScreenCubit.validator.value);
                               if(_loginScreenCubit.validator.value==true){
                                 if(snapshot.data==null||snapshot.data==false){
@@ -88,9 +93,17 @@ class LoginScreen extends StatelessWidget {
 
                                 }
                                 else{
-                                  print("SUC");
+                                  
+                                  if(_loginScreenCubit.userNameStream.toString().isEmpty||_loginScreenCubit.passwordStream.toString().isEmpty){
+                                    print("Err");
+                                  }
+                                  else{
+                                    print("Err");
+
+print(_loginScreenCubit.userNameStream.toString());
                                        var isLog=await _loginScreenCubit.loginAPI();
                                print(isLog);
+                                  }
 
                                 }
                               // print(_loginScreenCubit.validator.value);
@@ -99,48 +112,18 @@ class LoginScreen extends StatelessWidget {
                               }
                               else{
                                 _loginScreenCubit.validator.sink.add(true);
-                            //   print(_loginScreenCubit.validator.value);
-                            // _loginScreenCubit.updatePassword(_loginScreenCubit.passwordStream.toString());
-                         
+                            
                               }
+                               _loginScreenCubit.isLoading.sink.add(false);
+                               print(_loginScreenCubit.isLoading.value);
+                             
                             },
-                          //   onTap:snapshot.data==false ?(){
+                         child: StreamBuilder(
+                          builder: (context, snapshot) {
+                             return CustomProgressButton();
 
-                          //     print("Please Validate");
-                          //     print(_loginScreenCubit.userNameStream.toString());
-                          //      _loginScreenCubit.updateUserName(_loginScreenCubit.userNameStream.toString());
-                          //   _loginScreenCubit.updatePassword(_loginScreenCubit.passwordStream.toString());
-                          //   }: ()
-                            
-                            
-                            
-                          //   async{
-                              
-                          //     print('dsdsds');
-                          //     _loginScreenCubit.updateValidator(true);
-                            
-                          //     if(snapshot.data==true){
-                          //      var isLog=await _loginScreenCubit.loginAPI();
-                          //      print(isLog);
-                          //      if(isLog==200){
-                          //        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>HomePage()));
-                          //      }
-                          //      else{
-                          //  print("404");    
-                          //      }
-                          //     }
-                          //     else{
-                          //       print("object");
-                          //         _loginScreenCubit.updateUserName(_loginScreenCubit.userNameStream.toString());
-                          //   _loginScreenCubit.updatePassword(_loginScreenCubit.passwordStream.toString());
-                           
-                          //     }
-                              
-                          //   },
-                            child: CustomButton(
-                               label: "Log In",
-                              margin: 0,
-                            ),
+                           }
+                         ),
                           );
                         }
                       ),
@@ -155,7 +138,6 @@ class LoginScreen extends StatelessWidget {
     );
   }
 }
-
 class ForgotPassword extends StatelessWidget {
   const ForgotPassword({
     Key? key,
@@ -176,6 +158,7 @@ class ForgotPassword extends StatelessWidget {
     );
   }
 }
+
 
 class StatusContainer extends StatelessWidget {
   const StatusContainer({

@@ -143,7 +143,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                           });
                         },
                         icon: Icon(
-                            obsecure ? Icons.visibility_off : Icons.visibility,color: Colors.white,))
+                            obsecure ? Icons.visibility : Icons.visibility_off,color: Colors.white,))
                     : const SizedBox(
                         width: 0,
                         height: 0,

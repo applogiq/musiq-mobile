@@ -5,13 +5,14 @@ import '../../helpers/constants/color.dart';
 
 class CustomButton extends StatelessWidget {
   CustomButton(
-      {Key? key, required this.label, this.margin = 16, this.isIcon = false,this.isValid=true,this.radius=12})
+      {Key? key, required this.label, this.margin = 16, this.isIcon = false,this.isValid=true,this.radius=12,this.isLoading=false})
       : super(key: key);
   final String label;
   double margin;
   double radius;
   bool isIcon;
   bool isValid;
+  bool isLoading;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +27,7 @@ class CustomButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             isIcon ? Icon(Icons.play_arrow_rounded) : SizedBox(),
-            Text(
+          isLoading?CircularProgressIndicator():  Text(
               label,
               style: fontWeight500(),
             ),

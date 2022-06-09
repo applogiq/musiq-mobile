@@ -16,9 +16,11 @@ class LoginBloc extends Cubit<LoginState> with InputValidationMixin{
   final validator=BehaviorSubject<bool>.seeded(false)
   ;
   final isInvalidCred=BehaviorSubject<bool>.seeded(false);
+  final isLoading=BehaviorSubject<bool>.seeded(false);
   Stream<String> get userNameStream => _userEmailController.stream;
   Stream<String> get passwordStream => _passwordController.stream;
   Stream<bool> get errorStream => isInvalidCred.stream;
+  Stream<bool> get loadingStream => isLoading.stream;
 
  void clearStreams() {
     updateUserName('');
