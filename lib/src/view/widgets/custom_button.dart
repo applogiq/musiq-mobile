@@ -29,7 +29,7 @@ class CustomButton extends StatelessWidget {
             isIcon ? Icon(Icons.play_arrow_rounded) : SizedBox(),
           isLoading?CircularProgressIndicator():  Text(
               label,
-              style: fontWeight500(),
+              style: fontWeight500(size: 16.0),
             ),
           ],
         )));

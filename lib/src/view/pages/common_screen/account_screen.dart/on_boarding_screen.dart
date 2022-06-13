@@ -25,10 +25,10 @@ class OnboardingScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: Container(),
-                  flex: 3,
+                  flex: 2,
                 ),
                 Expanded(
-                  flex: 4,
+                  flex: 3,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -56,30 +56,31 @@ class OnboardingScreen extends StatelessWidget {
                             Navigation.navigateToScreen(context, "register/");
                           },
                           child: CustomButton(label:ConstantText.register,radius: 8,)),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            ConstantText.loginPrefix,
-                            style: fontWeight500(size: 16.0),
-                          ),
-                          InkWell(
-                            onTap: () {
-                               Navigation.navigateToScreen(context, "login/");
-                       
-                            },
-                            child: Text(
-                              " "+ConstantText.login,
-                              style:
-                                  fontWeight500(size: 16.0, color: Colors.red),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom:20.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              ConstantText.loginPrefix,
+                              style: fontWeight500(size: 16.0),
                             ),
-                          ),
-                        ],
+                            InkWell(
+                              onTap: () {
+                                 Navigation.navigateToScreen(context, "login/");
+                         
+                              },
+                              child: Text(
+                                " "+ConstantText.login,
+                                style:
+                                    fontWeight500(size: 16.0, color: Colors.red),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      SizedBox(
-                        height: 40,
-                      )
+                      
                     ],
                   ),
                 ),

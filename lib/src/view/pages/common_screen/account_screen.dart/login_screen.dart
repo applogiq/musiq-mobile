@@ -62,11 +62,13 @@ class LoginScreen extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-                    TextFieldWithError(label: ConstantText.email,loginScreenCubit: _loginScreenCubit,stream: _loginScreenCubit.userNameStream,isValidatorEnable: true,onChange:(text){
+                    TextFieldWithError(onTap: (){},label: ConstantText.email,cubit: _loginScreenCubit,stream: _loginScreenCubit.userNameStream,isValidatorEnable: true,onChange:(text){
 
                     _loginScreenCubit.updateUserName(text);
                     } ),
-                   TextFieldWithError(isPassword: true,label: ConstantText.password,loginScreenCubit: _loginScreenCubit,stream: _loginScreenCubit.passwordStream,isValidatorEnable: true,onChange:(text){
+                   TextFieldWithError(onTap: ()async{
+                  _loginScreenCubit.passwordTap();
+                   },isPassword: true,label: ConstantText.password,cubit: _loginScreenCubit,stream: _loginScreenCubit.passwordStream,isValidatorEnable: true,onChange:(text){
 
                     _loginScreenCubit.updatePassword(text);
                     }),
@@ -84,8 +86,21 @@ class LoginScreen extends StatelessWidget {
                           return StreamBuilder(
                            builder: (context, snapshot) {
                               return InkWell(
-                                onTap: (){
+                                onTap: ()async{
+                                  _loginScreenCubit.checkEmptyValidation();
                                   _loginScreenCubit.isLoading.sink.add(true);
+                                  if(snapshot.hasError){
+                                    print("NO");
+                                  }
+                                  else{
+                                   var log=await _loginScreenCubit.loginAPI();
+                                   print(log);
+                                  }
+//                                   Future.delayed(const Duration(seconds: 1), () {
+
+  _loginScreenCubit.isLoading.sink.add(false);
+
+// });
                                 },
                                 child: CustomProgressButton(
                                   isLoading: _loginScreenCubit.isLoading.value,

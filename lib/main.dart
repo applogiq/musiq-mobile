@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/themes/theme.dart';
 import 'package:musiq/src/view-model/cubit/login_bloc.dart';
+import 'package:musiq/src/view-model/cubit/register/register_cubit.dart';
 import 'package:musiq/src/view/pages/bottom_navigation_bar.dart';
 import 'package:musiq/src/view/pages/common_screen/account_screen.dart/login_screen.dart';
 import 'package:musiq/src/view/pages/common_screen/account_screen.dart/select_your%20fav_artist.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
        providers: [
           BlocProvider<LoginBloc>(create: (context) => LoginBloc()),
+           BlocProvider<RegisterCubit>(create: (context) => RegisterCubit()),
        ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

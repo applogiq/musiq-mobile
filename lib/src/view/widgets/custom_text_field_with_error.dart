@@ -1,44 +1,105 @@
 
 import 'package:flutter/material.dart';
+import 'package:musiq/src/view/pages/common_screen/account_screen.dart/register_screen.dart';
 import 'package:musiq/src/view/pages/profile/components/my_profile.dart';
 import 'package:musiq/src/view/widgets/empty_box.dart';
 
+import '../../helpers/constants/color.dart';
 import '../../helpers/constants/string.dart';
+import '../../helpers/constants/style.dart';
 import '../../view-model/cubit/login_bloc.dart';
+import 'custom_color_container.dart';
 
-class TextFieldWithError extends StatelessWidget {
+class TextFieldWithError extends StatefulWidget {
    TextFieldWithError({
     Key? key,
-    required LoginBloc loginScreenCubit,
+    required  cubit,
     this.isPassword=false,
-    this.isValidatorEnable=false, required this.stream, required this.label, this.onChange
-  }) : _loginScreenCubit = loginScreenCubit, super(key: key);
+    this.isValidatorEnable=false, required this.stream, required this.label, this.onChange, required this.onTap
+  }) : _cubit = cubit, super(key: key);
 
-  final LoginBloc _loginScreenCubit;
+  final  _cubit;
   bool isValidatorEnable;
   bool isPassword;
   final Stream stream;
   final String label;
   final ValueSetter<String>? onChange;
-  
+  final VoidCallback onTap;
 
+  @override
+  State<TextFieldWithError> createState() => _TextFieldWithErrorState();
+}
+
+class _TextFieldWithErrorState extends State<TextFieldWithError> {
+  bool obscure=false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    obscure=widget.isPassword;
+  }
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: stream,
+      stream: widget.stream,
       builder: (context, snapshot) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomTextField(
-              onChange: onChange,
-              title: label  ,
-              obsecureText: isPassword,
+               Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: Text(
+           widget.label,
+            style: fontWeight500(size: 14.0),
+          ),
+        ),
+                 Padding(
+            padding: const EdgeInsets.symmetric(vertical:8.0),
+            child: CustomColorContainer(
+                horizontalPadding: 16,
+                verticalPadding: 0,
+                bgColor: CustomColor.textfieldBg,
+              
+              child: ConstrainedBox(
+                  constraints:
+                      BoxConstraints.expand(height: 46, width: double.maxFinite),
+                  child: TextFormField(
+                    onTap: widget.onTap,
+                    obscureText: obscure,
+                    cursorColor: Colors.white,
+                   
+                    
+                    onChanged:widget.onChange,
+                    
+                    
+                    decoration: InputDecoration(
+                    suffixIcon: widget.isPassword? IconButton(icon: Icon(obscure?Icons.visibility:Icons.visibility_off,color: Colors.white,),onPressed: (){
+                        setState(() {
+                          obscure =!obscure;
+                        });
+                       },):EmptyBox(),
+                       border: InputBorder.none,
+                      hintStyle: TextStyle(fontSize: 14),
+                    ),
+                  ),
+                ),
+            
             ),
-        isValidatorEnable? snapshot.hasError? Padding(
+          ),
+    //      Builder(builder: (context) {
+    
+    //   if(widget.isValidatorEnable) {
+    //     if(snapshot.hasError)
+    //   }
+    //   else {
+    //     return Text('B');
+    //   } 
+    // })
+   
+        widget.isValidatorEnable? snapshot.hasError?snapshot.error!="show toggle"? Padding(
              padding: const EdgeInsets.only(left:8.0),
              child: Text(snapshot.error.toString(),style: const TextStyle(color: Colors.red),),
-           ):EmptyBox(  ):EmptyBox()
+           ):PasswordMessage():EmptyBox(  ):EmptyBox()
           ],
         );
       }

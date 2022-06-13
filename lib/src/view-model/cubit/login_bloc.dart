@@ -45,6 +45,42 @@ class LoginBloc extends Cubit<LoginState> with InputValidationMixin{
    print("Check");
    }
   }
+  
+passwordTap()async{
+     var check1;
+                        try{
+
+                       check1=await userNameStream.first;
+                       }
+                        catch (err){
+                          check1=err.toString();
+                         }
+             
+                      if(check1=="")updateUserName("");
+}
+
+  checkEmptyValidation()async{
+     var check1;
+                        var check2;
+                        try{
+
+                       check1=await userNameStream.first;
+                       }
+                        catch (err){
+                          check1=err.toString();
+                         }
+                        try{
+ check2=await passwordStream.first;
+                      
+                        }
+                        catch(err){
+                             check2=err.toString();
+                      
+                        }
+                      if(check1=="")updateUserName("");
+                      if(check2=="")updatePassword("");
+
+  }
   void updateValidator(bool val){
     validator.sink.add(val);
   }
