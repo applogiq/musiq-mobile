@@ -47,7 +47,7 @@ class HomePage extends StatelessWidget {
                     ),
                     CustomColorContainer(
                       bgColor: CustomColor.textfieldBg,
-                      horizontalPadding: 12,
+                      left: 12,
                       verticalPadding: 6,
                       child: Center(
                         child: Stack(
@@ -141,7 +141,7 @@ class SearchTextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomColorContainer(
-      horizontalPadding: 1,
+      left: 1,
       verticalPadding: 2,
       bgColor: CustomColor.textfieldBg,
       child: ConstrainedBox(

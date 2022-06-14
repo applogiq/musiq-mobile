@@ -6,6 +6,7 @@ import 'package:musiq/src/helpers/constants/style.dart';
 import 'package:musiq/src/helpers/utils/navigation.dart';
 import 'package:musiq/src/view/widgets/custom_button.dart';
 
+import '../../../../view-model/cubit/register/register_cubit.dart';
 import 'components/background_image.dart';
 import 'components/logo_image.dart';
 
@@ -52,7 +53,7 @@ class OnboardingScreen extends StatelessWidget {
               
                       Spacer(),
                       InkWell(
-                          onTap: () {
+                          onTap: () {RegisterCubit().clearStreams();
                             Navigation.navigateToScreen(context, "register/");
                           },
                           child: CustomButton(label:ConstantText.register,radius: 8,)),
@@ -64,7 +65,7 @@ class OnboardingScreen extends StatelessWidget {
                           children: [
                             Text(
                               ConstantText.loginPrefix,
-                              style: fontWeight500(size: 16.0),
+                              style: fontWeight500(size: 14.0),
                             ),
                             InkWell(
                               onTap: () {
@@ -74,7 +75,7 @@ class OnboardingScreen extends StatelessWidget {
                               child: Text(
                                 " "+ConstantText.login,
                                 style:
-                                    fontWeight500(size: 16.0, color: Colors.red),
+                                    fontWeight500(size: 14.0, color: Colors.red),
                               ),
                             ),
                           ],

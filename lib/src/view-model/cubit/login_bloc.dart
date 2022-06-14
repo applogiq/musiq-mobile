@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musiq/src/helpers/constants/api.dart';
 import 'package:musiq/src/helpers/constants/string.dart';
+import 'package:musiq/src/helpers/utils/navigation.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../helpers/utils/validation.dart';
@@ -11,42 +13,53 @@ part 'login_state.dart';
 
 class LoginBloc extends Cubit<LoginState> with InputValidationMixin{
   LoginBloc():super(LoginInitialState());
-   final _userEmailController = BehaviorSubject<String>.seeded("");
-  final _passwordController = BehaviorSubject<String>.seeded("");
-  final validator=BehaviorSubject<bool>.seeded(false)
-  ;
+   final userEmailController = BehaviorSubject<String>.seeded("");
+  final passwordController = BehaviorSubject<String>.seeded("");
+  final validator=BehaviorSubject<bool>.seeded(false);
   final isInvalidCred=BehaviorSubject<bool>.seeded(false);
   final isLoading=BehaviorSubject<bool>.seeded(false);
-  Stream<String> get userNameStream => _userEmailController.stream;
-  Stream<String> get passwordStream => _passwordController.stream;
+  final isSuccess=BehaviorSubject<bool>.seeded(false);
+  
+
+  Stream<String> get userNameStream => userEmailController.stream;
+  Stream<String> get passwordStream => passwordController.stream;
   Stream<bool> get errorStream => isInvalidCred.stream;
   Stream<bool> get loadingStream => isLoading.stream;
+  // Stream<bool> get successStream => isLoading.stream;
 
  void clearStreams() {
+    isInvalidCred.sink.add(false);
+    isLoading.sink.add(false);
+    validator.sink.add(false);
+    isSuccess.sink.add(false);
     updateUserName('');
     updatePassword('');
   }
 
   void updateUserName(String userName) {
      isInvalidCred.sink.add(false);
-   if(validator.value==true){
+   
      if(userName.isEmpty){
-     _userEmailController.sink.addError("Email Id is mandatory");
+      if(validator.value==true){
+
+     userEmailController.sink.addError("Email Id is mandatory");
+      }
    }
    else if (!isEmailValid(userName)) {
-      print('F');
-      _userEmailController.sink.addError("Invalid Email ID");
-    } else {
-      _userEmailController.sink.add(userName);
-    }
-   }
-   else{
+     if(validator.value==true){
 
-   print("Check");
-   }
+      userEmailController.sink.addError("Invalid Email ID");
+     }
+    } else {
+      userEmailController.sink.add(userName);
+    }
+   
+  
   }
   
 passwordTap()async{
+  validator.sink.add(true);
+  print(userEmailController.value.toString());
      var check1;
                         try{
 
@@ -56,7 +69,14 @@ passwordTap()async{
                           check1=err.toString();
                          }
              
-                      if(check1=="")updateUserName("");
+                      if(check1==""){
+                        updateUserName("");
+                      }
+                      else{
+
+                      updateUserName(userEmailController.value.toString());
+                      } 
+                      print(userEmailController.value.toString());
 }
 
   checkEmptyValidation()async{
@@ -80,6 +100,16 @@ passwordTap()async{
                       if(check1=="")updateUserName("");
                       if(check2=="")updatePassword("");
 
+                      var isValid=await validateForm.toString();
+                      print("isValid");
+                      print(isValid);
+                      if(check1=="" || check2==""){
+                        return false;
+                      }
+                      else{
+                        return true;
+                      }
+
   }
   void updateValidator(bool val){
     validator.sink.add(val);
@@ -91,22 +121,17 @@ passwordTap()async{
   void updatePassword(String password) {
      isInvalidCred.sink.add(false);
   
-   if(validator.value==true){
-     print("MAKE");
-     print(password);
+   
       if (password.isEmpty) {
-      _passwordController.sink.addError("Password is mandatory");
+        if(validator.value==true){
+           passwordController.sink.addError("Password is mandatory");
+        }
     }
    
      else {
-      _passwordController.sink.add(password);
+      passwordController.sink.add(password);
     }
 
-   }
-   else{
-
-   print("Check");
-   }
   }
 
   Stream<bool> get validateForm => Rx.combineLatest2(
@@ -116,12 +141,17 @@ passwordTap()async{
   );
 
 
- loginAPI()async{
+ loginAPI(BuildContext context)async{
+  if(isSuccess==true){
+isLoading.sink.add(false);
+  }
+  else{
+    isLoading.sink.add(true);
   try{
     var email="",password="";
       Map<String, dynamic> params = {
-     "email": _userEmailController.stream.value,
-     "password": _passwordController.stream.value
+     "email": userEmailController.stream.value,
+     "password": passwordController.stream.value
     };
     
     print(params);
@@ -134,20 +164,31 @@ passwordTap()async{
               });
   print(response.statusCode);
   if(response.statusCode==200){
+    isSuccess.sink.add(true);
     isInvalidCred.sink.add(true);
+    // Future.delayed(Duration(milliseconds: 600),(){
+      Navigation.navigateReplaceToScreen(context, 'home/');
+     clearStreams();
+    // });
   }
   else if(response.statusCode==404){
     isInvalidCred.sink.addError(ConstantText.invalidEmailAndPassword);
-   //
+   isSuccess.sink.add(false);
   }
   else{
+   isSuccess.sink.add(false);
     isInvalidCred.sink.add(true);
   }
+     isLoading.sink.add(false);
  return response.statusCode;
   }
   catch(e){
     print(e.toString());
+     isLoading.sink.add(false);
     return http.Response("Error", 1);
   }
+  }
 }
+
+
 }

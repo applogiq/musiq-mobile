@@ -7,10 +7,12 @@ import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/constants/string.dart';
 import 'package:musiq/src/helpers/constants/style.dart';
 import 'package:musiq/src/view-model/cubit/login_bloc.dart';
+import 'package:musiq/src/view-model/cubit/register/register_cubit.dart';
 import 'package:musiq/src/view/pages/common_screen/account_screen.dart/on_boarding_screen.dart';
 import 'package:musiq/src/view/pages/home/home_screen.dart';
 import 'package:musiq/src/view/widgets/custom_button.dart';
 
+import '../../../../helpers/utils/navigation.dart';
 import '../../../widgets/custom_text_field_with_error.dart';
 import '../../../widgets/empty_box.dart';
 import '../../profile/components/my_profile.dart';
@@ -27,135 +29,90 @@ class LoginScreen extends StatelessWidget {
       context,
       listen: false,
     );
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: Stack(
-            children: [
-              const Background(),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Spacer(),
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Stack(
+              children: [
+                const Background(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Spacer(),
+                      
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        child: LogoWidget(
+                          size: 60,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text(
+                          ConstantText.welcomeBack,
+                          style: fontWeight600(size: 24.0),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFieldWithError(onTap: (){},label: ConstantText.email,cubit: _loginScreenCubit,stream: _loginScreenCubit.userNameStream,isValidatorEnable: true,onChange:(text){
+    
+                      _loginScreenCubit.updateUserName(text);
+                      } ),
+                     PasswordTextFieldWithError(onTap: ()async{
+                    _loginScreenCubit.passwordTap();
+                     },isPassword: true,label: ConstantText.password,cubit: _loginScreenCubit,stream: _loginScreenCubit.passwordStream,isValidatorEnable: true,onChange:(text){
+    
+                      _loginScreenCubit.updatePassword(text);
+                      }),
                     
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
-                      child: LogoWidget(
-                        size: 60,
+                      
+                      ForgotPassword(),
+    
+                  StatusContainer(),
+                 
+                      LoginButton(loginScreenCubit: _loginScreenCubit),
+                             Padding(
+                        padding: const EdgeInsets.only(bottom:20.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              ConstantText.registerPrefix,
+                              style: fontWeight500(size: 14.0),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                RegisterCubit().clearStreams();
+                                 Navigation.navigateReplaceToScreen(context, "register/");
+                         
+                              },
+                              child: Text(
+                                " "+ConstantText.register,
+                                style:
+                                    fontWeight500(size: 14.0, color: Colors.red),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text(
-                        ConstantText.welcomeBack,
-                        style: fontWeight600(size: 24.0),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextFieldWithError(onTap: (){},label: ConstantText.email,cubit: _loginScreenCubit,stream: _loginScreenCubit.userNameStream,isValidatorEnable: true,onChange:(text){
-
-                    _loginScreenCubit.updateUserName(text);
-                    } ),
-                   TextFieldWithError(onTap: ()async{
-                  _loginScreenCubit.passwordTap();
-                   },isPassword: true,label: ConstantText.password,cubit: _loginScreenCubit,stream: _loginScreenCubit.passwordStream,isValidatorEnable: true,onChange:(text){
-
-                    _loginScreenCubit.updatePassword(text);
-                    }),
-                  
-                    
-                    ForgotPassword(),
-
-                StatusContainer(),
-               
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 50.0),
-                      child: StreamBuilder(
-                         stream: _loginScreenCubit.validateForm,
-                        builder: (context, snapshot) {
-                          return StreamBuilder(
-                           builder: (context, snapshot) {
-                              return InkWell(
-                                onTap: ()async{
-                                  _loginScreenCubit.checkEmptyValidation();
-                                  _loginScreenCubit.isLoading.sink.add(true);
-                                  if(snapshot.hasError){
-                                    print("NO");
-                                  }
-                                  else{
-                                   var log=await _loginScreenCubit.loginAPI();
-                                   print(log);
-                                  }
-//                                   Future.delayed(const Duration(seconds: 1), () {
-
-  _loginScreenCubit.isLoading.sink.add(false);
-
-// });
-                                },
-                                child: CustomProgressButton(
-                                  isLoading: _loginScreenCubit.isLoading.value,
-                                  
-                                    
-                                  // onChanged: ()async{
-                              //                                   _loginScreenCubit.isLoading.sink.add(true);
-                              //                                print(_loginScreenCubit.validator.value);
-                              //                                if(_loginScreenCubit.validator.value==true){
-                              //                                  if(snapshot.data==null||snapshot.data==false){
-                              //                                    print("ERR");
-                              //                                      _loginScreenCubit.updateUserName(_loginScreenCubit.userNameStream.toString());
-                              //                                _loginScreenCubit.updatePassword(_loginScreenCubit.passwordStream.toString());
-                              
-                              //                                  }
-                              //                                  else{
-                                     
-                              //                                    if(_loginScreenCubit.userNameStream.toString().isEmpty||_loginScreenCubit.passwordStream.toString().isEmpty){
-                              //                                      print("Err");
-                              //                                    }
-                              //                                    else{
-                              //                                      print("Err");
-                              
-                              // print(_loginScreenCubit.userNameStream.toString());
-                              //                                         var isLog=await _loginScreenCubit.loginAPI();
-                              //                                 print(isLog);
-                              //                                    }
-                              
-                              //                                  }
-                              //                                // print(_loginScreenCubit.validator.value);
-                                
-                                                        
-                              //                                }
-                              //                                else{
-                              //                                  _loginScreenCubit.validator.sink.add(true);
-                                                           
-                              //                                }
-                              //                                 _loginScreenCubit.isLoading.sink.add(false);
-                              //                                 print(_loginScreenCubit.isLoading.value);
-                                
-                                                          //  },
-                                 
-                                ),
-                              );
-
-                            }
-                          );
-                        }
-                      ),
-                    ),
-               
-                  ],
-                ),
-              )
-            ],
+         
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -163,6 +120,134 @@ class LoginScreen extends StatelessWidget {
   }
  Future<int> getValue() async {
     return Future.value(5);
+  }
+}
+
+class LoginButton extends StatelessWidget {
+  const LoginButton({
+    Key? key,
+    required LoginBloc loginScreenCubit,
+  }) : _loginScreenCubit = loginScreenCubit, super(key: key);
+
+  final LoginBloc _loginScreenCubit;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 50.0),
+      child: StreamBuilder(
+         stream: _loginScreenCubit.validateForm,
+        builder: (context, snapshot) {
+          return InkWell(
+                onTap: ()async{
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  if(_loginScreenCubit.isSuccess.value==true){
+
+                  }else{
+
+                    print("snapshot.hasData");
+                  print(_loginScreenCubit.isSuccess.value);
+
+                  print(snapshot.data);
+                  if(snapshot.data==null||snapshot.data==false){
+                    if(_loginScreenCubit.validator.value==true){
+                      var valid=await _loginScreenCubit.checkEmptyValidation();
+             
+                     if(valid){
+                      if(snapshot.data==true)
+                      {
+                    
+                     var res=await _loginScreenCubit.loginAPI(context);
+                      
+
+                      }
+                     }
+                     else{
+                      print("INVALID");
+                     }
+    
+                    print(_loginScreenCubit.userEmailController.value);
+                    }
+                    else{
+                      var valid=await  _loginScreenCubit.checkEmptyValidation();
+                      print(valid);
+                      print("leave");
+                        _loginScreenCubit.validator.sink.add(true);
+                                           
+                        var valid1=await _loginScreenCubit.checkEmptyValidation();
+             
+                     if(valid1){
+                      if(snapshot.data==true)
+                      {
+                    
+                      _loginScreenCubit.loginAPI(context);
+  
+
+                      }}
+                   
+                    }
+                   
+                  }
+                  else if(snapshot.data==true){
+                     _loginScreenCubit.validator.sink.add(true);
+                      
+                      var valid=await _loginScreenCubit.checkEmptyValidation();
+             
+                     if(valid){
+                      if(snapshot.data==true)
+                      {
+                    
+                      _loginScreenCubit.loginAPI(context);
+  
+
+                      }
+                     }
+                  }
+    
+  
+                  }
+// print("load");
+                },
+                child: StreamBuilder(
+                  stream:  _loginScreenCubit.loadingStream,
+                  builder: (context, snapshot) {
+                    return Stack(
+                      children: [
+                      
+                        Container(
+                                margin: EdgeInsets.all(0),
+                                width: MediaQuery.of(context).size.width,
+                                height: 52,
+                                decoration: BoxDecoration(
+                        color:_loginScreenCubit.isLoading.value==false||_loginScreenCubit.isSuccess.value==true? CustomColor.secondaryColor:CustomColor.buttonDisableColor,
+                        borderRadius: BorderRadius.circular(12)),
+                                child: Center(
+                        child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                  
+                                  snapshot.data==true?Padding(
+                        padding: const EdgeInsets.symmetric(vertical:6.0,horizontal: 8),
+                        child: SizedBox(height: 24,width: 24,child: CircularProgressIndicator(color: Colors.white,strokeWidth: 3,)),
+                                  ):  Text(
+                          "Login",
+                          style: fontWeight500(color: _loginScreenCubit.isSuccess.value==false?Colors.white:CustomColor.subTitle2),
+                        ),
+                                  ],
+                                ))),
+                       _loginScreenCubit.isSuccess.value==true?Container( margin: EdgeInsets.all(0),
+                                width: MediaQuery.of(context).size.width,
+                                color: Colors.transparent,
+                                height: 52,):EmptyBox()
+                      ],
+                    );
+                  }
+                )
+             
+          );
+        }
+      ),
+    );
   }
 }
 class ForgotPassword extends StatelessWidget {

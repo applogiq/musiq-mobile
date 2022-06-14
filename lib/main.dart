@@ -39,11 +39,12 @@ class MyApp extends StatelessWidget {
           'onboarding/':(BuildContext ctx)=>OnboardingScreen(),
           'login/': (BuildContext ctx) => LoginScreen(),
           'register/': (BuildContext ctx) => RegisterScreen(),
+          'selectArtistPref/':(BuildContext ctx)=>SelectYourFavList(),
           'audioQuality': (BuildContext ctx) => AudioQualitySettingScreen(),
           'artistPreference': (BuildContext ctx) => ArtistPreferenceScreen(),
           'myProfile': (BuildContext ctx) => MyProfile(),
           'preferences': (BuildContext ctx) => PreferenceScreen(),
-          // 'about': (BuildContext ctx) => PageC(),
+          'home/': (BuildContext ctx) => HomePage(),
         },
       ),
     );

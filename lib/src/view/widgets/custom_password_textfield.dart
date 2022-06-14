@@ -44,7 +44,7 @@ class _CustomPasswordTextFieldState extends State<CustomPasswordTextField> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical:8.0),
             child: CustomColorContainer(
-                horizontalPadding: 16,
+                left: 16,
                 verticalPadding: 0,
                 bgColor: CustomColor.textfieldBg,
               

@@ -48,6 +48,7 @@ class _CustomProgressButtonState extends State<CustomProgressButton> {
       stream: _loginScreenCubit.loadingStream,
      
       builder: (context, snapshot) {
+        print(snapshot.data);
         return Container(
             margin: EdgeInsets.all(0),
             width: MediaQuery.of(context).size.width,

@@ -122,7 +122,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: CustomColorContainer(
-              horizontalPadding: 16,
+              left: 16,
               verticalPadding: 0,
               bgColor: CustomColor.textfieldBg,
               child: ConstrainedBox(

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +27,7 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     RegisterCubit _regCubit = BlocProvider.of<RegisterCubit>(
       context,
       listen: false,
@@ -101,7 +103,23 @@ List<FormstreamModel> getStreamDetails=[
                       }, onTap: () { _regCubit.confirmPasswordTap(); },),
                       // PasswordMessage(),
                       SizedBox(height: 16,),
-                      CustomButton(label: ConstantText.createAccount,margin: 0.0,)
+                      StreamBuilder(
+                        stream: _regCubit.validateForm,
+                        builder: (context, snapshot) {
+                         
+                          return InkWell(onTap: (){
+                            _regCubit.confirmPasswordTap();
+                             if(snapshot.data==true){
+_regCubit.registerAPI(context);
+
+                             }
+                             else{
+                              print("Error");
+_regCubit.confirmPasswordTap();
+                             }
+                          },child: CustomButton(label: ConstantText.createAccount,margin: 0.0,));
+                        }
+                      )
                 
               ],
             ),
@@ -119,7 +137,7 @@ class PasswordMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomColorContainer(
-      horizontalPadding: 12.0,
+      left: 12.0,
       verticalPadding: 12.0,
       bgColor: CustomColor.textfieldBg,
       
