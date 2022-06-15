@@ -86,20 +86,60 @@ class _PasswordTextFieldWithErrorState extends State<PasswordTextFieldWithError>
             
             ),
           ),
-    //      Builder(builder: (context) {
+          Builder(builder: (context){
+            print("errrr"+snapshot.error.toString());
+            if(widget.isValidatorEnable){
+              if(snapshot.hasError){
+                if(snapshot.error=="show toggle"){
+                  print(widget._cubit.passwordValid.value);
+                  return PasswordMessage();
+                }
+                else if(snapshot.error=="show toggle alert"){
+return Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                     Padding(
+                       padding: const EdgeInsets.symmetric(horizontal:8.0),
+                       child: Text("Invalid Format",style: const TextStyle(color: Colors.red)),
+                     ),
+                      PasswordMessage(),
+                    ],
+                  );
+                }
+                else if(snapshot.error=="Password does not match"){
+                return Padding(
+                       padding: const EdgeInsets.symmetric(horizontal:8.0),
+                       child: Text(snapshot.error.toString(),style: const TextStyle(color: Colors.red)),
+                     );
+                  
+                }
+                return SizedBox();
+                
+
+              }
+              else{
+                return EmptyBox();
+              }
+              
+            }
+            else{
+              return EmptyBox();
+            }
+          })
+    //      Builder(builder: (context,) {
     
     //   if(widget.isValidatorEnable) {
-    //     if(snapshot.hasError)
+        
     //   }
     //   else {
     //     return Text('B');
     //   } 
     // })
    
-        widget.isValidatorEnable? snapshot.hasError?snapshot.error!="show toggle"? Padding(
-             padding: const EdgeInsets.only(left:8.0),
-             child: Text(snapshot.error.toString(),style: const TextStyle(color: Colors.red),),
-           ):PasswordMessage():EmptyBox(  ):EmptyBox()
+        // widget.isValidatorEnable? snapshot.hasError?snapshot.error!="show toggle"? Padding(
+        //      padding: const EdgeInsets.only(left:8.0),
+        //      child: Text(snapshot.error.toString(),style: const TextStyle(color: Colors.red),),
+        //    ):PasswordMessage():EmptyBox(  ):EmptyBox()
           ],
         );
       }

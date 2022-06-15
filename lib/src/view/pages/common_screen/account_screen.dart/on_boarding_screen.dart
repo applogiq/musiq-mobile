@@ -54,7 +54,7 @@ class OnboardingScreen extends StatelessWidget {
               
                       Spacer(),
                       InkWell(
-                          onTap: () {RegisterCubit().clearStreams();
+                          onTap: () {
                             Navigation.navigateToScreen(context, "register/");
                           },
                           child: CustomButton(label:ConstantText.register,radius: 8,)),

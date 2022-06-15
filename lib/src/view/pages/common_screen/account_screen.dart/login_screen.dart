@@ -116,7 +116,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             InkWell(
                               onTap: () {
-                                RegisterCubit().clearStreams();
                                 Navigation.navigateReplaceToScreen(
                                     context, "register/");
                               },
