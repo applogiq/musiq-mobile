@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -20,15 +19,32 @@ import 'components/background_image.dart';
 import 'components/custom_loading_button.dart';
 import 'components/logo_image.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+ late LoginBloc _loginScreenCubit;
+  @override
+  void initState() {
+    
+    super.initState();
+  
+    this._loginScreenCubit=LoginBloc();
+  }
+  @override
+  void dispose() {
+    
+    super.dispose();
+    _loginScreenCubit.dispose();
+  
+  }
+  @override
   Widget build(BuildContext context) {
-   LoginBloc _loginScreenCubit = BlocProvider.of<LoginBloc>(
-      context,
-      listen: false,
-    );
+   
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -45,7 +61,6 @@ class LoginScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Spacer(),
-                      
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8.0),
                         child: LogoWidget(
@@ -65,25 +80,32 @@ class LoginScreen extends StatelessWidget {
                       const SizedBox(
                         height: 20,
                       ),
-                      TextFieldWithError(onTap: (){},label: ConstantText.email,cubit: _loginScreenCubit,stream: _loginScreenCubit.userNameStream,isValidatorEnable: true,onChange:(text){
-    
-                      _loginScreenCubit.updateUserName(text);
-                      } ),
-                     PasswordTextFieldWithError(onTap: ()async{
-                    _loginScreenCubit.passwordTap();
-                     },isPassword: true,label: ConstantText.password,cubit: _loginScreenCubit,stream: _loginScreenCubit.passwordStream,isValidatorEnable: true,onChange:(text){
-    
-                      _loginScreenCubit.updatePassword(text);
-                      }),
-                    
-                      
+                      TextFieldWithError(
+                          onTap: () {},
+                          label: ConstantText.email,
+                          cubit: _loginScreenCubit,
+                          stream: _loginScreenCubit.userNameStream,
+                          isValidatorEnable: true,
+                          onChange: (text) {
+                            _loginScreenCubit.updateUserName(text);
+                          }),
+                      PasswordTextFieldWithError(
+                          onTap: () async {
+                            _loginScreenCubit.passwordTap();
+                          },
+                          isPassword: true,
+                          label: ConstantText.password,
+                          cubit: _loginScreenCubit,
+                          stream: _loginScreenCubit.passwordStream,
+                          isValidatorEnable: true,
+                          onChange: (text) {
+                            _loginScreenCubit.updatePassword(text);
+                          }),
                       ForgotPassword(),
-    
-                  StatusContainer(),
-                 
+                      StatusContainer(cubit: _loginScreenCubit),
                       LoginButton(loginScreenCubit: _loginScreenCubit),
-                             Padding(
-                        padding: const EdgeInsets.only(bottom:20.0),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 20.0),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -95,19 +117,18 @@ class LoginScreen extends StatelessWidget {
                             InkWell(
                               onTap: () {
                                 RegisterCubit().clearStreams();
-                                 Navigation.navigateReplaceToScreen(context, "register/");
-                         
+                                Navigation.navigateReplaceToScreen(
+                                    context, "register/");
                               },
                               child: Text(
-                                " "+ConstantText.register,
-                                style:
-                                    fontWeight500(size: 14.0, color: Colors.red),
+                                " " + ConstantText.register,
+                                style: fontWeight500(
+                                    size: 14.0, color: Colors.red),
                               ),
                             ),
                           ],
                         ),
                       ),
-         
                     ],
                   ),
                 )
@@ -118,7 +139,8 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
- Future<int> getValue() async {
+
+  Future<int> getValue() async {
     return Future.value(5);
   }
 }
@@ -127,7 +149,8 @@ class LoginButton extends StatelessWidget {
   const LoginButton({
     Key? key,
     required LoginBloc loginScreenCubit,
-  }) : _loginScreenCubit = loginScreenCubit, super(key: key);
+  })  : _loginScreenCubit = loginScreenCubit,
+        super(key: key);
 
   final LoginBloc _loginScreenCubit;
 
@@ -136,120 +159,122 @@ class LoginButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 50.0),
       child: StreamBuilder(
-         stream: _loginScreenCubit.validateForm,
-        builder: (context, snapshot) {
-          return InkWell(
-                onTap: ()async{
+          stream: _loginScreenCubit.validateForm,
+          builder: (context, snapshot) {
+            return InkWell(
+                onTap: () async {
                   FocusManager.instance.primaryFocus?.unfocus();
-                  if(_loginScreenCubit.isSuccess.value==true){
-
-                  }else{
-
+                  if (_loginScreenCubit.isSuccess.value == true) {
+                  } else {
                     print("snapshot.hasData");
-                  print(_loginScreenCubit.isSuccess.value);
+                    print(_loginScreenCubit.isSuccess.value);
 
-                  print(snapshot.data);
-                  if(snapshot.data==null||snapshot.data==false){
-                    if(_loginScreenCubit.validator.value==true){
-                      var valid=await _loginScreenCubit.checkEmptyValidation();
-             
-                     if(valid){
-                      if(snapshot.data==true)
-                      {
-                    
-                     var res=await _loginScreenCubit.loginAPI(context);
-                      
+                    print(snapshot.data);
+                    if (snapshot.data == null || snapshot.data == false) {
+                      if (_loginScreenCubit.validator.value == true) {
+                        var valid =
+                            await _loginScreenCubit.checkEmptyValidation();
 
-                      }
-                     }
-                     else{
-                      print("INVALID");
-                     }
-    
-                    print(_loginScreenCubit.userEmailController.value);
-                    }
-                    else{
-                      var valid=await  _loginScreenCubit.checkEmptyValidation();
-                      print(valid);
-                      print("leave");
+                        if (valid) {
+                          if (snapshot.data == true) {
+                            var res = await _loginScreenCubit.loginAPI(context);
+                          }
+                        } else {
+                          print("INVALID");
+                        }
+
+                        print(_loginScreenCubit.userEmailController.value);
+                      } else {
+                        var valid =
+                            await _loginScreenCubit.checkEmptyValidation();
+                        print(valid);
+                        print("leave");
                         _loginScreenCubit.validator.sink.add(true);
-                                           
-                        var valid1=await _loginScreenCubit.checkEmptyValidation();
-             
-                     if(valid1){
-                      if(snapshot.data==true)
-                      {
-                    
-                      _loginScreenCubit.loginAPI(context);
-  
 
-                      }}
-                   
-                    }
-                   
-                  }
-                  else if(snapshot.data==true){
-                     _loginScreenCubit.validator.sink.add(true);
-                      
-                      var valid=await _loginScreenCubit.checkEmptyValidation();
-             
-                     if(valid){
-                      if(snapshot.data==true)
-                      {
-                    
-                      _loginScreenCubit.loginAPI(context);
-  
+                        var valid1 =
+                            await _loginScreenCubit.checkEmptyValidation();
 
+                        if (valid1) {
+                          if (snapshot.data == true) {
+                            _loginScreenCubit.loginAPI(context);
+                          }
+                        }
                       }
-                     }
-                  }
-    
-  
+                    } else if (snapshot.data == true) {
+                      _loginScreenCubit.validator.sink.add(true);
+
+                      var valid =
+                          await _loginScreenCubit.checkEmptyValidation();
+
+                      if (valid) {
+                        if (snapshot.data == true) {
+                          _loginScreenCubit.loginAPI(context);
+                        }
+                      }
+                    }
                   }
 // print("load");
                 },
                 child: StreamBuilder(
-                  stream:  _loginScreenCubit.loadingStream,
-                  builder: (context, snapshot) {
-                    return Stack(
-                      children: [
-                      
-                        Container(
-                                margin: EdgeInsets.all(0),
-                                width: MediaQuery.of(context).size.width,
-                                height: 52,
-                                decoration: BoxDecoration(
-                        color:_loginScreenCubit.isLoading.value==false||_loginScreenCubit.isSuccess.value==true? CustomColor.secondaryColor:CustomColor.buttonDisableColor,
-                        borderRadius: BorderRadius.circular(12)),
-                                child: Center(
-                        child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                  
-                                  snapshot.data==true?Padding(
-                        padding: const EdgeInsets.symmetric(vertical:6.0,horizontal: 8),
-                        child: SizedBox(height: 24,width: 24,child: CircularProgressIndicator(color: Colors.white,strokeWidth: 3,)),
-                                  ):  Text(
-                          "Login",
-                          style: fontWeight500(color: _loginScreenCubit.isSuccess.value==false?Colors.white:CustomColor.subTitle2),
-                        ),
-                                  ],
-                                ))),
-                       _loginScreenCubit.isSuccess.value==true?Container( margin: EdgeInsets.all(0),
-                                width: MediaQuery.of(context).size.width,
-                                color: Colors.transparent,
-                                height: 52,):EmptyBox()
-                      ],
-                    );
-                  }
-                )
-             
-          );
-        }
-      ),
+                    stream: _loginScreenCubit.loadingStream,
+                    builder: (context, snapshot) {
+                      return Stack(
+                        children: [
+                          Container(
+                              margin: EdgeInsets.all(0),
+                              width: MediaQuery.of(context).size.width,
+                              height: 52,
+                              decoration: BoxDecoration(
+                                  color: _loginScreenCubit.isLoading.value ==
+                                              false ||
+                                          _loginScreenCubit.isSuccess.value ==
+                                              true
+                                      ? CustomColor.secondaryColor
+                                      : CustomColor.buttonDisableColor,
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: Center(
+                                  child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  snapshot.data == true
+                                      ? Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 6.0, horizontal: 8),
+                                          child: SizedBox(
+                                              height: 24,
+                                              width: 24,
+                                              child: CircularProgressIndicator(
+                                                color: Colors.white,
+                                                strokeWidth: 3,
+                                              )),
+                                        )
+                                      : Text(
+                                          "Login",
+                                          style: fontWeight500(
+                                              color: _loginScreenCubit
+                                                          .isSuccess.value ==
+                                                      false
+                                                  ? Colors.white
+                                                  : CustomColor.subTitle2),
+                                        ),
+                                ],
+                              ))),
+                          _loginScreenCubit.isSuccess.value == true
+                              ? Container(
+                                  margin: EdgeInsets.all(0),
+                                  width: MediaQuery.of(context).size.width,
+                                  color: Colors.transparent,
+                                  height: 52,
+                                )
+                              : EmptyBox()
+                        ],
+                      );
+                    }));
+          }),
     );
   }
 }
+
 class ForgotPassword extends StatelessWidget {
   const ForgotPassword({
     Key? key,
@@ -262,48 +287,63 @@ class ForgotPassword extends StatelessWidget {
       child: Align(
         alignment: Alignment.centerRight,
         child: Text(
-         ConstantText.forgotPassword,
-          style: fontWeight500(
-              color: CustomColor.subTitle2, size: 14.0),
+          ConstantText.forgotPassword,
+          style: fontWeight500(color: CustomColor.subTitle2, size: 14.0),
         ),
       ),
     );
   }
 }
 
-
 class StatusContainer extends StatelessWidget {
   const StatusContainer({
-    Key? key, 
+    Key? key,required this.cubit,
   }) : super(key: key);
-
+final cubit;
   @override
   Widget build(BuildContext context) {
-     LoginBloc _loginScreenCubit = BlocProvider.of<LoginBloc>(
-      context,
-      listen: false,
-    );
+    
     return StreamBuilder(
-      
-      stream: _loginScreenCubit.errorStream,
-      builder: (context, snapshot) {
-        return snapshot.data==false?EmptyBox(): Container(width: MediaQuery.of(context).size.width,
-        height: 50,
-        margin: EdgeInsets.symmetric(vertical:16),
-        padding: EdgeInsets.all(12),
-        decoration: BoxDecoration(color:snapshot.hasError? CustomColor.errorStatusColor:CustomColor.successStatusColor,
-        borderRadius: BorderRadius.circular(8.0)
-        ,)
-        ,child: Row(children: [Icon(Icons.info,color:snapshot.hasError? Colors.red:Colors.green),
-        SizedBox(width: 8,),
-        Text(snapshot.hasError? snapshot.error.toString():"Login Success",style: fontWeight400(size: 14.0,color: CustomColor.subTitle2,)
-        ,
-        
-        ),
-        Spacer(),
-        InkWell(onTap: (){_loginScreenCubit.isInvalidCred.add(false);},child: Icon(Icons.close))
-        ],),);
-      }
-    );
+        stream:cubit.errorStream,
+        builder: (context, snapshot) {
+          return snapshot.data == false
+              ? EmptyBox()
+              : Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  margin: EdgeInsets.symmetric(vertical: 16),
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: snapshot.hasError
+                        ? CustomColor.errorStatusColor
+                        : CustomColor.successStatusColor,
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.info,
+                          color: snapshot.hasError ? Colors.red : Colors.green),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        snapshot.hasError
+                            ? snapshot.error.toString()
+                            : "Login Success",
+                        style: fontWeight400(
+                          size: 14.0,
+                          color: CustomColor.subTitle2,
+                        ),
+                      ),
+                      Spacer(),
+                      InkWell(
+                          onTap: () {
+                            cubit.isInvalidCred.add(false);
+                          },
+                          child: Icon(Icons.close))
+                    ],
+                  ),
+                );
+        });
   }
 }

@@ -25,7 +25,7 @@ class LoginBloc extends Cubit<LoginState> with InputValidationMixin{
   Stream<String> get passwordStream => passwordController.stream;
   Stream<bool> get errorStream => isInvalidCred.stream;
   Stream<bool> get loadingStream => isLoading.stream;
-  // Stream<bool> get successStream => isLoading.stream;
+ 
 
  void clearStreams() {
     isInvalidCred.sink.add(false);
@@ -35,28 +35,50 @@ class LoginBloc extends Cubit<LoginState> with InputValidationMixin{
     updateUserName('');
     updatePassword('');
   }
-
+dispose() {
+    userEmailController.close();
+    passwordController.close();
+  }
   void updateUserName(String userName) {
      isInvalidCred.sink.add(false);
-   
-     if(userName.isEmpty){
-      if(validator.value==true){
-
-     userEmailController.sink.addError("Email Id is mandatory");
-      }
-   }
-   else if (!isEmailValid(userName)) {
      if(validator.value==true){
+      if(userName.isEmpty){
+        userEmailController.sink.addError("Field is required");
+      }
+      else if(!isEmailValid(userName)){
+        userEmailController.sink.addError("Invalid Email ID");
+      }
+      else{
 
-      userEmailController.sink.addError("Invalid Email ID");
-     }
-    } else {
       userEmailController.sink.add(userName);
-    }
+      }
+
+     }
+     else{
+      userEmailController.sink.add(userName);
+     }
    
   
   }
+   void updatePassword(String password) {
+     isInvalidCred.sink.add(false);
   
+   
+     if(validator.value==true){
+      if(password.isEmpty){
+        passwordController.sink.addError("Field is required");
+      }
+      else{
+passwordController.sink.add(password);
+      }
+
+     }
+     else{
+      passwordController.sink.add(password);
+     }
+  }
+
+ 
 passwordTap()async{
   validator.sink.add(true);
   print(userEmailController.value.toString());
@@ -64,20 +86,24 @@ passwordTap()async{
                         try{
 
                        check1=await userNameStream.first;
+                       print(check1);
+                       updateUserName(check1);
+                       print("check");
                        }
                         catch (err){
+                          print(err.toString());
                           check1=err.toString();
                          }
              
+             print(check1);
                       if(check1==""){
-                        updateUserName("");
+                       userEmailController.sink.addError("Field is required");
                       }
-                      else{
+                      else if(check1=="Invalid Email ID"){
+                       userEmailController.sink.addError(check1);
 
-                      updateUserName(userEmailController.value.toString());
-                      } 
-                      print(userEmailController.value.toString());
-}
+                      }
+                     }
 
   checkEmptyValidation()async{
      var check1;
@@ -118,22 +144,6 @@ passwordTap()async{
     isInvalidCred.sink.add(true);
   }
 
-  void updatePassword(String password) {
-     isInvalidCred.sink.add(false);
-  
-   
-      if (password.isEmpty) {
-        if(validator.value==true){
-           passwordController.sink.addError("Password is mandatory");
-        }
-    }
-   
-     else {
-      passwordController.sink.add(password);
-    }
-
-  }
-
   Stream<bool> get validateForm => Rx.combineLatest2(
     userNameStream,
     passwordStream,
@@ -166,12 +176,14 @@ isLoading.sink.add(false);
   if(response.statusCode==200){
     isSuccess.sink.add(true);
     isInvalidCred.sink.add(true);
-    // Future.delayed(Duration(milliseconds: 600),(){
+    
+    Future.delayed(Duration(milliseconds: 600),(){
       Navigation.navigateReplaceToScreen(context, 'home/');
      clearStreams();
-    // });
+    });
   }
   else if(response.statusCode==404){
+    print("ERRR");
     isInvalidCred.sink.addError(ConstantText.invalidEmailAndPassword);
    isSuccess.sink.add(false);
   }
@@ -185,7 +197,7 @@ isLoading.sink.add(false);
   catch(e){
     print(e.toString());
      isLoading.sink.add(false);
-    return http.Response("Error", 1);
+    return 1;
   }
   }
 }
