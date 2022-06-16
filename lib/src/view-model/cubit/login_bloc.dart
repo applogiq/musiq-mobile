@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musiq/src/helpers/constants/api.dart';
 import 'package:musiq/src/helpers/constants/string.dart';
 import 'package:musiq/src/helpers/utils/navigation.dart';
@@ -9,6 +10,8 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../helpers/utils/validation.dart';
 import 'package:http/http.dart'as http;
+
+import '../../model/api_model/user_model.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Cubit<LoginState> with InputValidationMixin{
@@ -19,6 +22,8 @@ class LoginBloc extends Cubit<LoginState> with InputValidationMixin{
   final isInvalidCred=BehaviorSubject<bool>.seeded(false);
   final isLoading=BehaviorSubject<bool>.seeded(false);
   final isSuccess=BehaviorSubject<bool>.seeded(false);
+  final storage = FlutterSecureStorage();
+
   
 
   Stream<String> get userNameStream => userEmailController.stream;
@@ -176,7 +181,20 @@ isLoading.sink.add(false);
   if(response.statusCode==200){
     isSuccess.sink.add(true);
     isInvalidCred.sink.add(true);
-    
+     var data=jsonDecode(response.body.toString());
+  User user=User.fromMap(data);
+  print(user.toMap());
+   await storage.deleteAll();
+  
+  var userData = user.records.toMap();
+          for (final name in userData.keys) {
+            final value = userData[name];
+            debugPrint('$name,$value');
+            await storage.write(
+              key: name,
+              value: value.toString(),
+            );
+          }
     Future.delayed(Duration(milliseconds: 600),(){
       Navigation.navigateReplaceToScreen(context, 'home/');
      clearStreams();

@@ -113,7 +113,10 @@ return Column(
                      );
                   
                 }
-                return SizedBox();
+                return  Padding(
+                       padding: const EdgeInsets.symmetric(horizontal:8.0),
+                       child: Text(snapshot.error.toString(),style: const TextStyle(color: Colors.red)),
+                     );
                 
 
               }

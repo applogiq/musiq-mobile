@@ -3,9 +3,11 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:meta/meta.dart';
 import 'package:musiq/src/helpers/constants/string.dart';
 import 'package:musiq/src/helpers/utils/navigation.dart';
+import 'package:musiq/src/model/api_model/user_model.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:http/http.dart'as http;
 
@@ -24,9 +26,14 @@ class RegisterCubit extends Cubit<RegisterState> with InputValidationMixin {
   final _userEmailController = BehaviorSubject<String>.seeded("");
   final _passwordController = BehaviorSubject<String>.seeded("");
   final _confirmController = BehaviorSubject<String>.seeded("");
+  final isLoading=BehaviorSubject<bool>.seeded(false);
+  final isSuccess=BehaviorSubject<bool>.seeded(false);
+  
   
   final validator=BehaviorSubject<bool>.seeded(false);
   final passwordValid=BehaviorSubject<bool>.seeded(false);
+  final storage = FlutterSecureStorage();
+  
 
   //stream
   Stream<String> get fullNameStream => fullNameController.stream;
@@ -35,6 +42,147 @@ class RegisterCubit extends Cubit<RegisterState> with InputValidationMixin {
   Stream<String> get passwordStream => _passwordController.stream;
   Stream<String> get confirmPasswordStream => _confirmController.stream;
   Stream<bool> get validatorStream => validator.stream;
+  Stream<bool> get loadingStream => isLoading.stream;
+Stream<bool> get validateForm => Rx.combineLatest5(
+    fullNameStream,
+    userNameStream,
+    emailStream,
+    passwordStream,confirmPasswordStream,
+        (a, b,c,d,e) => true,
+  );
+  registerAPI(BuildContext context) async{
+    isLoading.sink.add(true);
+      Map<String, dynamic> params = {
+  "username": _userNameController.stream.value,
+  "fullname": fullNameController.stream.value,
+  "email": _userEmailController.stream.value,
+  "password": _passwordController.stream.value
+
+    };
+    print(params);
+        var url=Uri.parse(APIConstants.BASE_URL.toString()+APIConstants.REGISTER.toString());
+   print(url);
+    try{
+
+    var response=await http.post(url, body: jsonEncode(params), headers: { 'Content-type': 'application/json',
+              'Accept': 'application/json',
+              });
+print(response.statusCode);
+late User user;
+if(response.statusCode==201){
+  var data=jsonDecode(response.body.toString());
+  user=User.fromMap(data);
+  print(user.toMap());
+   await storage.deleteAll();
+  
+  var userData = user.records.toMap();
+          for (final name in userData.keys) {
+            final value = userData[name];
+            debugPrint('$name,$value');
+            await storage.write(
+              key: name,
+              value: value.toString(),
+            );
+          }
+              isLoading.sink.add(false);
+   Navigation.navigateReplaceToScreen(context, 'selectArtistPref/');
+   
+  
+}
+else if(response.statusCode==400){
+  
+      var data=jsonDecode(response.body.toString());
+    print(data['detail']["message"]);
+     if(data['detail']["message"]=="email already exists")
+    {
+      _userEmailController.sink.addError("Email already exists");
+
+    }
+    else if(data['detail']["message"]=="username already exists")
+    {
+    _userNameController.sink.addError("Username already exists");
+
+    }
+        isLoading.sink.add(false);
+ 
+
+}
+    }
+    catch(e){
+      print(e.toString());
+          isLoading.sink.add(false);
+ 
+    return http.Response("Try Again",500);
+    }
+  }
+
+//  registerAPI(BuildContext context)async{
+// //   if(isSuccess==true){
+// // isLoading.sink.add(false);
+// //   }
+// //   else{
+// //     isLoading.sink.add(true);
+// //   try{
+//     var fullName="", userName="", email="",password="";
+//       Map<String, dynamic> params = {
+//   "username": _userNameController.stream.value,
+//   "fullname": fullNameController.stream.value,
+//   "email": _userEmailController.stream.value,
+//   "password": _passwordController.stream.value
+
+//     };
+    
+    
+//     print(params);
+    
+//     var url=Uri.parse(APIConstants.BASE_URL.toString()+APIConstants.REGISTER.toString());
+//    print(url);
+    
+//     var response=await http.post(url, body: jsonEncode(params), headers: { 'Content-type': 'application/json',
+//               'Accept': 'application/json',
+//               });
+//   print(response.statusCode);
+//   if(response.statusCode==201){
+//  Navigation.navigateReplaceToScreen(context, 'selectArtistPref/');
+//   }
+//   else if(response.statusCode==400){
+//     var data=jsonDecode(response.body.toString());
+//     print(data['detail']["message"]);
+//     if(data['detail']["message"]=="username already exists")
+//     {
+//     _userNameController.sink.addError("username already exists");
+
+//     }
+//     else if(data['detail']["message"]=="email already exists")
+//     {
+//       _userEmailController.sink.addError("email already exists");
+
+//     }
+//   }
+
+// //   if(response.statusCode==200){
+// //     isSuccess.sink.add(true);
+// //     isInvalidCred.sink.add(true);
+// //   }
+// //   else if(response.statusCode==404){
+// //     isInvalidCred.sink.addError(ConstantText.invalidEmailAndPassword);
+// //    isSuccess.sink.add(false);
+// //   }
+// //   else{
+// //    isSuccess.sink.add(false);
+// //     isInvalidCred.sink.add(true);
+// //   }
+// //      isLoading.sink.add(false);
+// //  return response.statusCode;
+// //   }
+// //   catch(e){
+// //     print(e.toString());
+// //      isLoading.sink.add(false);
+// //     return http.Response("Error", 1);
+// //   }
+//   // }
+// }
+
 
   void updateFullName(String text) {
     if(text.isEmpty){
@@ -47,9 +195,13 @@ class RegisterCubit extends Cubit<RegisterState> with InputValidationMixin {
     }
   }
   void createAccount(){
-   if(fullNameController.value.isEmpty){
-    print("object");
-   }
+ confirmPasswordTap();
+ if(_confirmController.value.isEmpty){
+  _confirmController.sink.addError(ConstantText.fieldRequired);
+ }
+ else if(_passwordController.value.toString()!=_confirmController.value.toString()){
+  _confirmController.sink.addError(ConstantText.passwordNotMatch);
+ }
   }
 
   void updateUserEmail(String text,{bool isTap=false}) {
@@ -92,111 +244,192 @@ class RegisterCubit extends Cubit<RegisterState> with InputValidationMixin {
     if(!isEmailValid(_userEmailController.value))updateUserEmail(_userEmailController.value);
   }
 
-  void updatePassword(String text,{bool isTap=false,bool isTooltip=false}) {
-    print(_confirmController.value);
-    print(_passwordController.value);
+  void updatePassword(String text) {
+    _passwordController.sink.add(text);
      if(text.isEmpty){
+    
       _passwordController.sink.add("");
       _passwordController.sink.addError(ConstantText.fieldRequired);
+      _confirmController.sink.addError("");
     }
-    
-else if(_passwordController.value==_confirmController.value){
-         _passwordController.sink.add(text);
-      if(!_confirmController.value.isEmpty){
-     
-_confirmController.sink.addError("Password does not match");
-      }
-     
-    }
-    else if(isTap){
-print("object");
-      
-      if(!validateStructure(_passwordController.value)){
-        _passwordController.sink.add(text);
-     
-        _passwordController.sink.addError("show toggle alert");
-        print(_passwordController.error);
-    
-    }
-    else if(_passwordController.error=="Field is required"){
-      print("FFFFF");
-    }
-    }
-    
-    else if(!validateStructure(_passwordController.value)){
-      _passwordController.sink.add(text);
-      
-        _passwordController.sink.addError("show toggle");
-    
-    }
-    else{
-      print("VMMM");
+    else if(_passwordController.value.isNotEmpty&&_confirmController.value.isNotEmpty){
+ 
 
-    _passwordController.sink.add(text);
-    }
-     if(isTooltip)_passwordController.sink.addError("show toggle");
+      if(_passwordController.value.toString()==_confirmController.value.toString()){
+        if(!validateStructure(_passwordController.value.toString())){
+                     _passwordController.sink.addError("show toggle");
 
-  }
-
-  void confirmPasswordTap() {
-    passwordTap();
-    print(_passwordController.value);
-    if(_passwordController.value.isEmpty)updatePassword(" ",isTap: true);
-    if(_passwordController.value.isNotEmpty){
-      if(validateStructure(_passwordController.value)){
-        print("object5");
         }
-      else{
-        print("FFFGDSSF");
-        updatePassword(_passwordController.value,isTap: true);
-      
+        _confirmController.sink.add(_passwordController.value.toString());
+        
       }
-      print(validateStructure(_passwordController.value));
-    };
-    print(_passwordController.value);
-    print("NO");
+      else{
+         if(!validateStructure(_passwordController.value.toString())){
+          _passwordController.sink.addError("show toggle");
+        }
+        print("Not match");
+        _confirmController.sink.addError(ConstantText.passwordNotMatch);
+
+      }
+    }
+    else if(!validateStructure(_passwordController.value.toString())){
+          _passwordController.sink.addError("show toggle");
+      
+    }
+    
   }
 
   void passwordTap() {
     userNameTap();
-    if(_userNameController.value.isEmpty)updateUserName("");
-    else updateUserName(_userNameController.value);
-    if(validateStructure(_passwordController.value)){
-         updatePassword(_passwordController.value,isTap: true);
-      }
-    
+    if(_userNameController.value.isEmpty){
+      _userNameController.sink.addError(ConstantText.fieldRequired);
+    }
+    else if(_userNameController.value.toString().contains(" ")){
+      _userNameController.sink.addError(ConstantText.invalidUserName);
+
+    }
+    if(_passwordController.value.isEmpty){
+      _passwordController.sink.addError("show toggle");
+    }
+    else if(!validateStructure(_passwordController.value.toString())){
+       _passwordController.sink.addError("show toggle");
+   
+    }
   }
 
+
   void updateConfirmPassword(String text) {
-    _confirmController.sink.add(text);
-    if(_passwordController.value!=_confirmController.value){
-      print("dds");
-     _confirmController.sink.addError("Password does not match");
-    }
-    else{
-      print("MATCH");
-      _confirmController.sink.addError("Password Match");
-    }
-    // if(text.isEmpty){
-    //   _confirmController.add("");
-    //        _confirmController.sink.addError(ConstantText.fieldRequired);
-  
-    // }
-    
-    // else if(_confirmController.value!=_passwordController.value){
-    //   _confirmController.sink.add(text);
-     
-    //   _confirmController.sink.addError("NO");
-    // }
-    // else if(_confirmController.value==_passwordController.value){
-    //   _confirmController.sink.add(text);
-     
-    //   _confirmController.sink.addError(" match");
-    // }
-    // else{
-    //   _confirmController.sink.add(text);
-    // }
+  _confirmController.sink.add(text);
+  if(text.isEmpty){
+    _confirmController.sink.add("");
+    _confirmController.sink.addError(ConstantText.fieldRequired);
   }
+   if(_passwordController.value.isNotEmpty&&_confirmController.value.isNotEmpty){
+      if(_passwordController.value.toString()==_confirmController.value.toString()){
+        print("Match");
+      }
+      else{
+        _confirmController.sink.addError(ConstantText.passwordNotMatch);
+      }
+    }
+  }
+
+  void confirmPasswordTap() {
+    passwordTap();
+    if(_passwordController.value.isEmpty){
+      _passwordController.sink.addError(ConstantText.fieldRequired);
+    }
+    else if(!validateStructure(_passwordController.value.toString())){
+      _passwordController.sink.addError("show toggle alert");
+    }
+  }
+
+   
+//   void updatePassword(String text,{bool isTap=false,bool isTooltip=false}) {
+//     print(_confirmController.value);
+//     print(_passwordController.value);
+//      if(text.isEmpty){
+//       _passwordController.sink.add("");
+//       _passwordController.sink.addError(ConstantText.fieldRequired);
+//     }
+    
+// else if(_passwordController.value==_confirmController.value){
+//          _passwordController.sink.add(text);
+//       if(!_confirmController.value.isEmpty){
+     
+// _confirmController.sink.addError("Password does not match");
+//       }
+     
+//     }
+//     else if(isTap){
+// print("object");
+      
+//       if(!validateStructure(_passwordController.value)){
+//         _passwordController.sink.add(text);
+     
+//         _passwordController.sink.addError("show toggle alert");
+//         print(_passwordController.error);
+    
+//     }
+//     else if(_passwordController.error=="Field is required"){
+//       print("FFFFF");
+//     }
+//     }
+    
+//     else if(!validateStructure(_passwordController.value)){
+//       _passwordController.sink.add(text);
+      
+//         _passwordController.sink.addError("show toggle");
+    
+//     }
+//     else{
+//       print("VMMM");
+
+//     _passwordController.sink.add(text);
+//     }
+//      if(isTooltip)_passwordController.sink.addError("show toggle");
+
+//   }
+
+//   void confirmPasswordTap() {
+//     passwordTap();
+//     print(_passwordController.value);
+//     if(_passwordController.value.isEmpty)updatePassword(" ",isTap: true);
+//     if(_passwordController.value.isNotEmpty){
+//       if(validateStructure(_passwordController.value)){
+//         print("object5");
+//         }
+//       else{
+//         print("FFFGDSSF");
+//         updatePassword(_passwordController.value,isTap: true);
+      
+//       }
+//       print(validateStructure(_passwordController.value));
+//     };
+//     print(_passwordController.value);
+//     print("NO");
+//   }
+
+//   void passwordTap() {
+//     userNameTap();
+//     if(_userNameController.value.isEmpty)updateUserName("");
+//     else updateUserName(_userNameController.value);
+//     if(validateStructure(_passwordController.value)){
+//          updatePassword(_passwordController.value,isTap: true);
+//       }
+    
+//   }
+
+//   void updateConfirmPassword(String text) {
+//     _confirmController.sink.add(text);
+//     if(_passwordController.value!=_confirmController.value){
+//       print("dds");
+//      _confirmController.sink.addError("Password does not match");
+//     }
+//     else{
+//       print("MATCH");
+//       _confirmController.sink.addError("Password Match");
+//     }
+//     // if(text.isEmpty){
+//     //   _confirmController.add("");
+//     //        _confirmController.sink.addError(ConstantText.fieldRequired);
+  
+//     // }
+    
+//     // else if(_confirmController.value!=_passwordController.value){
+//     //   _confirmController.sink.add(text);
+     
+//     //   _confirmController.sink.addError("NO");
+//     // }
+//     // else if(_confirmController.value==_passwordController.value){
+//     //   _confirmController.sink.add(text);
+     
+//     //   _confirmController.sink.addError(" match");
+//     // }
+//     // else{
+//     //   _confirmController.sink.add(text);
+//     // }
+//   }
   
 //   void clearStreams() {
 //     validator.sink.add(false);

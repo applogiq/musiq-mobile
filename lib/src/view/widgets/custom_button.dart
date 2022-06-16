@@ -27,7 +27,17 @@ class CustomButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             isIcon ? Icon(Icons.play_arrow_rounded) : SizedBox(),
-          isLoading?CircularProgressIndicator():  Text(
+          isLoading?Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 6.0, horizontal: 8),
+                                          child: SizedBox(
+                                              height: 24,
+                                              width: 24,
+                                              child: CircularProgressIndicator(
+                                                color: Colors.white,
+                                                strokeWidth: 3,
+                                              )),
+                                        ):  Text(
               label,
               style: fontWeight500(size: 16.0),
             ),

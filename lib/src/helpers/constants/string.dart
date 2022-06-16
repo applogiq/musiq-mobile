@@ -16,6 +16,7 @@ class ConstantText{
   static String fieldRequired= "Field is required";
   static String invalidEmail= "Invalid Email";
   static String invalidUserName= "User name does not contain space";
+  static String passwordNotMatch= "Password does not match";
   static String registerPrefix= "Don't have an account?";
   static String invalidEmailAndPassword= "Your email or password is Incorrect";
   static String passwordToolTip= "The password must contain alteast 8 characters, include 1 uppercase, 1 lowercase, 1 number and 1 special character.";

@@ -94,22 +94,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                          },),
                       // PasswordMessage(),
                       SizedBox(height: 16,),
+                      
                       StreamBuilder(
-                        // stream: _regCubit.validateForm,
+                        stream: _regCubit.validateForm,
                         builder: (context, snapshot) {
                          
-                          return InkWell(onTap: (){
+                          return InkWell(onTap: ()async{
                             _regCubit.createAccount();
-                            // _regCubit.confirmPasswordTap();
-                             if(snapshot.data==true){
-// _regCubit.registerAPI(context);
-
-                             }
-                             else{
-                              print("Error");
-// _regCubit.confirmPasswordTap();
-                             }
-                          },child: CustomButton(label: ConstantText.createAccount,margin: 0.0,));
+                            if(snapshot.hasError==false){
+                              _regCubit.registerAPI(context);
+                            }
+                           
+                          },child: StreamBuilder(stream: _regCubit.loadingStream,builder: (context,snapshot){
+                            return _regCubit.isLoading.value==true?CustomButton(label: ConstantText.createAccount,margin: 0.0,isLoading: true,): CustomButton(label: ConstantText.createAccount,margin: 0.0,);
+                          },));
                         }
                       )
                 
