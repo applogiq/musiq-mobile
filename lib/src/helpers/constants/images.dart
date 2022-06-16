@@ -3,6 +3,7 @@ import 'package:musiq/src/model/Image_model.dart';
 class Images {
   static String logoImage="assets/icons/logo.png";
   static String logoImageWithName="assets/icons/logowithname.png";
+  static String noInternet="assets/icons/internet.png";
 
 
 

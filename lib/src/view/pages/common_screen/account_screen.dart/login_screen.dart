@@ -5,13 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/constants/string.dart';
 import 'package:musiq/src/helpers/constants/style.dart';
-import 'package:musiq/src/view-model/cubit/login_bloc.dart';
-import 'package:musiq/src/view-model/cubit/register/register_cubit.dart';
 import 'package:musiq/src/view/pages/common_screen/account_screen.dart/on_boarding_screen.dart';
 import 'package:musiq/src/view/pages/home/home_screen.dart';
 import 'package:musiq/src/view/widgets/custom_button.dart';
 
 import '../../../../helpers/utils/navigation.dart';
+import '../../../../logic/cubit/login_bloc.dart';
 import '../../../widgets/custom_text_field_with_error.dart';
 import '../../../widgets/empty_box.dart';
 import '../../profile/components/my_profile.dart';
@@ -101,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           onChange: (text) {
                             _loginScreenCubit.updatePassword(text);
                           }),
-                      ForgotPassword(),
+                      InkWell(onTap: () => Navigation.navigateToScreen(context, "forgotMain/"),child: ForgotPassword()),
                       StatusContainer(cubit: _loginScreenCubit),
                       LoginButton(loginScreenCubit: _loginScreenCubit),
                       Padding(

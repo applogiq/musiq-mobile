@@ -7,7 +7,6 @@ import 'package:musiq/src/view/widgets/empty_box.dart';
 import '../../helpers/constants/color.dart';
 import '../../helpers/constants/string.dart';
 import '../../helpers/constants/style.dart';
-import '../../view-model/cubit/login_bloc.dart';
 import 'custom_color_container.dart';
 
 class PasswordTextFieldWithError extends StatefulWidget {
@@ -43,6 +42,8 @@ class _PasswordTextFieldWithErrorState extends State<PasswordTextFieldWithError>
     return StreamBuilder(
       stream: widget.stream,
       builder: (context, snapshot) {
+        print("errrrrrr");
+        print(snapshot.hasError?snapshot.error:"no");
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

@@ -2,11 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/constants/style.dart';
-import 'package:musiq/src/view-model/cubit/register/register_cubit.dart';
 import 'package:musiq/src/view/widgets/custom_button.dart';
 import 'package:musiq/src/view/widgets/custom_color_container.dart';
 
 import '../../../../helpers/constants/string.dart';
+import '../../../../logic/cubit/register/register_cubit.dart';
 import '../../../widgets/custom_app_bar.dart';
 import '../../../widgets/custom_text_field_with_error.dart';
 

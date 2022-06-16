@@ -6,7 +6,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/constants/style.dart';
-import 'package:musiq/src/view-model/cubit/login_bloc.dart';
+
+import '../../../../../logic/cubit/login_bloc.dart';
 
 class CustomProgressButton extends StatefulWidget {
    CustomProgressButton({
