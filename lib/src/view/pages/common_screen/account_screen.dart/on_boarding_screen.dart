@@ -16,78 +16,83 @@ class OnboardingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     return Scaffold(
-      body: Stack(
-        children: [
-          Background(),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              children: [
-                Expanded(
-                  child: Container(),
-                  flex: 2,
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      LogoWithImage(
-                      ),
-                    
-                      CenterTextWidget(
-                        label: ConstantText.slogan,
-                        topPadding: 24.0,
-                        textSize: 18,
-                        textColor: Colors.white,
-                      ),
-                      CenterTextWidget(
-                        label: ConstantText.subSlogan,
-                        topPadding: 12.0,
-                        textColor: CustomColor.subTitle2,
-                        textSize: 14,
-                      ),
-                    
-              
-                      Spacer(),
-                      InkWell(
-                          onTap: () {
-                            Navigation.navigateToScreen(context, "register/");
-                          },
-                          child: CustomButton(label:ConstantText.register,radius: 8,)),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom:20.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              ConstantText.loginPrefix,
-                              style: fontWeight500(size: 14.0),
-                            ),
-                            InkWell(
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          child: Stack(
+            children: [
+              Background(),
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Container(),
+                      flex: 2,
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          LogoWithImage(
+                          ),
+                        
+                          CenterTextWidget(
+                            label: ConstantText.slogan,
+                            topPadding: 24.0,
+                            textSize: 18,
+                            textColor: Colors.white,
+                          ),
+                          CenterTextWidget(
+                            label: ConstantText.subSlogan,
+                            topPadding: 12.0,
+                            textColor: CustomColor.subTitle2,
+                            textSize: 14,
+                          ),
+                        
+                  
+                          Spacer(),
+                          InkWell(
                               onTap: () {
-                                 Navigation.navigateToScreen(context, "login/");
-                         
+                                Navigation.navigateToScreen(context, "register/");
                               },
-                              child: Text(
-                                " "+ConstantText.login,
-                                style:
-                                    fontWeight500(size: 14.0, color: Colors.red),
-                              ),
+                              child: CustomButton(label:ConstantText.register,radius: 8,)),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom:20.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  ConstantText.loginPrefix,
+                                  style: fontWeight500(size: 14.0),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                     Navigation.navigateToScreen(context, "login/");
+                             
+                                  },
+                                  child: Text(
+                                    " "+ConstantText.login,
+                                    style:
+                                        fontWeight500(size: 14.0, color: Colors.red),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                          
+                        ],
                       ),
-                      
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          )
-        ],
+              )
+            ],
+          ),
+        ),
       ),
    
     );

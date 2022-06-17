@@ -1,4 +1,8 @@
+// To parse this JSON data, do
+//
+//     final user = userFromMap(jsonString);
 
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 User userFromMap(String str) => User.fromMap(json.decode(str));
@@ -7,9 +11,9 @@ String userToMap(User data) => json.encode(data.toMap());
 
 class User {
     User({
-       required this.status,
-       required this.message,
-       required this.records,
+        required this.status,
+        required this.message,
+        required this.records,
     });
 
     bool status;
@@ -31,83 +35,99 @@ class User {
 
 class Records {
     Records({
-       required this.email,
-       required this.otpTime,
-       required this.isActive,
-       required this.fullname,
-       required this.createdBy,
-       required this.updatedBy,
-       required this.createdAt,
-       required this.preference,
-       required this.username,
-       required this.isDelete,
-       required this.registerId,
-       required this.updatedAt,
-       required this.id,
-       required this.isImage,
-       required this.otp,
-       required this.password,
+        required this.accessToken,
+        required this.refreshToken,
+        required this.createdBy,
+        required this.id,
+        required this.updatedAt,
+        required this.isDelete,
+        required this.isImage,
+        required this.password,
+        required this.otp,
+        required this.updatedBy,
+        required this.registerId,
+        required this.username,
+        required this.email,
+        required this.preference,
+        required this.updatedUserBy,
+        required this.fullname,
+        required this.isActive,
+        required this.createdAt,
+        required this.otpTime,
+        required this.createdUserBy,
     });
 
-    String email;
-    dynamic otpTime;
-    int isActive;
-    String fullname;
-    int createdBy;
-    int updatedBy;
-    DateTime createdAt;
-    Preference preference;
-    String username;
-    int isDelete;
-    int registerId;
-    dynamic updatedAt;
+    String accessToken;
+    String refreshToken;
+    dynamic createdBy;
     int id;
+    dynamic updatedAt;
+    bool isDelete;
     dynamic isImage;
-    dynamic otp;
     String password;
+    dynamic otp;
+    dynamic updatedBy;
+    int registerId;
+    String username;
+    String email;
+    Preference preference;
+    dynamic updatedUserBy;
+    String fullname;
+    bool isActive;
+    DateTime createdAt;
+    dynamic otpTime;
+    int createdUserBy;
 
     factory Records.fromMap(Map<String, dynamic> json) => Records(
-        email: json["email"],
-        otpTime: json["otp_time"],
-        isActive: json["is_active"],
-        fullname: json["fullname"],
+        accessToken: json["access_token"],
+        refreshToken: json["refresh_token"],
         createdBy: json["created_by"],
-        updatedBy: json["updated_by"],
-        createdAt: DateTime.parse(json["created_at"]),
-        preference: Preference.fromMap(json["preference"]),
-        username: json["username"],
-        isDelete: json["is_delete"],
-        registerId: json["register_id"],
-        updatedAt: json["updated_at"],
         id: json["id"],
+        updatedAt: json["updated_at"],
+        isDelete: json["is_delete"],
         isImage: json["is_image"],
-        otp: json["otp"],
         password: json["password"],
+        otp: json["otp"],
+        updatedBy: json["updated_by"],
+        registerId: json["register_id"],
+        username: json["username"],
+        email: json["email"],
+        preference: Preference.fromMap(json["preference"]),
+        updatedUserBy: json["updated_user_by"],
+        fullname: json["fullname"],
+        isActive: json["is_active"],
+        createdAt: DateTime.parse(json["created_at"]),
+        otpTime: json["otp_time"],
+        createdUserBy: json["created_user_by"],
     );
 
     Map<String, dynamic> toMap() => {
-        "email": email,
-        "otp_time": otpTime,
-        "is_active": isActive,
-        "fullname": fullname,
+        "access_token": accessToken,
+        "refresh_token": refreshToken,
         "created_by": createdBy,
-        "updated_by": updatedBy,
-        "created_at": createdAt.toIso8601String(),
-        "preference": preference.toMap(),
-        "username": username,
-        "is_delete": isDelete,
-        "register_id": registerId,
-        "updated_at": updatedAt,
         "id": id,
+        "updated_at": updatedAt,
+        "is_delete": isDelete,
         "is_image": isImage,
-        "otp": otp,
         "password": password,
+        "otp": otp,
+        "updated_by": updatedBy,
+        "register_id": registerId,
+        "username": username,
+        "email": email,
+        "preference": preference.toMap(),
+        "updated_user_by": updatedUserBy,
+        "fullname": fullname,
+        "is_active": isActive,
+        "created_at": createdAt.toIso8601String(),
+        "otp_time": otpTime,
+        "created_user_by": createdUserBy,
     };
 }
 
 class Preference {
     Preference({
-       required this.artist,
+        required this.artist,
     });
 
     List<dynamic> artist;

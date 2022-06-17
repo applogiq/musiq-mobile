@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
           'register/': (BuildContext ctx) => RegisterScreen(),
           'selectArtistPref/':(BuildContext ctx)=>SelectYourFavList(),
           'forgotMain/':(BuildContext ctx)=>ForgotPasswordMainScreen(),
-          // 'forgotOTP/':(BuildContext ctx)=>OTPScreen(),
+          'forgotOTP/':(BuildContext ctx)=>OTPScreen(),
           // 'newPassword/':(BuildContext ctx)=>NewPasswordScreen(),
 
           'audioQuality': (BuildContext ctx) => AudioQualitySettingScreen(),

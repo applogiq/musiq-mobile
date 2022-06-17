@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musiq/src/helpers/utils/navigation.dart';
 import 'package:musiq/src/helpers/utils/validation.dart';
+import 'package:musiq/src/view/pages/common_screen/account_screen.dart/login_screen.dart';
 import 'package:musiq/src/view/pages/common_screen/account_screen.dart/pages/forgot/forgot_password_otp_screen.dart';
 import 'package:musiq/src/view/pages/common_screen/account_screen.dart/pages/forgot/new_password.dart';
 import 'package:rxdart/rxdart.dart';
@@ -24,6 +25,7 @@ class ForgotpasswordCubit extends Cubit<ForgotpasswordState>with InputValidation
   final confirmPasswordController = BehaviorSubject<String>.seeded("");
    final isLoading=BehaviorSubject<bool>.seeded(false);
    final isError=BehaviorSubject<bool>.seeded(false);
+   final isOTPError=BehaviorSubject<bool>.seeded(false);
  
   
   Stream<String> get userEmailStream => userEmailController.stream;
@@ -32,6 +34,11 @@ class ForgotpasswordCubit extends Cubit<ForgotpasswordState>with InputValidation
   
   Stream<bool> get loadingStream => isLoading.stream;
   Stream<bool> get errorStream => isError.stream;
+  Stream<bool> get errorOTPStream => isOTPError.stream;
+  clearStreams() {
+    isLoading.sink.add(false);
+     isError.sink.add(false);
+  }
   void updateUserEmail(String text) {
 
 isError.sink.add(true);
@@ -64,7 +71,7 @@ isError.sink.add(true);
 
       if(passwordController.value.toString()==confirmPasswordController.value.toString()){
         if(!validateStructure(passwordController.value.toString())){
-                     passwordController.sink.addError("Invalid Format");
+                     passwordController.sink.addError("show toggle");
 
         }
         confirmPasswordController.sink.add(passwordController.value.toString());
@@ -72,7 +79,7 @@ isError.sink.add(true);
       }
       else{
          if(!validateStructure(passwordController.value.toString())){
-          passwordController.sink.addError("Invalid Format");
+          passwordController.sink.addError("show toggle");
         }
         print("Not match");
         confirmPasswordController.sink.addError(ConstantText.passwordNotMatch);
@@ -80,7 +87,7 @@ isError.sink.add(true);
       }
     }
     else if(!validateStructure(passwordController.value.toString())){
-          passwordController.sink.addError("Invalid Format");
+          passwordController.sink.addError("show toggle");
       
     }
     
@@ -106,7 +113,7 @@ void confirmPasswordTap() {
       passwordController.sink.addError(ConstantText.fieldRequired);
     }
     else if(!validateStructure(passwordController.value.toString())){
-      passwordController.sink.addError(ConstantText.invalidEmail);
+      passwordController.sink.addError(ConstantText.invalidFormat);
     }
   }
    Stream<bool> get validateForm => Rx.combineLatest2(
@@ -115,19 +122,19 @@ void confirmPasswordTap() {
         (a, b,) => true,
   );
 
-  void sendOTP(BuildContext context)async {
+   sendOTP(BuildContext context, {String email=""})async {
     if(userEmailController.value.isEmpty){
       userEmailController.sink.addError(ConstantText.fieldRequired);
     }
     else if(!isEmailValid(userEmailController.value)){
-  userEmailController.sink.addError(ConstantText.invalidEmail);
+  userEmailController.sink.addError(ConstantText.invalidFormat);
     
     }
     else{
      isLoading.sink.add(true);
     
   Map<String, dynamic> params = {
-   "email": userEmailController.stream.value,
+   "email":email.isEmpty? userEmailController.stream.value:email,
  
     };
     print(params);
@@ -141,14 +148,19 @@ void confirmPasswordTap() {
 print(response.statusCode);
 if(response.statusCode==200){
   // Navigation.navigateToScreen(context, "forgotOTP/");
-  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>OTPScreen(email: userEmailController.stream.value,)));
+ if(email.isEmpty){
+ Navigator.of(context).push(MaterialPageRoute(builder: (_){
+    return BlocProvider.value(value: BlocProvider.of<ForgotpasswordCubit>(context),child: OTPScreen(email:email.length==0?userEmailController.stream.value.toString():email ,),);
+  }));
+ 
+ }
   isLoading.sink.add(false);
 
 }
 else if(response.statusCode==404){
   isLoading.sink.add(false);
   isError.sink.addError("Email not register");
-  print("OOOO");
+ 
 }
 isLoading.sink.add(false);
 
@@ -161,44 +173,107 @@ isLoading.sink.add(false);
 
     
   }
-   void verifyOTP(String otpValue, String email,BuildContext context)async {
-  //     "email": "shajith2243265@gmail.com",
-  // "otp": "337692"
+    verifyOTP(String otpValue, String email,BuildContext context)async {
+  
    isLoading.sink.add(true);
+   isError.sink.add(true);
     
   Map<String, dynamic> params = {
        "email": email,
-  "otp": otpValue
+        "otp": otpValue
     };
-    print(params);
         var url=Uri.parse(APIConstants.BASE_URL.toString()+APIConstants.OTP_VERIFY.toString());
-   print(url);
    try{
 
     var response=await http.post(url, body: jsonEncode(params), headers: { 'Content-type': 'application/json',
               'Accept': 'application/json',
               });
-print(response.statusCode);
+              print(response.statusCode);
 if(response.statusCode==200){
-  // Navigation.navigateToScreen(context, "forgotOTP/");
-  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NewPasswordScreen(email: userEmailController.stream.value,)));
+   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NewPasswordScreen(email: email,)));
   isLoading.sink.add(false);
 
 }
 else if(response.statusCode==400){
-  isError.sink.addError("OTP Expired");
-  print(isError.value.toString());
-  print("NEB");
+  
+  isOTPError.sink.add(true);
+  print(isOTPError.value.toString());
+var message=jsonDecode(response.body);
+print(message["detail"]["message"]);
+if(message["detail"]["message"]=="check your OTP"){
+  print("INVALID OTP");
+}
+else if(message["detail"]["message"]=="OTP expired"){
+  print("SSSS");
+}
+ 
 }
 isLoading.sink.add(false);
-
+ 
 }
 
 catch(e){print(e.toString());
 isLoading.sink.add(false);
+isOTPError.sink.addError("Email not register");
+ 
 }
-   }
+     }
+   
+  void changePassword(String email, String password,BuildContext context)async {
   
+   isLoading.sink.add(true);
+   isError.sink.add(true);
+    
+  Map<String, dynamic> params = {
+       "email": email,
+        "password": password
+    };
+    print(params);
+        var url=Uri.parse(APIConstants.BASE_URL.toString()+APIConstants.PASSWORD_CHANGE.toString());
+   try{
 
+    var response=await http.put(url, body: jsonEncode(params), headers: { 'Content-type': 'application/json',
+              'Accept': 'application/json',
+              });
+              print(response.statusCode);
+if(response.statusCode==200){
+   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>LoginScreen()));
+  isLoading.sink.add(false);
+
+}
+else if(response.statusCode==400){
+  isLoading.sink.add(false);
+  print("ERRR");
+  try{
+isError.sink.addError("Email not register");
+print("ERRRR12");print(isError.error);
+  
+  }
+   catch(e)
+   {
+print("ERRRR1");
+   }
+ 
+}
+isLoading.sink.add(false);
+ 
+}
+
+catch(e){print(e.toString());
+isLoading.sink.add(false);
+isError.sink.addError("Email not register");
+ 
+}
+     }
+void passwordTap() {
+  
+    if(passwordController.value.isEmpty){
+      passwordController.sink.addError("show toggle");
+    }
+    else if(!validateStructure(passwordController.value.toString())){
+       passwordController.sink.addError("show toggle");
+   
+    }
+  }
 
 }

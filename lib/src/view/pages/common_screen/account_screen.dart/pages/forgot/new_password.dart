@@ -24,6 +24,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
     super.initState();
   
     this._forgotpasswordCubit=ForgotpasswordCubit();
+    print(widget.email);
   }
   @override
   void dispose() {
@@ -60,7 +61,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   padding: const EdgeInsets.only(top:24.0),
                   child: PasswordTextFieldWithError(isPassword: true,cubit: _forgotpasswordCubit, stream: _forgotpasswordCubit.passwordStream,
                    label: ConstantText.resetPassswordNew,
-                    onTap:(){},
+                    onTap:(){_forgotpasswordCubit.passwordTap();},
                     isValidatorEnable: true,
                                 onChange: (text) {
                                   _forgotpasswordCubit.updateUserNewPassword(text);
@@ -78,13 +79,26 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                                   _forgotpasswordCubit.updateUserConfirmPassword(text);
                                 }),
                 ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical:8.0),
-            child: PasswordMessage(),
-          ),
+          
+          
           Padding(
             padding: const EdgeInsets.only(top: 60),
-            child: InkWell(child: CustomButton(label: ConstantText.resetPasssword,margin: 0.0,)),
+            child: StreamBuilder(
+              stream: _forgotpasswordCubit.validateForm,
+              builder: (context, snapshot) {
+                return InkWell(
+                  onTap: (){
+                   
+                    if(snapshot.hasError){
+                      print("VALIDATE");
+                    }
+                    else{
+                      _forgotpasswordCubit.changePassword(widget.email, _forgotpasswordCubit.passwordController.value, context);
+                    }
+                  },
+                  child:_forgotpasswordCubit.isLoading==true?CustomButton(label: "label",isLoading: true,): CustomButton(label: ConstantText.resetPasssword,margin: 0.0,));
+              }
+            ),
           )
         ],),
       ),

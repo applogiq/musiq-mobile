@@ -92,7 +92,7 @@ class _PasswordTextFieldWithErrorState extends State<PasswordTextFieldWithError>
             if(widget.isValidatorEnable){
               if(snapshot.hasError){
                 if(snapshot.error=="show toggle"){
-                  print(widget._cubit.passwordValid.value);
+                  // print(widget._cubit.passwordValid.value);
                   return PasswordMessage();
                 }
                 else if(snapshot.error=="show toggle alert"){
