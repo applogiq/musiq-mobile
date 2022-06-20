@@ -1,16 +1,19 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musiq/src/helpers/constants/api.dart';
 import 'package:musiq/src/helpers/constants/string.dart';
 import 'package:musiq/src/helpers/utils/navigation.dart';
+import 'package:musiq/src/view/pages/common_screen/account_screen.dart/select_your%20fav_artist.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../helpers/utils/validation.dart';
 import 'package:http/http.dart'as http;
 
+import '../../model/api_model/artist_model.dart';
 import '../../model/api_model/user_model.dart';
 part 'login_state.dart';
 
@@ -195,8 +198,10 @@ isLoading.sink.add(false);
               value: value.toString(),
             );
           }
+  //         ArtistModel artistModel= await getArtist();
+  //  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SelectYourFavList()));
     Future.delayed(Duration(milliseconds: 600),(){
-      Navigation.navigateReplaceToScreen(context, 'home/');
+      Navigation.navigateReplaceToScreen(context, 'selectArtistPref//');
      clearStreams();
     });
   }
@@ -219,6 +224,24 @@ isLoading.sink.add(false);
   }
   }
 }
+Future<ArtistModel> getArtist()async{
+  await Future.delayed(Duration(seconds: 2),(){});
+    var token=await storage.read(key: "access_token");
+    var url=Uri.parse(APIConstants.BASE_URL+APIConstants.ARTIST_LIST,);
+    var header={ 'Content-type': 'application/json',
+              'Accept': 'application/json',
+              "Authorization": "Bearer $token"
+              };
+    print(url);
+    var res=await http.get(url,headers: header);
+   
+      var data=jsonDecode(res.body);
+      ArtistModel artistModel=ArtistModel.fromMap(data);
+      // print(artistModel.records.toString());
+      // print(artistModel.toMap());
+    return artistModel;
+    
+  }
 
 
 }

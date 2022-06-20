@@ -32,9 +32,8 @@ class _ForgotPasswordMainScreenState extends State<ForgotPasswordMainScreen> {
   @override
   void dispose() {
     
+    
     super.dispose();
-    // _forgotpasswordCubit.close();
-  
   }
   @override
   Widget build(BuildContext context) {

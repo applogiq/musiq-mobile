@@ -19,20 +19,22 @@ import 'components/custom_loading_button.dart';
 import 'components/logo_image.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
-
+   LoginScreen({Key? key, this.passwordReset=false}) : super(key: key);
+   bool passwordReset;
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
  late LoginBloc _loginScreenCubit;
+ late bool passwordReset;
   @override
   void initState() {
     
     super.initState();
   
     this._loginScreenCubit=LoginBloc();
+    passwordReset=widget.passwordReset;
   }
   @override
   void dispose() {
@@ -40,6 +42,14 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
     _loginScreenCubit.dispose();
   
+  }
+  resetPasswordTimer()async{
+Future.delayed(Duration(seconds: 2),(){
+  setState(() {
+    
+ widget.passwordReset=false;
+  });
+});
   }
   @override
   Widget build(BuildContext context) {
@@ -101,10 +111,46 @@ class _LoginScreenState extends State<LoginScreen> {
                             _loginScreenCubit.updatePassword(text);
                           }),
                       InkWell(onTap: () => Navigation.navigateToScreen(context, "forgotMain/"),child: ForgotPassword()),
-                      StatusContainer(cubit: _loginScreenCubit),
+                      widget.passwordReset?
+                      FutureBuilder(
+                        future: resetPasswordTimer()
+                        ,builder:(context,snapshot){
+                        return Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 50,
+                  margin: EdgeInsets.symmetric(vertical: 16),
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color:  CustomColor.successStatusColor,
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.info,
+                          color: snapshot.hasError ? Colors.red : Colors.green),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        ConstantText.passwordResetSuccess,
+                        style: fontWeight400(
+                          size: 14.0,
+                          color: CustomColor.subTitle2,
+                        ),
+                      ),
+                      Spacer(),
+                      InkWell(
+                          onTap: () {
+                           },
+                          child: Icon(Icons.close))
+                    ],
+                  ),
+                );
+                      } ):EmptyBox(),
+                       StatusContainer(cubit: _loginScreenCubit),
                       LoginButton(loginScreenCubit: _loginScreenCubit),
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 20.0),
+                        padding: const EdgeInsets.only(bottom: 2.0),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -155,7 +201,7 @@ class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 50.0),
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: StreamBuilder(
           stream: _loginScreenCubit.validateForm,
           builder: (context, snapshot) {

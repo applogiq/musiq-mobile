@@ -157,5 +157,6 @@ class _CustomArtistVerticalListState extends State<CustomArtistVerticalList> {
         ),
       ),
     ));
+ 
   }
 }

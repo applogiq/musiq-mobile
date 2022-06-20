@@ -33,6 +33,10 @@ class ConstantText{
   static String resetPassswordTitle= "Please enter your new password";
   static String resetPassswordNew= "New password";
   static String resetPasssword= "Reset";
+  static String expiredOTP='The OTP you have entered has been expired. Please click "Resend OTP"';
+  static String invalidOTP='The OTP you have entered is invalid';
+  static String sendOTPSuccessfully='OTP send successfully';
+  static String passwordResetSuccess='Password reset successful';
   
 
   

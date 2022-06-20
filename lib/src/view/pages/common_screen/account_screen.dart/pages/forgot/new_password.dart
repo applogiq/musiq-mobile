@@ -93,10 +93,16 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       print("VALIDATE");
                     }
                     else{
-                      _forgotpasswordCubit.changePassword(widget.email, _forgotpasswordCubit.passwordController.value, context);
+                     print("Valid");
+                     _forgotpasswordCubit.changePassword(widget.email, _forgotpasswordCubit.passwordController.value, context);
                     }
                   },
-                  child:_forgotpasswordCubit.isLoading==true?CustomButton(label: "label",isLoading: true,): CustomButton(label: ConstantText.resetPasssword,margin: 0.0,));
+                  child: StreamBuilder(
+                    stream: _forgotpasswordCubit.loadingStream,
+                    builder: (context, snapshot) {
+                      return snapshot.data==true?CustomButton(label: ConstantText.resetPasssword,isLoading: true,margin: 0.0,): CustomButton(label: ConstantText.resetPasssword,margin: 0.0,);
+                    }
+                  ));
               }
             ),
           )

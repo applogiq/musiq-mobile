@@ -26,6 +26,7 @@ class ForgotpasswordCubit extends Cubit<ForgotpasswordState>with InputValidation
    final isLoading=BehaviorSubject<bool>.seeded(false);
    final isError=BehaviorSubject<bool>.seeded(false);
    final isOTPError=BehaviorSubject<bool>.seeded(false);
+   final isOTPSend=BehaviorSubject<bool>.seeded(false);
  
   
   Stream<String> get userEmailStream => userEmailController.stream;
@@ -35,9 +36,15 @@ class ForgotpasswordCubit extends Cubit<ForgotpasswordState>with InputValidation
   Stream<bool> get loadingStream => isLoading.stream;
   Stream<bool> get errorStream => isError.stream;
   Stream<bool> get errorOTPStream => isOTPError.stream;
+  Stream<bool> get successOTPStream => isOTPSend.stream;
   clearStreams() {
-    isLoading.sink.add(false);
-     isError.sink.add(false);
+      isError.close();
+      isLoading.close();
+      isOTPError.close();
+     userEmailController.close();
+     passwordController.close();
+     confirmPasswordController.close();
+print("STREAMS CLEAR");
   }
   void updateUserEmail(String text) {
 
@@ -147,14 +154,15 @@ void confirmPasswordTap() {
               });
 print(response.statusCode);
 if(response.statusCode==200){
+    isLoading.sink.add(false);
   // Navigation.navigateToScreen(context, "forgotOTP/");
- if(email.isEmpty){
+ //  if(email.isEmpty){
  Navigator.of(context).push(MaterialPageRoute(builder: (_){
-    return BlocProvider.value(value: BlocProvider.of<ForgotpasswordCubit>(context),child: OTPScreen(email:email.length==0?userEmailController.stream.value.toString():email ,),);
+    return OTPScreen(email:email.length==0?userEmailController.stream.value.toString():email ,);
   }));
  
- }
-  isLoading.sink.add(false);
+//  }
+
 
 }
 else if(response.statusCode==404){
@@ -173,98 +181,152 @@ isLoading.sink.add(false);
 
     
   }
-    verifyOTP(String otpValue, String email,BuildContext context)async {
+
+
+
+closeError(){
+  isOTPError.sink.add(false);
+}
+
+
+//     verifyOTP(String otpValue, String email,BuildContext context)async {
   
-   isLoading.sink.add(true);
-   isError.sink.add(true);
+//    isLoading.sink.add(true);
+//    isOTPError.sink.add(true);
     
-  Map<String, dynamic> params = {
+//   Map<String, dynamic> params = {
+//        "email": email,
+//         "otp": otpValue
+//     };
+//         var url=Uri.parse(APIConstants.BASE_URL.toString()+APIConstants.OTP_VERIFY.toString());
+//    try{
+
+//     var response=await http.post(url, body: jsonEncode(params), headers: { 'Content-type': 'application/json',
+//               'Accept': 'application/json',
+//               });
+//               print(response.statusCode);
+// if(response.statusCode==200){
+//    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NewPasswordScreen(email: email,)));
+//   isLoading.sink.add(false);
+
+// }
+// else if(response.statusCode==400){
+  
+//   isOTPError.sink.add(true);
+//   print(isOTPError.value.toString());
+// var message=jsonDecode(response.body);
+// print(message["detail"]["message"]);
+// if(message["detail"]["message"]=="check your OTP"){
+//   print("INVALID OTP");
+// }
+// else if(message["detail"]["message"]=="OTP expired"){
+//   print("SSSS");
+// }
+ 
+// }
+// isLoading.sink.add(false);
+ 
+// }
+
+// catch(e){print(e.toString());
+// isLoading.sink.add(false);
+// isOTPError.sink.addError("Email not register");
+ 
+// }
+//      }
+   
+  void verifyOTP(String otpValue, String email, BuildContext context)async {
+    print(otpValue);
+    print(email);
+       isLoading.sink.add(true);
+      Map<String, dynamic> params = {
        "email": email,
         "otp": otpValue
     };
         var url=Uri.parse(APIConstants.BASE_URL.toString()+APIConstants.OTP_VERIFY.toString());
-   try{
+
+      try{
 
     var response=await http.post(url, body: jsonEncode(params), headers: { 'Content-type': 'application/json',
               'Accept': 'application/json',
               });
               print(response.statusCode);
-if(response.statusCode==200){
-   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NewPasswordScreen(email: email,)));
-  isLoading.sink.add(false);
+              if(response.statusCode==200){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NewPasswordScreen(email: email)));
+                isOTPError.sink.add(false);
+                isLoading.sink.add(false);
+              }
+              else if(response.statusCode==400){
 
-}
-else if(response.statusCode==400){
-  
-  isOTPError.sink.add(true);
-  print(isOTPError.value.toString());
-var message=jsonDecode(response.body);
+       var message=jsonDecode(response.body);
 print(message["detail"]["message"]);
 if(message["detail"]["message"]=="check your OTP"){
-  print("INVALID OTP");
+    isOTPError.sink.addError(ConstantText.invalidOTP);
+     
 }
 else if(message["detail"]["message"]=="OTP expired"){
-  print("SSSS");
-}
- 
-}
-isLoading.sink.add(false);
- 
-}
-
-catch(e){print(e.toString());
-isLoading.sink.add(false);
-isOTPError.sink.addError("Email not register");
- 
-}
+  isOTPError.sink.addError(ConstantText.expiredOTP);
      }
-   
-  void changePassword(String email, String password,BuildContext context)async {
-  
-   isLoading.sink.add(true);
-   isError.sink.add(true);
-    
-  Map<String, dynamic> params = {
-       "email": email,
-        "password": password
-    };
-    print(params);
-        var url=Uri.parse(APIConstants.BASE_URL.toString()+APIConstants.PASSWORD_CHANGE.toString());
-   try{
+              }
+      }
+      catch(e){
+        print(e.toString());
+      }
+await Future.delayed(Duration(milliseconds: 700),(){
+       isLoading.sink.add(false);
 
-    var response=await http.put(url, body: jsonEncode(params), headers: { 'Content-type': 'application/json',
-              'Accept': 'application/json',
-              });
-              print(response.statusCode);
-if(response.statusCode==200){
-   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>LoginScreen()));
-  isLoading.sink.add(false);
-
-}
-else if(response.statusCode==400){
-  isLoading.sink.add(false);
-  print("ERRR");
-  try{
-isError.sink.addError("Email not register");
-print("ERRRR12");print(isError.error);
-  
+});
   }
-   catch(e)
-   {
-print("ERRRR1");
-   }
- 
-}
-isLoading.sink.add(false);
- 
-}
 
-catch(e){print(e.toString());
-isLoading.sink.add(false);
-isError.sink.addError("Email not register");
+
+
+//   void changePassword(String email, String password,BuildContext context)async {
+  
+//    isLoading.sink.add(true);
+//    isError.sink.add(true);
+    
+//   Map<String, dynamic> params = {
+//        "email": email,
+//         "password": password
+//     };
+//     print(params);
+//         var url=Uri.parse(APIConstants.BASE_URL.toString()+APIConstants.PASSWORD_CHANGE.toString());
+//    try{
+
+//     var response=await http.put(url, body: jsonEncode(params), headers: { 'Content-type': 'application/json',
+//               'Accept': 'application/json',
+//               });
+//               print(response.statusCode);
+// if(response.statusCode==200){
+//    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>LoginScreen()));
+//   isLoading.sink.add(false);
+
+// }
+// else if(response.statusCode==400){
+//   isLoading.sink.add(false);
+//   print("ERRR");
+//   try{
+// isError.sink.addError("Email not register");
+// print("ERRRR12");print(isError.error);
+  
+//   }
+//    catch(e)
+//    {
+// print("ERRRR1");
+//    }
  
-}
-     }
+// }
+// isLoading.sink.add(false);
+ 
+// }
+
+// catch(e){print(e.toString());
+// isLoading.sink.add(false);
+// isError.sink.addError("Email not register");
+ 
+// }
+//      }
+
 void passwordTap() {
   
     if(passwordController.value.isEmpty){
@@ -276,4 +338,63 @@ void passwordTap() {
     }
   }
 
+  void resendOtp(BuildContext context, {required String email})async {
+    print("RESEND OTP");
+    print(email);
+     Map<String, dynamic> params = {
+   "email":email,
+ 
+    };
+    print(params);
+        var url=Uri.parse(APIConstants.BASE_URL.toString()+APIConstants.SEND_OTP.toString());
+   print(url);
+   try{
+
+    var response=await http.post(url, body: jsonEncode(params), headers: { 'Content-type': 'application/json',
+              'Accept': 'application/json',
+              });
+              print(response.statusCode);
+              print(response.body);
+              if(response.statusCode==200){
+isOTPSend.sink.add(true);
+Future.delayed(Duration(seconds: 2),(){
+  isOTPSend.sink.add(false);
+});
+              }
+  }
+  catch(e){
+    print(e.toString());
+  }}
+
+  void changePassword(String email, String password, BuildContext context) async{
+    isLoading.sink.add(true);
+    Map<String, dynamic> params = {
+       "email": email,
+        "password": password
+    };
+    print(params);
+        var url=Uri.parse(APIConstants.BASE_URL.toString()+APIConstants.PASSWORD_CHANGE.toString());
+        print(url);
+        try{
+              var response=await http.put(url, body: jsonEncode(params), headers: { 'Content-type': 'application/json',
+              'Accept': 'application/json',
+              });
+              print(response.statusCode);
+              if(response.statusCode==200){
+isLoading.sink.add(false);
+  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>LoginScreen(passwordReset: true,)));
+
+              }
+              else{
+                isLoading.sink.add(false);
+
+              }
+        }
+        catch(e){
+          print(e.toString());
+          isLoading.sink.add(false);
+
+        }
+ 
+  }
 }

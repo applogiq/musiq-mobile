@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: themeData(context),
-        home: SplashScreen(),
+        home: SelectYourFavList(),
         routes: {
           'onboarding/':(BuildContext ctx)=>OnboardingScreen(),
           'login/': (BuildContext ctx) => LoginScreen(),
