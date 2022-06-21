@@ -1,0 +1,54 @@
+import 'dart:convert';
+
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart'as http;
+import 'package:musiq/src/helpers/constants/api.dart';
+class APICall{
+   var storage=FlutterSecureStorage();
+ 
+  var header={ 'Content-type': 'application/json',
+              'Accept': 'application/json',
+              // "Authorization": "Bearer $token"
+              };
+  putRequestWithAuth(String endPoint,Map params)async{
+     var token=await storage.read(key: "access_token");
+     var user_id=await storage.read(key: "register_id");
+     header["Authorization"]="Bearer $token";
+     params["user_id"]= user_id;
+
+    var url=Uri.parse(APIConstants.BASE_URL+endPoint);
+
+    var response=await http.put(url,headers: header,body:jsonEncode(params) );
+    print(response.statusCode);
+    return response;
+   
+    // var response=http.put();
+  }
+   getRequestWithAuth(String endPoint,Map params)async{
+     var token=await storage.read(key: "access_token");
+    //  var user_id=await storage.read(key: "register_id");
+     header["Authorization"]="Bearer $token";
+    var urlSet="${APIConstants.BASE_URL}songs?artist_id=${params["artist_id"]}&skip=${params["skip"]}&limit=${params["limit"]}";
+print(urlSet);
+    //  params["user_id"]= user_id;
+
+    var url=Uri.parse(urlSet);
+
+    var response=await http.get(url,headers: header, );
+    print(response.statusCode);
+    print(response.body);
+    return response;
+   
+    // var response=http.put();
+  }
+  postRequestWithoutAuth(Uri url,Map params)async{
+     
+    
+    print(params);
+    
+     print(url);
+    
+    var response=await http.post(url, body: jsonEncode(params), headers: header);
+              return response;
+  }
+}

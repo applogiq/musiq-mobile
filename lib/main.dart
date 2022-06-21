@@ -40,11 +40,12 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: themeData(context),
-        home: SelectYourFavList(),
+        home: SplashScreen(),
         routes: {
           'onboarding/':(BuildContext ctx)=>OnboardingScreen(),
           'login/': (BuildContext ctx) => LoginScreen(),
           'register/': (BuildContext ctx) => RegisterScreen(),
+          'bottom/': (BuildContext ctx) => CustomBottomBar(),
           'selectArtistPref/':(BuildContext ctx)=>SelectYourFavList(),
           'forgotMain/':(BuildContext ctx)=>ForgotPasswordMainScreen(),
           'forgotOTP/':(BuildContext ctx)=>OTPScreen(),

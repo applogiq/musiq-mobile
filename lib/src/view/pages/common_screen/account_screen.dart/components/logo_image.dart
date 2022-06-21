@@ -29,6 +29,6 @@ class LogoWithImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(Images.logoImageWithName,height: 150,);
+    return Image.asset(Images.logoImageWithName,height: 90,);
   }
 }

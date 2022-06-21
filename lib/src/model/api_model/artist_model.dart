@@ -49,7 +49,7 @@ class Record {
     });
 
     String artistId;
-    int followers;
+    int? followers;
     DateTime createdAt;
     dynamic updatedAt;
     dynamic updatedBy;

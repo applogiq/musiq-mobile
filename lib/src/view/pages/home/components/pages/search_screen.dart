@@ -16,9 +16,9 @@ class SearchScreen extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
-      SystemUiOverlay.bottom,
-    ]);
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
+    //   SystemUiOverlay.bottom,
+    // ]);
     return SafeArea(
       child: Scaffold(
         body: Column(

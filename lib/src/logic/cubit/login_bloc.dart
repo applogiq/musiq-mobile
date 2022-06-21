@@ -187,6 +187,7 @@ isLoading.sink.add(false);
      var data=jsonDecode(response.body.toString());
   User user=User.fromMap(data);
   print(user.toMap());
+  print(user.records.preference.artist.length==0);
    await storage.deleteAll();
   
   var userData = user.records.toMap();
@@ -198,11 +199,19 @@ isLoading.sink.add(false);
               value: value.toString(),
             );
           }
+         await storage.write(key: "artist_list", value:jsonEncode(user.records.preference.artist));
+         await storage.write(key: "password_cred", value:passwordController.stream.value);
+         var list1=await storage.read(key: "artist_list");
+         print(list1);
   //         ArtistModel artistModel= await getArtist();
-  //  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SelectYourFavList()));
+   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SelectYourFavList()));
     Future.delayed(Duration(milliseconds: 600),(){
-      Navigation.navigateReplaceToScreen(context, 'selectArtistPref//');
+      if(user.records.preference.artist.length==0){
+        Navigation.navigateReplaceToScreen(context, 'selectArtistPref//');
      clearStreams();
+      }else{
+        Navigation.navigateReplaceToScreen(context, "home/");
+      }
     });
   }
   else if(response.statusCode==404){

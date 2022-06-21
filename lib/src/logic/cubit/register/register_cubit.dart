@@ -86,8 +86,14 @@ if(response.statusCode==201){
               value: value.toString(),
             );
           }
+          await storage.write(key: "artist_list", value:jsonEncode(user.records.preference.artist));
+         await storage.write(key: "password_cred", value:_passwordController.stream.value);
+         var list1=await storage.read(key: "artist_list");
+         print(list1);
               isLoading.sink.add(false);
-   Navigation.navigateReplaceToScreen(context, 'selectArtistPref/');
+  
+        Navigation.navigateReplaceToScreen(context, 'selectArtistPref//');
+    
    
   
 }

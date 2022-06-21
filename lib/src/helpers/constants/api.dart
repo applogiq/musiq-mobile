@@ -7,10 +7,11 @@ class APIConstants{
  static String REGISTER="users/register";
  static String SEND_OTP="users/email";
  static String OTP_VERIFY="users/email-otp/verify";
- static String PASSWORD_CHANGE="users/email-otp/";
+ static String PASSWORD_CHANGE="users/email/forget-password";
  static String ARTIST_LIST="artist/?skip=0&limit=100";
-//  http://192.168.29.184:3000/api/v1/artist/?skip=0&limit=100
-// http://{IPAddr}:{port}/public/artists/{artist_id}.png
+ static String ARTIST_FOLLOWING="users/follow";
+ static String ARTIST_SONG="songs?";
 
-//  users/register users/email-otp/verify users/email-otp/
+//  http://192.168.29.184:3000/api/v1/songs?artist_id=2&skip=0&limit=100
+
 }
