@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/constants/style.dart';
+import 'package:musiq/src/model/api_model/song_list_model.dart';
 import 'package:musiq/src/view/pages/play/play_screen.dart';
 import 'package:musiq/src/view/widgets/custom_color_container.dart';
 
+import '../../../../../helpers/constants/api.dart';
+
 class CustomSongVerticalList extends StatelessWidget {
   CustomSongVerticalList(
-      {Key? key, required this.images, this.playButton = true})
+      {Key? key, required this.songList, this.playButton = true})
       : super(key: key);
 
-  final List images;
+  SongList songList;
   bool playButton;
   
 
@@ -17,7 +20,7 @@ class CustomSongVerticalList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
         children: List.generate(
-      images.length,
+      songList.records.length,
       (index) => Container(
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.all(8),
@@ -27,9 +30,10 @@ class CustomSongVerticalList extends StatelessWidget {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => PlayScreen(
                   index: index,
-                      imageURL: images[index].imageURL,
-                      songName: images[index].title,
-                      artistName: images[index].subTitle,
+                  id:songList.records[index].id.toString(),
+                      imageURL:  "${APIConstants.SONG_BASE_URL}public/music/tamil/${songList.records[index].albumDetails.name[0].toUpperCase()}/${songList.records[index].albumDetails.name}/image/${songList.records[index].albumDetails.albumId}.png",
+                      songName: songList.records[index].name,
+                      artistName: songList.records[index].albumDetails.musicDirectorName[0].toString(),
                     )));
           },
           child: Row(
@@ -40,8 +44,9 @@ class CustomSongVerticalList extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: CustomColorContainer(
-                    child: Image.asset(
-                      images[index].imageURL,
+                    child: Image.network(
+                      "${APIConstants.SONG_BASE_URL}public/music/tamil/${songList.records[index].albumDetails.name[0].toUpperCase()}/${songList.records[index].albumDetails.name}/image/${songList.records[index].albumDetails.albumId}.png",
+                        // "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png",
                       height: 70,
                       width: 70,
                       fit: BoxFit.fill,
@@ -58,11 +63,11 @@ class CustomSongVerticalList extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          images[index].title,
+                          songList.records[index].albumDetails.name,
                           style: fontWeight400(),
                         ),
                         Text(
-                          images[index].subTitle,
+                          songList.records[index].name,
                           style: fontWeight400(size: 12.0,),
                         ),
                       ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:musiq/src/helpers/constants/images.dart';
 import 'package:musiq/src/view/pages/home/components/pages/artist_view_all_screen.dart';
 import 'package:musiq/src/view/pages/home/components/pages/view_all_screen.dart';
+import 'package:musiq/src/view/pages/home/components/widget/loader.dart';
 import 'package:musiq/src/view/widgets/custom_color_container.dart';
 
 import '../../../../../helpers/constants/color.dart';
@@ -131,7 +132,7 @@ class ListHeaderWidget extends StatelessWidget {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => isArtist
                     ? ArtistListViewAll()
-                    : ViewAllScreen(title: title)));
+                    : LoaderScreen()));
           },
           child: Text(
             actionTitle,

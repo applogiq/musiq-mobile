@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/view/pages/home/home_screen.dart';
 import 'package:musiq/src/view/pages/library/library.dart';
 import 'package:musiq/src/view/pages/profile/profile.dart';
 
 class CustomBottomBar extends StatefulWidget {
-  const CustomBottomBar({Key? key}) : super(key: key);
-
+   const CustomBottomBar({Key? key,}) : super(key: key);
   @override
   State<CustomBottomBar> createState() => _CustomBottomBarState();
 }
@@ -27,7 +24,12 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
       _selectedScreenIndex = index;
     });
   }
-
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+   
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

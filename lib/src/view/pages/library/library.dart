@@ -57,10 +57,10 @@ class Library extends StatelessWidget {
                 child: ListView(
                   shrinkWrap: true,
                   children: [
-                    CustomSongVerticalList(
-                      images: images.favList,
-                      playButton: false,
-                    )
+                    // CustomSongVerticalList(
+                    //   images: images.favList,
+                    //   playButton: false,
+                    // )
                   ],
                 ),
               ),
@@ -93,10 +93,10 @@ class PlaylistScreen extends StatelessWidget {
         child: ListView(
           shrinkWrap: true,
           children: [
-            CustomSongVerticalList(
-              images: images.playList,
-              playButton: false,
-            )
+            // CustomSongVerticalList(
+            //   images: images.playList,
+            //   playButton: false,
+            // )
           ],
         ),
       ),

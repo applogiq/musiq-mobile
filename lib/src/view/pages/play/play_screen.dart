@@ -7,6 +7,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/constants/images.dart';
 import 'package:musiq/src/helpers/constants/style.dart';
+import 'package:musiq/src/logic/progress/audio_progress.dart';
 import 'package:musiq/src/view/pages/home/components/widget/play_button_widget.dart';
 import 'package:musiq/src/view/pages/home/components/widget/reordable_vertical_list.dart';
 import 'package:musiq/src/view/pages/home/components/widget/vertical_list_view.dart';
@@ -16,11 +17,13 @@ class PlayScreen extends StatefulWidget {
       {Key? key,
       required this.imageURL,
       required this.songName,
+      required this.id,
       required this.artistName, required this.index})
       : super(key: key);
       final int index;
   final String imageURL;
   final String songName;
+  final String id;
   final String artistName;
 
   @override
@@ -32,6 +35,10 @@ class _PlayScreenState extends State<PlayScreen> {
   double bottomSheetHeight=80;
   bool isOpen=false;
   bool hideLyrics=false;
+  int duration=0;
+  int progressDuration=0;
+  int bufferDuration=0;
+  
   @override
   void initState() {
     // TODO: implement initState
@@ -40,11 +47,26 @@ class _PlayScreenState extends State<PlayScreen> {
       SystemUiOverlay.bottom,
     ]);
      player = AudioPlayer();
-     loadSong();
+      loadSong();
     
   }
   loadSong()async{
-              await player.setAsset('assets/song/1.wav');
+             var   dur=await player.setUrl('http://192.168.29.184:3000/api/v1/audio?song_id=${widget.id}');
+              // duration=double.parse(dur.toString());
+              print(dur);
+              var parts = dur.toString().split(':');
+              List <double> lint = parts.map(double.parse).toList();
+              lint[0]=lint[0]*60*60;
+              lint[1]=lint[1]*60;
+              lint[2]=lint[2];
+              print(lint);
+              var sum = lint.reduce((a, b) => a + b);
+              print(sum.round());
+              duration=sum.round()*1000;
+              setState(() {
+                duration;
+              });
+              // print(duration);
 
   }
 @override
@@ -102,7 +124,7 @@ class _PlayScreenState extends State<PlayScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage(widget.imageURL),
+                            image: NetworkImage(widget.imageURL),
                       
                             fit: BoxFit.cover)),
                     child: Stack(children: [
@@ -182,7 +204,7 @@ class _PlayScreenState extends State<PlayScreen> {
                   flex: 5,
                   child: Column(
                     children: [SizedBox(height: 40,),
-                    Text(widget.songName,style: fontWeight500(size: 20.0),),
+                    Text(widget.songName.toUpperCase(),style: fontWeight500(size: 20.0),),
                      Text(widget.artistName,style: fontWeight400(size: 16.0,color: CustomColor.subTitle),
                     ),
               Padding(
@@ -198,21 +220,23 @@ class _PlayScreenState extends State<PlayScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: ProgressBar( progress: Duration(milliseconds: 115000),
-      buffered: Duration(milliseconds: 2000),
-      total: Duration(milliseconds: 255000),
-      progressBarColor: CustomColor.secondaryColor,
-      baseBarColor: Colors.white.withOpacity(0.24),
-      bufferedBarColor: Colors.white.withOpacity(0.24),
-      thumbColor: Colors.white,
-      barHeight: 6.0,
-      thumbRadius: 6.0,
-      onSeek: (duration) {
-      print('User selected a new time: $duration');
-       player.seek(duration );
-       
-      },),
-              ),
+                child: ProgressBar( progress: Duration(milliseconds: progressDuration),
+                        buffered: Duration(milliseconds: bufferDuration),
+                        total: Duration(milliseconds:duration),
+                        progressBarColor: CustomColor.secondaryColor,
+                        baseBarColor: Colors.white.withOpacity(0.24),
+                        bufferedBarColor: Colors.white.withOpacity(0.24),
+                        thumbColor: Colors.white,
+                        barHeight: 6.0,
+                        thumbRadius: 6.0,
+                        onSeek: (duration) {
+                        print('User selected a new time: $duration');
+                         player.seek(duration );
+                         
+                        },)
+                  
+                
+              ,
       //              InkWell(onTap: ()async{
       //                try{
     
@@ -228,7 +252,7 @@ class _PlayScreenState extends State<PlayScreen> {
       //               //  player.play(); 
       //              },child: Icon(Icons.play_arrow))
       
-    
+              ),
     
     Padding(
       padding: const EdgeInsets.all(16.0),
@@ -253,6 +277,22 @@ class _PlayScreenState extends State<PlayScreen> {
       //                 player.setVolume(5.0);
                       
       player.play();
+    await player.positionStream.listen((event) {
+      print(event);
+      progressDuration=event.inMilliseconds;
+      setState(() {
+        progressDuration;
+      });
+    });
+    await player.bufferedPositionStream.listen((event) {
+      print(event);
+      bufferDuration=event.inMilliseconds;
+      setState(() {
+        bufferDuration;
+      });
+    });
+   
+   
       setState(() {
       player.playing;
       });

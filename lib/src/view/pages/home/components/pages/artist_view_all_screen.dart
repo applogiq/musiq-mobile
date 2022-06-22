@@ -39,11 +39,11 @@ class ArtistListViewAll extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 6),
                   child: InkWell(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ViewAllScreen(
-                              imageURL:
-                                  Images().artistSearchList[index].imageURL,
-                              title: Images().artistSearchList[index].title)));
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //     builder: (context) => ViewAllScreen(
+                      //         imageURL:
+                      //             Images().artistSearchList[index].imageURL,
+                      //         title: Images().artistSearchList[index].title)));
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,

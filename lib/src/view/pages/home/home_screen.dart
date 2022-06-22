@@ -7,10 +7,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/constants/images.dart';
 import 'package:musiq/src/logic/services/api_call.dart';
+import 'package:musiq/src/logic/services/api_route.dart';
 import 'package:musiq/src/view/pages/home/components/pages/search_screen.dart';
 import 'package:musiq/src/view/pages/home/components/pages/view_all_screen.dart';
 import 'package:musiq/src/view/pages/home/components/widget/artist_list_view.dart';
 import 'package:musiq/src/view/pages/home/components/widget/horizontal_list_view.dart';
+import 'package:musiq/src/view/pages/home/components/widget/loader.dart';
 import 'package:musiq/src/view/pages/home/components/widget/trending_hits.dart';
 import 'package:musiq/src/view/pages/home/components/widget/vertical_list_view.dart';
 import 'package:musiq/src/view/widgets/custom_color_container.dart';
@@ -20,7 +22,7 @@ import '../../../model/api_model/artist_model.dart';
 import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key,}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -28,15 +30,29 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Images images = Images();
-  var storage=FlutterSecureStorage();
+  var storage=const FlutterSecureStorage();
+  APIRoute apiRoute=APIRoute();
+  var artistData;
+  bool isLoad=false;
    
   // Api
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getArtist();
+    getData();
 
+  }
+  getData()async{
+    isLoad=false;
+    setState(() {
+      isLoad;
+    });
+    artistData= await apiRoute.getArtist();
+    isLoad=true;
+    setState(() {
+      isLoad;
+    });
   }
   Future<ArtistModel> getArtist()async{
   await Future.delayed(Duration(seconds: 2),(){});
@@ -67,7 +83,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: ListView(
+        body:
+        isLoad==false?
+        LoaderScreen()
+        :
+         ListView(
           shrinkWrap: true,
           children: [
             SizedBox(
@@ -133,106 +153,106 @@ class _HomePageState extends State<HomePage> {
                 actionTitle: "",
                 listWidget:
                     CustomHorizontalListview(images: images.recommendedSong)),
-            ArtistListView(images: images.artistList),
-          Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 0.0),
-          child: ListHeaderWidget(
-            title: "Artists",
-            actionTitle: "View All",
-            isArtist: true,
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.only(top: 4),
-          height: 300,
-          child: FutureBuilder<ArtistModel>(
-            future: getArtist(),
-            builder: (context,snapShot) {
-              if(snapShot.connectionState==ConnectionState.waiting){
-                return Center(child: CircularProgressIndicator(),);
-              }
-              else if(snapShot.data==null){
-                return Center(child: Text("No Data"),);
-              }
-              else{
+            ArtistListView(artist: artistData),
+//           Column(
+//       children: [
+//         Padding(
+//           padding: EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 0.0),
+//           child: ListHeaderWidget(
+//             title: "Artists",
+//             actionTitle: "View All",
+//             isArtist: true,
+//           ),
+//         ),
+//         Container(
+//           padding: EdgeInsets.only(top: 4),
+//           height: 300,
+//           child: FutureBuilder<ArtistModel>(
+//             future: getArtist(),
+//             builder: (context,snapShot) {
+//               if(snapShot.connectionState==ConnectionState.waiting){
+//                 return Center(child: CircularProgressIndicator(),);
+//               }
+//               else if(snapShot.data==null){
+//                 return Center(child: Text("No Data"),);
+//               }
+//               else{
                 
-                  var record=snapShot.data!.records;
+//                   var record=snapShot.data!.records;
                    
-                        return ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  itemCount: snapShot.data!.records.length,
-                  itemBuilder: (context, index) => Row(
-                        children: [
-                          index == 0
-                              ? SizedBox(
-                                  width: 12,
-                                )
-                              : SizedBox(),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 6),
-                            child: InkWell(
-                              onTap: ()async{
-                                Map<String, String> queryParams = {
-  'artist_id': record[index].id.toString(),
-  'skip': '0',
-  'limit': '100',
-};
-Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewAllScreen(title:record[index].name,imageURL: record[index].isImage? APIConstants.BASE_IMAGE_URL+record[index].artistId+".png":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png",
-                                         )));
-// APICall apiCall=APICall();
-// var res=await apiCall.getRequestWithAuth("endPoint", queryParams);
+//                         return ListView.builder(
+//                   scrollDirection: Axis.horizontal,
+//                   shrinkWrap: true,
+//                   physics: BouncingScrollPhysics(),
+//                   itemCount: snapShot.data!.records.length,
+//                   itemBuilder: (context, index) => Row(
+//                         children: [
+//                           index == 0
+//                               ? SizedBox(
+//                                   width: 12,
+//                                 )
+//                               : SizedBox(),
+//                           Container(
+//                             padding: EdgeInsets.symmetric(horizontal: 6),
+//                             child: InkWell(
+//                               onTap: ()async{
+//                                 Map<String, String> queryParams = {
+//   'artist_id': record[index].id.toString(),
+//   'skip': '0',
+//   'limit': '100',
+// };
+// Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewAllScreen(title:record[index].name,imageURL: record[index].isImage? APIConstants.BASE_IMAGE_URL+record[index].artistId+".png":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png",
+//                                          )));
+// // APICall apiCall=APICall();
+// // var res=await apiCall.getRequestWithAuth("endPoint", queryParams);
 
 
-                              },
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CustomColorContainer(
-                                    child: Image.network(
-                                          record[index].isImage? APIConstants.BASE_IMAGE_URL+record[index].artistId+".png":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png",
+//                               },
+//                               child: Column(
+//                                 mainAxisAlignment: MainAxisAlignment.center,
+//                                 crossAxisAlignment: CrossAxisAlignment.start,
+//                                 children: [
+//                                   CustomColorContainer(
+//                                     child: Image.network(
+//                                           record[index].isImage? APIConstants.BASE_IMAGE_URL+record[index].artistId+".png":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png",
                                            
-                                      height: 240,
-                                      width: 200,
-                                      fit: BoxFit.cover,
+//                                       height: 240,
+//                                       width: 200,
+//                                       fit: BoxFit.cover,
                                      
-                                                errorBuilder: (context, error, stackTrace) {
-                                        return Container(
-                                          color: Colors.amber,
-                                          alignment: Alignment.center,
-                                          child: const Text(
-                                            'Whoops!',
-                                            style: TextStyle(fontSize: 30),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 6,
-                                  ),
-                                  Text(
-                                    record[index].name,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w400, fontSize: 14),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ));
+//                                                 errorBuilder: (context, error, stackTrace) {
+//                                         return Container(
+//                                           color: Colors.amber,
+//                                           alignment: Alignment.center,
+//                                           child: const Text(
+//                                             'Whoops!',
+//                                             style: TextStyle(fontSize: 30),
+//                                           ),
+//                                         );
+//                                       },
+//                                     ),
+//                                   ),
+//                                   SizedBox(
+//                                     height: 6,
+//                                   ),
+//                                   Text(
+//                                     record[index].name,
+//                                     style: TextStyle(
+//                                         fontWeight: FontWeight.w400, fontSize: 14),
+//                                   ),
+//                                 ],
+//                               ),
+//                             ),
+//                           ),
+//                         ],
+//                       ));
       
-              }
-            }
-          ),
-        )
-      ],
-    ),
+//               }
+//             }
+//           ),
+//         )
+//       ],
+//     ),
   
           
           
@@ -244,19 +264,19 @@ Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewAllScreen(t
                 listWidget: CustomHorizontalListview(
                   images: images.podcastList,
                 )),
-            Container(
-              padding: EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  ListHeaderWidget(
-                      title: "Based on your Interest", actionTitle: "View All"),
-                  Container(
-                      margin: EdgeInsets.only(top: 10),
-                      child: CustomSongVerticalList(
-                          images: images.basedOnYourInterestList))
-                ],
-              ),
-            ),
+            // Container(
+            //   padding: EdgeInsets.all(8.0),
+            //   child: Column(
+            //     children: [
+            //       ListHeaderWidget(
+            //           title: "Based on your Interest", actionTitle: "View All"),
+            //       Container(
+            //           margin: EdgeInsets.only(top: 10),
+            //           child: CustomSongVerticalList(
+            //               images: images.basedOnYourInterestList))
+            //     ],
+            //   ),
+            // ),
             HorizonalListViewWidget(
               title: "Current Mood",
               actionTitle: "",

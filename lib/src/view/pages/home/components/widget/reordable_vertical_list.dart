@@ -32,13 +32,13 @@ Container(
         child: InkWell(
           onTap: () {
             print(index);
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => PlayScreen(
-                  index: index,
-                      imageURL: widget.images[index].imageURL,
-                      songName: widget.images[index].title,
-                      artistName: widget.images[index].subTitle,
-                    )));
+            // Navigator.of(context).push(MaterialPageRoute(
+            //     builder: (context) => PlayScreen(
+            //       index: index,
+            //           imageURL: widget.images[index].imageURL,
+            //           songName: widget.images[index].title,
+            //           artistName: widget.images[index].subTitle,
+            //         )));
           },
           child: Row(
             children: [

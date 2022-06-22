@@ -50,7 +50,7 @@ if(allValues["access_token"]!=null){
   User user=User.fromMap(data);
   print(user.toMap());
   print(user.records.preference.artist.length);
-  if(user.records.preference.artist.length<3){
+  if(user.records.preference.artist.length<4){
 
     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>SelectYourFavList(artist_list: user.records.preference.artist,)));
   }

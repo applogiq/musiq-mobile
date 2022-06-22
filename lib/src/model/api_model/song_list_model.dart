@@ -1,4 +1,8 @@
+// To parse this JSON data, do
+//
+//     final songList = songListFromMap(jsonString);
 
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 SongList songListFromMap(String str) => SongList.fromMap(json.decode(str));
@@ -35,6 +39,7 @@ class SongList {
 
 class Record {
     Record({
+        required this.id,
         required this.name,
         required this.artistId,
         required this.albumId,
@@ -49,6 +54,7 @@ class Record {
         required this.albumDetails,
     });
 
+    int id;
     String name;
     List<int> artistId;
     String albumId;
@@ -63,6 +69,7 @@ class Record {
     AlbumDetails albumDetails;
 
     factory Record.fromMap(Map<String, dynamic> json) => Record(
+        id: json["id"],
         name: json["name"],
         artistId: List<int>.from(json["artist_id"].map((x) => x)),
         albumId: json["album_id"],
@@ -78,6 +85,7 @@ class Record {
     );
 
     Map<String, dynamic> toMap() => {
+        "id": id,
         "name": name,
         "artist_id": List<dynamic>.from(artistId.map((x) => x)),
         "album_id": albumId,

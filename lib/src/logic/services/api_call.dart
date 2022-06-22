@@ -24,19 +24,15 @@ class APICall{
    
     // var response=http.put();
   }
-   getRequestWithAuth(String endPoint,Map params)async{
+   getRequestWithAuth(String urlAddress,{Map? params})async{
      var token=await storage.read(key: "access_token");
-    //  var user_id=await storage.read(key: "register_id");
      header["Authorization"]="Bearer $token";
-    var urlSet="${APIConstants.BASE_URL}songs?artist_id=${params["artist_id"]}&skip=${params["skip"]}&limit=${params["limit"]}";
-print(urlSet);
-    //  params["user_id"]= user_id;
+  
 
-    var url=Uri.parse(urlSet);
+    var url=Uri.parse(urlAddress);
 
     var response=await http.get(url,headers: header, );
-    print(response.statusCode);
-    print(response.body);
+    
     return response;
    
     // var response=http.put();

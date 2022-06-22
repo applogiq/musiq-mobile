@@ -10,8 +10,10 @@ import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:musiq/src/helpers/constants/api.dart';
 import 'package:musiq/src/helpers/constants/images.dart';
 import 'package:musiq/src/logic/services/api_call.dart';
+import 'package:musiq/src/logic/services/api_route.dart';
 import 'package:musiq/src/model/api_model/artist_model.dart';
 import 'package:musiq/src/view/pages/home/components/pages/search_screen.dart';
+import 'package:musiq/src/view/pages/home/components/widget/loader.dart';
 import 'package:musiq/src/view/pages/home/home_screen.dart';
 import 'package:musiq/src/view/pages/profile/components/artist_preference_screen.dart';
 import 'package:musiq/src/view/widgets/custom_button.dart';
@@ -33,42 +35,64 @@ class SelectYourFavList extends StatefulWidget {
 
 class _SelectYourFavListState extends State<SelectYourFavList> {
   var storage=FlutterSecureStorage();
+    APIRoute apiRoute=APIRoute();
     APICall apiCall=APICall();
     var data;
-    var isLoadingList=[];
+   var followList=[];
     var isLoad=false;
   @override
   void initState() {
-    // TODO: implement initState
+  
     super.initState();
+    
    
     data=getArtist();
-    
-    
-    // getArtist();
+  
   }
-Future<ArtistModel> getArtist()async{
-  await Future.delayed(Duration(seconds: 2),(){});
-    var token=await storage.read(key: "access_token");
-    var url=Uri.parse(APIConstants.BASE_URL+APIConstants.ARTIST_LIST,);
-    var header={ 'Content-type': 'application/json',
-              'Accept': 'application/json',
-              "Authorization": "Bearer $token"
-              };
-    print(url);
-    var res=await http.get(url,headers: header);
-   
-      var data=jsonDecode(res.body);
-      print(data.toString());
-      ArtistModel artistModel=ArtistModel.fromMap(data);
-      for(int i=0;i<artistModel.records.length;i++){
-        isLoadingList.add(false);
-      }
-      print(isLoadingList);
-      // print(artistModel.records.toString());
-      // print(artistModel.toMap());
-    return artistModel;
+  getArtist()async{
+    return await apiRoute.getArtist();
+
+  }
+
+ 
+  followAndUnfollow(var record,int index)async{
     
+                                            if(widget.artist_list!.contains(record[index].artistId)){
+                                             
+                                              record[index].followers=(record[index].followers! -1);
+                                             
+
+                                           widget.artist_list!.remove(record[index].artistId);
+                           Map<String, dynamic> params = {
+                        
+                        "artist_id": record[index].artistId,
+                        "follow": false
+                        };
+                                            var res=  await apiCall.putRequestWithAuth(APIConstants.ARTIST_FOLLOWING,params);
+                                            if(res.statusCode==200){
+                                              print("Un Follow");
+                                            }
+                       
+                       
+
+                                            }
+                                            else{
+                                               record[index].followers=(record[index].followers! +1);
+                                                widget.artist_list!.add(record[index].artistId);
+                                                    Map<String, dynamic> params = {
+                        
+                        "artist_id": record[index].artistId,
+                        "follow": true
+                        };
+                                            var res=  await apiCall.putRequestWithAuth(APIConstants.ARTIST_FOLLOWING,params);
+                        if(res.statusCode==200){
+                        print("Foolow");
+                        }
+                                            }
+                                            setState(() {
+                                              widget.artist_list;
+                                              record;
+                                            });
   }
   @override
   Widget build(BuildContext context) {
@@ -98,14 +122,7 @@ Future<ArtistModel> getArtist()async{
         children: [
           Column(
             children: [
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal:16.0,vertical: 8.0),
-              //   child: SearchTextWidget(
-              //     onTap: () {},
-              //     hint: "Search Artists",
-              //   ),
-              // ),
-          
+           
               Expanded(
                   child: FutureBuilder<ArtistModel>(future: data,builder: (context, snapshot) {
                     if(snapshot.connectionState==ConnectionState.waiting){
@@ -175,59 +192,8 @@ Future<ArtistModel> getArtist()async{
                                             vertical: 4),
                                         child: InkWell(
                                           onTap: ()async {
-                                            print(record[index].artistId);
-                                            if(widget.artist_list!.contains(record[index].artistId)){
-                          Map<String, dynamic> params = {
-                        
-                        "artist_id": record[index].artistId,
-                        "follow": false
-                        };
-                                            var res=  await apiCall.putRequestWithAuth(APIConstants.ARTIST_FOLLOWING,params);
-                        if(res.statusCode==200){
-                        
-                                         widget.artist_list!.remove(record[index].artistId);
-                        }
-                                             
-                                            }
-                                            else{
-                            Map<String, dynamic> params = {
-                        
-                        "artist_id": record[index].artistId,
-                        "follow": true
-                        };
-                                            var res=  await apiCall.putRequestWithAuth(APIConstants.ARTIST_FOLLOWING,params);
-                        if(res.statusCode==200){
-                        
-                                            widget.artist_list!.add(record[index].artistId);
-                        }
-                                            // print(widget.artist_list!.length);
-                                            }
-                                            setState(() {
-                        widget.artist_list;
-                        // data=getArtist();
-                                            });
-                                            // var temp1 = widget.images[index].isFollowing;
-                                            // var temp2 = widget.images[index].subTitle;
-                                            // var temp3 = widget.images[index].title;
-                                            // var temp4 = widget.images[index].imageURL;
-                                            // print(temp1);
-                                            // print(temp2);
-                                            // print(temp3);
-                                            // // String imageUrl=widget.images[index].
-                        
-                                            // widget.images.removeAt(index);
-                                            // widget.images.insert(
-                                            //     index,
-                                            //     ArtistImageModel(
-                                            //         imageURL: temp4,
-                                            //         title: temp3,
-                                            //         subTitle: temp2,
-                                            //         isFollowing: temp1 != temp1));
-                                            // print(widget.images[index].isFollowing);
-                                            // setState(() {
-                                            //   widget.images[index].isFollowing !=
-                                            //       widget.images[index].isFollowing;
-                                            // });
+                                            
+                                        followAndUnfollow(record, index);
                                           },
                                           child: Container(
                                             padding: EdgeInsets.symmetric(
@@ -244,7 +210,7 @@ Future<ArtistModel> getArtist()async{
                                             child: Center(
                         child: Text(
                           widget.artist_list!.contains(record[index].artistId)
-                              ? "Following"
+                              ? "Unfollow"
                               :
                                "Follow",
                           style: fontWeight400(),
@@ -262,12 +228,10 @@ Future<ArtistModel> getArtist()async{
                     }
                     return Text("data");
                   }))
+         
             ],
           ),
-      isLoad?Container(height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      color: Colors.black.withOpacity(.5),
-      child: Center(child: Image.asset(Images.loaderImage,height: 70,),),):EmptyBox()
+      isLoad?LoaderScreen():EmptyBox()
         ],
       ),
       bottomNavigationBar:widget.artist_list!.length<3?
