@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -7,8 +9,17 @@ import 'package:musiq/src/view/pages/home/home_screen.dart';
 import 'package:musiq/src/view/widgets/custom_app_bar.dart';
 import 'package:musiq/src/view/widgets/custom_color_container.dart';
 
+import '../../../../../helpers/constants/api.dart';
+import '../../../../../helpers/constants/color.dart';
+import '../../../../../logic/services/api_call.dart';
+import '../../../../../model/api_model/artist_model.dart';
+import '../../../../../model/api_model/song_list_model.dart';
+
 class ArtistListViewAll extends StatelessWidget {
-  const ArtistListViewAll({Key? key}) : super(key: key);
+   ArtistListViewAll({Key? key,required this.artist,}) : super(key: key);
+  final ArtistModel artist;
+  
+  APICall apiCall=APICall();
 
   @override
   Widget build(BuildContext context) {
@@ -34,34 +45,49 @@ class ArtistListViewAll extends StatelessWidget {
               child: GridView.builder(
                 semanticChildCount: 2,
                 shrinkWrap: true,
-                itemCount: Images().artistSearchList.length,
+                itemCount: artist.records.length,
                 itemBuilder: (context, index) => Container(
                   padding: EdgeInsets.symmetric(horizontal: 6),
                   child: InkWell(
-                    onTap: () {
-                      // Navigator.of(context).push(MaterialPageRoute(
-                      //     builder: (context) => ViewAllScreen(
-                      //         imageURL:
-                      //             Images().artistSearchList[index].imageURL,
-                      //         title: Images().artistSearchList[index].title)));
+                    onTap: ()async {
+                              Map<String, String> queryParams = {
+  'artist_id': artist.records[index].id.toString(),
+  'skip': '0',
+  'limit': '100',
+};
+ var urlSet="${APIConstants.BASE_URL}songs?artist_id=${queryParams["artist_id"]}&skip=${queryParams["skip"]}&limit=${queryParams["limit"]}";
+                        var res= await apiCall.getRequestWithAuth(urlSet);
+                        print(res.statusCode);
+                        if(res.statusCode==200){
+                          var data=jsonDecode(res.body);
+                          SongList songList=SongList.fromMap(data);
+                          print(songList.toMap());
+                              Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ViewAllScreen(songList: songList,title: artist.records[index].name,
+                              isNetworkImage: artist.records[index].isImage,
+                            imageURL: artist.records[index].isImage? APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png":
+                                  "assets/images/default/no_artist.png",
+                            
+                            )));
+                        }
+                        else{
+
+                        }
+                    
                     },
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomColorContainer(
-                          child: Image.asset(
-                            Images().artistSearchList[index].imageURL,
-                            height: 163,
+                       artist.records[index].isImage==false?Container(height: 185,width: 163.5,decoration: BoxDecoration(color: CustomColor.defaultCard,borderRadius: BorderRadius.circular(12),border: Border.all(color: CustomColor.defaultCardBorder,width: 2.0)),child: Center(child: Image.asset("assets/images/default/no_artist.png",width: 113,height: 118,)),): CustomColorContainer(
+                          child:Image.network(APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png",height: 185,
                             width: 163.5,
-                            fit: BoxFit.cover,
-                          ),
+                            fit: BoxFit.cover,)
                         ),
                         SizedBox(
                           height: 6,
                         ),
                         Text(
-                          Images().artistSearchList[index].title,
+                          artist.records[index].name,
                           style: TextStyle(
                               fontWeight: FontWeight.w400, fontSize: 14),
                         ),
@@ -70,7 +96,7 @@ class ArtistListViewAll extends StatelessWidget {
                   ),
                 ),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, childAspectRatio: 0.95),
+                    crossAxisCount: 2, childAspectRatio: 0.78),
               ),
             ),
           )

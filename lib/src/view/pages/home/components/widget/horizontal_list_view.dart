@@ -130,9 +130,7 @@ class ListHeaderWidget extends StatelessWidget {
         InkWell(
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => isArtist
-                    ? ArtistListViewAll()
-                    : LoaderScreen()));
+                builder: (context) =>  LoaderScreen()));
           },
           child: Text(
             actionTitle,

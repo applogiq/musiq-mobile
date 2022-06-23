@@ -5,6 +5,8 @@ class Images {
   static String logoImageWithName="assets/icons/logowithname.png";
   static String noInternet="assets/icons/internet.png";
   static String loaderImage="assets/gifs/loader.gif";
+  static String noArtist="assets/images/default/no_artist.png";
+  static String noSong="assets/images/default/no_song.png";
   // loader.gif
 
 

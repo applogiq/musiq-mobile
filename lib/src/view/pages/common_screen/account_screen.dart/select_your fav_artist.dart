@@ -49,7 +49,7 @@ class _SelectYourFavListState extends State<SelectYourFavList> {
     data=getArtist();
   
   }
-  getArtist()async{
+  Future<ArtistModel> getArtist()async{
     return await apiRoute.getArtist();
 
   }
@@ -142,13 +142,14 @@ class _SelectYourFavListState extends State<SelectYourFavList> {
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: CustomColorContainer(
-                                        child: Image.network(
+                                        child:record[index].isImage==false?Image.asset("assets/images/default/no_artist.png",width: 80,
+                                          height: 80,
+                                          ): Image.network(
                                           
-                                         record[index].isImage? APIConstants.BASE_IMAGE_URL+record[index].artistId+".png":"https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png",
-                                         
+                                         APIConstants.BASE_IMAGE_URL+record[index].artistId+".png",
                                           width: 90,
                                           height: 90,
-                                          fit: BoxFit.fill,                                               
+                                          fit: BoxFit.cover,                                               
                                         ),
                                       ),
                                     ),

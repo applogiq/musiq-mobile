@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/themes/theme.dart';
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
            BlocProvider<RegisterCubit>(create: (context) => RegisterCubit()),
            BlocProvider<ForgotpasswordCubit>(create: (context) => ForgotpasswordCubit()),
        ],
-      child: MaterialApp(
+      child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         theme: themeData(context),
         home: SplashScreen(),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/logic/services/api_call.dart';
 import 'package:musiq/src/logic/services/api_route.dart';
 import 'package:musiq/src/model/api_model/artist_model.dart';
@@ -10,6 +11,7 @@ import 'package:musiq/src/view/pages/home/home_screen.dart';
 
 import '../../../../../helpers/constants/api.dart';
 import '../../../../widgets/custom_color_container.dart';
+import '../pages/artist_view_all_screen.dart';
 import 'horizontal_list_view.dart';
 
 class ArtistListView extends StatelessWidget {
@@ -27,11 +29,30 @@ class ArtistListView extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 0.0),
-          child: ListHeaderWidget(
-            title: "Artists",
-            actionTitle: "View All",
-            isArtist: true,
+          child:  Row(
+      children: [
+        Text(
+          "Artists",
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        ),
+        Spacer(),
+        InkWell(
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => 
+                     ArtistListViewAll(artist: artist,)
+                    ));
+          },
+          child: Text(
+            "View All",
+            style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: CustomColor.secondaryColor),
           ),
+        )
+      ],
+    )
         ),
         Container(
           padding: EdgeInsets.only(top: 4),
@@ -40,7 +61,7 @@ class ArtistListView extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
               physics: BouncingScrollPhysics(),
-              itemCount: artist.records.length,
+              itemCount: artist.records.length>3?3:artist.records.length,
               itemBuilder: (context, index) => Row(
                     children: [
                       index == 0
@@ -66,9 +87,9 @@ class ArtistListView extends StatelessWidget {
                           SongList songList=SongList.fromMap(data);
                           print(songList.toMap());
                               Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ViewAllScreen(songList: songList,title: artist.records[index].name,
+                              isNetworkImage: artist.records[index].isImage,
                             imageURL: artist.records[index].isImage? APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png":
-                                  "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png",
-                            
+                                  "assets/images/default/no_artist.png", 
                             )));
                         }
                         else{
@@ -84,10 +105,9 @@ class ArtistListView extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CustomColorContainer(
+                             artist.records[index].isImage==false?Container(height: 240,width: 200,decoration: BoxDecoration(color: CustomColor.defaultCard,borderRadius: BorderRadius.circular(12),border: Border.all(color: CustomColor.defaultCardBorder,width: 2.0)),child: Center(child: Image.asset("assets/images/default/no_artist.png",width: 113,height: 118,)),): CustomColorContainer(
                                 child: Image.network(
-                                  artist.records[index].isImage? APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png":
-                                  "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png",
+                                   APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png",
                             
                                   height: 240,
                                   width: 200,

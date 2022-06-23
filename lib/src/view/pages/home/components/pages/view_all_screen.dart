@@ -14,11 +14,12 @@ class ViewAllScreen extends StatelessWidget {
       {Key? key,
       required this.title,
       required this.songList,
-      this.imageURL = "assets/images/banner.png",})
+      this.imageURL ="assets/images/default/no_artist.png",this.isNetworkImage=true})
       : super(key: key);
   final String title;
   String imageURL;
   SongList songList;
+  bool isNetworkImage;
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +133,7 @@ class ViewAllScreen extends StatelessWidget {
           body: Column(
             children: [
               Expanded(
-                flex: 6,
+                flex: 7,
                 child: Column(
                   children: [
                     Expanded(
@@ -140,7 +141,17 @@ class ViewAllScreen extends StatelessWidget {
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                                image: DecorationImage(
+                                image:isNetworkImage==false?
+                                 DecorationImage(
+                              image: AssetImage(imageURL),
+                              // fit: BoxFit.cover,
+                              colorFilter: ColorFilter.mode(
+                                  Colors.black.withOpacity(0.8), BlendMode.dstIn),
+                            )
+                                :
+                                
+                                
+                                 DecorationImage(
                               image: NetworkImage(imageURL),
                               fit: BoxFit.cover,
                               colorFilter: ColorFilter.mode(
