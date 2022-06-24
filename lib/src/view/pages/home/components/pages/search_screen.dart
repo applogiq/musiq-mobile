@@ -47,7 +47,7 @@ class SearchScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: ListHeaderWidget(
-                  title: "Recent Searches", actionTitle: "Clear"),
+                  title: "Recent Searches", actionTitle: "Clear",dataList: [],),
             ),
             ListView.builder(
                 shrinkWrap: true,

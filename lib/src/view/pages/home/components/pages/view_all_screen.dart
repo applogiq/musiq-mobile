@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -6,10 +7,14 @@ import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/constants/images.dart';
 import 'package:musiq/src/helpers/constants/style.dart';
 import 'package:musiq/src/model/api_model/song_list_model.dart';
+import 'package:musiq/src/view/pages/home/components/widget/play_button_widget.dart';
 import 'package:musiq/src/view/pages/home/components/widget/vertical_list_view.dart';
 import 'package:musiq/src/view/widgets/custom_button.dart';
 
-class ViewAllScreen extends StatelessWidget {
+import '../../../../../helpers/constants/api.dart';
+import '../../../play/play_screen.dart';
+
+class ViewAllScreen extends StatefulWidget {
   ViewAllScreen(
       {Key? key,
       required this.title,
@@ -22,117 +27,35 @@ class ViewAllScreen extends StatelessWidget {
   bool isNetworkImage;
 
   @override
+  State<ViewAllScreen> createState() => _ViewAllScreenState();
+}
+
+class _ViewAllScreenState extends State<ViewAllScreen> {
+ ScrollController _scrollController = ScrollController();
+  double _scrollPosition = 0;
+
+  _scrollListener() {
+    setState(() {
+      _scrollPosition = _scrollController.position.pixels;
+    });
+  }
+
+  @override
+  void initState() {
+    // _scrollController.addListener(_scrollListener);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-    // return Scaffold(
-    //   body: CustomScrollView(
-    //     slivers: [
-    // SliverAppBar(
-    //   pinned: true,
-    //   floating: true,
-    //       expandedHeight: 250.0,
-    //       automaticallyImplyLeading: false,
-    //       flexibleSpace: FlexibleSpaceBar(
-    //         // title: Text(title, textScaleFactor: 1),
-    //         background:  Stack(
-    //                     children: [
-    //                       Container(
-    //                         decoration: BoxDecoration(
-    //                             image: DecorationImage(
-    //                           image: NetworkImage(imageURL),
-    //                           fit: BoxFit.cover,
-    //                           colorFilter: ColorFilter.mode(
-    //                               Colors.black.withOpacity(0.8), BlendMode.dstIn),
-    //                         )),
-    //                       ),
-    //                       Container(
-    //                         decoration: BoxDecoration(
-    //                           gradient: LinearGradient(
-    //                               tileMode: TileMode.decal,
-    //                               begin: Alignment.topCenter,
-    //                               end: Alignment(0.0, 1),
-    //                               stops: [
-    //                                 0.3,
-    //                                 0.75,
-    //                               ],
-    //                               colors: [
-    //                                 Color.fromRGBO(22, 21, 28, 0),
-    //                                 Color.fromRGBO(22, 21, 28, 1),
-    //                               ]),
-    //                         ),
-    //                       ),
-    //                       SafeArea(
-    //                         child: Padding(
-    //                           padding:
-    //                               const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
-    //                           child: Column(
-    //                             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //                             crossAxisAlignment: CrossAxisAlignment.start,
-    //                             children: [
-    //                               InkWell(
-    //                                 onTap: () {
-    //                                   Navigator.of(context).pop();
-    //                                 },
-    //                                 child: Icon(
-    //                                   Icons.arrow_back_ios,
-    //                                   size: 20,
-    //                                 ),
-    //                               ),
-    //                               Spacer(),
-    //                               Row(
-    //                                 mainAxisAlignment:
-    //                                     MainAxisAlignment.spaceBetween,
-    //                                 children: [
-    //                                   Text(
-    //                                     title,
-    //                                     style: fontWeight600(size: 22.0),
-    //                                   ),
-    //                                   Icon(Icons.more_vert),
-    //                                 ],
-    //                               ),
-    //                               Text(
-    //                                 "25 Songs",
-    //                                 style: fontWeight400(
-    //                                   color: CustomColor.subTitle2,
-    //                                 ),
-    //                               ),
-    //                               Padding(
-    //                                 padding: const EdgeInsets.only(top: 24),
-    //                                 child: CustomButton(
-    //                                   isIcon: true,
-    //                                   label: "Play All",
-    //                                   margin: 0,
-    //                                 ),
-    //                               )
-    //                             ],
-    //                           ),
-    //                         ),
-    //                       )
-    //                     ],
-    //                   ),
-    //       ),
-    //     ),
-    // SliverList(
-    //       delegate: SliverChildBuilderDelegate(
-    //         (_, int index) {
-    //           return ListTile(
-    //             leading: Container(
-    //                 padding: EdgeInsets.all(8),
-    //                 width: 100,
-    //                 child: Placeholder()),
-    //             title: Text('Place ${index + 1}', textScaleFactor: 2),
-    //           );
-    //         },
-    //         childCount: 20,
-    //       ),
-    //     ),
-    //     ],
+    
     return SafeArea(
         child: Scaffold(
           body: Column(
             children: [
-              Expanded(
+             _scrollPosition ==0?          Expanded(
                 flex: 7,
                 child: Column(
                   children: [
@@ -141,9 +64,9 @@ class ViewAllScreen extends StatelessWidget {
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                                image:isNetworkImage==false?
+                                image:widget.isNetworkImage==false?
                                  DecorationImage(
-                              image: AssetImage(imageURL),
+                              image: AssetImage(widget.imageURL),
                               // fit: BoxFit.cover,
                               colorFilter: ColorFilter.mode(
                                   Colors.black.withOpacity(0.8), BlendMode.dstIn),
@@ -152,7 +75,7 @@ class ViewAllScreen extends StatelessWidget {
                                 
                                 
                                  DecorationImage(
-                              image: NetworkImage(imageURL),
+                              image: NetworkImage(widget.imageURL),
                               fit: BoxFit.cover,
                               colorFilter: ColorFilter.mode(
                                   Colors.black.withOpacity(0.8), BlendMode.dstIn),
@@ -197,24 +120,44 @@ class ViewAllScreen extends StatelessWidget {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        title,
+                                        widget.title,
                                         style: fontWeight600(size: 22.0),
                                       ),
                                       Icon(Icons.more_vert),
                                     ],
                                   ),
                                   Text(
-                                    "${songList.records.length} Songs",
+                                    "${widget.songList.records.length} Songs",
                                     style: fontWeight400(
                                       color: CustomColor.subTitle2,
                                     ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 24),
-                                    child: CustomButton(
-                                      isIcon: true,
-                                      label: "Play All",
-                                      margin: 0,
+                                    child: InkWell(
+                                      onTap: (){
+                                        var songPlayList=[];
+            for(int i=0;i<widget.songList.totalrecords;i++){
+             
+              songPlayList.add(widget.songList.records[i].id);
+            }
+            // print(index);
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => PlayScreen(
+                  songList: widget.songList,
+                  index: 0,
+                  id:widget.songList.records[0].id.toString(),
+                      imageURL:  "${APIConstants.SONG_BASE_URL}public/music/tamil/${widget.songList.records[0].albumDetails.name[0].toUpperCase()}/${widget.songList.records[0].albumDetails.name}/image/${widget.songList.records[0].albumDetails.albumId}.png",
+                      songName: widget.songList.records[0].name,
+                      artistName: widget.songList.records[0].albumDetails.musicDirectorName[0].toString(),
+                      songplayList: songPlayList,
+                    )));
+                                      },
+                                      child: CustomButton(
+                                        isIcon: true,
+                                        label: "Play All",
+                                        margin: 0,
+                                      ),
                                     ),
                                   )
                                 ],
@@ -226,18 +169,70 @@ class ViewAllScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
+              ):
+             Container(
+              color:CustomColor.appBarColor,
+               padding: const EdgeInsets.all(8.0),
+               child: Row(
+                children: [
+                 InkWell(
+                                      onTap: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Icon(
+                                        Icons.arrow_back_ios,
+                                        size: 20,
+                                      ),
+                                    ),
+                Text(
+                                          widget.title,
+                                          style: fontWeight600(size: 22.0),
+                                        ),
+               Spacer(),
+               PlayButtonWidget(bgColor: CustomColor.secondaryColor,iconColor: Colors.white,),
+               Icon(Icons.more_vert),
+                ],
+               ),
+             )
+             
+             
+             
+           , 
               Expanded(
                 flex: 8,
                 child: Container(
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: [
-                      CustomSongVerticalList(
-                        songList: songList,
-                        playButton: false,
-                      ),
-                    ],
+                  child: NotificationListener<ScrollEndNotification>(
+                    onNotification: (scrollNotification) {
+                      print(_scrollController.position.userScrollDirection.toString());
+   if (_scrollController.position.userScrollDirection ==
+              ScrollDirection.reverse) {
+            print('scrolled down');
+            setState(() {
+              _scrollPosition=1;
+            });
+            //the setState function
+          } else if (_scrollController.position.userScrollDirection ==
+              ScrollDirection.forward) {
+            setState(() {
+              _scrollPosition=0;
+            });
+            //setState function
+            print(_scrollController.position.userScrollDirection);
+          }
+          return true;},
+                    child: ListView(
+                      controller: _scrollController,
+                      shrinkWrap: true,
+                         physics: ClampingScrollPhysics(),
+ 
+                      children: [
+                        CustomSongVerticalList(
+                          songList: widget.songList,
+                          playButton: false,
+                        ),
+                      
+                      ],
+                    ),
                   ),
                 ),
               )

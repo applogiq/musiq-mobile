@@ -17,6 +17,7 @@ class TrendingHitsWidget extends StatelessWidget {
           ListHeaderWidget(
             title: "Trending Hits",
             actionTitle: "View All",
+            dataList: [],
           ),
           Container(
             padding: EdgeInsets.only(top: 16, right: 12, left: 12),

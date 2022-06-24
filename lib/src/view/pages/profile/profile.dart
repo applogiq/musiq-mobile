@@ -4,9 +4,11 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/constants/style.dart';
+import 'package:musiq/src/helpers/utils/navigation.dart';
 import 'package:musiq/src/model/profile_model.dart';
 import 'package:musiq/src/view/pages/profile/components/my_profile.dart';
 
+import '../../../helpers/utils/auth.dart';
 import '../../widgets/custom_button.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -92,10 +94,31 @@ class ProfilePage extends StatelessWidget {
             ],
           ),
         ),
-        CustomButton(
-          label: "Sign Out",
-        )
+        SignOutWidget()
       ]),
+    );
+  }
+}
+
+class SignOutWidget extends StatelessWidget {
+   SignOutWidget({
+    Key? key,
+  }) : super(key: key);
+Auth auth=Auth();
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: ()async{
+       var isLog=await auth.logOut();
+        print(isLog.toString());
+        if(isLog){
+          Navigation.navigateReplaceToScreen(context, "login/");
+        }
+        print("SIGNOUT");
+      },
+      child: CustomButton(
+        label: "Sign Out",
+      ),
     );
   }
 }

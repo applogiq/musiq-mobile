@@ -14,6 +14,7 @@ import 'package:musiq/src/model/api_model/song_list_model.dart';
 import 'package:musiq/src/view/pages/home/components/widget/play_button_widget.dart';
 import 'package:musiq/src/view/pages/home/components/widget/reordable_vertical_list.dart';
 import 'package:musiq/src/view/pages/home/components/widget/vertical_list_view.dart';
+import 'package:musiq/src/view/widgets/empty_box.dart';
 
 import '../../../helpers/constants/api.dart';
 
@@ -41,16 +42,10 @@ class PlayScreen extends StatefulWidget {
 }
 
 class _PlayScreenState extends State<PlayScreen> {
-  late AudioPlayer player;
   double bottomSheetHeight = 20;
   bool isOpen = false;
   bool hideLyrics = false;
-  int duration = 0;
-  int progressDuration = 0;
-  int bufferDuration = 0;
-  bool isShuffle = false;
-  bool isLoop = false;
-  int loopState = 1;
+
   late int selectedIndex;
 
   @override
@@ -60,66 +55,12 @@ class _PlayScreenState extends State<PlayScreen> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
       SystemUiOverlay.bottom,
     ]);
-    player = AudioPlayer();
-    loadSong();
-  }
-
-  loadSong() async {
-    selectedIndex = widget.index;
-    var dur;
-    await player.setAudioSource(
-      ConcatenatingAudioSource(
-        useLazyPreparation: true, // default
-
-        shuffleOrder: DefaultShuffleOrder(),
-
-        children: List.generate(
-            widget.songplayList.length,
-            (index) => AudioSource.uri(Uri.parse(
-                "http://192.168.29.184:3000/api/v1/audio?song_id=${widget.songplayList[index]}"))),
-      ),
-      initialIndex: widget.index,
-      initialPosition: Duration.zero,
-    );
-    // try{
-
-    //          dur=await player.setUrl('http://192.168.29.184:3000/api/v1/audio?song_id=${widget.id}');
-    //           duration=dur!.inMilliseconds;
-    //           setState(() {
-    //             duration;
-    //           });
-    //           print(duration);
-    // }
-    // catch(e){duration=0;}
-    //            print(dur);
-
-    // print(dur);
-    // var parts = dur.toString().split(':');
-    // List <double> lint = parts.map(double.parse).toList();
-    // lint[0]=lint[0]*60*60;
-    // lint[1]=lint[1]*60;
-    // lint[2]=lint[2];
-    // print(lint);
-    // var sum = lint.reduce((a, b) => a + b);
-    // print(sum.round());
-    // duration=sum.round()*1000;
-    // setState(() {
-    //   duration;
-    // });
-    // // print(duration);
-    if (this.mounted) {
-      setState(() {
-        selectedIndex;
-        duration;
-      });
-    }
-    //  player.setLoopMode(LoopMode.one);
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    player.dispose();
+
     super.dispose();
   }
 
@@ -158,338 +99,445 @@ class _PlayScreenState extends State<PlayScreen> {
   @override
   Widget build(BuildContext context) {
     final SongController songController = Get.put(SongController());
-
+    songController.load(widget.songplayList, widget.index);
     return SafeArea(
       child: Scaffold(
-        body: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            Column(
+        body: SingleChildScrollView(
+          child: Obx(() {
+            return Stack(
+              alignment: Alignment.bottomCenter,
               children: [
-                Expanded(
-                  flex: 5,
-                  child: Container(
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: NetworkImage(
-                                "http://192.168.29.184:3000/public/music/tamil/S/Sangamam/image/AL004.png"),
-                            fit: BoxFit.cover)),
-                    child: Stack(children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                stops: [
-                              0.6,
-                              0.99
-                            ],
-                                colors: [
-                              Color.fromRGBO(22, 21, 28, 0),
-                              Color.fromRGBO(22, 21, 28, 1),
-                            ])),
-                      ),
-                      Container(
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        //     stops: [
-                                        //   0.4,
-                                        //   0.01,
-                                        // ],
-                                        colors: [
-                                      Color.fromRGBO(22, 21, 28, 0.3),
-                                      Color.fromRGBO(22, 21, 28, 0),
-                                    ])),
-                              ),
-                            ),
-                            Expanded(
-                                child: Padding(
-                              padding: const EdgeInsets.only(bottom: 16.0),
-                              child: Align(
-                                alignment: Alignment.bottomCenter,
-                                child: hideLyrics == true
-                                    ? SizedBox(
-                                        height: 0,
-                                        width: 0,
-                                      )
-                                    : Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            "Waste time with a masterpiece,",
-                                            style: fontWeight500(size: 16.0),
-                                          ),
-                                          Text(
-                                            "don't waste time with a masterpiece (huh)",
-                                            style: fontWeight500(
-                                                size: 16.0,
-                                                color: CustomColor.subTitle),
-                                          ),
-                                          Text("You should be rollin' with me,",
-                                              style: fontWeight500(
-                                                  size: 16.0,
-                                                  color: CustomColor.subTitle)),
-                                        ],
-                                      ),
-                              ),
-                            ))
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 30),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InkWell(
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Icon(Icons.arrow_back_ios_new_rounded)),
-                            PopupMenuButton(
-                              shape: RoundedRectangleBorder(),
-                              padding: EdgeInsets.all(0.0),
-                              itemBuilder: (ctx) => [
-                                _buildPopupMenuItem('Share', 'share'),
-                                _buildPopupMenuItem('Song Info', "song_info"),
-                                _buildPopupMenuItem(
-                                    hideLyrics ? 'Show Lyrics' : 'Hide Lyrics',
-                                    "hide"),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ]),
-                  ),
-                ),
-                Expanded(
-                  flex: 5,
+                Container(
+                  height: MediaQuery.of(context).size.height-10,
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: 40,
+                      Expanded(
+                        flex: 6,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      // "https://mir-s3-cdn-cf.behance.net/project_modules/fs/fe529a64193929.5aca8500ba9ab.jpg"
+                                      "${APIConstants.SONG_BASE_URL}public/music/tamil/${widget.songList.records[songController.selectedIndex.value].albumDetails.name[0].toUpperCase()}/${widget.songList.records[songController.selectedIndex.value].albumDetails.name}/image/${widget.songList.records[songController.selectedIndex.value].albumDetails.albumId}.png"),
+                                  fit: BoxFit.cover)),
+                          child: Stack(children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      stops: [
+                                    0.6,
+                                    0.99
+                                  ],
+                                      colors: [
+                                    Color.fromRGBO(22, 21, 28, 0),
+                                    Color.fromRGBO(22, 21, 28, 1),
+                                  ])),
+                            ),
+                            Container(
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                              begin: Alignment.topCenter,
+                                              end: Alignment.bottomCenter,
+                                              //     stops: [
+                                              //   0.4,
+                                              //   0.01,
+                                              // ],
+                                              colors: [
+                                            Color.fromRGBO(22, 21, 28, 0.3),
+                                            Color.fromRGBO(22, 21, 28, 0),
+                                          ])),
+                                    ),
+                                  ),
+                                  Expanded(
+                                      child: Padding(
+                                    padding: const EdgeInsets.only(bottom: 0.0),
+                                    child: Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: hideLyrics == true
+                                          ? SizedBox(
+                                              height: 0,
+                                              width: 0,
+                                            )
+                                          : Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Text(
+                                                  "Waste time with a masterpiece,",
+                                                  style:
+                                                      fontWeight500(size: 16.0),
+                                                ),
+                                                Text(
+                                                  "don't waste time with a masterpiece (huh)",
+                                                  style: fontWeight500(
+                                                      size: 16.0,
+                                                      color:
+                                                          CustomColor.subTitle),
+                                                ),
+                                                Text(
+                                                    "You should be rollin' with me,",
+                                                    style: fontWeight500(
+                                                        size: 16.0,
+                                                        color: CustomColor
+                                                            .subTitle)),
+                                              ],
+                                            ),
+                                    ),
+                                  ))
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16.0, vertical: 30),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  InkWell(
+                                      onTap: () {
+                                        songController.player.stop();
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Icon(
+                                          Icons.arrow_back_ios_new_rounded)),
+                                  PopupMenuButton(
+                                    shape: RoundedRectangleBorder(),
+                                    padding: EdgeInsets.all(0.0),
+                                    itemBuilder: (ctx) => [
+                                      _buildPopupMenuItem('Share', 'share'),
+                                      _buildPopupMenuItem(
+                                          'Song Info', "song_info"),
+                                      _buildPopupMenuItem(
+                                          hideLyrics
+                                              ? 'Show Lyrics'
+                                              : 'Hide Lyrics',
+                                          "hide"),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ]),
+                        ),
                       ),
-                      // Text(widget.songList.records[widget.songplayList[selectedIndex]].name,style: fontWeight500(size: 20.0),),
-                      //  Text(widget.songList.records[widget.songplayList[selectedIndex]].albumDetails.musicDirectorName[0].toString(),style: fontWeight400(size: 16.0,color: CustomColor.subTitle),
-                      // ),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Expanded(
+                        flex: 6,
+                        child: Column(
                           children: [
-                            InkWell(
-                                onTap: () async {
-                                  songController.isShuffle.toggle();
-                                  // if (isShuffle == false) {
-                                  //   await player.setShuffleModeEnabled(true);
-                                  // } else {
-                                  //   await player.setShuffleModeEnabled(false);
-                                  // }
-                                  // setState(() {
-                                  //   isShuffle = !isShuffle;
-                                  // });
-                                },
-                                child: Obx(() => Icon(
-                                      Icons.shuffle_rounded,
-                                      color: songController.isShuffle.value
-                                          ? CustomColor.secondaryColor
-                                          : Colors.white,
-                                    ))),
-                            Icon(Icons.favorite_rounded)
+                            SizedBox(
+                              height: 18,
+                            ),
+                            SongName(
+                                widget: widget, songController: songController),
+                            Obx(
+                              () => Text(
+                                widget
+                                    .songList
+                                    .records[songController.selectedIndex.value]
+                                    .albumDetails
+                                    .musicDirectorName[0]
+                                    .toString(),
+                                style: fontWeight400(
+                                    size: 14.0, color: CustomColor.subTitle),
+                              ),
+                            ),
+                            ShuffleButton(songController: songController),
+                            ProgressBarWidget(songController: songController),
+                            PlayerController(songController: songController)
                           ],
                         ),
                       ),
-                      Obx(() => Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
-                            child: ProgressBar(
-                              progress:
-                                  Duration(milliseconds: songController.duration.value),
-                              buffered: Duration(milliseconds: bufferDuration),
-                              total: Duration(milliseconds: songController.duration.value),
-                              progressBarColor: CustomColor.secondaryColor,
-                              baseBarColor: Colors.white.withOpacity(0.24),
-                              bufferedBarColor: Colors.white.withOpacity(0.24),
-                              thumbColor: Colors.white,
-                              barHeight: 6.0,
-                              thumbRadius: 6.0,
-                              onSeek: (duration) {
-                                print('User selected a new time: ');
-                                player.seek(duration);
-                              },
-                            ),
-                          )),
-
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Theme(
-                          data: ThemeData(
-                              iconTheme:
-                                  IconThemeData(size: 32, color: Colors.white)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Container(
+                        // padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                           color: Color.fromRGBO(33, 33, 44, 1),
+                    borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(30),
+                                topRight: Radius.circular(30))),
+                        child: ListTile(
+                          onTap: () {
+                            songController.isBottomSheetView.toggle();
+                            // isOpen?bottomSheetHeight=MediaQuery.of(context).size.height:bottomSheetHeight=80.0,
+                          },
+                          title: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Icon(Icons.playlist_add_rounded, size: 40),
-                              InkWell(
-                                  onTap: () {
-                                    songController.playNext();
-                                  },
-                                  child: Icon(
-                                    Icons.skip_previous_rounded,
-                                    size: 40,
+                              UpNext(),
+                              Obx(() => Text(
+                                    widget
+                                        .songList
+                                        .records[
+                                            songController.nextIndex.value]
+                                        
+                                        .name
+                                        .toString(),
+                                    style: fontWeight400(size: 14.0),
                                   )),
-                              Obx(() {
-                                return InkWell(
-                                  onTap: () {
-                                    songController.playOrPause();
-                                  },
-                                  child: songController.isPlay.value
-                                      ? PlayButtonWidget(
-                                          bgColor: CustomColor.secondaryColor,
-                                          iconColor: Colors.white,
-                                          size: 34.0,
-                                          padding: 16.0,
-                                          icon: Icons.pause_rounded,
-                                        )
-                                      : PlayButtonWidget(
-                                          bgColor: CustomColor.secondaryColor,
-                                          iconColor: Colors.white,
-                                          size: 34.0,
-                                          padding: 16.0,
-                                        ),
-                                );
-                              }),
-                              InkWell(
-                                  onTap: () async {
-                                    songController.playNext();
-                                  },
-                                  child: Icon(
-                                    Icons.skip_next_rounded,
-                                    size: 40,
-                                  )),
-                              Obx(() => InkWell(
-                                  onTap: () async {
-                                    songController.loopSong();
-                                    // if (loopState == 0) {
-                                    //   loopState = 1;
-                                    //   await player.setLoopMode(LoopMode.all);
-                                    //   isLoop = true;
-                                    // } else if (loopState == 1) {
-                                    //   loopState = 2;
-                                    //   await player.setLoopMode(LoopMode.one);
-                                    //   isLoop = true;
-                                    // } else {
-                                    //   loopState = 0;
-                                    //   isLoop = false;
-                                    //   await player.setLoopMode(LoopMode.off);
-                                    // }
-                                    // print(loopState);
-                                    // print(isLoop);
-                                    // setState(() {
-                                    //   isLoop;
-                                    //   loopState;
-                                    // });
-                                  },
-                                  child: Icon(
-                                    songController.loopState.value == 2
-                                        ? Icons.repeat_one_rounded
-                                        : Icons.repeat_rounded,
-                                    size: 40,
-                                    color: songController.isRepeated.value
-                                        ? CustomColor.secondaryColor
-                                        : Colors.white,
-                                  ))),
                             ],
                           ),
+                          trailing: Icon(Icons.keyboard_arrow_up),
                         ),
                       )
                     ],
                   ),
                 ),
-              ],
-            ),
-            Container(
-                height: bottomSheetHeight,
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                    color: Color.fromRGBO(33, 33, 44, 1),
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30))),
-                child: isOpen == false
-                    ? ListTile(
-                        onTap: () {
-                          changeState();
-                          // isOpen?bottomSheetHeight=MediaQuery.of(context).size.height:bottomSheetHeight=80.0,
-                        },
-                        title: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            UpNext(),
-                            Text(
-                              "Wolves - Selena Gomez",
-                              style: fontWeight400(size: 14.0),
-                            ),
-                          ],
+                songController.isBottomSheetView.value == true
+                    ? Container(
+                        height: MediaQuery.of(context).size.height - 80,
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(33, 33, 44, 1),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30),
+                          ),
                         ),
-                        trailing: Icon(Icons.keyboard_arrow_up),
-                      )
-                    : Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              UpNext(),
-                              InkWell(
+                        child: Column(
+                          children: [
+                            ListTile(
+                              title: UpNext(),
+                              trailing: InkWell(
                                   onTap: () {
-                                    if (isOpen == false) {
-                                      isOpen = true;
-                                      bottomSheetHeight =
-                                          MediaQuery.of(context).size.height -
-                                              60;
-                                    } else {
-                                      isOpen = false;
-                                      bottomSheetHeight = 60;
-                                    }
-                                    // bottomSheetHeight=isOpen?MediaQuery.of(context).size.height:80;
-                                    // isOpen!=isOpen;
-                                    setState(() {
-                                      bottomSheetHeight;
-                                      print(bottomSheetHeight);
-                                    });
+                                    songController.isBottomSheetView.toggle();
                                   },
                                   child:
-                                      Icon(Icons.keyboard_arrow_down_rounded))
-                            ],
-                          ),
-                          Expanded(
-                            child: ListView(
-                              shrinkWrap: true,
-                              children: [
-                                CustomReorderableVerticalList(
-                                  images: Images().favList,
-                                  isFromUpNext: true,
-                                  highlightindex: widget.index,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      )),
+                                      Icon(Icons.keyboard_arrow_down_rounded)),
+                            )
+                          ],
+                        ),
+                      )
+                    : EmptyBox()
+              ],
+            );
+          }),
+        ),
+      ),
+    );
+  }
+}
+
+class ShuffleButton extends StatelessWidget {
+  const ShuffleButton({
+    Key? key,
+    required this.songController,
+  }) : super(key: key);
+
+  final SongController songController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          InkWell(
+              onTap: () async {
+                songController.shuffleSong();
+              },
+              child: Obx(() => Icon(
+                    Icons.shuffle_rounded,
+                    color: songController.isShuffle.value
+                        ? CustomColor.secondaryColor
+                        : Colors.white,
+                  ))),
+          Icon(Icons.favorite_rounded)
+        ],
+      ),
+    );
+  }
+}
+
+class SongName extends StatelessWidget {
+  const SongName({
+    Key? key,
+    required this.widget,
+    required this.songController,
+  }) : super(key: key);
+
+  final PlayScreen widget;
+  final SongController songController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => Text(
+          widget.songList.records[songController.selectedIndex.value].name,
+          style: fontWeight500(size: 16.0)),
+    );
+  }
+}
+
+class ProgressBarWidget extends StatelessWidget {
+  const ProgressBarWidget({
+    Key? key,
+    required this.songController,
+  }) : super(key: key);
+
+  final SongController songController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: ProgressBar(
+            progress: Duration(
+                milliseconds: songController.progressDurationValue.value),
+            buffered: Duration(
+                milliseconds: songController.bufferDurationValue.value),
+            total:
+                Duration(milliseconds: songController.totalDurationValue.value),
+            progressBarColor: CustomColor.secondaryColor,
+            baseBarColor: Colors.white.withOpacity(0.24),
+            bufferedBarColor: Colors.white.withOpacity(0.24),
+            thumbColor: Colors.white,
+            barHeight: 6.0,
+            thumbRadius: 6.0,
+            onSeek: (duration) {
+              songController.seekDuration(duration);
+            },
+          ),
+        ));
+  }
+}
+
+class PlayerController extends StatelessWidget {
+  const PlayerController({
+    Key? key,
+    required this.songController,
+  }) : super(key: key);
+
+  final SongController songController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Theme(
+        data:
+            ThemeData(iconTheme: IconThemeData(size: 32, color: Colors.white)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Icon(Icons.playlist_add_rounded, size: 34),
+            PlayPrevious(songController: songController),
+            PlayPauseController(songController: songController),
+            PlayNext(songController: songController),
+            RepeatSong(songController: songController),
           ],
         ),
       ),
     );
+  }
+}
+
+class PlayPrevious extends StatelessWidget {
+  const PlayPrevious({
+    Key? key,
+    required this.songController,
+  }) : super(key: key);
+
+  final SongController songController;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+        onTap: () {
+          songController.playPrev();
+        },
+        child: Icon(
+          Icons.skip_previous_rounded,
+          size: 34,
+        ));
+  }
+}
+
+class RepeatSong extends StatelessWidget {
+  const RepeatSong({
+    Key? key,
+    required this.songController,
+  }) : super(key: key);
+
+  final SongController songController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() => InkWell(
+        onTap: () async {
+          songController.loopSong();
+        },
+        child: Icon(
+          songController.loopState.value == 2
+              ? Icons.repeat_one_rounded
+              : Icons.repeat_rounded,
+          size: 34,
+          color: songController.isRepeated.value
+              ? CustomColor.secondaryColor
+              : Colors.white,
+        )));
+  }
+}
+
+class PlayNext extends StatelessWidget {
+  const PlayNext({
+    Key? key,
+    required this.songController,
+  }) : super(key: key);
+
+  final SongController songController;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+        onTap: () async {
+          songController.playNext();
+        },
+        child: Icon(
+          Icons.skip_next_rounded,
+          size: 34,
+        ));
+  }
+}
+
+class PlayPauseController extends StatelessWidget {
+  const PlayPauseController({
+    Key? key,
+    required this.songController,
+  }) : super(key: key);
+
+  final SongController songController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      return InkWell(
+        onTap: () {
+          songController.playOrPause();
+        },
+        child: songController.isPlay.value
+            ? PlayButtonWidget(
+                bgColor: CustomColor.secondaryColor,
+                iconColor: Colors.white,
+                size: 34.0,
+                padding: 14.0,
+                icon: Icons.pause_rounded,
+              )
+            : PlayButtonWidget(
+                bgColor: CustomColor.secondaryColor,
+                iconColor: Colors.white,
+                size: 34.0,
+                padding: 14.0,
+              ),
+      );
+    });
   }
 }
 

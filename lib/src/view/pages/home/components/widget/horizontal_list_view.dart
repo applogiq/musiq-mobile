@@ -99,7 +99,7 @@ class HorizonalListViewWidget extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.fromLTRB(12.0, 20.0, 12.0, 0.0),
-          child: ListHeaderWidget(title: title, actionTitle: actionTitle),
+          child: ListHeaderWidget(title: title, actionTitle: actionTitle,dataList: [],),
         ),
         listWidget
       ],
@@ -112,12 +112,12 @@ class ListHeaderWidget extends StatelessWidget {
       {Key? key,
       required this.title,
       required this.actionTitle,
-      this.isArtist = false})
+      required this.dataList})
       : super(key: key);
 
   final String title;
   final String actionTitle;
-  bool isArtist;
+  var dataList;
   @override
   Widget build(BuildContext context) {
     return Row(

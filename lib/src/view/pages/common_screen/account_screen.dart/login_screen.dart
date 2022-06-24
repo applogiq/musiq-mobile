@@ -58,7 +58,7 @@ Future.delayed(Duration(seconds: 2),(){
       child: Scaffold(
         body: SingleChildScrollView(
           child: SizedBox(
-            height: MediaQuery.of(context).size.height,
+            height: MediaQuery.of(context).size.height-40,
             width: MediaQuery.of(context).size.width,
             child: Stack(
               children: [
