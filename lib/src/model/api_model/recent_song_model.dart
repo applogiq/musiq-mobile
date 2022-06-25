@@ -1,16 +1,16 @@
 // To parse this JSON data, do
 //
-//     final recentPlayed = recentPlayedFromMap(jsonString);
+//     final RecentlyPlayed = RecentlyPlayedFromMap(jsonString);
 
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-RecentPlayed recentPlayedFromMap(String str) => RecentPlayed.fromMap(json.decode(str));
+RecentlyPlayed RecentlyPlayedFromMap(String str) => RecentlyPlayed.fromMap(json.decode(str));
 
-String recentPlayedToMap(RecentPlayed data) => json.encode(data.toMap());
+String RecentlyPlayedToMap(RecentlyPlayed data) => json.encode(data.toMap());
 
-class RecentPlayed {
-    RecentPlayed({
+class RecentlyPlayed {
+    RecentlyPlayed({
         required this.records,
         required this.totalrecords,
         required this.success,
@@ -20,7 +20,7 @@ class RecentPlayed {
     int totalrecords;
     bool success;
 
-    factory RecentPlayed.fromMap(Map<String, dynamic> json) => RecentPlayed(
+    factory RecentlyPlayed.fromMap(Map<String, dynamic> json) => RecentlyPlayed(
         records: List<Record>.from(json["records"].map((x) => Record.fromMap(x))),
         totalrecords: json["totalrecords"],
         success: json["success"],

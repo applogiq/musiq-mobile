@@ -34,7 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   
     return SafeArea(
       child: Scaffold(
-         appBar: const PreferredSize(
+         appBar:  PreferredSize(
           preferredSize: Size(double.maxFinite, 80),
           child: Padding(
             padding: EdgeInsets.only(top:8.0),

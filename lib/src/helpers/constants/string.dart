@@ -37,6 +37,9 @@ class ConstantText{
   static String invalidOTP='The OTP you have entered is invalid';
   static String sendOTPSuccessfully='OTP send successfully';
   static String passwordResetSuccess='Password reset successful';
+  static String recentlyPlayedText='Recently Played';
+  static String trendingHitsText='Trending Hits';
+  static String recommendedSongsText='Recommended songs';
   
 
   

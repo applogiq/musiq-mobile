@@ -9,8 +9,11 @@ import '../../model/api_model/recent_song_model.dart';
 
 class APIRoute{
   APICall apiCall=APICall();
-   Future<ArtistModel> getArtist()async{
-  var res=await apiCall.getRequestWithAuth(APIConstants.BASE_URL+APIConstants.ARTIST_LIST, );
+  APIConstants apiConstants=APIConstants();
+   Future<ArtistModel> getArtist({int limit=100})async{
+     var artistUrl=apiConstants.getArtistUrl(0, limit);
+
+  var res=await apiCall.getRequestWithAuth(APIConstants.BASE_URL+artistUrl, );
   var data=jsonDecode(res.body);
   print(data.toString());
       ArtistModel artistModel=ArtistModel.fromMap(data);
@@ -18,17 +21,18 @@ class APIRoute{
        return artistModel;
   }
 
- Future<RecentPlayed> getRecentlyPlayed()async{
+ Future<RecentlyPlayed> getRecentlyPlayed()async{
   var res=await apiCall.getRequestWithAuth(APIConstants.RECENT_PLAYED, );
   var data=jsonDecode(res.body);
   print(data.toString());
-      RecentPlayed recentPlayed=RecentPlayed.fromMap(data);
+      RecentlyPlayed recentlyPlayed=RecentlyPlayed.fromMap(data);
       
-       return recentPlayed;
+       return recentlyPlayed;
   }
 
-Future<Album> getAlbum()async{
-  var res=await apiCall.getRequestWithAuth(APIConstants.ALBUMS_URL, );
+Future<Album> getAlbum({int limit=100})async{
+  var albumsUrl=apiConstants.getAlbumsUrl(0, limit);
+  var res=await apiCall.getRequestWithAuth(APIConstants.BASE_URL+albumsUrl );
   var data=jsonDecode(res.body);
   print(data.toString());
       Album album=Album.fromMap(data);
@@ -37,7 +41,7 @@ Future<Album> getAlbum()async{
   }
 
 
-  // Future<RecentPlayed> getRecent()async{
+  // Future<RecentlyPlayed> getRecent()async{
   // await Future.delayed(Duration(seconds: 2),(){});
   //   var token=await storage.read(key: "access_token");
   //   var url=Uri.parse(APIConstants.RECENT_PLAYED,);
@@ -51,10 +55,10 @@ Future<Album> getAlbum()async{
   //     var data=jsonDecode(res.body);
   //     print(data.toString());
     
-  //      RecentPlayed recentPlayed=RecentPlayed.fromMap(data);
-  //      print(recentPlayed.toMap());
+  //      RecentlyPlayed RecentlyPlayed=RecentlyPlayed.fromMap(data);
+  //      print(RecentlyPlayed.toMap());
      
-  //   return recentPlayed;
+  //   return RecentlyPlayed;
    
     
   // }

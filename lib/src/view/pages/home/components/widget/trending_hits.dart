@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/helpers/constants/string.dart';
+import 'package:musiq/src/view/pages/home/components/pages/trending_hits_view_all_screen.dart';
 import 'package:musiq/src/view/pages/home/components/widget/play_button_widget.dart';
 
+import '../../../../../helpers/constants/color.dart';
 import 'horizontal_list_view.dart';
 
 class TrendingHitsWidget extends StatelessWidget {
@@ -14,11 +17,31 @@ class TrendingHitsWidget extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(12.0, 12, 12.0, 0),
       child: Column(
         children: [
-          ListHeaderWidget(
-            title: "Trending Hits",
-            actionTitle: "View All",
-            dataList: [],
+          Row(
+      children: [
+        Text(
+          ConstantText.trendingHitsText,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        ),
+        Spacer(),
+        InkWell(
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>  TrendingHitsViewAll(
+                  title: ConstantText.trendingHitsText,
+),),);
+          },
+          child: Text(
+            "View All",
+            style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: CustomColor.secondaryColor),
           ),
+        )
+      ],
+    ),
+
           Container(
             padding: EdgeInsets.only(top: 16, right: 12, left: 12),
             height: 240,

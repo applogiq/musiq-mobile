@@ -40,7 +40,7 @@ class ArtistListView extends StatelessWidget {
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => 
-                     ArtistListViewAll(artist: artist,)
+                     ArtistListViewAll()
                     ));
           },
           child: Text(
@@ -61,7 +61,7 @@ class ArtistListView extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
               physics: BouncingScrollPhysics(),
-              itemCount: artist.records.length>3?3:artist.records.length,
+              itemCount: artist.records.length,
               itemBuilder: (context, index) => Row(
                     children: [
                       index == 0

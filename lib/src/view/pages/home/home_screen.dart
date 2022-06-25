@@ -9,6 +9,7 @@ import 'package:musiq/src/helpers/constants/images.dart';
 import 'package:musiq/src/logic/services/api_call.dart';
 import 'package:musiq/src/logic/services/api_route.dart';
 import 'package:musiq/src/model/api_model/album_model.dart';
+import 'package:musiq/src/view/pages/home/components/pages/recently_played_view_all.dart';
 import 'package:musiq/src/view/pages/home/components/pages/search_screen.dart';
 import 'package:musiq/src/view/pages/home/components/pages/view_all_screen.dart';
 import 'package:musiq/src/view/pages/home/components/widget/artist_list_view.dart';
@@ -36,7 +37,7 @@ class _HomePageState extends State<HomePage> {
   var storage=const FlutterSecureStorage();
   APIRoute apiRoute=APIRoute();
   var artistData;
-  late RecentPlayed recentlyPlayed;
+  late RecentlyPlayed recentlyPlayed;
   late Album album;
   bool isLoad=false;
    
@@ -53,7 +54,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       isLoad;
     });
-    artistData= await apiRoute.getArtist();
+    artistData= await apiRoute.getArtist(limit: 4);
     recentlyPlayed=await apiRoute.getRecentlyPlayed();
     album=await apiRoute.getAlbum();
     isLoad=true;
@@ -61,7 +62,7 @@ class _HomePageState extends State<HomePage> {
       isLoad;
     });
   }
-  // Future<RecentPlayed> getRecent()async{
+  // Future<RecentlyPlayed> getRecent()async{
   // await Future.delayed(Duration(seconds: 2),(){});
   //   var token=await storage.read(key: "access_token");
   //   var url=Uri.parse(APIConstants.RECENT_PLAYED,);
@@ -75,10 +76,10 @@ class _HomePageState extends State<HomePage> {
   //     var data=jsonDecode(res.body);
   //     print(data.toString());
     
-  //      RecentPlayed recentPlayed=RecentPlayed.fromMap(data);
-  //      print(recentPlayed.toMap());
+  //      RecentlyPlayed RecentlyPlayed=RecentlyPlayed.fromMap(data);
+  //      print(RecentlyPlayed.toMap());
      
-  //   return recentPlayed;
+  //   return RecentlyPlayed;
    
     
   // }
@@ -145,35 +146,41 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-//         Column(
-//           children: [
-// Padding(
-//   padding: const EdgeInsets.all(8.0),
-//   child:   ListHeaderWidget( title: "Recently Played",
-  
-//                   actionTitle: "View All",dataList: recentlyPlayed.records,),
-// )
-
-//           ],
-//         ),
-        // HorizonalListViewWidget(
-                // title: "Recently Played",
-                // actionTitle: "View All",
-        //         listWidget: Container(
-        //             alignment: Alignment.center,
-        //             child: CustomHorizontalListview(
-        //                 images: images.recentlyPlayed))),
-            
-        
-            HorizonalListViewWidget(
-                title: "Recently Played",
-                actionTitle: "View All",
-                listWidget: Container(
-                    alignment: Alignment.center,
-                    child: Container(
+Container(
+  child: Column(children: [
+Padding(padding: const EdgeInsets.all(12.0),
+child: 
+ Row(
+      children: [
+        Text(
+          "Recently Played",
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        ),
+        Spacer(),
+        InkWell(
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>  RecentlyPlayedViewAll(songList: recentlyPlayed, title: 'Recently Played',
+                imageURL:
+                  "${APIConstants.SONG_BASE_URL}public/music/tamil/${recentlyPlayed.records[recentlyPlayed.records.length-1].name[0].toUpperCase()}/${recentlyPlayed.records[recentlyPlayed.records.length-1].name}/image/${recentlyPlayed.records[recentlyPlayed.records.length-1].albumId.toString()}.png",
+)));
+          },
+          child: Text(
+            "View All",
+            style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: CustomColor.secondaryColor),
+          ),
+        )
+      ],
+    ),
+),
+Container(
       padding: EdgeInsets.only(top: 8),
       height: 200,
       child: ListView.builder(
+        // reverse: true,
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
           physics: BouncingScrollPhysics(),
@@ -227,7 +234,77 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               )),
-    ))),
+    ),
+  ],
+  ),
+),
+
+    //     HorizonalListViewWidget(
+    //             title: "Recently Played",
+    //             actionTitle: "View All",
+    //             listWidget: Container(
+    //                 alignment: Alignment.center,
+    //                 child: Container(
+    //   padding: EdgeInsets.only(top: 8),
+    //   height: 200,
+    //   child: ListView.builder(
+    //     reverse: true,
+    //       scrollDirection: Axis.horizontal,
+    //       shrinkWrap: true,
+    //       physics: BouncingScrollPhysics(),
+    //       itemCount: recentlyPlayed.records.length,
+    //       itemBuilder: (context, index) => Row(
+    //             children: [
+    //               index == 0
+    //                   ? SizedBox(
+    //                       width: 10,
+    //                     )
+    //                   : SizedBox(),
+    //               Container(
+    //                 padding: EdgeInsets.fromLTRB(6, 8, 6, 0),
+    //                   width: 135,
+    //                 child: Column(
+    //                   mainAxisAlignment: MainAxisAlignment.start,
+    //                   crossAxisAlignment:
+    //                        CrossAxisAlignment.start,
+    //                   children: [
+    //                     CustomColorContainer(
+                          
+    //                       child: Image.network(
+    //                          "${APIConstants.SONG_BASE_URL}public/music/tamil/${recentlyPlayed.records[index].name[0].toUpperCase()}/${recentlyPlayed.records[index].name}/image/${recentlyPlayed.records[index].albumId.toString()}.png",
+
+    //                         height: 125,
+    //                         width: 135,
+    //                         fit: BoxFit.cover,
+    //                       ),
+    //                     ),
+    //                     SizedBox(
+    //                       height: 6,
+    //                     ),
+    //                     Text(
+    //                     recentlyPlayed.records[index].songs!.name.toString(),
+    //                       style: TextStyle(
+    //                           fontWeight: FontWeight.w400, fontSize: 12),
+    //                     ),
+    //                     SizedBox(
+    //                       height: 2,
+    //                     ),
+    //                    Text( recentlyPlayed.records[index].name.toString()+"-"+recentlyPlayed.records[index].musicDirectorName[0].toString(),
+    //                    maxLines: 1,
+    // overflow: TextOverflow.ellipsis,
+   
+    //                             style: TextStyle(
+    //                                 fontWeight: FontWeight.w400,
+    //                                 fontSize: 12,
+    //                                 color: CustomColor.subTitle))
+    //                   ],
+    //                 ),
+    //               ),
+    //             ],
+    //           )),
+    // ),
+    // ),
+    // ),
         
         
             TrendingHitsWidget(),
@@ -332,13 +409,104 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               )),
-    ))])
+    ))]),
             // HorizonalListViewWidget(
             //     title: "Top Albums",
             //     actionTitle: "",
             //     listWidget: CustomHorizontalListview(
             //       images: images.topAlbumList,
             //     )),
+            Container(
+  child: Column(children: [
+Padding(padding: const EdgeInsets.all(12.0),
+child:  Row(
+      children: [
+        Text(
+          "Top Albums",
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        ),
+        Spacer(),
+        InkWell(
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>  RecentlyPlayedViewAll(songList: recentlyPlayed, title: 'Recently Played',
+                imageURL:  "${APIConstants.SONG_BASE_URL}public/music/tamil/${recentlyPlayed.records[recentlyPlayed.records.length-1].name[0].toUpperCase()}/${recentlyPlayed.records[recentlyPlayed.records.length-1].name}/image/${recentlyPlayed.records[recentlyPlayed.records.length-1].albumId.toString()}.png",
+)));
+          },
+          child: Text(
+            "View All",
+            style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: CustomColor.secondaryColor),
+          ),
+        )
+      ],
+    ),
+),
+Container(
+      padding: EdgeInsets.only(top: 8),
+      height: 200,
+      child: ListView.builder(
+        // reverse: true,
+          scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
+          physics: BouncingScrollPhysics(),
+          itemCount: album.records.length,
+          itemBuilder: (context, index) => Row(
+                children: [
+                  index == 0
+                      ? SizedBox(
+                          width: 10,
+                        )
+                      : SizedBox(),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(6, 8, 6, 0),
+                      width: 135,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment:
+                           CrossAxisAlignment.start,
+                      children: [
+                        CustomColorContainer(
+                          
+                          child: Image.network(
+                              "${APIConstants.SONG_BASE_URL}public/music/tamil/${album.records[index].name[0].toUpperCase()}/${album.records[index].name}/image/${album.records[index].albumId.toString()}.png",
+
+                            height: 125,
+                            width: 135,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Text(
+                        album.records[index].name.toString(),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400, fontSize: 12),
+                        ),
+                        SizedBox(
+                          height: 2,
+                        ),
+                       Text(album.records[index].musicDirectorName[0].toString(),
+                       maxLines: 1,
+    overflow: TextOverflow.ellipsis,
+   
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12,
+                                    color: CustomColor.subTitle))
+                      ],
+                    ),
+                  ),
+                ],
+              )),
+    ),
+  ],
+  ),
+),
+
           ],
         ),
       ),

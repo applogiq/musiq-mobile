@@ -1,9 +1,9 @@
 // http://192.168.29.184:8000/users/login
 
 class APIConstants{
- static String BASE_URL="http://192.168.29.184:3000/api/v1/";
- static String SONG_BASE_URL="http://192.168.29.184:3000/";
- static String BASE_IMAGE_URL="http://192.168.29.184:3000/api/v1/public/artists/";
+ static String BASE_URL="http://192.168.29.185:3000/api/v1/";
+ static String SONG_BASE_URL="http://192.168.29.185:3000/";
+ static String BASE_IMAGE_URL="http://192.168.29.185:3000/api/v1/public/artists/";
  static String LOGIN="users/login";
  static String REGISTER="users/register";
  static String SEND_OTP="users/email";
@@ -12,8 +12,15 @@ class APIConstants{
  static String ARTIST_LIST="artist/?skip=0&limit=100";
  static String ARTIST_FOLLOWING="users/follow";
  static String ARTIST_SONG="songs?";
- static String RECENT_PLAYED="http://192.168.29.184:3000/api/v1/recent-list/202203";
- static String ALBUMS_URL="http://192.168.29.184:3000/api/v1/albums/?skip=0&limit=100";
+ static String RECENT_PLAYED="http://192.168.29.185:3000/api/v1/recent-list/202203";
+ getAlbumsUrl(int skipLength,int limit){
+  var url="albums/?skip=${skipLength.toString()}&limit=${limit.toString()}";
+  return url;
+ }
+  getArtistUrl(int skipLength,int limit){
+  var url="artist/?skip=${skipLength.toString()}&limit=${limit.toString()}";
+  return url;
+ }
 
 //  http://192.168.29.184:3000/api/v1/albums/?skip=0&limit=100
 

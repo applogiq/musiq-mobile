@@ -14,7 +14,7 @@ class PreferenceScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isSwitched = false;
     return Scaffold(
-      appBar: const PreferredSize(
+      appBar:  PreferredSize(
         preferredSize: Size(double.maxFinite, 60),
         child: CustomAppBarWidget(
           title: "Preferences",
