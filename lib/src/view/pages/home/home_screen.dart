@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/constants/images.dart';
+import 'package:musiq/src/helpers/utils/play_navigation.dart';
 import 'package:musiq/src/logic/services/api_call.dart';
 import 'package:musiq/src/logic/services/api_route.dart';
 import 'package:musiq/src/model/api_model/album_model.dart';
@@ -177,63 +178,126 @@ child:
     ),
 ),
 Container(
-      padding: EdgeInsets.only(top: 8),
-      height: 200,
-      child: ListView.builder(
-        // reverse: true,
-          scrollDirection: Axis.horizontal,
-          shrinkWrap: true,
-          physics: BouncingScrollPhysics(),
-          itemCount: recentlyPlayed.records.length,
-          itemBuilder: (context, index) => Row(
-                children: [
-                  index == 0
-                      ? SizedBox(
-                          width: 10,
-                        )
-                      : SizedBox(),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(6, 8, 6, 0),
-                      width: 135,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment:
-                           CrossAxisAlignment.start,
-                      children: [
-                        CustomColorContainer(
-                          
-                          child: Image.network(
-                             "${APIConstants.SONG_BASE_URL}public/music/tamil/${recentlyPlayed.records[index].name[0].toUpperCase()}/${recentlyPlayed.records[index].name}/image/${recentlyPlayed.records[index].albumId.toString()}.png",
 
-                            height: 125,
-                            width: 135,
-                            fit: BoxFit.cover,
+      padding: EdgeInsets.only(top: 8),
+
+      height: 200,
+
+      child: ListView.builder(
+
+        // reverse: true,
+
+          scrollDirection: Axis.horizontal,
+
+          shrinkWrap: true,
+
+          physics: BouncingScrollPhysics(),
+
+          itemCount: recentlyPlayed.records.length,
+
+          itemBuilder: (context, index) => Row(
+
+                children: [
+
+                  index == 0
+
+                      ? SizedBox(
+
+                          width: 10,
+
+                        )
+
+                      : SizedBox(),
+
+                  InkWell(
+                    onTap: (){
+    recentlyPlayedToPlayScreen(recentlyPlayed,context,index);
+  },
+                    child: Container(
+                  
+                      padding: EdgeInsets.fromLTRB(6, 8, 6, 0),
+                  
+                        width: 135,
+                  
+                      child: Column(
+                  
+                        mainAxisAlignment: MainAxisAlignment.start,
+                  
+                        crossAxisAlignment:
+                  
+                             CrossAxisAlignment.start,
+                  
+                        children: [
+                  
+                          CustomColorContainer(
+                  
+                            
+                  
+                            child: Image.network(
+                  
+                               "${APIConstants.SONG_BASE_URL}public/music/tamil/${recentlyPlayed.records[index].name[0].toUpperCase()}/${recentlyPlayed.records[index].name}/image/${recentlyPlayed.records[index].albumId.toString()}.png",
+                  
+                  
+                  
+                              height: 125,
+                  
+                              width: 135,
+                  
+                              fit: BoxFit.cover,
+                  
+                            ),
+                  
                           ),
-                        ),
-                        SizedBox(
-                          height: 6,
-                        ),
-                        Text(
-                        recentlyPlayed.records[index].songs!.name.toString(),
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12),
-                        ),
-                        SizedBox(
-                          height: 2,
-                        ),
-                       Text( recentlyPlayed.records[index].name.toString()+"-"+recentlyPlayed.records[index].musicDirectorName[0].toString(),
-                       maxLines: 1,
-    overflow: TextOverflow.ellipsis,
-   
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 12,
-                                    color: CustomColor.subTitle))
-                      ],
+                  
+                          SizedBox(
+                  
+                            height: 6,
+                  
+                          ),
+                  
+                          Text(
+                  
+                          recentlyPlayed.records[index].songs!.name.toString(),
+                  
+                            style: TextStyle(
+                  
+                                fontWeight: FontWeight.w400, fontSize: 12),
+                  
+                          ),
+                  
+                          SizedBox(
+                  
+                            height: 2,
+                  
+                          ),
+                  
+                         Text( recentlyPlayed.records[index].name.toString()+"-"+recentlyPlayed.records[index].musicDirectorName[0].toString(),
+                  
+                         maxLines: 1,
+                  
+                      overflow: TextOverflow.ellipsis,
+                  
+                     
+                  
+                                  style: TextStyle(
+                  
+                                      fontWeight: FontWeight.w400,
+                  
+                                      fontSize: 12,
+                  
+                                      color: CustomColor.subTitle))
+                  
+                        ],
+                  
+                      ),
+                  
                     ),
                   ),
+
                 ],
+
               )),
+
     ),
   ],
   ),

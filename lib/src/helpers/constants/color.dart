@@ -20,5 +20,11 @@ class CustomColor {
   static var errorStatusColor=Color.fromRGBO(96, 20, 20, 1);
   static var successStatusColor=Color.fromRGBO(28, 58, 23, 1);
   static var appBarColor=Color.fromRGBO(33, 33, 44, 1);
+
+   static var activeIconBgColor = Color.fromRGBO(254, 86, 49, 0.8);
+  static var activeColor = Colors.white;
+  static var inActiveColor = Color.fromRGBO(255, 255, 255, 0.35);
+  static var bottomNavBarColor = Color.fromRGBO(27, 27, 35, 1);
+
   // 33, 33, 44, 1
 }

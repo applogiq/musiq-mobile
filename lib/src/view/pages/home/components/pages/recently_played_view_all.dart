@@ -69,22 +69,7 @@ class RecentlyPlayedViewAll extends StatelessWidget {
         padding: EdgeInsets.all(8),
         child: InkWell(
           onTap: () {
-            // var songPlayList=[];
-            // for(int i=0;i<songList.totalrecords;i++){
-
-            //   songPlayList.add(songList.records[i].id);
-            // }
-            // print(index);
-            // Navigator.of(context).push(MaterialPageRoute(
-            //     builder: (context) => PlayScreen(
-            //       songList: songList,
-            //       index: index,
-            //       id:songList.records[index].id.toString(),
-            //           imageURL:  "${APIConstants.SONG_BASE_URL}public/music/tamil/${songList.records[index].albumDetails.name[0].toUpperCase()}/${songList.records[index].albumDetails.name}/image/${songList.records[index].albumDetails.albumId}.png",
-            //           songName: songList.records[index].name,
-            //           artistName: songList.records[index].albumDetails.musicDirectorName[0].toString(),
-            //           songplayList: songPlayList,
-            //         )));
+           
           },
           child: Row(
             children: [
