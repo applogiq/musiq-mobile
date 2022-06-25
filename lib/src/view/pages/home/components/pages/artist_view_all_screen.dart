@@ -45,49 +45,32 @@ class ArtistListViewAll extends StatelessWidget {
               child: GridView.builder(
                 semanticChildCount: 2,
                 shrinkWrap: true,
-                itemCount: 3,
+                itemCount: viewAllController.artist.records.length,
                 itemBuilder: (context, index) => Container(
                   padding: EdgeInsets.symmetric(horizontal: 6),
                   child: InkWell(
-                    onTap: ()async {
-//                               Map<String, String> queryParams = {
-//   'artist_id': artist.records[index].id.toString(),
-//   'skip': '0',
-//   'limit': '100',
-// };
-//  var urlSet="${APIConstants.BASE_URL}songs?artist_id=${queryParams["artist_id"]}&skip=${queryParams["skip"]}&limit=${queryParams["limit"]}";
-//                         var res= await apiCall.getRequestWithAuth(urlSet);
-//                         print(res.statusCode);
-//                         if(res.statusCode==200){
-//                           var data=jsonDecode(res.body);
-//                           SongList songList=SongList.fromMap(data);
-//                           print(songList.toMap());
-//                               Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ViewAllScreen(songList: songList,title: artist.records[index].name,
-//                               isNetworkImage: artist.records[index].isImage,
-//                             imageURL: artist.records[index].isImage? APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png":
-//                                   "assets/images/default/no_artist.png",
-                            
-//                             )));
-                        // }
-                        // else{
+                    onTap:(){
 
-                        // }
+
+                    viewAllController.artistTap(record: viewAllController.artist.records[index],context:context,index:viewAllController.artist.records[index].id);
+                    }
                     
-                    },
+                    ,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                      //  artist.records[index].isImage==false?Container(height: 185,width: 163.5,decoration: BoxDecoration(color: CustomColor.defaultCard,borderRadius: BorderRadius.circular(12),border: Border.all(color: CustomColor.defaultCardBorder,width: 2.0)),child: Center(child: Image.asset("assets/images/default/no_artist.png",width: 113,height: 118,)),): CustomColorContainer(
-                      //     child:Image.network(APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png",height: 185,
-                      //       width: 163.5,
-                      //       fit: BoxFit.cover,)
-                        // ),
+                       viewAllController.artist.records[index].isImage==false?Container(height: 185,width: 163.5,decoration: BoxDecoration(color: CustomColor.defaultCard,borderRadius: BorderRadius.circular(12),border: Border.all(color: CustomColor.defaultCardBorder,width: 2.0)),child: Center(child: Image.asset("assets/images/default/no_artist.png",width: 113,height: 118,)),): CustomColorContainer(
+                          child:Image.network(APIConstants.BASE_IMAGE_URL+viewAllController.artist.records[index].artistId+".png",height: 185,
+                            width: 163.5,
+                            fit: BoxFit.cover,)
+                        ),
                         SizedBox(
                           height: 6,
                         ),
                         Text(
-                          "artist.records[index].name",
+                          viewAllController.artist.records[index].name,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontWeight: FontWeight.w400, fontSize: 14),
                         ),

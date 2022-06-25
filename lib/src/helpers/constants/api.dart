@@ -21,6 +21,11 @@ class APIConstants{
   var url="artist/?skip=${skipLength.toString()}&limit=${limit.toString()}";
   return url;
  }
+getSpecificArtistUrl(int id,int skipLength,int limit){
+
+  var url="songs?artist_id=${id}&skip=${skipLength}&limit=${limit}";
+  return url;
+ }
 
 //  http://192.168.29.184:3000/api/v1/albums/?skip=0&limit=100
 

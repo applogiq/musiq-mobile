@@ -40,6 +40,18 @@ Future<Album> getAlbum({int limit=100})async{
        return album;
   }
 
+  getSpecificArtistSong(int index, int skip, int limit)async {
+    var artistSong=apiConstants.getSpecificArtistUrl(index,skip, limit);
+   
+var url=APIConstants.BASE_URL+artistSong;
+
+    var res=await apiCall.getRequestWithAuth(url );
+ 
+    return res;
+ 
+ 
+  }
+
 
   // Future<RecentlyPlayed> getRecent()async{
   // await Future.delayed(Duration(seconds: 2),(){});
