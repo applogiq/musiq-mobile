@@ -1,11 +1,14 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/constants/style.dart';
+import 'package:musiq/src/view/pages/common_screen/offline_screen.dart';
 import 'package:musiq/src/view/widgets/custom_button.dart';
 import 'package:musiq/src/view/widgets/custom_color_container.dart';
 
 import '../../../../helpers/constants/string.dart';
+import '../../../../logic/controller/network_controller.dart';
 import '../../../../logic/cubit/register/register_cubit.dart';
 import '../../../widgets/custom_app_bar.dart';
 import '../../../widgets/custom_text_field_with_error.dart';
@@ -31,9 +34,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
   @override
   Widget build(BuildContext context) {
-  
+    final NetworkController _networkController = Get.find<NetworkController>();
     return SafeArea(
-      child: Scaffold(
+      child: Obx((){
+        return _networkController.connectionType.value==0?OfflineScreen():Scaffold(
          appBar:  PreferredSize(
           preferredSize: Size(double.maxFinite, 80),
           child: Padding(
@@ -73,12 +77,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       },),
                       
                       
-                      // CustomPasswordTextField(label: ConstantText.password,stream: _regCubit.passwordStream,cubit: _regCubit,obscure: true,onChange: (text){
-                      //   _regCubit.updatePassword(text);
-                      // },onTap: ()async{
-
-                      //  _regCubit.passwordTap();
-                      // },),
                        PasswordTextFieldWithError(isPassword: true,label: ConstantText.password,cubit: _regCubit,stream: _regCubit.passwordStream,isValidatorEnable: true,onChange:(text){
 
                       _regCubit.updatePassword(text);
@@ -132,8 +130,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ],
             ),
           ),
-        ) ),
-    );
+        ) );
+      }) );
   }
 }
 

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/themes/theme.dart';
+import 'package:musiq/src/logic/controller/binding/network_binding.dart';
 import 'package:musiq/src/logic/cubit/forgot/cubit/forgotpassword_cubit.dart';
 import 'package:musiq/src/view/pages/bottom_nav_bar/main_page.dart';
 import 'package:musiq/src/view/pages/bottom_navigation_bar.dart';
@@ -21,6 +22,7 @@ import 'package:musiq/src/view/pages/profile/components/artist_preference_screen
 import 'package:musiq/src/view/pages/profile/components/audio_quality.dart';
 import 'package:musiq/src/view/pages/profile/components/my_profile.dart';
 import 'package:musiq/src/view/pages/profile/components/preference_screen.dart';
+import 'package:musiq/src/view/pages/profile/profile.dart';
 
 import 'src/logic/cubit/login_bloc.dart';
 import 'src/logic/cubit/register/register_cubit.dart';
@@ -40,14 +42,15 @@ class MyApp extends StatelessWidget {
            BlocProvider<ForgotpasswordCubit>(create: (context) => ForgotpasswordCubit()),
        ],
       child: GetMaterialApp(
+        initialBinding: NetworkBinding(),
         debugShowCheckedModeBanner: false,
         theme: themeData(context),
-        home: MainPage(),
+        home: SplashScreen(),
         routes: {
           'onboarding/':(BuildContext ctx)=>OnboardingScreen(),
           'login/': (BuildContext ctx) => LoginScreen(),
           'register/': (BuildContext ctx) => RegisterScreen(),
-          'bottom/': (BuildContext ctx) => CustomBottomBar(),
+          'bottom/': (BuildContext ctx) => MainPage(),
           'selectArtistPref/':(BuildContext ctx)=>SelectYourFavList(),
           'forgotMain/':(BuildContext ctx)=>ForgotPasswordMainScreen(),
           'forgotOTP/':(BuildContext ctx)=>OTPScreen(),

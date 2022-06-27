@@ -12,7 +12,21 @@ class APIConstants{
  static String ARTIST_LIST="artist/?skip=0&limit=100";
  static String ARTIST_FOLLOWING="users/follow";
  static String ARTIST_SONG="songs?";
- static String RECENT_PLAYED="http://192.168.29.185:3000/api/v1/recent-list/202203";
+ static String AURA="public/aura/";
+ static String RECENT_PLAYED="http://192.168.29.185:3000/api/v1/recent-list/202201?limit=100";
+
+
+// /public/aura/aura_id.png
+getAuraUrl({int limit=100}){
+  var url="aura/?limit=${limit.toString()}";
+  return url;
+ 
+}
+
+ getRecentlyPlayedUrl(String? userId,int limit){
+  var url="recent-list/${userId}?limit=${limit.toString()}";
+  return url;
+ }
  getAlbumsUrl(int skipLength,int limit){
   var url="albums/?skip=${skipLength.toString()}&limit=${limit.toString()}";
   return url;

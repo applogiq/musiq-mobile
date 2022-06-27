@@ -36,10 +36,11 @@ class ArtistSongList extends StatelessWidget {
                           imageURL: record.isImage
                               ? generateArtistImageUrl(record.artistId)
                               : Images.noArtist,
-                          title: record.name,
+                          title: record.artistName,
                           height: size.height / 2.5,
                         )
-                      : SecondaryAppBar(title: record.name),),
+                      : SecondaryAppBar(title: record.artistName),),
+                
                       body: ListView(
                       controller: viewAllController.scrollController,
                       shrinkWrap: true,
@@ -81,13 +82,13 @@ class ArtistSongList extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: CustomColorContainer(
-                    child:
-                     Image.network(
-                          generateSongImageUrl(songList.records[index].albumDetails.name, songList.records[index].albumDetails.albumId),
- height: 70,
-                      width: 70,
-                      fit: BoxFit.fill,
-                    ),
+                    child:Text("") ,
+//                      Image.network(
+//                           generateSongImageUrl(songList.records[index].albumName, songList.records[index].albumId),
+//  height: 70,
+//                       width: 70,
+//                       fit: BoxFit.fill,
+//                     ),
                   ),
                 ),
               ),
@@ -100,11 +101,11 @@ class ArtistSongList extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                           Text(
-                            songList.records[index].name.toString(),
+                            songList.records[index].songName.toString(),
                             style: fontWeight400(),
                           ),
                           Text(
-                           songList.records[index].albumDetails.name.toString(),
+                           songList.records[index].albumName.toString(),
                             style: fontWeight400(size: 12.0,),
                           ),
                       ],

@@ -69,7 +69,7 @@ class ArtistListViewAll extends StatelessWidget {
                           height: 6,
                         ),
                         Text(
-                          viewAllController.artist.records[index].name,
+                          viewAllController.artist.records[index].artistName,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontWeight: FontWeight.w400, fontSize: 14),

@@ -37,9 +37,9 @@ class CustomSongVerticalList extends StatelessWidget {
                   songList: songList,
                   index: index,
                   id:songList.records[index].id.toString(),
-                      imageURL:  "${APIConstants.SONG_BASE_URL}public/music/tamil/${songList.records[index].albumDetails.name[0].toUpperCase()}/${songList.records[index].albumDetails.name}/image/${songList.records[index].albumDetails.albumId}.png",
-                      songName: songList.records[index].name,
-                      artistName: songList.records[index].albumDetails.musicDirectorName[0].toString(),
+                      imageURL:  "${APIConstants.SONG_BASE_URL}public/music/tamil/${songList.records[index].albumName[0].toUpperCase()}/${songList.records[index].albumName}/image/${songList.records[index].albumId}.png",
+                      songName: songList.records[index].songName,
+                      artistName: songList.records[index].musicDirectorName[0].toString(),
                       songplayList: songPlayList,
                     )));
           },
@@ -52,7 +52,7 @@ class CustomSongVerticalList extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: CustomColorContainer(
                     child: Image.network(
-                      "${APIConstants.SONG_BASE_URL}public/music/tamil/${songList.records[index].albumDetails.name[0].toUpperCase()}/${songList.records[index].albumDetails.name}/image/${songList.records[index].albumDetails.albumId}.png",
+                      "${APIConstants.SONG_BASE_URL}public/music/tamil/${songList.records[index].albumName[0].toUpperCase()}/${songList.records[index].albumName}/image/${songList.records[index].albumId}.png",
                         // "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png",
                       height: 70,
                       width: 70,
@@ -70,11 +70,11 @@ class CustomSongVerticalList extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          songList.records[index].albumDetails.name,
+                          songList.records[index].albumName,
                           style: fontWeight400(),
                         ),
                         Text(
-                          songList.records[index].name,
+                          songList.records[index].songName,
                           style: fontWeight400(size: 12.0,),
                         ),
                       ],

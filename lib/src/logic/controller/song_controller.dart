@@ -15,7 +15,7 @@ class SongController extends GetxController{
    var bufferDurationValue=0.obs;
  load(List songPlayList,int index)async{
    player = AudioPlayer();
-   var isPlaying = player.playerState;
+
 //    if(isPlaying==player.playerState.playing){
 // print("ALREADY PLAYING");
 //    }
@@ -30,7 +30,8 @@ await player.setAudioSource(
     children: List.generate(
             songPlayList.length,
             (index) => AudioSource.uri(Uri.parse(
-                "http://192.168.29.184:3000/api/v1/audio?song_id=${songPlayList[index]}"))),
+              
+                "http://192.168.29.185:3000/api/v1/audio?song_id=${songPlayList[index]}"))),
       
   ),
   
@@ -89,7 +90,11 @@ isShuffle.toggle();
     }
   }
   playOrPause(){
-    
+      var isPlaying = player.playing;
+   print(isPlaying);
+   if(isPlaying){
+    player.stop();
+   }
                                     
                                      if(isPlay.value){
                                      pause();
@@ -121,6 +126,7 @@ isShuffle.toggle();
   favourite(){}
   addToPlaylist(){}
   play(){
+     
     isPlay.toggle();
     
     player.play();

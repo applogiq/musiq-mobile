@@ -141,17 +141,18 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
              
               songPlayList.add(widget.songList.records[i].id);
             }
+            print(songPlayList);
             // print(index);
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => PlayScreen(
-                  songList: widget.songList,
-                  index: 0,
-                  id:widget.songList.records[0].id.toString(),
-                      imageURL:  "${APIConstants.SONG_BASE_URL}public/music/tamil/${widget.songList.records[0].albumDetails.name[0].toUpperCase()}/${widget.songList.records[0].albumDetails.name}/image/${widget.songList.records[0].albumDetails.albumId}.png",
-                      songName: widget.songList.records[0].name,
-                      artistName: widget.songList.records[0].albumDetails.musicDirectorName[0].toString(),
-                      songplayList: songPlayList,
-                    )));
+            // Navigator.of(context).push(MaterialPageRoute(
+            //     builder: (context) => PlayScreen(
+            //       songList: widget.songList,
+            //       index: 0,
+            //       id:widget.songList.records[0].id.toString(),
+            //           imageURL:  "${APIConstants.SONG_BASE_URL}public/music/tamil/${widget.songList.records[0].albumName[0].toUpperCase()}/${widget.songList.records[0].albumName}/image/${widget.songList.records[0].albumId}.png",
+            //           songName: widget.songList.records[0].songName,
+            //           artistName: widget.songList.records[0].musicDirectorName[0].toString(),
+            //           songplayList: songPlayList,
+            //         )));
                                       },
                                       child: CustomButton(
                                         isIcon: true,

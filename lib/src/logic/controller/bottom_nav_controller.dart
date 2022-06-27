@@ -14,7 +14,7 @@ class BottomNavigationBarController extends GetxController {
     BottomNavBarModel(iconData: Icons.podcasts_rounded, labelData: "Podcast"),
     BottomNavBarModel(iconData: Icons.person_rounded, labelData: "Profile"),
   ];
-  List pages = [HomePage(),Library(),HomePage(), ProfilePage()];
+  List pages = [HomePage(),Library(),Library(), ProfilePage()];
   var selectedBottomIndex = 0.obs;
   changeIndex(int index) {
     selectedBottomIndex.value = index;

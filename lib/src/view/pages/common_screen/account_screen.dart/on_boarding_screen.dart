@@ -6,6 +6,7 @@ import 'package:musiq/src/helpers/constants/style.dart';
 import 'package:musiq/src/helpers/utils/navigation.dart';
 import 'package:musiq/src/view/widgets/custom_button.dart';
 
+import '../../../../helpers/constants/images.dart';
 import 'components/background_image.dart';
 import 'components/logo_image.dart';
 
@@ -36,7 +37,10 @@ class OnboardingScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          LogoWithImage(
+                          Hero(
+                           tag: Images.heroImage,
+                            child: LogoWithImage(
+                            ),
                           ),
                         
                           CenterTextWidget(

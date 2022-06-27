@@ -1,7 +1,9 @@
 import 'package:musiq/src/model/Image_model.dart';
 
 class Images {
+
   static String logoImage="assets/icons/logo.png";
+  static String heroImage="logo";
   static String logoImageWithName="assets/icons/logowithname.png";
   static String noInternet="assets/icons/internet.png";
   static String loaderImage="assets/gifs/loader.gif";

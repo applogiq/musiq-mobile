@@ -23,7 +23,7 @@ recentlyPlayedToPlayScreen(RecentlyPlayed songList,BuildContext context,int inde
   var songPlayList=[];
   print(songList.records.length);
   for(int i=0;i<songList.records.length;i++){
-    print(songList.records[i].songs!.id);
+    print(songList.records[i].id);
   }
               // Navigator.of(context).push(MaterialPageRoute(
                 

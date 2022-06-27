@@ -86,7 +86,7 @@ class ArtistListView extends StatelessWidget {
                           var data=jsonDecode(res.body);
                           SongList songList=SongList.fromMap(data);
                           print(songList.toMap());
-                              Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ViewAllScreen(songList: songList,title: artist.records[index].name,
+                              Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ViewAllScreen(songList: songList,title: artist.records[index].artistName,
                               isNetworkImage: artist.records[index].isImage,
                             imageURL: artist.records[index].isImage? APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png":
                                   "assets/images/default/no_artist.png", 
@@ -108,7 +108,7 @@ class ArtistListView extends StatelessWidget {
                              artist.records[index].isImage==false?Container(height: 240,width: 200,decoration: BoxDecoration(color: CustomColor.defaultCard,borderRadius: BorderRadius.circular(12),border: Border.all(color: CustomColor.defaultCardBorder,width: 2.0)),child: Center(child: Image.asset("assets/images/default/no_artist.png",width: 113,height: 118,)),): CustomColorContainer(
                                 child: Image.network(
                                    APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png",
-                            
+                            // "http://192.168.29.185:3000/api/v1/public/artists/AR001.png",
                                   height: 240,
                                   width: 200,
                                   fit: BoxFit.cover,
@@ -118,7 +118,7 @@ class ArtistListView extends StatelessWidget {
                                 height: 6,
                               ),
                               Text(
-                                artist.records[index].name,
+                                artist.records[index].artistName,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w400, fontSize: 14),
                               ),

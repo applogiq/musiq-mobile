@@ -1,16 +1,16 @@
 // To parse this JSON data, do
 //
-//     final artistModel = artistModelFromMap(jsonString);
+//     final auraModel = auraModelFromMap(jsonString);
 
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-ArtistModel artistModelFromMap(String str) => ArtistModel.fromMap(json.decode(str));
+AuraModel auraModelFromMap(String str) => AuraModel.fromMap(json.decode(str));
 
-String artistModelToMap(ArtistModel data) => json.encode(data.toMap());
+String auraModelToMap(AuraModel data) => json.encode(data.toMap());
 
-class ArtistModel {
-    ArtistModel({
+class AuraModel {
+    AuraModel({
         required this.success,
         required this.message,
         required this.records,
@@ -22,7 +22,7 @@ class ArtistModel {
     List<Record> records;
     int totalRecords;
 
-    factory ArtistModel.fromMap(Map<String, dynamic> json) => ArtistModel(
+    factory AuraModel.fromMap(Map<String, dynamic> json) => AuraModel(
         success: json["success"],
         message: json["message"],
         records: List<Record>.from(json["records"].map((x) => Record.fromMap(x))),
@@ -39,56 +39,56 @@ class ArtistModel {
 
 class Record {
     Record({
-        required this.id,
-        required this.artistName,
+        required this.auraId,
+        required this.auraName,
         required this.isImage,
         required this.updatedAt,
         required this.updatedBy,
-        required this.isActive,
-        required this.followers,
-        required this.artistId,
+        required this.isDelete,
+        required this.id,
+        required this.noOfSongs,
         required this.createdAt,
         required this.createdBy,
-        required this.isDelete,
+        required this.isActive,
     });
 
-    int id;
-    String artistName;
+    String auraId;
+    String auraName;
     bool isImage;
     dynamic updatedAt;
     dynamic updatedBy;
-    bool isActive;
-    dynamic followers;
-    String artistId;
+    bool isDelete;
+    int id;
+    int noOfSongs;
     DateTime createdAt;
     int createdBy;
-    bool isDelete;
+    bool isActive;
 
     factory Record.fromMap(Map<String, dynamic> json) => Record(
-        id: json["id"],
-        artistName: json["artist_name"],
+        auraId: json["aura_id"],
+        auraName: json["aura_name"],
         isImage: json["is_image"],
         updatedAt: json["updated_at"],
         updatedBy: json["updated_by"],
-        isActive: json["is_active"],
-        followers: json["followers"],
-        artistId: json["artist_id"],
+        isDelete: json["is_delete"],
+        id: json["id"],
+        noOfSongs: json["no_of_songs"],
         createdAt: DateTime.parse(json["created_at"]),
         createdBy: json["created_by"],
-        isDelete: json["is_delete"],
+        isActive: json["is_active"],
     );
 
     Map<String, dynamic> toMap() => {
-        "id": id,
-        "artist_name": artistName,
+        "aura_id": auraId,
+        "aura_name": auraName,
         "is_image": isImage,
         "updated_at": updatedAt,
         "updated_by": updatedBy,
-        "is_active": isActive,
-        "followers": followers,
-        "artist_id": artistId,
+        "is_delete": isDelete,
+        "id": id,
+        "no_of_songs": noOfSongs,
         "created_at": createdAt.toIso8601String(),
         "created_by": createdBy,
-        "is_delete": isDelete,
+        "is_active": isActive,
     };
 }

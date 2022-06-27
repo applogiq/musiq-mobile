@@ -11,7 +11,8 @@ import 'package:musiq/src/helpers/constants/api.dart';
 import 'package:musiq/src/helpers/constants/images.dart';
 import 'package:musiq/src/logic/services/api_call.dart';
 import 'package:musiq/src/logic/services/api_route.dart';
-import 'package:musiq/src/model/api_model/artist_model.dart';
+import 'package:musiq/src/model/api_model/artist_model.dart' as art;
+import 'package:musiq/src/model/api_model/song_list_model.dart';
 import 'package:musiq/src/view/pages/home/components/pages/search_screen.dart';
 import 'package:musiq/src/view/pages/home/components/widget/loader.dart';
 import 'package:musiq/src/view/pages/home/home_screen.dart';
@@ -49,35 +50,19 @@ class _SelectYourFavListState extends State<SelectYourFavList> {
     data=getArtist();
   
   }
-  Future<ArtistModel> getArtist()async{
+  Future<art.ArtistModel> getArtist()async{
     return await apiRoute.getArtist();
 
   }
 
  
   followAndUnfollow(var record,int index)async{
-    
-                                            if(widget.artist_list!.contains(record[index].artistId)){
-                                             
-                                              record[index].followers=(record[index].followers! -1);
-                                             
-
-                                           widget.artist_list!.remove(record[index].artistId);
-                           Map<String, dynamic> params = {
-                        
-                        "artist_id": record[index].artistId,
-                        "follow": false
-                        };
-                                            var res=  await apiCall.putRequestWithAuth(APIConstants.ARTIST_FOLLOWING,params);
-                                            if(res.statusCode==200){
-                                              print("Un Follow");
-                                            }
-                       
-                       
-
-                                            }
-                                            else{
-                                               record[index].followers=(record[index].followers! +1);
+    print("CHECK FUNCTION");
+    print(widget.artist_list==null);
+if(widget.artist_list!.isEmpty){
+   record[index].followers=(record[index].followers! +1);
+      widget.artist_list!.add(record[index].artistId);
+           record[index].followers=(record[index].followers! +1);
                                                 widget.artist_list!.add(record[index].artistId);
                                                     Map<String, dynamic> params = {
                         
@@ -85,14 +70,88 @@ class _SelectYourFavListState extends State<SelectYourFavList> {
                         "follow": true
                         };
                                             var res=  await apiCall.putRequestWithAuth(APIConstants.ARTIST_FOLLOWING,params);
+                                            print(res.statusCode);
+
                         if(res.statusCode==200){
                         print("Foolow");
                         }
+}
+    else if(widget.artist_list!.contains(record[index].artistId)){
+      record[index].followers=(record[index].followers! -1);
+
+         widget.artist_list!.remove(record[index].artistId);
+                            Map<String, dynamic> params = {
+                        
+                        "artist_id": record[index].artistId,
+                        "follow": false
+                        };
+                                            var res=  await apiCall.putRequestWithAuth(APIConstants.ARTIST_FOLLOWING,params);
+                                            print(res.statusCode);
+                                            if(res.statusCode==200){
+                                              print("Un Follow");
                                             }
-                                            setState(() {
-                                              widget.artist_list;
-                                              record;
-                                            });
+        
+    }
+    else{
+
+
+       widget.artist_list!.add(record[index].artistId);
+                              record[index].followers=(record[index].followers! +1);
+                                                widget.artist_list!.add(record[index].artistId);
+                                                    Map<String, dynamic> params = {
+                        
+                        "artist_id": record[index].artistId,
+                        "follow": true
+                        };
+                                            var res=  await apiCall.putRequestWithAuth(APIConstants.ARTIST_FOLLOWING,params);
+                                            print(res.statusCode);
+
+                        if(res.statusCode==200){
+                        print("Foolow");
+                        }
+    }
+setState(() {
+  widget.artist_list;
+});
+                        //                     if(widget.artist_list!.contains(record[index].artistId)){
+                                             
+                        //                       record[index].followers=(record[index].followers! -1);
+                                             
+
+                        //                    widget.artist_list!.remove(record[index].artistId);
+                        //    Map<String, dynamic> params = {
+                        
+                        // "artist_id": record[index].artistId,
+                        // "follow": false
+                        // };
+                        //                     var res=  await apiCall.putRequestWithAuth(APIConstants.ARTIST_FOLLOWING,params);
+                        //                     print(res.statusCode);
+                        //                     if(res.statusCode==200){
+                        //                       print("Un Follow");
+                        //                     }
+                       
+                       
+
+                        //                     }
+                        //                     else{
+                        //                        record[index].followers=(record[index].followers! +1);
+                        //                         widget.artist_list!.add(record[index].artistId);
+                        //                             Map<String, dynamic> params = {
+                        
+                        // "artist_id": record[index].artistId,
+                        // "follow": true
+                        // };
+                        //                     var res=  await apiCall.putRequestWithAuth(APIConstants.ARTIST_FOLLOWING,params);
+                        //                     print(res.statusCode);
+
+                        // if(res.statusCode==200){
+                        // print("Foolow");
+                        // }
+                        //                     }
+                        //                     setState(() {
+                        //                       widget.artist_list;
+                        //                       record;
+                        //                     });
   }
   @override
   Widget build(BuildContext context) {
@@ -100,23 +159,8 @@ class _SelectYourFavListState extends State<SelectYourFavList> {
      SystemUiOverlay.top, //This line is used for showing the bottom bar
   ]);
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        toolbarHeight: 80,
-        title: Text("Select 3 or more of your \nfavourite artists"),
-        actions: [Padding(
-          padding: const EdgeInsets.symmetric(horizontal:16.0),
-          child: GestureDetector(
-            onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SearchScreen()));},
-            child: Image.asset(
-                      "assets/icons/search.png",
-                      height: 18,
-                      width: 18,
-                      color: Colors.white,
-                    ),
-          ),
-        ),],
-      ),
+      appBar: PreferredSize(preferredSize: Size(MediaQuery.of(context).size.width, 80),
+      child: ArtistPreferenceAppBarWidget(),),
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -124,12 +168,12 @@ class _SelectYourFavListState extends State<SelectYourFavList> {
             children: [
            
               Expanded(
-                  child: FutureBuilder<ArtistModel>(future: data,builder: (context, snapshot) {
+                  child: FutureBuilder<art.ArtistModel>(future: data,builder: (context, snapshot) {
                     if(snapshot.connectionState==ConnectionState.waiting){
                       return Center(child: Image.asset(Images.loaderImage,height: 70,),);
                     }
                     else if(snapshot.hasData!=null){
-                      var record=snapshot.data!.records;
+                      List<art.Record> record=snapshot.data!.records;
                       print(record.toString());
                       return   ListView.builder(shrinkWrap: true,itemCount: record.length,itemBuilder: (context,index){
                         return Container(
@@ -137,33 +181,29 @@ class _SelectYourFavListState extends State<SelectYourFavList> {
                               padding: EdgeInsets.all(8),
                               child: Row(
                                 children: [
-                                  Expanded(
-                                    flex: 3,
-                                    child: Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: CustomColorContainer(
-                                        child:record[index].isImage==false?Image.asset("assets/images/default/no_artist.png",width: 80,
-                                          height: 80,
-                                          ): Image.network(
-                                          
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: CustomColorContainer(
+                                      child:record[index].isImage==false?Image.asset("assets/images/default/no_artist.png",width: 80,
+                                        height: 80,
+                                        ): Image.network(
                                          APIConstants.BASE_IMAGE_URL+record[index].artistId+".png",
-                                          width: 90,
-                                          height: 90,
-                                          fit: BoxFit.cover,                                               
-                                        ),
+                                        width: 80,
+                                        height: 80,
+                                        fit: BoxFit.fill,                                               
                                       ),
                                     ),
                                   ),
                                   Expanded(
                                       flex: 7,
                                       child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(4.0, 8.0, 8.0, 8.0),
+                                        padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                        record[index].name,
+                        record[index].artistName,
                         style: TextStyle(
                             fontWeight: FontWeight.w400, fontSize: 14),
                                             ),
@@ -193,10 +233,12 @@ class _SelectYourFavListState extends State<SelectYourFavList> {
                                             vertical: 4),
                                         child: InkWell(
                                           onTap: ()async {
-                                            
+                                            print("HI");
+                                          
                                         followAndUnfollow(record, index);
                                           },
                                           child: Container(
+                                            alignment: Alignment.centerRight,
                                             padding: EdgeInsets.symmetric(
                           horizontal: widget.artist_list!.contains(record[index].artistId) ? 6 : 2,
                           vertical: 4),
@@ -235,7 +277,7 @@ class _SelectYourFavListState extends State<SelectYourFavList> {
       isLoad?LoaderScreen():EmptyBox()
         ],
       ),
-      bottomNavigationBar:widget.artist_list!.length<3?
+      bottomNavigationBar:(widget.artist_list!.length<2|| widget.artist_list==null)?
       EmptyBox()
       :isLoad?EmptyBox(): InkWell(
           onTap: ()async {
@@ -253,6 +295,33 @@ isLoad=false;
             });
           },
           child: CustomButton(label: "Save")),
+    );
+  }
+}
+
+class ArtistPreferenceAppBarWidget extends StatelessWidget {
+  const ArtistPreferenceAppBarWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      toolbarHeight: 80,
+      title: Text("Select 3 or more of your \nfavourite artists"),
+      actions: [Padding(
+        padding: const EdgeInsets.symmetric(horizontal:16.0),
+        child: GestureDetector(
+          onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SearchScreen()));},
+          child: Image.asset(
+                    "assets/icons/search.png",
+                    height: 18,
+                    width: 18,
+                    color: Colors.white,
+                  ),
+        ),
+      ),],
     );
   }
 }

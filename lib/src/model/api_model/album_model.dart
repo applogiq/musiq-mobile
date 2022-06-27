@@ -1,4 +1,8 @@
+// To parse this JSON data, do
+//
+//     final album = albumFromMap(jsonString);
 
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 Album albumFromMap(String str) => Album.fromMap(json.decode(str));
@@ -35,30 +39,27 @@ class Album {
 
 class Record {
     Record({
-        required this.id,
         required this.albumId,
         required this.noOfSongs,
-        required this.name,
+        required this.albumName,
         required this.releasedYear,
         required this.musicDirector,
         required this.musicDirectorName,
         required this.isImage,
     });
 
-    int id;
     String albumId;
     int noOfSongs;
-    String name;
+    String albumName;
     int releasedYear;
     List<int> musicDirector;
     List<String> musicDirectorName;
     int isImage;
 
     factory Record.fromMap(Map<String, dynamic> json) => Record(
-        id: json["id"],
         albumId: json["album_id"],
         noOfSongs: json["no_of_songs"],
-        name: json["name"],
+        albumName: json["album_name"],
         releasedYear: json["released_year"],
         musicDirector: List<int>.from(json["music_director"].map((x) => x)),
         musicDirectorName: List<String>.from(json["music_director_name"].map((x) => x)),
@@ -66,10 +67,9 @@ class Record {
     );
 
     Map<String, dynamic> toMap() => {
-        "id": id,
         "album_id": albumId,
         "no_of_songs": noOfSongs,
-        "name": name,
+        "album_name": albumName,
         "released_year": releasedYear,
         "music_director": List<dynamic>.from(musicDirector.map((x) => x)),
         "music_director_name": List<dynamic>.from(musicDirectorName.map((x) => x)),

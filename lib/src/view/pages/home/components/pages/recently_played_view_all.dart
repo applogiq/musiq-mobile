@@ -48,7 +48,7 @@ class RecentlyPlayedViewAll extends StatelessWidget {
               appBar: PreferredSize(preferredSize: Size(size.width,viewAllController.scrollPosition.value==0.0? size.height/2.5:80),
               child:viewAllController.scrollPosition.value==0.0? 
                PrimaryAppBar(isNetworkImage: isNetworkImage, imageURL:
-                                "${APIConstants.SONG_BASE_URL}public/music/tamil/${viewAllController.recentlyPlayed.records[0].name[0].toUpperCase()}/${viewAllController.recentlyPlayed.records[0].name}/image/${viewAllController.recentlyPlayed.records[0].albumId.toString()}.png",
+                                "${APIConstants.SONG_BASE_URL}public/music/tamil/${viewAllController.recentlyPlayed.records[0].albumName[0].toUpperCase()}/${viewAllController.recentlyPlayed.records[0].albumName}/image/${viewAllController.recentlyPlayed.records[0].albumId.toString()}.png",
 
                 title: title,height: size.height/2.5,)
               :SecondaryAppBar(title: title)
@@ -80,7 +80,7 @@ class RecentlyPlayedViewAll extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: CustomColorContainer(
                     child: Image.network(
-                          "${APIConstants.SONG_BASE_URL}public/music/tamil/${viewAllController.recentlyPlayed.records[index].name[0].toUpperCase()}/${viewAllController.recentlyPlayed.records[index].name}/image/${viewAllController.recentlyPlayed.records[index].albumId.toString()}.png",
+                          "${APIConstants.SONG_BASE_URL}public/music/tamil/${viewAllController.recentlyPlayed.records[index].albumName[0].toUpperCase()}/${viewAllController.recentlyPlayed.records[index].albumName}/image/${viewAllController.recentlyPlayed.records[index].albumId.toString()}.png",
  height: 70,
                       width: 70,
                       fit: BoxFit.fill,
@@ -97,11 +97,11 @@ class RecentlyPlayedViewAll extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                           Text(
-                            viewAllController.recentlyPlayed.records[index].songs!.name.toString(),
+                            viewAllController.recentlyPlayed.records[index].songName.toString(),
                             style: fontWeight400(),
                           ),
                           Text(
-                           viewAllController.recentlyPlayed.records[index].name,
+                           viewAllController.recentlyPlayed.records[index].albumName,
                             style: fontWeight400(size: 12.0,),
                           ),
                       ],

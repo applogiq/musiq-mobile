@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/constants/style.dart';
 import 'package:musiq/src/helpers/utils/navigation.dart';
+import 'package:musiq/src/logic/controller/profile_controller.dart';
 import 'package:musiq/src/model/profile_model.dart';
 import 'package:musiq/src/view/pages/profile/components/my_profile.dart';
 
@@ -13,17 +15,10 @@ import '../../widgets/custom_button.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({Key? key}) : super(key: key);
-  List<ProfileModel> profileContent = [
-    ProfileModel(
-        title: "My Profile", isArrow: true, navigateScreen: "myProfile"),
-    ProfileModel(
-        title: "Preferences", isArrow: true, navigateScreen: "preferences"),
-    ProfileModel(
-        title: "Contact us", isArrow: true, navigateScreen: "myProfile"),
-    ProfileModel(title: "About", isArrow: false, navigateScreen: "myProfile"),
-  ];
+  
   @override
   Widget build(BuildContext context) {
+    final ProfileController profileController=Get.put(ProfileController());
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile"),
@@ -49,25 +44,25 @@ class ProfilePage extends StatelessWidget {
               return ListTile(
                 onTap: () {
                   Navigator.of(context)
-                      .pushNamed(profileContent[index].navigateScreen);
+                      .pushNamed(profileController.profileContent[index].navigateScreen);
                 },
-                trailing: profileContent[index].isArrow
+                trailing: profileController.profileContent[index].isArrow
                     ? Icon(
                         Icons.arrow_forward_ios_rounded,
                         size: 20,
                       )
                     : Container(height: 0, width: 0),
                 title: Text(
-                  profileContent[index].title,
+                  profileController.profileContent[index].title,
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
-                      color: profileContent[index].isHighLight
+                      color: profileController.profileContent[index].isHighLight
                           ? CustomColor.secondaryColor
                           : Colors.white),
                 ),
               );
             },
-            itemCount: profileContent.length),
+            itemCount:profileController. profileContent.length),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18),
           child: Column(

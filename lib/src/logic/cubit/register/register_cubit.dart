@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:meta/meta.dart';
 import 'package:musiq/src/helpers/constants/string.dart';
@@ -13,6 +14,7 @@ import 'package:http/http.dart'as http;
 
 import '../../../helpers/constants/api.dart';
 import '../../../helpers/utils/validation.dart';
+import '../../../view/pages/common_screen/account_screen.dart/select_your fav_artist.dart';
 
 part 'register_state.dart';
 
@@ -72,6 +74,7 @@ Stream<bool> get validateForm => Rx.combineLatest5(
               'Accept': 'application/json',
               });
 late User user;
+print(response.statusCode);
 if(response.statusCode==201){
   var data=jsonDecode(response.body.toString());
   
@@ -91,8 +94,9 @@ if(response.statusCode==201){
          var list1=await storage.read(key: "artist_list");
          print(list1);
               isLoading.sink.add(false);
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>SelectYourFavList(artist_list: user.records.preference.artist,)));
   
-        Navigation.navigateReplaceToScreen(context, 'selectArtistPref//');
+        // Navigation.navigateReplaceToScreen(context, 'selectArtistPref/');
     
    
   

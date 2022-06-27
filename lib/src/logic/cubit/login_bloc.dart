@@ -204,14 +204,22 @@ isLoading.sink.add(false);
          var list1=await storage.read(key: "artist_list");
          print(list1);
   //         ArtistModel artistModel= await getArtist();
-   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SelectYourFavList()));
+  //  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SelectYourFavList()));
     Future.delayed(Duration(milliseconds: 600),(){
-      if(user.records.preference.artist.length==0){
-        Navigation.navigateReplaceToScreen(context, 'selectArtistPref//');
-     clearStreams();
-      }else{
-        Navigation.navigateReplaceToScreen(context, "home/");
-      }
+        if(user.records.preference.artist.length<3){
+
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>SelectYourFavList(artist_list: user.records.preference.artist,)));
+  }
+  else{
+  Navigation.navigateReplaceToScreen(context, "bottom/");
+
+  }
+    //   if(user.records.preference.artist.length==0){
+    //     Navigation.navigateReplaceToScreen(context, 'selectArtistPref//');
+    //  clearStreams();
+    //   }else{
+    //     Navigation.navigateReplaceToScreen(context, "home/");
+    //   }
     });
   }
   else if(response.statusCode==404){

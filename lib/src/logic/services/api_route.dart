@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musiq/src/logic/services/api_call.dart';
 import 'package:musiq/src/model/api_model/album_model.dart';
+import 'package:musiq/src/model/api_model/aura_model.dart';
 
 import '../../helpers/constants/api.dart';
 import '../../model/api_model/artist_model.dart';
@@ -9,6 +11,7 @@ import '../../model/api_model/recent_song_model.dart';
 
 class APIRoute{
   APICall apiCall=APICall();
+  var storage=FlutterSecureStorage();
   APIConstants apiConstants=APIConstants();
    Future<ArtistModel> getArtist({int limit=100})async{
      var artistUrl=apiConstants.getArtistUrl(0, limit);
@@ -21,8 +24,11 @@ class APIRoute{
        return artistModel;
   }
 
- Future<RecentlyPlayed> getRecentlyPlayed()async{
-  var res=await apiCall.getRequestWithAuth(APIConstants.RECENT_PLAYED, );
+ Future<RecentlyPlayed> getRecentlyPlayed({int limit=100})async{
+   var user_id=await storage.read(key: "register_id");
+    
+  var endPoint=apiConstants.getRecentlyPlayedUrl(user_id, limit);
+  var res=await apiCall.getRequestWithAuth(APIConstants.BASE_URL+endPoint, );
   var data=jsonDecode(res.body);
   print(data.toString());
       RecentlyPlayed recentlyPlayed=RecentlyPlayed.fromMap(data);
@@ -52,6 +58,22 @@ var url=APIConstants.BASE_URL+artistSong;
  
   }
 
+
+
+Future<AuraModel> getAura({int limit=100})async{
+   var auraUrl=apiConstants.getAuraUrl(limit:limit);
+ var res=await apiCall.getRequestWithAuth(APIConstants.BASE_URL+auraUrl );
+  var data=jsonDecode(res.body);
+ print(data.toString());
+      AuraModel auraModel=AuraModel.fromMap(data);
+      
+       return auraModel;
+}
+
+
+
+
+// http://192.168.29.185:3000/api/v1/aura/?limit=100
 
   // Future<RecentlyPlayed> getRecent()async{
   // await Future.delayed(Duration(seconds: 2),(){});

@@ -117,8 +117,9 @@ class _PlayScreenState extends State<PlayScreen> {
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                   image: NetworkImage(
-                                      // "https://mir-s3-cdn-cf.behance.net/project_modules/fs/fe529a64193929.5aca8500ba9ab.jpg"
-                                      "${APIConstants.SONG_BASE_URL}public/music/tamil/${widget.songList.records[songController.selectedIndex.value].albumDetails.name[0].toUpperCase()}/${widget.songList.records[songController.selectedIndex.value].albumDetails.name}/image/${widget.songList.records[songController.selectedIndex.value].albumDetails.albumId}.png"),
+                                      "https://mir-s3-cdn-cf.behance.net/project_modules/fs/fe529a64193929.5aca8500ba9ab.jpg",
+                                      // "${APIConstants.SONG_BASE_URL}public/music/tamil/${widget.songList.records[songController.selectedIndex.value].albumName[0].toUpperCase()}/${widget.songList.records[songController.selectedIndex.value].albumName}/image/${widget.songList.records[songController.selectedIndex.value].albumId}.png"
+                                      ),
                                   fit: BoxFit.cover)),
                           child: Stack(children: [
                             Container(
@@ -241,7 +242,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                 widget
                                     .songList
                                     .records[songController.selectedIndex.value]
-                                    .albumDetails
+                                    
                                     .musicDirectorName[0]
                                     .toString(),
                                 style: fontWeight400(
@@ -277,7 +278,7 @@ class _PlayScreenState extends State<PlayScreen> {
                                         .records[
                                             songController.nextIndex.value]
                                         
-                                        .name
+                                        .songName
                                         .toString(),
                                     style: fontWeight400(size: 14.0),
                                   )),
@@ -289,6 +290,7 @@ class _PlayScreenState extends State<PlayScreen> {
                     ],
                   ),
                 ),
+              
                 songController.isBottomSheetView.value == true
                     ? Container(
                         height: MediaQuery.of(context).size.height - 80,
@@ -370,7 +372,7 @@ class SongName extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () => Text(
-          widget.songList.records[songController.selectedIndex.value].name,
+          widget.songList.records[songController.selectedIndex.value].songName,
           style: fontWeight500(size: 16.0)),
     );
   }
