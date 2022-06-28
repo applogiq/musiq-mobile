@@ -6,6 +6,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:musiq/src/helpers/constants/images.dart';
 import 'package:musiq/src/logic/controller/view_all_controller.dart';
+import 'package:musiq/src/logic/services/api_route.dart';
+import 'package:musiq/src/view/pages/home/components/pages/view_all/view_all_songs_list.dart';
 import 'package:musiq/src/view/pages/home/components/pages/view_all_screen.dart';
 import 'package:musiq/src/view/pages/home/components/widget/loader.dart';
 import 'package:musiq/src/view/pages/home/home_screen.dart';
@@ -14,9 +16,11 @@ import 'package:musiq/src/view/widgets/custom_color_container.dart';
 
 import '../../../../../helpers/constants/api.dart';
 import '../../../../../helpers/constants/color.dart';
+import '../../../../../helpers/utils/image_url_generate.dart';
 import '../../../../../logic/services/api_call.dart';
 import '../../../../../model/api_model/artist_model.dart';
 import '../../../../../model/api_model/song_list_model.dart';
+import '../../../../../model/ui_model/view_all_song_list_model.dart';
 
 class ArtistListViewAll extends StatelessWidget {
    ArtistListViewAll({Key? key,}) : super(key: key);
@@ -49,10 +53,27 @@ class ArtistListViewAll extends StatelessWidget {
                 itemBuilder: (context, index) => Container(
                   padding: EdgeInsets.symmetric(horizontal: 6),
                   child: InkWell(
-                    onTap:(){
+                    onTap:()async{
+                      APIRoute apiRoute=APIRoute();
+ 
+                             ViewAllBanner banner= ViewAllBanner(bannerId: viewAllController.artist.records[index].id.toString(),
+                              bannerImageUrl:  APIConstants.BASE_IMAGE_URL+viewAllController.artist.records[index].artistId+".png",
+                           bannerTitle:  viewAllController.artist.records[index].artistName,
+                       );
+                              print(banner.bannerImageUrl.toString());
+                            SongList songList=  await apiRoute.getSpecificArtistSong(index: viewAllController.artist.records[index].id);
+                              // print(songList.records.length);
+                              List<ViewAllSongList> viewAllSongListModel=[];
+                              for(int i=0;i<songList.records.length;i++){
+                                viewAllSongListModel.add(ViewAllSongList(songList.records[i].id.toString(), generateSongImageUrl(songList.records[i].albumName,songList.records[i].albumId), songList.records[i].songName, songList.records[i].musicDirectorName[0]));
+                              }
+                           
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewAllScreenSongList(banner: banner, view_all_song_list_model: viewAllSongListModel)));
+                     
 
 
-                    viewAllController.artistTap(record: viewAllController.artist.records[index],context:context,index:viewAllController.artist.records[index].id);
+
+                    // viewAllController.artistTap(record: viewAllController.artist.records[index],context:context,index:viewAllController.artist.records[index].id);
                     }
                     
                     ,

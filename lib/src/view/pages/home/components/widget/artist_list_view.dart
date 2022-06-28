@@ -6,10 +6,13 @@ import 'package:musiq/src/logic/services/api_call.dart';
 import 'package:musiq/src/logic/services/api_route.dart';
 import 'package:musiq/src/model/api_model/artist_model.dart';
 import 'package:musiq/src/model/api_model/song_list_model.dart';
+import 'package:musiq/src/view/pages/home/components/pages/view_all/view_all_songs_list.dart';
 import 'package:musiq/src/view/pages/home/components/pages/view_all_screen.dart';
 import 'package:musiq/src/view/pages/home/home_screen.dart';
 
 import '../../../../../helpers/constants/api.dart';
+import '../../../../../helpers/utils/image_url_generate.dart';
+import '../../../../../model/ui_model/view_all_song_list_model.dart';
 import '../../../../widgets/custom_color_container.dart';
 import '../pages/artist_view_all_screen.dart';
 import 'horizontal_list_view.dart';
@@ -22,6 +25,7 @@ class ArtistListView extends StatelessWidget {
 
   final ArtistModel artist;
   APICall apiCall=APICall();
+   APIRoute apiRoute=APIRoute();
 
   @override
   Widget build(BuildContext context) {
@@ -74,32 +78,50 @@ class ArtistListView extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 6),
                         child: InkWell(
                           onTap: ()async{
-                             Map<String, String> queryParams = {
-  'artist_id': artist.records[index].id.toString(),
-  'skip': '0',
-  'limit': '100',
-};
- var urlSet="${APIConstants.BASE_URL}songs?artist_id=${queryParams["artist_id"]}&skip=${queryParams["skip"]}&limit=${queryParams["limit"]}";
-                        var res= await apiCall.getRequestWithAuth(urlSet);
-                        print(res.statusCode);
-                        if(res.statusCode==200){
-                          var data=jsonDecode(res.body);
-                          SongList songList=SongList.fromMap(data);
-                          print(songList.toMap());
-                              Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ViewAllScreen(songList: songList,title: artist.records[index].artistName,
-                              isNetworkImage: artist.records[index].isImage,
-                            imageURL: artist.records[index].isImage? APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png":
-                                  "assets/images/default/no_artist.png", 
-                            )));
-                        }
-                        else{
+                                  
+                             ViewAllBanner banner= ViewAllBanner(bannerId: artist.records[index].id.toString(),
+                              bannerImageUrl:  APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png",
+                           bannerTitle:  artist.records[index].artistName,
+                       );
+                              print(banner.bannerImageUrl.toString());
+                            SongList songList=  await apiRoute.getSpecificArtistSong(index: artist.records[index].id);
+                              // print(songList.records.length);
+                              List<ViewAllSongList> viewAllSongListModel=[];
+                              for(int i=0;i<songList.records.length;i++){
+                                viewAllSongListModel.add(ViewAllSongList(songList.records[i].id.toString(), generateSongImageUrl(songList.records[i].albumName,songList.records[i].albumId), songList.records[i].songName, songList.records[i].musicDirectorName[0]));
+                              }
+                           
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewAllScreenSongList(banner: banner, view_all_song_list_model: viewAllSongListModel)));
+                     
 
-                        }
-                            // Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ViewAllScreen(title: artist.records[index].name,
-                            // imageURL: artist.records[index].isImage? APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png":
-                            //       "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png",
+
+// //                              Map<String, String> queryParams = {
+// //   'artist_id': artist.records[index].id.toString(),
+// //   'skip': '0',
+// //   'limit': '100',
+// // };
+// //  var urlSet="${APIConstants.BASE_URL}songs?artist_id=${queryParams["artist_id"]}&skip=${queryParams["skip"]}&limit=${queryParams["limit"]}";
+// //                         var res= await apiCall.getRequestWithAuth(urlSet);
+// //                         print(res.statusCode);
+// //                         if(res.statusCode==200){
+// //                           var data=jsonDecode(res.body);
+// //                           SongList songList=SongList.fromMap(data);
+// //                           print(songList.toMap());
+// //                               Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ViewAllScreen(songList: songList,title: artist.records[index].artistName,
+// //                               isNetworkImage: artist.records[index].isImage,
+// //                             imageURL: artist.records[index].isImage? APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png":
+// //                                   "assets/images/default/no_artist.png", 
+// //                             )));
+//                         }
+//                         else{
+
+//                         }
+//                             // Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ViewAllScreen(title: artist.records[index].name,
+//                             // imageURL: artist.records[index].isImage? APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png":
+//                             //       "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png",
                             
-                            // )));
+//                             // )));
+                            
                           },
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,

@@ -23,6 +23,7 @@ import 'package:musiq/src/view/pages/profile/components/audio_quality.dart';
 import 'package:musiq/src/view/pages/profile/components/my_profile.dart';
 import 'package:musiq/src/view/pages/profile/components/preference_screen.dart';
 import 'package:musiq/src/view/pages/profile/profile.dart';
+import 'package:musiq/src/view/sandbox/app_bar_main.dart';
 
 import 'src/logic/cubit/login_bloc.dart';
 import 'src/logic/cubit/register/register_cubit.dart';

@@ -20,7 +20,7 @@ class TrendingHitsViewAll extends StatelessWidget {
     return Obx(()=>viewAllController.isLoaded.value?SafeArea(child:Scaffold(
               appBar: PreferredSize(preferredSize: Size(size.width,viewAllController.scrollPosition.value==0.0? size.height/2.5:80),
               child:viewAllController.scrollPosition.value==0.0? 
-               PrimaryAppBar(isNetworkImage: true, imageURL: viewAllController.defaultImage
+               PrimaryAppBar(isNetworkImage: true, count: 2,imageURL: viewAllController.defaultImage
 , title: title,height: size.height/2.5,)
               :SecondaryAppBar(title: title))
         ),):LoaderScreen());

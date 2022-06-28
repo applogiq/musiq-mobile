@@ -12,7 +12,7 @@ class CustomSongVerticalList extends StatelessWidget {
       {Key? key, required this.songList, this.playButton = true})
       : super(key: key);
 
-  SongList songList;
+  List songList;
   bool playButton;
   
 
@@ -20,28 +20,28 @@ class CustomSongVerticalList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
         children: List.generate(
-      songList.records.length,
+      songList.length,
       (index) => Container(
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.all(8),
         child: InkWell(
           onTap: () { 
-            var songPlayList=[];
-            for(int i=0;i<songList.totalrecords;i++){
+            // var songPlayList=[];
+            // for(int i=0;i<songList.length;i++){
              
-              songPlayList.add(songList.records[i].id);
-            }
-            print(index);
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => PlayScreen(
-                  songList: songList,
-                  index: index,
-                  id:songList.records[index].id.toString(),
-                      imageURL:  "${APIConstants.SONG_BASE_URL}public/music/tamil/${songList.records[index].albumName[0].toUpperCase()}/${songList.records[index].albumName}/image/${songList.records[index].albumId}.png",
-                      songName: songList.records[index].songName,
-                      artistName: songList.records[index].musicDirectorName[0].toString(),
-                      songplayList: songPlayList,
-                    )));
+            //   songPlayList.add(songList.records[i].id);
+            // }
+            // print(index);
+            // Navigator.of(context).push(MaterialPageRoute(
+            //     builder: (context) => PlayScreen(
+            //       songList: songList,
+            //       index: index,
+            //       id:songList.records[index].id.toString(),
+            //           imageURL:  "${APIConstants.SONG_BASE_URL}public/music/tamil/${songList.records[index].albumName[0].toUpperCase()}/${songList.records[index].albumName}/image/${songList.records[index].albumId}.png",
+            //           songName: songList.records[index].songName,
+            //           artistName: songList.records[index].musicDirectorName[0].toString(),
+            //           songplayList: songPlayList,
+            //         )));
           },
           child: Row(
             children: [
@@ -51,8 +51,9 @@ class CustomSongVerticalList extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: CustomColorContainer(
-                    child: Image.network(
-                      "${APIConstants.SONG_BASE_URL}public/music/tamil/${songList.records[index].albumName[0].toUpperCase()}/${songList.records[index].albumName}/image/${songList.records[index].albumId}.png",
+                    child: Image.asset(
+                      songList[index].imageURL,
+                      // "${APIConstants.SONG_BASE_URL}public/music/tamil/${songList.records[index].albumName[0].toUpperCase()}/${songList.records[index].albumName}/image/${songList.records[index].albumId}.png",
                         // "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png",
                       height: 70,
                       width: 70,
@@ -70,11 +71,11 @@ class CustomSongVerticalList extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          songList.records[index].albumName,
+                          songList[index].title,
                           style: fontWeight400(),
                         ),
                         Text(
-                          songList.records[index].songName,
+                          songList[index].subTitle,
                           style: fontWeight400(size: 12.0,),
                         ),
                       ],
@@ -96,5 +97,7 @@ class CustomSongVerticalList extends StatelessWidget {
         ),
       ),
     ));
+ 
+ 
   }
 }

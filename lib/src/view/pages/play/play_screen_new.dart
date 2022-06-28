@@ -1,93 +1,30 @@
-import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:musiq/src/helpers/constants/color.dart';
-import 'package:musiq/src/helpers/constants/images.dart';
-import 'package:musiq/src/helpers/constants/style.dart';
-import 'package:musiq/src/logic/controller/song_controller.dart';
-import 'package:musiq/src/logic/progress/audio_progress.dart';
-import 'package:musiq/src/model/api_model/song_list_model.dart';
-import 'package:musiq/src/view/pages/home/components/widget/play_button_widget.dart';
-import 'package:musiq/src/view/pages/home/components/widget/reordable_vertical_list.dart';
-import 'package:musiq/src/view/pages/home/components/widget/vertical_list_view.dart';
-import 'package:musiq/src/view/widgets/empty_box.dart';
+import 'package:musiq/src/model/ui_model/play_screen_model.dart';
+import 'package:musiq/src/view/pages/play/play_screen.dart';
 
 import '../../../helpers/constants/api.dart';
+import '../../../helpers/constants/color.dart';
+import '../../../helpers/constants/style.dart';
+import '../../../logic/controller/song_controller.dart';
+import '../../widgets/empty_box.dart';
 
-class PlayScreen extends StatefulWidget {
-  PlayScreen(
-      {Key? key,
-      required this.imageURL,
-      required this.songName,
-      required this.id,
-      required this.artistName,
-      required this.index,
-      required this.songplayList,
-      required this.songList})
-      : super(key: key);
+class MainPlayScreen extends StatelessWidget {
+   MainPlayScreen({Key? key, required this.playScreenModel, required this.index,}) : super(key: key);
+  final List<PlayScreenModel> playScreenModel;
   final int index;
-  final String imageURL;
-  final String songName;
-  final String id;
-  final String artistName;
-  List songplayList;
-  SongList songList;
-
-  @override
-  State<PlayScreen> createState() => _PlayScreenState();
-}
-
-class _PlayScreenState extends State<PlayScreen> {
-  double bottomSheetHeight = 20;
-  bool isOpen = false;
   bool hideLyrics = false;
 
-  late int selectedIndex;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
-      SystemUiOverlay.bottom,
-    ]);
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-
-    super.dispose();
-  }
-
-  changeState() {
-    if (isOpen == false) {
-      isOpen = true;
-      bottomSheetHeight = MediaQuery.of(context).size.height - 60;
-    } else {
-      isOpen = false;
-      bottomSheetHeight = 80;
-    }
-    // bottomSheetHeight=isOpen?MediaQuery.of(context).size.height:80;
-    // isOpen!=isOpen;
-    setState(() {
-      bottomSheetHeight;
-      print(bottomSheetHeight);
-    });
-  }
-
-  PopupMenuItem _buildPopupMenuItem(String title, String routeName) {
+ PopupMenuItem _buildPopupMenuItem(String title, String routeName) {
     return PopupMenuItem(
       onTap: () {
         if (routeName == "hide") {
           hideLyrics = !hideLyrics;
-          setState(() {
-            hideLyrics;
-          });
+          // setState(() {
+          //   hideLyrics;
+          // });
         } else {
           print(routeName);
         }
@@ -98,9 +35,9 @@ class _PlayScreenState extends State<PlayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final SongController songController = Get.put(SongController());
-    songController.load(widget.songplayList, widget.index);
-    return SafeArea(
+     final SongController songController = Get.put(SongController());
+    songController.loadSong(playScreenModel, index);
+      return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
           child: Obx(() {
@@ -108,7 +45,7 @@ class _PlayScreenState extends State<PlayScreen> {
               alignment: Alignment.bottomCenter,
               children: [
                 Container(
-                  height: MediaQuery.of(context).size.height-10,
+                  height: MediaQuery.of(context).size.height-20,
                   child: Column(
                     children: [
                       Expanded(
@@ -117,8 +54,9 @@ class _PlayScreenState extends State<PlayScreen> {
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                   image: NetworkImage(
+                                    // playScreenModel[index].
                                       // "https://mir-s3-cdn-cf.behance.net/project_modules/fs/fe529a64193929.5aca8500ba9ab.jpg",
-                                      "${APIConstants.SONG_BASE_URL}public/music/tamil/${widget.songList.records[songController.selectedIndex.value].albumName[0].toUpperCase()}/${widget.songList.records[songController.selectedIndex.value].albumName}/image/${widget.songList.records[songController.selectedIndex.value].albumId}.png"
+                                      "${APIConstants.SONG_BASE_URL}public/music/tamil/${ playScreenModel[index].albumName[0].toUpperCase()}/${ playScreenModel[index].albumName}/image/${ playScreenModel[index].albumId}.png"
                                       ),
                                   fit: BoxFit.cover)),
                           child: Stack(children: [
@@ -235,20 +173,20 @@ class _PlayScreenState extends State<PlayScreen> {
                             SizedBox(
                               height: 18,
                             ),
-                            SongName(
-                                widget: widget, songController: songController),
-                            Obx(
-                              () => Text(
-                                widget
-                                    .songList
-                                    .records[songController.selectedIndex.value]
+                            Text(
+         playScreenModel[index].songName,
+          style: fontWeight500(size: 16.0)),
+                            Text(playScreenModel[index].musicDirectorName,
+                                // widget
+                                //     .songList
+                                //     .records[songController.selectedIndex.value]
                                     
-                                    .musicDirectorName[0]
-                                    .toString(),
+                                //     .musicDirectorName[0]
+                                //     .toString(),
                                 style: fontWeight400(
                                     size: 14.0, color: CustomColor.subTitle),
                               ),
-                            ),
+                            
                             ShuffleButton(songController: songController),
                             ProgressBarWidget(songController: songController),
                             PlayerController(songController: songController)
@@ -272,21 +210,16 @@ class _PlayScreenState extends State<PlayScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               UpNext(),
-                              Obx(() => Text(
-                                    widget
-                                        .songList
-                                        .records[
-                                            songController.nextIndex.value]
-                                        
-                                        .songName
-                                        .toString(),
+                               Text(
+                                   playScreenModel[index].albumName,
                                     style: fontWeight400(size: 14.0),
-                                  )),
+                                  ),
                             ],
                           ),
                           trailing: Icon(Icons.keyboard_arrow_up),
                         ),
                       )
+                   
                     ],
                   ),
                 ),
@@ -323,49 +256,17 @@ class _PlayScreenState extends State<PlayScreen> {
         ),
       ),
     );
+
   }
 }
-
-class ShuffleButton extends StatelessWidget {
-  const ShuffleButton({
-    Key? key,
-    required this.songController,
-  }) : super(key: key);
-
-  final SongController songController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          InkWell(
-              onTap: () async {
-                songController.shuffleSong();
-              },
-              child: Obx(() => Icon(
-                    Icons.shuffle_rounded,
-                    color: songController.isShuffle.value
-                        ? CustomColor.secondaryColor
-                        : Colors.white,
-                  ))),
-          Icon(Icons.favorite_rounded)
-        ],
-      ),
-    );
-  }
-}
-
 class SongName extends StatelessWidget {
-  const SongName({
+   SongName({
     Key? key,
     required this.widget,
     required this.songController,
   }) : super(key: key);
 
-  final PlayScreen widget;
+  var widget;
   final SongController songController;
 
   @override
@@ -374,185 +275,6 @@ class SongName extends StatelessWidget {
       () => Text(
           widget.songList.records[songController.selectedIndex.value].songName,
           style: fontWeight500(size: 16.0)),
-    );
-  }
-}
-
-class ProgressBarWidget extends StatelessWidget {
-  const ProgressBarWidget({
-    Key? key,
-    required this.songController,
-  }) : super(key: key);
-
-  final SongController songController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: ProgressBar(
-            progress: Duration(
-                milliseconds: songController.progressDurationValue.value),
-            buffered: Duration(
-                milliseconds: songController.bufferDurationValue.value),
-            total:
-                Duration(milliseconds: songController.totalDurationValue.value),
-            progressBarColor: CustomColor.secondaryColor,
-            baseBarColor: Colors.white.withOpacity(0.24),
-            bufferedBarColor: Colors.white.withOpacity(0.24),
-            thumbColor: Colors.white,
-            barHeight: 6.0,
-            thumbRadius: 6.0,
-            onSeek: (duration) {
-              songController.seekDuration(duration);
-            },
-          ),
-        ));
-  }
-}
-
-class PlayerController extends StatelessWidget {
-  const PlayerController({
-    Key? key,
-    required this.songController,
-  }) : super(key: key);
-
-  final SongController songController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Theme(
-        data:
-            ThemeData(iconTheme: IconThemeData(size: 32, color: Colors.white)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Icon(Icons.playlist_add_rounded, size: 34),
-            PlayPrevious(songController: songController),
-            PlayPauseController(songController: songController),
-            PlayNext(songController: songController),
-            RepeatSong(songController: songController),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class PlayPrevious extends StatelessWidget {
-  const PlayPrevious({
-    Key? key,
-    required this.songController,
-  }) : super(key: key);
-
-  final SongController songController;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-        onTap: () {
-          songController.playPrev();
-        },
-        child: Icon(
-          Icons.skip_previous_rounded,
-          size: 34,
-        ));
-  }
-}
-
-class RepeatSong extends StatelessWidget {
-  const RepeatSong({
-    Key? key,
-    required this.songController,
-  }) : super(key: key);
-
-  final SongController songController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() => InkWell(
-        onTap: () async {
-          songController.loopSong();
-        },
-        child: Icon(
-          songController.loopState.value == 2
-              ? Icons.repeat_one_rounded
-              : Icons.repeat_rounded,
-          size: 34,
-          color: songController.isRepeated.value
-              ? CustomColor.secondaryColor
-              : Colors.white,
-        )));
-  }
-}
-
-class PlayNext extends StatelessWidget {
-  const PlayNext({
-    Key? key,
-    required this.songController,
-  }) : super(key: key);
-
-  final SongController songController;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-        onTap: () async {
-          songController.playNext();
-        },
-        child: Icon(
-          Icons.skip_next_rounded,
-          size: 34,
-        ));
-  }
-}
-
-class PlayPauseController extends StatelessWidget {
-  const PlayPauseController({
-    Key? key,
-    required this.songController,
-  }) : super(key: key);
-
-  final SongController songController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() {
-      return InkWell(
-        onTap: () {
-          songController.playOrPause();
-        },
-        child: songController.isPlay.value
-            ? PlayButtonWidget(
-                bgColor: CustomColor.secondaryColor,
-                iconColor: Colors.white,
-                size: 34.0,
-                padding: 14.0,
-                icon: Icons.pause_rounded,
-              )
-            : PlayButtonWidget(
-                bgColor: CustomColor.secondaryColor,
-                iconColor: Colors.white,
-                size: 34.0,
-                padding: 14.0,
-              ),
-      );
-    });
-  }
-}
-
-class UpNext extends StatelessWidget {
-  const UpNext({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      "Up next",
-      style: fontWeight500(size: 16.0),
     );
   }
 }

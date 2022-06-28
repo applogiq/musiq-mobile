@@ -39,6 +39,7 @@ class Album {
 
 class Record {
     Record({
+        required this.id,
         required this.albumId,
         required this.noOfSongs,
         required this.albumName,
@@ -48,6 +49,7 @@ class Record {
         required this.isImage,
     });
 
+    int id;
     String albumId;
     int noOfSongs;
     String albumName;
@@ -57,6 +59,7 @@ class Record {
     int isImage;
 
     factory Record.fromMap(Map<String, dynamic> json) => Record(
+        id: json["id"],
         albumId: json["album_id"],
         noOfSongs: json["no_of_songs"],
         albumName: json["album_name"],
@@ -67,6 +70,7 @@ class Record {
     );
 
     Map<String, dynamic> toMap() => {
+        "id": id,
         "album_id": albumId,
         "no_of_songs": noOfSongs,
         "album_name": albumName,

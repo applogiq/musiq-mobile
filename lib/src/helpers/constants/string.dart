@@ -17,7 +17,7 @@ class ConstantText{
   static String continueButton= "Continue";
   static String loginPrefix= "Already have an account?";
   static String fieldRequired= "Field is required";
-  static String invalidEmail= "Invalid Email";
+  static String invalidEmail= "Invalid Email Format";
   static String invalidFormat= "Password Format is invalid";
   static String invalidUserName= "User name does not contain space";
   static String passwordNotMatch= "Password doesn't match";

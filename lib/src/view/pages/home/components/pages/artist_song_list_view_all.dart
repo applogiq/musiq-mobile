@@ -33,6 +33,7 @@ class ArtistSongList extends StatelessWidget {
                   child: viewAllController.scrollPosition.value == 0.0
                       ? PrimaryAppBar(
                           isNetworkImage: record.isImage,
+                          count: songList.records.length,
                           imageURL: record.isImage
                               ? generateArtistImageUrl(record.artistId)
                               : Images.noArtist,

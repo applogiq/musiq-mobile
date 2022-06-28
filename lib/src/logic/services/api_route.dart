@@ -4,6 +4,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musiq/src/logic/services/api_call.dart';
 import 'package:musiq/src/model/api_model/album_model.dart';
 import 'package:musiq/src/model/api_model/aura_model.dart';
+import 'package:musiq/src/model/api_model/aura_song_model.dart';
+import 'package:musiq/src/model/api_model/song_list_model.dart';
 
 import '../../helpers/constants/api.dart';
 import '../../model/api_model/artist_model.dart';
@@ -29,7 +31,12 @@ class APIRoute{
     
   var endPoint=apiConstants.getRecentlyPlayedUrl(user_id, limit);
   var res=await apiCall.getRequestWithAuth(APIConstants.BASE_URL+endPoint, );
+  print(res.statusCode);
   var data=jsonDecode(res.body);
+  if(res.statusCode==404){
+      RecentlyPlayed recentlyPlayed=RecentlyPlayed(success: false, message: "NO", records: [], totalrecords: 0);
+      return recentlyPlayed;
+  }
   print(data.toString());
       RecentlyPlayed recentlyPlayed=RecentlyPlayed.fromMap(data);
       
@@ -46,18 +53,29 @@ Future<Album> getAlbum({int limit=100})async{
        return album;
   }
 
-  getSpecificArtistSong(int index, int skip, int limit)async {
+  getSpecificArtistSong({required int index, int skip=0, int limit=100})async {
     var artistSong=apiConstants.getSpecificArtistUrl(index,skip, limit);
    
 var url=APIConstants.BASE_URL+artistSong;
 
     var res=await apiCall.getRequestWithAuth(url );
  
-    return res;
+  var data=jsonDecode(res.body);
+ print(data.toString());
+ SongList auraSongModel=SongList.fromMap(data);
+ return auraSongModel;
  
  
   }
-
+getSpecificAuraSongs({required int id,int limit=100})async{
+  var auroSpecificUrl=apiConstants.getSpecificAuraUrl(id, limit);
+  var res=await apiCall.getRequestWithAuth(APIConstants.BASE_URL+auroSpecificUrl );
+   var data=jsonDecode(res.body);
+ print(data.toString());
+ AuraSongModel auraSongModel=AuraSongModel.fromMap(data);
+ return auraSongModel;
+ 
+}
 
 
 Future<AuraModel> getAura({int limit=100})async{
@@ -69,6 +87,15 @@ Future<AuraModel> getAura({int limit=100})async{
       
        return auraModel;
 }
+
+  getSpecificAlbumSong({required int id,int limit=100}) async{
+    var albumSpecific=apiConstants.getSpecificAlbumUrl(id, limit);
+  var res=await apiCall.getRequestWithAuth(APIConstants.BASE_URL+albumSpecific );
+   var data=jsonDecode(res.body);
+ print(data.toString());
+ SongList auraSongModel=SongList.fromMap(data);
+ return auraSongModel;
+  }
 
 
 

@@ -244,7 +244,7 @@ closeError(){
         "otp": otpValue
     };
         var url=Uri.parse(APIConstants.BASE_URL.toString()+APIConstants.OTP_VERIFY.toString());
-
+print(url);
       try{
 
     var response=await http.post(url, body: jsonEncode(params), headers: { 'Content-type': 'application/json',

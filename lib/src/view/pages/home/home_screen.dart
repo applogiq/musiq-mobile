@@ -6,26 +6,34 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/constants/images.dart';
+import 'package:musiq/src/helpers/utils/image_url_generate.dart';
 import 'package:musiq/src/helpers/utils/play_navigation.dart';
 import 'package:musiq/src/logic/services/api_call.dart';
 import 'package:musiq/src/logic/services/api_route.dart';
 import 'package:musiq/src/model/api_model/album_model.dart';
 import 'package:musiq/src/model/api_model/aura_model.dart';
+import 'package:musiq/src/model/api_model/aura_song_model.dart';
+import 'package:musiq/src/model/ui_model/play_screen_model.dart';
+import 'package:musiq/src/model/ui_model/view_all_song_list_model.dart';
 import 'package:musiq/src/view/pages/home/components/pages/recently_played_view_all.dart';
 import 'package:musiq/src/view/pages/home/components/pages/search_screen.dart';
+import 'package:musiq/src/view/pages/home/components/pages/view_all/view_all_songs_list.dart';
 import 'package:musiq/src/view/pages/home/components/pages/view_all_screen.dart';
 import 'package:musiq/src/view/pages/home/components/widget/artist_list_view.dart';
 import 'package:musiq/src/view/pages/home/components/widget/horizontal_list_view.dart';
 import 'package:musiq/src/view/pages/home/components/widget/loader.dart';
 import 'package:musiq/src/view/pages/home/components/widget/trending_hits.dart';
 import 'package:musiq/src/view/pages/home/components/widget/vertical_list_view.dart';
+import 'package:musiq/src/view/pages/play/play_screen_new.dart';
 import 'package:musiq/src/view/widgets/custom_color_container.dart';
+import 'package:musiq/src/view/widgets/empty_box.dart';
 
 import '../../../helpers/constants/api.dart';
 import '../../../model/api_model/artist_model.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../model/api_model/recent_song_model.dart';
+import '../../../model/api_model/song_list_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key,}) : super(key: key);
@@ -42,6 +50,8 @@ class _HomePageState extends State<HomePage> {
   late RecentlyPlayed recentlyPlayed;
   late Album album;
   late AuraModel auraModel;
+  late AuraSongModel auraSongModel;
+  late SongList songList;
   bool isLoad=false;
    
   // Api
@@ -62,9 +72,11 @@ class _HomePageState extends State<HomePage> {
     album=await apiRoute.getAlbum();
     auraModel=await apiRoute.getAura();
     isLoad=true;
-    setState(() {
+    if(mounted){
+      setState(() {
       isLoad;
     });
+    }
   }
   // Future<RecentlyPlayed> getRecent()async{
   // await Future.delayed(Duration(seconds: 2),(){});
@@ -150,7 +162,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-Container(
+recentlyPlayed.success==false?EmptyBox(): Container(
   child: Column(children: [
 Padding(padding: const EdgeInsets.all(12.0),
 child: 
@@ -162,12 +174,30 @@ child:
         ),
         Spacer(),
         InkWell(
-          onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>  RecentlyPlayedViewAll(songList: recentlyPlayed, title: 'Recently Played',
-                imageURL:
-                  "${APIConstants.SONG_BASE_URL}public/music/tamil/${recentlyPlayed.records[recentlyPlayed.records.length-1].albumName[0].toUpperCase()}/${recentlyPlayed.records[recentlyPlayed.records.length-1].albumName}/image/${recentlyPlayed.records[recentlyPlayed.records.length-1].albumId.toString()}.png",
-)));
+          onTap: () async{
+              // print(recentlyPlayed.records[index].id);
+                        
+                             recentlyPlayed=  await apiRoute.getRecentlyPlayed();
+                              // print(songList.records.length);
+                              List<ViewAllSongList> viewAllSongListModel=[];
+                              for(int i=0;i<recentlyPlayed.records.length;i++){
+                                viewAllSongListModel.add(ViewAllSongList(recentlyPlayed.records[i].id.toString(), generateSongImageUrl(recentlyPlayed.records[i].albumName,recentlyPlayed.records[i].albumId), recentlyPlayed.records[i].songName, recentlyPlayed.records[i].musicDirectorName[0]));
+                              }
+                                    ViewAllBanner banner= ViewAllBanner(bannerId: recentlyPlayed.records[0].albumId,
+                              bannerImageUrl: "${APIConstants.SONG_BASE_URL}public/music/tamil/${recentlyPlayed.records[0].albumName[0].toUpperCase()}/${recentlyPlayed.records[0].albumName}/image/${recentlyPlayed.records[0].albumId.toString()}.png",
+                        
+                           bannerTitle:  "Recently Played",
+                       );
+                           
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewAllScreenSongList(banner: banner, view_all_song_list_model: viewAllSongListModel)));
+                     
+
+
+//             Navigator.of(context).push(MaterialPageRoute(
+//                 builder: (context) =>  RecentlyPlayedViewAll(songList: recentlyPlayed, title: 'Recently Played',
+//                 imageURL:
+//                   "${APIConstants.SONG_BASE_URL}public/music/tamil/${recentlyPlayed.records[recentlyPlayed.records.length-1].albumName[0].toUpperCase()}/${recentlyPlayed.records[recentlyPlayed.records.length-1].albumName}/image/${recentlyPlayed.records[recentlyPlayed.records.length-1].albumId.toString()}.png",
+// )));
           },
           child: Text(
             "View All",
@@ -214,7 +244,13 @@ Container(
 
                   InkWell(
                     onTap: (){
-    recentlyPlayedToPlayScreen(recentlyPlayed,context,index);
+                      List<PlayScreenModel> playScreenModel=[];
+                    print(recentlyPlayed.records[index].id);
+                    for(int i=0;i<recentlyPlayed.records.length;i++){
+                      playScreenModel.add(PlayScreenModel(id: recentlyPlayed.records[i].id, songName: recentlyPlayed.records[i].songName, musicDirectorName: recentlyPlayed.records[i].musicDirectorName[0], albumId: recentlyPlayed.records[i].albumId,albumName:recentlyPlayed.records[i].albumName));
+                    }
+                    print(playScreenModel.length);
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MainPlayScreen(playScreenModel: playScreenModel, index: index)));
   },
                     child: Container(
                   
@@ -394,19 +430,19 @@ Container(
                 listWidget: CustomHorizontalListview(
                   images: images.podcastList,
                 )),
-            // Container(
-            //   padding: EdgeInsets.all(8.0),
-            //   child: Column(
-            //     children: [
-            //       ListHeaderWidget(
-            //           title: "Based on your Interest", actionTitle: "View All"),
-            //       Container(
-            //           margin: EdgeInsets.only(top: 10),
-            //           child: CustomSongVerticalList(
-            //               images: images.basedOnYourInterestList))
-            //     ],
-            //   ),
-            // ),
+            Container(
+              padding: EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  ListHeaderWidget(
+                      title: "Based on your Interest", actionTitle: "",dataList: [],),
+                  Container(
+                      margin: EdgeInsets.only(top: 10),
+                      child: CustomSongVerticalList(
+                          songList: images.basedOnYourInterestList, ))
+                ],
+              ),
+            ),
            
             HorizonalListViewWidget(
               title: "Current Mood",
@@ -433,13 +469,27 @@ Container(
                       crossAxisAlignment:  CrossAxisAlignment.center
                           ,
                       children: [
-                        CustomColorContainer(
-                          shape: BoxShape.circle,
-                          child: Image.network(
-                            APIConstants.SONG_BASE_URL+APIConstants.AURA+auraModel.records[index].auraId+".png",
-                            height: 125,
-                            width: 125,
-                            fit: BoxFit.cover,
+                        InkWell(
+                          onTap: ()async{
+                           ViewAllBanner banner= ViewAllBanner(bannerId: auraModel.records[index].auraId,bannerImageUrl: APIConstants.SONG_BASE_URL+APIConstants.AURA+auraModel.records[index].auraId+".png",
+                              bannerTitle: auraModel.records[index].auraName);
+                              print(banner.bannerImageUrl.toString());
+                              auraSongModel= await apiRoute.getSpecificAuraSongs(id: auraModel.records[index].id);
+                              List<ViewAllSongList> viewAllSongListModel=[];
+                              for(int i=0;i<auraSongModel.records.length;i++){
+                                viewAllSongListModel.add(ViewAllSongList(auraSongModel.records[i].songId, generateSongImageUrl(auraSongModel.records[i].albumName,auraSongModel.records[i].albumId), auraSongModel.records[i].songName, auraSongModel.records[i].musicDirectorName[0]));
+                              }
+                           
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewAllScreenSongList(banner: banner, view_all_song_list_model: viewAllSongListModel)));
+                          },
+                          child: CustomColorContainer(
+                            shape: BoxShape.circle,
+                            child: Image.network(
+                              APIConstants.SONG_BASE_URL+APIConstants.AURA+auraModel.records[index].auraId+".png",
+                              height: 125,
+                              width: 125,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -583,14 +633,34 @@ Container(
                       crossAxisAlignment:
                            CrossAxisAlignment.start,
                       children: [
-                        CustomColorContainer(
-                          
-                          child: Image.network(
-                              "${APIConstants.SONG_BASE_URL}public/music/tamil/${album.records[index].albumName[0].toUpperCase()}/${album.records[index].albumName}/image/${album.records[index].albumId.toString()}.png",
-
-                            height: 125,
-                            width: 135,
-                            fit: BoxFit.cover,
+                        InkWell(
+                          onTap: ()async{
+                            print(album.records[index].id);
+                              ViewAllBanner banner= ViewAllBanner(bannerId: album.records[index].id.toString(),
+                              bannerImageUrl: "${APIConstants.SONG_BASE_URL}public/music/tamil/${album.records[index].albumName[0].toUpperCase()}/${album.records[index].albumName}/image/${album.records[index].albumId.toString()}.png",
+                        
+                           bannerTitle:  album.records[index].albumName.toString(),
+                       );
+                              print(banner.bannerImageUrl.toString());
+                             songList=  await apiRoute.getSpecificAlbumSong(id: album.records[index].id);
+                              // print(songList.records.length);
+                              List<ViewAllSongList> viewAllSongListModel=[];
+                              for(int i=0;i<songList.records.length;i++){
+                                viewAllSongListModel.add(ViewAllSongList(songList.records[i].id.toString(), generateSongImageUrl(songList.records[i].albumName,songList.records[i].albumId), songList.records[i].songName, songList.records[i].musicDirectorName[0]));
+                              }
+                           
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewAllScreenSongList(banner: banner, view_all_song_list_model: viewAllSongListModel)));
+                     
+                          },
+                          child: CustomColorContainer(
+                            
+                            child: Image.network(
+                                "${APIConstants.SONG_BASE_URL}public/music/tamil/${album.records[index].albumName[0].toUpperCase()}/${album.records[index].albumName}/image/${album.records[index].albumId.toString()}.png",
+                        
+                              height: 125,
+                              width: 135,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                         SizedBox(

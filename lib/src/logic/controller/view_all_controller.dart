@@ -56,44 +56,44 @@ artist=await apiRoute.getArtist();
 
   }
 
-  artistTap({required BuildContext context,required int index,required art.Record record
+//   artistTap({required BuildContext context,required int index,required art.Record record
   
   
   
-  ,int skip=0,int limit=100})async{
-   var res= await apiRoute.getSpecificArtistSong(index,skip,limit);
-   print("API");
-   print(res.body);
-   if(res.statusCode==200){
-     songList=SongList.fromMap(jsonDecode(res.body));
-     Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ArtistSongList(songList: songList,record: record,)));
+//   ,int skip=0,int limit=100})async{
+//    var res= await apiRoute.getSpecificArtistSong(index,skip,limit);
+//    print("API");
+//    print(res.body);
+//    if(res.statusCode==200){
+//      songList=SongList.fromMap(jsonDecode(res.body));
+//      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ArtistSongList(songList: songList,record: record,)));
                           
-  //  print(songList);
-   }
-    // print(index);
+//   //  print(songList);
+//    }
+//     // print(index);
 
-//                               Map<String, String> queryParams = {
-//   'artist_id': artist.records[index].id.toString(),
-//   'skip': '0',
-//   'limit': '100',
-// };
-//  var urlSet="${APIConstants.BASE_URL}songs?artist_id=${queryParams["artist_id"]}&skip=${queryParams["skip"]}&limit=${queryParams["limit"]}";
-//                         var res= await apiCall.getRequestWithAuth(urlSet);
-//                         print(res.statusCode);
-//                         if(res.statusCode==200){
-//                           var data=jsonDecode(res.body);
-//                           SongList songList=SongList.fromMap(data);
-//                           print(songList.toMap());
-//                               Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ViewAllScreen(songList: songList,title: artist.records[index].name,
-//                               isNetworkImage: artist.records[index].isImage,
-//                             imageURL: artist.records[index].isImage? APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png":
-//                                   "assets/images/default/no_artist.png",
+// //                               Map<String, String> queryParams = {
+// //   'artist_id': artist.records[index].id.toString(),
+// //   'skip': '0',
+// //   'limit': '100',
+// // };
+// //  var urlSet="${APIConstants.BASE_URL}songs?artist_id=${queryParams["artist_id"]}&skip=${queryParams["skip"]}&limit=${queryParams["limit"]}";
+// //                         var res= await apiCall.getRequestWithAuth(urlSet);
+// //                         print(res.statusCode);
+// //                         if(res.statusCode==200){
+// //                           var data=jsonDecode(res.body);
+// //                           SongList songList=SongList.fromMap(data);
+// //                           print(songList.toMap());
+// //                               Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ViewAllScreen(songList: songList,title: artist.records[index].name,
+// //                               isNetworkImage: artist.records[index].isImage,
+// //                             imageURL: artist.records[index].isImage? APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png":
+// //                                   "assets/images/default/no_artist.png",
                             
-//                             )));
-//                         }
-//                         else{
+// //                             )));
+// //                         }
+// //                         else{
 
-//                         }
-}
+// //                         }
+// }
 
 }

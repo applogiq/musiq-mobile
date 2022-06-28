@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musiq/src/model/ui_model/play_screen_model.dart';
 
 class SongController extends GetxController{
   var selectedIndex=0.obs;
@@ -13,6 +14,39 @@ class SongController extends GetxController{
    var totalDurationValue=0.obs;
    var progressDurationValue=0.obs;
    var bufferDurationValue=0.obs;
+   loadSong(List<PlayScreenModel> songPlayList,int index)async{
+   player = AudioPlayer();
+
+//    if(isPlaying==player.playerState.playing){
+// print("ALREADY PLAYING");
+//    }
+//    else{
+await player.setAudioSource(
+  ConcatenatingAudioSource(
+    
+    useLazyPreparation: true, 
+    
+    
+    
+    children: List.generate(
+            songPlayList.length,
+            (index) => AudioSource.uri(Uri.parse(
+              
+                "http://192.168.29.185:3000/api/v1/audio?song_id=${songPlayList[index].id}"))),
+      
+  ),
+  
+  initialIndex: index,
+  
+  
+  initialPosition: Duration.zero,
+);
+selectedIndex.value=index;
+
+
+  //  }
+     }
+ 
  load(List songPlayList,int index)async{
    player = AudioPlayer();
 

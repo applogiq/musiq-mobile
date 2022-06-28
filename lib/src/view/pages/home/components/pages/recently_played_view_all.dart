@@ -47,7 +47,7 @@ class RecentlyPlayedViewAll extends StatelessWidget {
             ? Scaffold(
               appBar: PreferredSize(preferredSize: Size(size.width,viewAllController.scrollPosition.value==0.0? size.height/2.5:80),
               child:viewAllController.scrollPosition.value==0.0? 
-               PrimaryAppBar(isNetworkImage: isNetworkImage, imageURL:
+               PrimaryAppBar(isNetworkImage: isNetworkImage,count: 2, imageURL:
                                 "${APIConstants.SONG_BASE_URL}public/music/tamil/${viewAllController.recentlyPlayed.records[0].albumName[0].toUpperCase()}/${viewAllController.recentlyPlayed.records[0].albumName}/image/${viewAllController.recentlyPlayed.records[0].albumId.toString()}.png",
 
                 title: title,height: size.height/2.5,)
@@ -136,12 +136,14 @@ class PrimaryAppBar extends StatelessWidget {
     required this.isNetworkImage,
     required this.imageURL,
     required this.title, required this.height,
+    required this.count
   }) : super(key: key);
 
   final bool isNetworkImage;
   final String imageURL;
   final String title;
   final double height; 
+  final int count; 
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +175,7 @@ class PrimaryAppBar extends StatelessWidget {
                  )),
                ),
                GradientCover(),
-               AppBarOverlayContent(title: title)
+               AppBarOverlayContent(title: title,count: count,)
              ],
            ),
          ),
@@ -185,11 +187,26 @@ class PrimaryAppBar extends StatelessWidget {
 class AppBarOverlayContent extends StatelessWidget {
   const AppBarOverlayContent({
     Key? key,
-    required this.title,
+    required this.title, required this.count,
   }) : super(key: key);
 
   final String title;
-
+  final int count;
+PopupMenuItem _buildPopupMenuItem(String title, String routeName) {
+    return PopupMenuItem(
+      onTap: () {
+        if (routeName == "hide") {
+        
+          // setState(() {
+          //   hideLyrics;
+          // });
+        } else {
+          print(routeName);
+        }
+      },
+      child: Text(title),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -218,12 +235,20 @@ class AppBarOverlayContent extends StatelessWidget {
                   title,
                   style: fontWeight600(size: 22.0),
                 ),
-                Icon(Icons.more_vert),
+                PopupMenuButton(
+                                    shape: RoundedRectangleBorder(),
+                                    padding: EdgeInsets.all(0.0),
+                                    itemBuilder: (ctx) => [
+                                      _buildPopupMenuItem('Add to queue', 'share'),
+                                      _buildPopupMenuItem(
+                                          'Add to playlist', "song_info"),
+                                    ]
+                                  ),
               ],
             ),
             Text(
-              // "${viewAllController.recentlyPlayed.records.length} Songs",
-             "",
+              "$count Songs",
+            //  "",
               style: fontWeight400(
                 color: CustomColor.subTitle2,
               ),
@@ -296,16 +321,38 @@ class SecondaryAppBar extends StatelessWidget {
   }) : super(key: key);
 
   final String title;
-
+PopupMenuItem _buildPopupMenuItem(String title, String routeName) {
+    return PopupMenuItem(
+      onTap: () {
+        if (routeName == "hide") {
+        
+          // setState(() {
+          //   hideLyrics;
+          // });
+        } else {
+          print(routeName);
+        }
+      },
+      child: Text(title),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return CustomAppBarWidget(title: title,actions: [ Padding(
-      padding: const EdgeInsets.symmetric(horizontal:8.0),
+      padding: const EdgeInsets.symmetric(horizontal:4.0),
       child: PlayButtonWidget(bgColor: CustomColor.secondaryColor,iconColor: Colors.white,),
     ),
      Padding(
-       padding: const EdgeInsets.only(right:8.0),
-       child: Icon(Icons.more_vert),
+       padding: const EdgeInsets.only(right:0.0),
+       child:    PopupMenuButton(
+                                    shape: RoundedRectangleBorder(),
+                                    padding: EdgeInsets.all(0.0),
+                                    itemBuilder: (ctx) => [
+                                      _buildPopupMenuItem('Add to queue', 'share'),
+                                      _buildPopupMenuItem(
+                                          'Add to playlist', "song_info"),
+                                    ]
+                                  ),
      ),],
      height: 70.0,
      );

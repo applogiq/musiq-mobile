@@ -227,10 +227,10 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                          physics: ClampingScrollPhysics(),
  
                       children: [
-                        CustomSongVerticalList(
-                          songList: widget.songList,
-                          playButton: false,
-                        ),
+                        // CustomSongVerticalList(
+                        //   songList: songList,
+                        //   playButton: false,
+                        // ),
                       
                       ],
                     ),
