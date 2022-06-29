@@ -6,6 +6,7 @@ import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/themes/theme.dart';
 import 'package:musiq/src/logic/controller/binding/network_binding.dart';
 import 'package:musiq/src/logic/cubit/forgot/cubit/forgotpassword_cubit.dart';
+import 'package:musiq/src/view/pages/artist_preference/artist_preference.dart';
 import 'package:musiq/src/view/pages/bottom_nav_bar/main_page.dart';
 import 'package:musiq/src/view/pages/bottom_navigation_bar.dart';
 import 'package:musiq/src/view/pages/common_screen/account_screen.dart/pages/forgot/forgot_password_main_screen.dart';

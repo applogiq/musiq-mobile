@@ -58,7 +58,7 @@ class Record {
     dynamic updatedAt;
     dynamic updatedBy;
     bool isActive;
-    dynamic followers;
+    dynamic? followers;
     String artistId;
     DateTime createdAt;
     int createdBy;

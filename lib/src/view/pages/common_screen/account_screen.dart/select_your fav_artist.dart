@@ -58,58 +58,60 @@ class _SelectYourFavListState extends State<SelectYourFavList> {
  
   followAndUnfollow(var record,int index)async{
     print("CHECK FUNCTION");
-    print(widget.artist_list==null);
-if(widget.artist_list!.isEmpty){
-   record[index].followers=(record[index].followers! +1);
-      widget.artist_list!.add(record[index].artistId);
-           record[index].followers=(record[index].followers! +1);
-                                                widget.artist_list!.add(record[index].artistId);
-                                                    Map<String, dynamic> params = {
+    print(widget.artist_list);
+// if(widget.artist_list!.isEmpty){
+//    record[index].followers=(record[index].followers! +1);
+//       widget.artist_list!.add(record[index].artistId);
+//            record[index].followers=(record[index].followers! +1);
+//                                                 widget.artist_list!.add(record[index].artistId);
+//                                                     Map<String, dynamic> params = {
                         
-                        "artist_id": record[index].artistId,
-                        "follow": true
-                        };
-                                            var res=  await apiCall.putRequestWithAuth(APIConstants.ARTIST_FOLLOWING,params);
-                                            print(res.statusCode);
+//                         "artist_id": record[index].artistId,
+//                         "follow": true
+//                         };
+//                                             var res=  await apiCall.putRequestWithAuth(APIConstants.ARTIST_FOLLOWING,params);
+//                                             print(res.statusCode);
 
-                        if(res.statusCode==200){
-                        print("Foolow");
-                        }
-}
-    else if(widget.artist_list!.contains(record[index].artistId)){
-      record[index].followers=(record[index].followers! -1);
+//                         if(res.statusCode==200){
+//                         print("Foolow");
+//                         }
+// }
+//     else 
+    
+    // if(widget.artist_list!.contains(record[index].artistId)){
+    //   record[index].followers=(record[index].followers! -1);
 
-         widget.artist_list!.remove(record[index].artistId);
-                            Map<String, dynamic> params = {
+    //      widget.artist_list!.remove(record[index].artistId);
+    //                         Map<String, dynamic> params = {
                         
-                        "artist_id": record[index].artistId,
-                        "follow": false
-                        };
-                                            var res=  await apiCall.putRequestWithAuth(APIConstants.ARTIST_FOLLOWING,params);
-                                            print(res.statusCode);
-                                            if(res.statusCode==200){
-                                              print("Un Follow");
-                                            }
+    //                     "artist_id": record[index].artistId,
+    //                     "follow": false
+    //                     };
+    //                                         var res=  await apiCall.putRequestWithAuth(APIConstants.ARTIST_FOLLOWING,params);
+    //                                         print(res.statusCode);
+    //                                         if(res.statusCode==200){
+    //                                           print("Un Follow");
+    //                                         }
         
-    }
-    else{
+    // }
+    // else{
 
 
-       widget.artist_list!.add(record[index].artistId);
-                              record[index].followers=(record[index].followers! +1);
-                                                widget.artist_list!.add(record[index].artistId);
-                                                    Map<String, dynamic> params = {
+    //    widget.artist_list!.add(record[index].artistId);
+    //                           record[index].followers=(record[index].followers! +1);
+    //                                             widget.artist_list!.add(record[index].artistId);
+    //                                                 Map<String, dynamic> params = {
                         
-                        "artist_id": record[index].artistId,
-                        "follow": true
-                        };
-                                            var res=  await apiCall.putRequestWithAuth(APIConstants.ARTIST_FOLLOWING,params);
-                                            print(res.statusCode);
+    //                     "artist_id": record[index].artistId,
+    //                     "follow": true
+    //                     };
+    //                                         var res=  await apiCall.putRequestWithAuth(APIConstants.ARTIST_FOLLOWING,params);
+    //                                         print(res.statusCode);
 
-                        if(res.statusCode==200){
-                        print("Foolow");
-                        }
-    }
+    //                     if(res.statusCode==200){
+    //                     print("Foolow");
+    //                     }
+    // }
 setState(() {
   widget.artist_list;
 });
@@ -233,7 +235,7 @@ setState(() {
                                             vertical: 4),
                                         child: InkWell(
                                           onTap: ()async {
-                                            print("HI");
+                                          
                                           
                                         followAndUnfollow(record, index);
                                           },

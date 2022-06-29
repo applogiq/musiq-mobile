@@ -22,7 +22,12 @@ class ViewAllScreenSongList extends StatelessWidget {
          physics: ClampingScrollPhysics(),
           controller: controller,
           slivers: [
-            
+            //  List<PlayScreenModel> playScreenModel=[];
+            //         print(recentlyPlayed.records[index].id);
+            //         for(int i=0;i<recentlyPlayed.records.length;i++){
+            //           playScreenModel.add(PlayScreenModel(id: recentlyPlayed.records[i].id, songName: recentlyPlayed.records[i].songName, musicDirectorName: recentlyPlayed.records[i].musicDirectorName[0], albumId: recentlyPlayed.records[i].albumId,albumName:recentlyPlayed.records[i].albumName));
+            //         }
+                    // print(playScreenModel.length);
             SliverAppBar(
               leading: EmptyBox(),
               expandedHeight: 280.0,

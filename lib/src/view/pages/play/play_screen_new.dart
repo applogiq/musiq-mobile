@@ -245,7 +245,49 @@ class MainPlayScreen extends StatelessWidget {
                                   },
                                   child:
                                       Icon(Icons.keyboard_arrow_down_rounded)),
-                            )
+                            ),
+                            ListView.builder(itemCount: 2,shrinkWrap: true,itemBuilder: (context,index){
+                              return Row(
+      children: [
+       
+        // Align(
+        //   alignment: Alignment.centerLeft,
+        //   child: CustomColorContainer(
+        //     child: Image.network(
+        //       view_all_song_list_model[index].songImageUrl,
+        //       height: 70,
+        //       width: 70,
+        //       fit: BoxFit.fill,
+        //     ),
+        //   ),
+        // ),
+        Expanded(
+            flex: 9,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                   "view_all_song_list_model[index].songName",
+                    style: fontWeight400(),
+                  ),
+                  Text(
+                    "view_all_song_list_model[index].songMusicDirector",
+                    style: fontWeight400(size: 12.0,),
+                  ),
+                ],
+              ),
+            )),
+        
+        Expanded(
+            child: Align(
+                alignment: Alignment.centerRight,
+                child: Icon(Icons.more_vert_rounded)))
+      ],
+    );
+                            })
                           ],
                         ),
                       )
