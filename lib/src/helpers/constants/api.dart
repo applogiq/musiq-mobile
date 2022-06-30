@@ -6,6 +6,7 @@ class APIConstants{
  static String BASE_IMAGE_URL="http://192.168.29.185:3000/api/v1/public/artists/";
  static String LOGIN="users/login";
  static String REGISTER="users/register";
+ static String FAV="favourite/";
  static String SEND_OTP="users/email";
  static String OTP_VERIFY="users/email/otp-verify";
  static String PASSWORD_CHANGE="users/email/forget-password";
@@ -14,15 +15,10 @@ class APIConstants{
  static String ARTIST_SONG="songs?";
  static String AURA="public/aura/";
  static String RECENT_PLAYED="http://192.168.29.185:3000/api/v1/recent-list/202201?limit=100";
-// http://192.168.29.185:3000/api/v1/aura-song/list/1?limit=100
-// http://192.168.29.185:3000/api/v1/users/email/otp-verify
-// http://192.168.29.185:3000/api/v1/users/email-otp/verify
-// http://192.168.29.185:3000/api/v1/users/email/otp-verify
+ static String PLAYLIST="playlist/user/";
 
+// http://192.168.29.185:3000/api/v1/playlist/user/2
 
-
-// /public/aura/aura_id.png
-// http://192.168.29.185:3000/api/v1/songs?album_id=1&skip=0&limit=100
 getSpecificAlbumUrl(int id,int limit){
 
   var url="songs?album_id=${id}&skip=0&limit=${limit.toString()}";

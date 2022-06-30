@@ -7,10 +7,11 @@ class ViewAllBanner{
 }
 class ViewAllSongList{
   final String songId;
+  final String albumName;
   final String songImageUrl;
   final String songName;
   final String songMusicDirector;
 
-  ViewAllSongList(this.songId, this.songImageUrl, this.songName, this.songMusicDirector);
+  ViewAllSongList(this.songId, this.songImageUrl, this.songName, this.songMusicDirector, this.albumName);
 
 }

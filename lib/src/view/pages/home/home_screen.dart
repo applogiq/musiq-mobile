@@ -181,7 +181,7 @@ child:
                               // print(songList.records.length);
                               List<ViewAllSongList> viewAllSongListModel=[];
                               for(int i=0;i<recentlyPlayed.records.length;i++){
-                                viewAllSongListModel.add(ViewAllSongList(recentlyPlayed.records[i].id.toString(), generateSongImageUrl(recentlyPlayed.records[i].albumName,recentlyPlayed.records[i].albumId), recentlyPlayed.records[i].songName, recentlyPlayed.records[i].musicDirectorName[0]));
+                                viewAllSongListModel.add(ViewAllSongList(recentlyPlayed.records[i].id.toString(), generateSongImageUrl(recentlyPlayed.records[i].albumName,recentlyPlayed.records[i].albumId), recentlyPlayed.records[i].songName, recentlyPlayed.records[i].musicDirectorName[0],recentlyPlayed.records[i].albumName));
                               }
                                     ViewAllBanner banner= ViewAllBanner(bannerId: recentlyPlayed.records[0].albumId,
                               bannerImageUrl: "${APIConstants.SONG_BASE_URL}public/music/tamil/${recentlyPlayed.records[0].albumName[0].toUpperCase()}/${recentlyPlayed.records[0].albumName}/image/${recentlyPlayed.records[0].albumId.toString()}.png",
@@ -477,7 +477,7 @@ Container(
                               auraSongModel= await apiRoute.getSpecificAuraSongs(id: auraModel.records[index].id);
                               List<ViewAllSongList> viewAllSongListModel=[];
                               for(int i=0;i<auraSongModel.records.length;i++){
-                                viewAllSongListModel.add(ViewAllSongList(auraSongModel.records[i].songId, generateSongImageUrl(auraSongModel.records[i].albumName,auraSongModel.records[i].albumId), auraSongModel.records[i].songName, auraSongModel.records[i].musicDirectorName[0]));
+                                viewAllSongListModel.add(ViewAllSongList(auraSongModel.records[i].songId, generateSongImageUrl(auraSongModel.records[i].albumName,auraSongModel.records[i].albumId), auraSongModel.records[i].songName, auraSongModel.records[i].musicDirectorName[0],auraSongModel.records[i].albumName));
                               }
                            
                             Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewAllScreenSongList(banner: banner, view_all_song_list_model: viewAllSongListModel)));
@@ -646,7 +646,7 @@ Container(
                               // print(songList.records.length);
                               List<ViewAllSongList> viewAllSongListModel=[];
                               for(int i=0;i<songList.records.length;i++){
-                                viewAllSongListModel.add(ViewAllSongList(songList.records[i].id.toString(), generateSongImageUrl(songList.records[i].albumName,songList.records[i].albumId), songList.records[i].songName, songList.records[i].musicDirectorName[0]));
+                                viewAllSongListModel.add(ViewAllSongList(songList.records[i].id.toString(), generateSongImageUrl(songList.records[i].albumName,songList.records[i].albumId), songList.records[i].songName, songList.records[i].musicDirectorName[0],songList.records[i].albumName));
                               }
                            
                             Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewAllScreenSongList(banner: banner, view_all_song_list_model: viewAllSongListModel)));

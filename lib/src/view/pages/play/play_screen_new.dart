@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:musiq/src/helpers/utils/image_url_generate.dart';
 import 'package:musiq/src/model/ui_model/play_screen_model.dart';
+import 'package:musiq/src/view/pages/home/components/pages/view_all/view_all_songs_list.dart';
 import 'package:musiq/src/view/pages/play/play_screen.dart';
 
 import '../../../helpers/constants/api.dart';
 import '../../../helpers/constants/color.dart';
 import '../../../helpers/constants/style.dart';
 import '../../../logic/controller/song_controller.dart';
+import '../../widgets/custom_color_container.dart';
 import '../../widgets/empty_box.dart';
+import 'components/reorder_list_tile.dart';
 
 class MainPlayScreen extends StatelessWidget {
    MainPlayScreen({Key? key, required this.playScreenModel, required this.index,}) : super(key: key);
@@ -246,48 +250,7 @@ class MainPlayScreen extends StatelessWidget {
                                   child:
                                       Icon(Icons.keyboard_arrow_down_rounded)),
                             ),
-                            ListView.builder(itemCount: 2,shrinkWrap: true,itemBuilder: (context,index){
-                              return Row(
-      children: [
-       
-        // Align(
-        //   alignment: Alignment.centerLeft,
-        //   child: CustomColorContainer(
-        //     child: Image.network(
-        //       view_all_song_list_model[index].songImageUrl,
-        //       height: 70,
-        //       width: 70,
-        //       fit: BoxFit.fill,
-        //     ),
-        //   ),
-        // ),
-        Expanded(
-            flex: 9,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                   "view_all_song_list_model[index].songName",
-                    style: fontWeight400(),
-                  ),
-                  Text(
-                    "view_all_song_list_model[index].songMusicDirector",
-                    style: fontWeight400(size: 12.0,),
-                  ),
-                ],
-              ),
-            )),
-        
-        Expanded(
-            child: Align(
-                alignment: Alignment.centerRight,
-                child: Icon(Icons.more_vert_rounded)))
-      ],
-    );
-                            })
+                            ReorderListUpNextSongTile(playScreenModel: playScreenModel, index: index)
                           ],
                         ),
                       )
@@ -301,6 +264,7 @@ class MainPlayScreen extends StatelessWidget {
 
   }
 }
+
 class SongName extends StatelessWidget {
    SongName({
     Key? key,

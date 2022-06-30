@@ -5,6 +5,8 @@ import 'package:musiq/src/logic/services/api_call.dart';
 import 'package:musiq/src/model/api_model/album_model.dart';
 import 'package:musiq/src/model/api_model/aura_model.dart';
 import 'package:musiq/src/model/api_model/aura_song_model.dart';
+import 'package:musiq/src/model/api_model/favourite_model.dart';
+import 'package:musiq/src/model/api_model/playlist_model.dart';
 import 'package:musiq/src/model/api_model/song_list_model.dart';
 
 import '../../helpers/constants/api.dart';
@@ -53,6 +55,39 @@ Future<Album> getAlbum({int limit=100})async{
        return album;
   }
 
+getFavourites({ required int id,int limit=100})async{
+  //  var auraUrl=apiConstants.getAuraUrl(limit:limit);
+  var res=await apiCall.getRequestWithAuth(APIConstants.BASE_URL+APIConstants.FAV+ id.toString());
+  
+  if(res.statusCode==200){
+    print(jsonDecode(res.body));
+    Favourite favourite=Favourite.fromMap(jsonDecode(res.body));
+    return favourite;
+  }
+  else{
+    Favourite favourite=Favourite(success: false, message: "", records: [], totalRecords: 0);
+    print(favourite);
+    return favourite;
+
+  }
+  }
+  
+getPlaylists({ required int id,int limit=100})async{
+  //  var auraUrl=apiConstants.getAuraUrl(limit:limit);
+  var res=await apiCall.getRequestWithAuth(APIConstants.BASE_URL+APIConstants.PLAYLIST+ id.toString());
+  
+  if(res.statusCode==200){
+    print(jsonDecode(res.body));
+    PlayListModel playListModel=PlayListModel.fromMap(jsonDecode(res.body));
+    return playListModel;
+  }
+  else{
+    PlayListModel playListModel=PlayListModel(success: false, message: "", records: [], totalRecords: 0);
+    print(playListModel);
+    return playListModel;
+
+  }
+  }
   getSpecificArtistSong({required int index, int skip=0, int limit=100})async {
     var artistSong=apiConstants.getSpecificArtistUrl(index,skip, limit);
    
