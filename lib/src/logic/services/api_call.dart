@@ -48,4 +48,15 @@ class APICall{
     : header);
               return response;
   }
+postRequestWithAuth(String url,Map params)async{
+  var token=await storage.read(key: "access_token");
+     var user_id=await storage.read(key: "id");
+     header["Authorization"]="Bearer $token";
+     params["user_id"]= int.parse(user_id!);
+     print(url);
+     print(jsonEncode( params));
+      var response=await http.post(Uri.parse(url),headers: header,body: jsonEncode(params) );
+    
+    return response;
+}
 }

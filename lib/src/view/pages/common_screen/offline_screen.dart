@@ -28,7 +28,7 @@ class OfflineScreen extends StatelessWidget {
             padding: const EdgeInsets.only(top: 44),
             child: ConstrainedBox(
               constraints: BoxConstraints(maxWidth: 140),
-              child: CustomButton(label: ConstantText.retry,margin: 0.0,),
+              child: CustomButton(label: ConstantText.retry,verticalMargin: 0.0,horizontalMargin: 0.0,),
             ),
           ),
           Spacer(),

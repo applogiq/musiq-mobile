@@ -16,8 +16,10 @@ class APIConstants{
  static String AURA="public/aura/";
  static String RECENT_PLAYED="http://192.168.29.185:3000/api/v1/recent-list/202201?limit=100";
  static String PLAYLIST="playlist/user/";
+ static String SPECIFIC_PLAYLIST="playlist-song/list/";
+ static String CREATE_PLAYLIST="playlist/";
 
-// http://192.168.29.185:3000/api/v1/playlist/user/2
+//http://192.168.29.185:3000/api/v1/playlist/6
 
 getSpecificAlbumUrl(int id,int limit){
 

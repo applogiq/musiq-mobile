@@ -5,6 +5,7 @@ class CustomColor {
   static var defaultCard = Color.fromRGBO(30, 30, 38, 1);
   static var defaultCardBorder = Color.fromRGBO(255, 255, 255, 0.05);
   // 255, 255, 255, 0.05
+  // 33, 33, 44, 1
 
   static var textfieldBg = Color.fromRGBO(255, 255, 255, 0.1);
   static var subTitle = Color.fromRGBO(255, 255, 255, 0.4);

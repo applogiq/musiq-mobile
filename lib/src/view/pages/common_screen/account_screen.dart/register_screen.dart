@@ -122,7 +122,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             // }
                            
                           },child: StreamBuilder(stream: _regCubit.loadingStream,builder: (context,snapshot){
-                            return _regCubit.isLoading.value==true?CustomButton(label: ConstantText.createAccount,margin: 0.0,isLoading: true,): CustomButton(label: ConstantText.createAccount,margin: 0.0,);
+                            return _regCubit.isLoading.value==true?CustomButton(label: ConstantText.createAccount,verticalMargin: 0.0,horizontalMargin: 0.0,isLoading: true,): CustomButton(label: ConstantText.createAccount,verticalMargin: 0.0,horizontalMargin: 0.0,);
                           },));
                         }
                       )

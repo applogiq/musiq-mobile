@@ -6,6 +6,7 @@ import 'package:musiq/src/model/ui_model/view_all_song_list_model.dart';
 import 'package:musiq/src/view/pages/home/components/pages/recently_played_view_all.dart';
 import 'package:musiq/src/view/widgets/empty_box.dart';
 
+import '../../../../../../helpers/constants/color.dart';
 import '../../../../../../helpers/constants/style.dart';
 import '../../../../../sandbox/app_bar_main.dart';
 import '../../../../../widgets/custom_button.dart';
@@ -357,7 +358,18 @@ class SongListTile extends StatelessWidget {
   }) : super(key: key);
  final int index;
   final List<ViewAllSongList> view_all_song_list_model;
-
+ PopupMenuItem _buildPopupMenuItem(
+      String title,{ int position=0}) {
+    return PopupMenuItem(
+      value: position,
+      child:  Row(
+        children: [
+         
+          Text(title),
+        ],
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -399,8 +411,44 @@ class SongListTile extends StatelessWidget {
         Expanded(
             child: Align(
                 alignment: Alignment.centerRight,
-                child: Icon(Icons.more_vert_rounded)))
+                child: PopupMenuButton(
+                          color: CustomColor.appBarColor,
+                          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(8.0),
+              bottomRight: Radius.circular(8.0),
+              topLeft: Radius.circular(8.0),
+              topRight: Radius.circular(8.0),
+            ),
+          ),
+            onSelected: (value) {
+            _onMenuItemSelected(value as int);
+          },
+          itemBuilder: (ctx) => [
+            _buildPopupMenuItem('Play next' ),
+            _buildPopupMenuItem('Add to queue'),
+            _buildPopupMenuItem('Remove' ),
+            _buildPopupMenuItem('Song info' ),
+       
+          ],
+        ),))
       ],
     );
+  }
+  _onMenuItemSelected(int value) {
+    print(value);
+    // setState(() {
+    //   _popupMenuItemIndex = value;
+    // });
+
+    // if (value == Options.search.index) {
+    //   _changeColorAccordingToMenuItem = Colors.red;
+    // } else if (value == Options.upload.index) {
+    //   _changeColorAccordingToMenuItem = Colors.green;
+    // } else if (value == Options.copy.index) {
+    //   _changeColorAccordingToMenuItem = Colors.blue;
+    // } else {
+    //   _changeColorAccordingToMenuItem = Colors.purple;
+    // }
   }
 }

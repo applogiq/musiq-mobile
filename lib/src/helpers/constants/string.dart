@@ -40,6 +40,10 @@ class ConstantText{
   static String recentlyPlayedText='Recently Played';
   static String trendingHitsText='Trending Hits';
   static String recommendedSongsText='Recommended songs';
+  static String createPlaylist='Create playlist';
+  static String create='Create';
+  static String playListNameExist='This name is already taken';
+// This name is already taken
   
 
   

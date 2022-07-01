@@ -5,10 +5,11 @@ import '../../helpers/constants/color.dart';
 
 class CustomButton extends StatelessWidget {
   CustomButton(
-      {Key? key, required this.label, this.margin = 16, this.isIcon = false,this.isValid=true,this.radius=12,this.isLoading=false})
+      {Key? key, required this.label, this.verticalMargin = 16,this.horizontalMargin = 16, this.isIcon = false,this.isValid=true,this.radius=12,this.isLoading=false})
       : super(key: key);
   final String label;
-  double margin;
+  double verticalMargin;
+  double horizontalMargin;
   double radius;
   bool isIcon;
   bool isValid;
@@ -16,7 +17,7 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.all(margin),
+        margin: EdgeInsets.symmetric(horizontal: horizontalMargin,vertical: verticalMargin),
         width: MediaQuery.of(context).size.width,
         height: 52,
         decoration: BoxDecoration(

@@ -277,7 +277,8 @@ PopupMenuItem _buildPopupMenuItem(String title, String routeName) {
                 child: CustomButton(
                   isIcon: true,
                   label: "Play All",
-                  margin: 0,
+                  verticalMargin: 0,
+                  horizontalMargin: 0,
                 ),
               ),
             )

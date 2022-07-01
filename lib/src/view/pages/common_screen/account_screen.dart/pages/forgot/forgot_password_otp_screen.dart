@@ -174,9 +174,9 @@ class _OTPScreenState extends State<OTPScreen> {
                       child: StreamBuilder(
                         stream: _forgotpasswordCubit.loadingStream,
                         builder: (context, snapshot) {
-                          return snapshot.data==true?CustomButton(label: ConstantText.continueButton,isLoading: true, margin: 0.0,): CustomButton(
+                          return snapshot.data==true?CustomButton(label: ConstantText.continueButton,isLoading: true, verticalMargin: 0.0,horizontalMargin: 0.0,): CustomButton(
                             label: ConstantText.continueButton,
-                            margin: 0.0,
+                            verticalMargin: 0.0,horizontalMargin: 0.0,
                           );
                         }
                       ),

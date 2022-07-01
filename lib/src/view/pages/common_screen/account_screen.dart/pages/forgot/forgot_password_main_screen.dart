@@ -80,9 +80,9 @@ class _ForgotPasswordMainScreenState extends State<ForgotPasswordMainScreen> {
                   child: StreamBuilder(
                     stream:_forgotpasswordCubit.loadingStream,
                     builder: (context, snapshot) {
-                      return snapshot.data==true?CustomButton(label: "label",margin: 0.0,isLoading: true,): InkWell( onTap: (){
+                      return snapshot.data==true?CustomButton(label: "label",verticalMargin: 0.0,horizontalMargin: 0.0,isLoading: true,): InkWell( onTap: (){
                         _forgotpasswordCubit.sendOTP(context);
-                      },child: CustomButton(label: ConstantText.continueButton,margin: 0.0,));
+                      },child: CustomButton(label: ConstantText.continueButton,verticalMargin: 0.0,horizontalMargin: 0.0,));
                     }
                   )
                 ),

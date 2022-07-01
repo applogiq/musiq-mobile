@@ -7,6 +7,7 @@ import 'package:musiq/src/model/api_model/aura_model.dart';
 import 'package:musiq/src/model/api_model/aura_song_model.dart';
 import 'package:musiq/src/model/api_model/favourite_model.dart';
 import 'package:musiq/src/model/api_model/playlist_model.dart';
+import 'package:musiq/src/model/api_model/playlist_song_model.dart';
 import 'package:musiq/src/model/api_model/song_list_model.dart';
 
 import '../../helpers/constants/api.dart';
@@ -71,7 +72,23 @@ getFavourites({ required int id,int limit=100})async{
 
   }
   }
+   getSpecificPlaylist(int? id)async {
+    
+    var res=await apiCall.getRequestWithAuth(APIConstants.BASE_URL+APIConstants.SPECIFIC_PLAYLIST+ id.toString());
+    print(res.statusCode);
+     if(res.statusCode==200){
+    print(jsonDecode(res.body));
+    PlayListSongModel playListModel=PlayListSongModel.fromMap(jsonDecode(res.body));
+    return playListModel;
+  }
+  else{
+    PlayListSongModel playListModel=PlayListSongModel(success: false, message: "", records: [], totalRecords: 0);
+    print(playListModel);
+    return playListModel;
+
+  }
   
+  }
 getPlaylists({ required int id,int limit=100})async{
   //  var auraUrl=apiConstants.getAuraUrl(limit:limit);
   var res=await apiCall.getRequestWithAuth(APIConstants.BASE_URL+APIConstants.PLAYLIST+ id.toString());
@@ -132,6 +149,19 @@ Future<AuraModel> getAura({int limit=100})async{
  return auraSongModel;
   }
 
+   createPlayList(String value)async {
+    
+    print(value);
+    Map params=Map();
+    params["playlist_name"]=value;
+    String url=APIConstants.BASE_URL+APIConstants.CREATE_PLAYLIST;
+    var res=await apiCall.postRequestWithAuth(url, params);
+    print(res.statusCode);
+    return res;
+  }
+
+ 
+
 
 
 
@@ -159,5 +189,7 @@ Future<AuraModel> getAura({int limit=100})async{
     
   // }
 
-
+deleteSpecificPlaylist(int id){
+  print(id);
+}
 }

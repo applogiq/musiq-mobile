@@ -157,7 +157,8 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                                       child: CustomButton(
                                         isIcon: true,
                                         label: "Play All",
-                                        margin: 0,
+                                        verticalMargin: 0,
+                                        horizontalMargin: 0,
                                       ),
                                     ),
                                   )

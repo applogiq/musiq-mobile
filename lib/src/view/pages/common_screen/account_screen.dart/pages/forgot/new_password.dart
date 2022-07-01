@@ -100,7 +100,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   child: StreamBuilder(
                     stream: _forgotpasswordCubit.loadingStream,
                     builder: (context, snapshot) {
-                      return snapshot.data==true?CustomButton(label: ConstantText.resetPasssword,isLoading: true,margin: 0.0,): CustomButton(label: ConstantText.resetPasssword,margin: 0.0,);
+                      return snapshot.data==true?CustomButton(label: ConstantText.resetPasssword,isLoading: true,verticalMargin: 0.0,horizontalMargin: 0.0,): CustomButton(label: ConstantText.resetPasssword,verticalMargin: 0.0,horizontalMargin: 0.0,);
                     }
                   ));
               }
