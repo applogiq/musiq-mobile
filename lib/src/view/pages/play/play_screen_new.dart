@@ -264,6 +264,35 @@ class MainPlayScreen extends StatelessWidget {
 
   }
 }
+class PlayerController extends StatelessWidget {
+  const PlayerController({
+    Key? key,
+    required this.songController,
+  }) : super(key: key);
+
+  final SongController songController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Theme(
+        data:
+            ThemeData(iconTheme: IconThemeData(size: 32, color: Colors.white)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Icon(Icons.playlist_add_rounded, size: 34),
+            PlayPrevious(songController: songController),
+            PlayPauseController(songController: songController),
+            PlayNext(songController: songController),
+            RepeatSong(songController: songController),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 class SongName extends StatelessWidget {
    SongName({

@@ -3,6 +3,8 @@ class ConstantText{
   static String slogan="Queue your favourite music";
   static String welcomeBack="Welcome Back";
   static String name="Name";
+  static String noSongHere="No Songs Here";
+  static String yourfavNoAvailable="Your favourite songs will appear here";
   static String fullName="Full Name";
   static String userName="Username";
   static String email="Email address";

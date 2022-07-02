@@ -76,12 +76,12 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       isLoad;
     });
-    artistData= await apiRoute.getArtist(limit: 4);
+    artistData= await apiRoute.getArtist(limit: 10);
     recentlyPlayed=await apiRoute.getRecentlyPlayed();
-    album=await apiRoute.getAlbum();
+    album=await apiRoute.getAlbum(limit: 10);
     auraModel=await apiRoute.getAura();
-    trendingHitsModel=await apiRoute.getTrendingHits(limit:3);
-    newRelease=await apiRoute.getNewRelease(limit:5);
+    trendingHitsModel=await apiRoute.getTrendingHits(limit:10);
+    newRelease=await apiRoute.getNewRelease(limit:10);
     isLoad=true;
     if(mounted){
       setState(() {
@@ -177,6 +177,7 @@ child:
     ),
 ),
 Container(
+  alignment: Alignment.centerLeft,
 
       padding: EdgeInsets.only(top: 8),
 

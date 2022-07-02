@@ -17,6 +17,8 @@ class APICall{
      params["user_id"]= user_id;
 
     var url=Uri.parse(APIConstants.BASE_URL+endPoint);
+     print(url);
+     print(jsonEncode( params));
 
     var response=await http.put(url,headers: header,body:jsonEncode(params) );
     print(response.statusCode);

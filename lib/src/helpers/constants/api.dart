@@ -20,9 +20,11 @@ class APIConstants{
  static String CREATE_PLAYLIST="playlist/";
  static String TRENDING_HITS="trending-hits";
  static String NEW_RELEASE="new_release";
+ static String RECENT_LIST="recent-list/";
 
 
-//http://192.168.29.185:3000/api/v1/new_release?limit=5
+//http://192.168.29.185:3000/api/v1/recent-list/
+
 
 getNewReleaseUrl({int limit=100}){
   var url="${NEW_RELEASE}?limit=${limit.toString()}";

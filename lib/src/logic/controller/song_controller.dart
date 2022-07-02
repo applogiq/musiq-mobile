@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musiq/src/logic/services/api_route.dart';
 import 'package:musiq/src/model/ui_model/play_screen_model.dart';
 
 class SongController extends GetxController{
@@ -14,7 +15,9 @@ class SongController extends GetxController{
    var totalDurationValue=0.obs;
    var progressDurationValue=0.obs;
    var bufferDurationValue=0.obs;
+   List<PlayScreenModel> songList=[];
    loadSong(List<PlayScreenModel> songPlayList,int index)async{
+    songList=songPlayList;
    player = AudioPlayer();
 
 //    if(isPlaying==player.playerState.playing){
@@ -160,7 +163,7 @@ isShuffle.toggle();
   favourite(){}
   addToPlaylist(){}
   play(){
-     
+     putRecentSongs(songList[int.parse(player.currentIndex.toString())].id.toString());
     isPlay.toggle();
     
     player.play();
@@ -195,4 +198,12 @@ seekDuration(value){
   player.seek(value);
 }
 
+putRecentSongs(String id)
+async{
+  APIRoute apiRoute=APIRoute();
+  await apiRoute.putRecentSongs(id);
+
+
+
+}
 }

@@ -14,6 +14,7 @@ import 'package:musiq/src/model/api_model/song_list_model.dart';
 import 'package:musiq/src/view/pages/home/components/widget/play_button_widget.dart';
 import 'package:musiq/src/view/pages/home/components/widget/reordable_vertical_list.dart';
 import 'package:musiq/src/view/pages/home/components/widget/vertical_list_view.dart';
+import 'package:musiq/src/view/pages/play/play_screen_new.dart';
 import 'package:musiq/src/view/widgets/empty_box.dart';
 
 import '../../../helpers/constants/api.dart';
@@ -411,35 +412,6 @@ class ProgressBarWidget extends StatelessWidget {
   }
 }
 
-class PlayerController extends StatelessWidget {
-  const PlayerController({
-    Key? key,
-    required this.songController,
-  }) : super(key: key);
-
-  final SongController songController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Theme(
-        data:
-            ThemeData(iconTheme: IconThemeData(size: 32, color: Colors.white)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Icon(Icons.playlist_add_rounded, size: 34),
-            PlayPrevious(songController: songController),
-            PlayPauseController(songController: songController),
-            PlayNext(songController: songController),
-            RepeatSong(songController: songController),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class PlayPrevious extends StatelessWidget {
   const PlayPrevious({

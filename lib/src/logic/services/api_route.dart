@@ -241,4 +241,10 @@ var data=jsonDecode(res.body);
     return new_release;
   }
   }
+
+  putRecentSongs(String id) async{
+    var url =APIConstants.RECENT_LIST;
+    Map params={"song_id": id};
+    var res=await apiCall.putRequestWithAuth(url,params );
+  }
 }

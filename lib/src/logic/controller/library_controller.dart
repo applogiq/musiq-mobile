@@ -32,9 +32,10 @@ for(int i=0;i<favourite.totalRecords;i++){
    else{
 
    }
-    Future.delayed(Duration(seconds: 3),(){
+    // Future.delayed(Duration(seconds: 3),(){
       isLoaded.value=true;
-    });
+    // });
+  
   }
 
 loadPlayListData()async{
