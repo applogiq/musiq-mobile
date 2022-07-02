@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
 import 'package:musiq/src/helpers/constants/images.dart';
+import 'package:musiq/src/helpers/constants/style.dart';
 import 'package:musiq/src/helpers/utils/image_url_generate.dart';
 import 'package:musiq/src/helpers/utils/play_navigation.dart';
 import 'package:musiq/src/logic/services/api_call.dart';
@@ -13,6 +14,7 @@ import 'package:musiq/src/logic/services/api_route.dart';
 import 'package:musiq/src/model/api_model/album_model.dart';
 import 'package:musiq/src/model/api_model/aura_model.dart';
 import 'package:musiq/src/model/api_model/aura_song_model.dart';
+import 'package:musiq/src/model/api_model/trending_hits_model.dart';
 import 'package:musiq/src/model/ui_model/play_screen_model.dart';
 import 'package:musiq/src/model/ui_model/view_all_song_list_model.dart';
 import 'package:musiq/src/view/pages/home/components/pages/recently_played_view_all.dart';
@@ -34,6 +36,11 @@ import 'package:http/http.dart' as http;
 
 import '../../../model/api_model/recent_song_model.dart';
 import '../../../model/api_model/song_list_model.dart';
+import 'components/home_components/based_on_your_interest.dart';
+import 'components/home_components/current_mood.dart';
+import 'components/home_components/new_release.dart';
+import 'components/home_components/recommended_songs.dart';
+import 'components/home_components/search_notifications.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key,}) : super(key: key);
@@ -52,6 +59,8 @@ class _HomePageState extends State<HomePage> {
   late AuraModel auraModel;
   late AuraSongModel auraSongModel;
   late SongList songList;
+  late TrendingHitsModel trendingHitsModel;
+  late TrendingHitsModel newRelease;
   bool isLoad=false;
    
   // Api
@@ -71,6 +80,8 @@ class _HomePageState extends State<HomePage> {
     recentlyPlayed=await apiRoute.getRecentlyPlayed();
     album=await apiRoute.getAlbum();
     auraModel=await apiRoute.getAura();
+    trendingHitsModel=await apiRoute.getTrendingHits(limit:3);
+    newRelease=await apiRoute.getNewRelease(limit:5);
     isLoad=true;
     if(mounted){
       setState(() {
@@ -115,53 +126,8 @@ class _HomePageState extends State<HomePage> {
             SizedBox(
               height: 8,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: IntrinsicHeight(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      child: SearchTextWidget(
-                        isReadOnly: true,
-                        onTap: () {
-                          print("DATA");
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => SearchScreen()));
-                        },
-                        hint: "Search Music and Podcasts",
-                      ),
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    CustomColorContainer(
-                      bgColor: CustomColor.textfieldBg,
-                      left: 12,
-                      verticalPadding: 6,
-                      child: Center(
-                        child: Stack(
-                          children: [
-                            Icon(Icons.notifications),
-                            Positioned(
-                              right: 2,
-                              child: new Container(
-                                padding: EdgeInsets.all(4.5),
-                                decoration: new BoxDecoration(
-                                  color: CustomColor.secondaryColor,
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
+            SearchAndNotifications(),
+
 recentlyPlayed.success==false?EmptyBox(): Container(
   child: Column(children: [
 Padding(padding: const EdgeInsets.all(12.0),
@@ -181,7 +147,7 @@ child:
                               // print(songList.records.length);
                               List<ViewAllSongList> viewAllSongListModel=[];
                               for(int i=0;i<recentlyPlayed.records.length;i++){
-                                viewAllSongListModel.add(ViewAllSongList(recentlyPlayed.records[i].id.toString(), generateSongImageUrl(recentlyPlayed.records[i].albumName,recentlyPlayed.records[i].albumId), recentlyPlayed.records[i].songName, recentlyPlayed.records[i].musicDirectorName[0],recentlyPlayed.records[i].albumName));
+                                viewAllSongListModel.add(ViewAllSongList(recentlyPlayed.records[i].id.toString(), generateSongImageUrl(recentlyPlayed.records[i].albumName,recentlyPlayed.records[i].albumId), recentlyPlayed.records[i].songName, recentlyPlayed.records[i].musicDirectorName[0],recentlyPlayed.records[i].albumName,recentlyPlayed.records[i].albumId));
                               }
                                     ViewAllBanner banner= ViewAllBanner(bannerId: recentlyPlayed.records[0].albumId,
                               bannerImageUrl: "${APIConstants.SONG_BASE_URL}public/music/tamil/${recentlyPlayed.records[0].albumName[0].toUpperCase()}/${recentlyPlayed.records[0].albumName}/image/${recentlyPlayed.records[0].albumId.toString()}.png",
@@ -412,105 +378,13 @@ Container(
     // ),
         
         
-            TrendingHitsWidget(),
-            HorizonalListViewWidget(
-                title: "Recommended songs",
-                actionTitle: "",
-                listWidget:
-                    CustomHorizontalListview(images: images.recommendedSong)),
+            TrendingHitsWidget(trendingHitsModel: trendingHitsModel,),
+            RecommendedSongs(images: images),
             ArtistListView(artist: artistData),
-  
-          
-          
-          
-          
-            HorizonalListViewWidget(
-                title: "New Releases",
-                actionTitle: "",
-                listWidget: CustomHorizontalListview(
-                  images: images.podcastList,
-                )),
-            Container(
-              padding: EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  ListHeaderWidget(
-                      title: "Based on your Interest", actionTitle: "",dataList: [],),
-                  Container(
-                      margin: EdgeInsets.only(top: 10),
-                      child: CustomSongVerticalList(
-                          songList: images.basedOnYourInterestList, ))
-                ],
-              ),
-            ),
+            NewRelease(new_release: newRelease),
+            BasedOnYourInterest(images: images),
            
-            HorizonalListViewWidget(
-              title: "Current Mood",
-              actionTitle: "",
-              listWidget: Container(
-      padding: EdgeInsets.only(top: 8),
-      height:  180 ,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          shrinkWrap: true,
-          physics: BouncingScrollPhysics(),
-          itemCount: auraModel.records.length,
-          itemBuilder: (context, index) => Row(
-                children: [
-                  index == 0
-                      ? SizedBox(
-                          width: 10,
-                        )
-                      : SizedBox(),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(6, 8, 6, 0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment:  CrossAxisAlignment.center
-                          ,
-                      children: [
-                        InkWell(
-                          onTap: ()async{
-                           ViewAllBanner banner= ViewAllBanner(bannerId: auraModel.records[index].auraId,bannerImageUrl: APIConstants.SONG_BASE_URL+APIConstants.AURA+auraModel.records[index].auraId+".png",
-                              bannerTitle: auraModel.records[index].auraName);
-                              print(banner.bannerImageUrl.toString());
-                              auraSongModel= await apiRoute.getSpecificAuraSongs(id: auraModel.records[index].id);
-                              List<ViewAllSongList> viewAllSongListModel=[];
-                              for(int i=0;i<auraSongModel.records.length;i++){
-                                viewAllSongListModel.add(ViewAllSongList(auraSongModel.records[i].songId, generateSongImageUrl(auraSongModel.records[i].albumName,auraSongModel.records[i].albumId), auraSongModel.records[i].songName, auraSongModel.records[i].musicDirectorName[0],auraSongModel.records[i].albumName));
-                              }
-                           
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewAllScreenSongList(banner: banner, view_all_song_list_model: viewAllSongListModel)));
-                          },
-                          child: CustomColorContainer(
-                            shape: BoxShape.circle,
-                            child: Image.network(
-                              APIConstants.SONG_BASE_URL+APIConstants.AURA+auraModel.records[index].auraId+".png",
-                              height: 125,
-                              width: 125,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 6,
-                        ),
-                        Text(
-                          auraModel.records[index].auraName,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12),
-                        ),
-                        SizedBox(
-                          height: 2,
-                        ),
-                       
-                      ],
-                    ),
-                  ),
-                ],
-              )),
-    ),
-            ),
+            CurrentMood(auraModel: auraModel),
     //             Column(
     //               children:[
     //              Container(
@@ -643,10 +517,10 @@ Container(
                        );
                               print(banner.bannerImageUrl.toString());
                              songList=  await apiRoute.getSpecificAlbumSong(id: album.records[index].id);
-                              // print(songList.records.length);
+                              print(songList.records.length);
                               List<ViewAllSongList> viewAllSongListModel=[];
                               for(int i=0;i<songList.records.length;i++){
-                                viewAllSongListModel.add(ViewAllSongList(songList.records[i].id.toString(), generateSongImageUrl(songList.records[i].albumName,songList.records[i].albumId), songList.records[i].songName, songList.records[i].musicDirectorName[0],songList.records[i].albumName));
+                                viewAllSongListModel.add(ViewAllSongList(songList.records[i].id.toString(), generateSongImageUrl(songList.records[i].albumName,songList.records[i].albumId), songList.records[i].songName, songList.records[i].musicDirectorName[0],songList.records[i].albumName,songList.records[i].albumId));
                               }
                            
                             Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewAllScreenSongList(banner: banner, view_all_song_list_model: viewAllSongListModel)));
@@ -655,8 +529,8 @@ Container(
                           child: CustomColorContainer(
                             
                             child: Image.network(
-                                "${APIConstants.SONG_BASE_URL}public/music/tamil/${album.records[index].albumName[0].toUpperCase()}/${album.records[index].albumName}/image/${album.records[index].albumId.toString()}.png",
-                        
+generateSongImageUrl(album.records[index].albumName, album.records[index].albumId),
+                              
                               height: 125,
                               width: 135,
                               fit: BoxFit.cover,
@@ -678,10 +552,7 @@ Container(
                        maxLines: 1,
     overflow: TextOverflow.ellipsis,
    
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 12,
-                                    color: CustomColor.subTitle))
+                                style: fontWeight400(size: 12.0,color: CustomColor.subTitle))
                       ],
                     ),
                   ),
@@ -699,46 +570,4 @@ Container(
   }
 }
 
-class SearchTextWidget extends StatelessWidget {
-  SearchTextWidget({
-    Key? key,
-    required this.hint,
-    this.isReadOnly = false,
-    required this.onTap,
-  }) : super(key: key);
-  final String hint;
-  bool isReadOnly;
 
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomColorContainer(
-      left: 1,
-      verticalPadding: 2,
-      bgColor: CustomColor.textfieldBg,
-      child: ConstrainedBox(
-        constraints: BoxConstraints.expand(height: 40, width: double.maxFinite),
-        child: TextField(
-          onTap: onTap,
-          readOnly: isReadOnly,
-          onChanged: (val) {},
-          cursorColor: Colors.white,
-          decoration: InputDecoration(
-              prefixIcon: Container(
-                padding: EdgeInsets.all(12),
-                child: Image.asset(
-                  "assets/icons/search.png",
-                  height: 16,
-                  width: 16,
-                  color: Colors.white,
-                ),
-              ),
-              border: InputBorder.none,
-              hintStyle: TextStyle(fontSize: 14),
-              hintText: hint),
-        ),
-      ),
-    );
-  }
-}

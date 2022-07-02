@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/helpers/constants/string.dart';
+import 'package:musiq/src/helpers/utils/image_url_generate.dart';
+import 'package:musiq/src/model/api_model/trending_hits_model.dart';
 import 'package:musiq/src/view/pages/home/components/pages/trending_hits_view_all_screen.dart';
 import 'package:musiq/src/view/pages/home/components/widget/play_button_widget.dart';
 
@@ -8,9 +10,9 @@ import 'horizontal_list_view.dart';
 
 class TrendingHitsWidget extends StatelessWidget {
   const TrendingHitsWidget({
-    Key? key,
+    Key? key, required this.trendingHitsModel,
   }) : super(key: key);
-
+final TrendingHitsModel trendingHitsModel;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -55,7 +57,7 @@ class TrendingHitsWidget extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         image: DecorationImage(
-                          image: AssetImage("assets/images/t1.png"),
+                          image: NetworkImage(generateSongImageUrl(trendingHitsModel.records[2].albumName, trendingHitsModel.records[2].albumId)),
                           fit: BoxFit.fill,
                         ),
                       ),
@@ -76,7 +78,8 @@ class TrendingHitsWidget extends StatelessWidget {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               image: DecorationImage(
-                                image: AssetImage("assets/images/t2.png"),
+                                image: NetworkImage(generateSongImageUrl(trendingHitsModel.records[1].albumName, trendingHitsModel.records[1].albumId)),
+
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -94,7 +97,8 @@ class TrendingHitsWidget extends StatelessWidget {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             image: DecorationImage(
-                              image: AssetImage("assets/images/t3.png"),
+                              image: NetworkImage(generateSongImageUrl(trendingHitsModel.records[0].albumName, trendingHitsModel.records[0].albumId)),
+
                               fit: BoxFit.fill,
                             ),
                           ),

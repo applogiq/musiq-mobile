@@ -9,6 +9,7 @@ import 'package:musiq/src/model/api_model/favourite_model.dart';
 import 'package:musiq/src/model/api_model/playlist_model.dart';
 import 'package:musiq/src/model/api_model/playlist_song_model.dart';
 import 'package:musiq/src/model/api_model/song_list_model.dart';
+import 'package:musiq/src/model/api_model/trending_hits_model.dart';
 
 import '../../helpers/constants/api.dart';
 import '../../model/api_model/artist_model.dart';
@@ -114,12 +115,18 @@ getPlaylists({ int limit=100})async{
 var url=APIConstants.BASE_URL+artistSong;
 
     var res=await apiCall.getRequestWithAuth(url );
- 
+    if(res.statusCode==200){
+
   var data=jsonDecode(res.body);
  print(data.toString());
- SongList auraSongModel=SongList.fromMap(data);
- return auraSongModel;
+ SongList songList=SongList.fromMap(data);
+ return songList;
  
+    }
+ else{
+  SongList songList=SongList(success: false, message: "No Data", records: [], totalrecords: 0);
+  return songList;
+ }
  
   }
 getSpecificAuraSongs({required int id,int limit=100})async{
@@ -195,4 +202,43 @@ Future<AuraModel> getAura({int limit=100})async{
 deleteSpecificPlaylist(int id){
   print(id);
 }
+
+  getTrendingHits({ int limit=100})async {
+     var trendingHitsUrl=apiConstants.getTrendingHitsUrl(limit:limit);
+ var res=await apiCall.getRequestWithAuth(APIConstants.BASE_URL+trendingHitsUrl );
+  if(res.statusCode==200){
+
+var data=jsonDecode(res.body);
+ print(data.toString());
+      TrendingHitsModel trendingHitsModel=TrendingHitsModel.fromMap(data);
+      
+       return trendingHitsModel;
+
+
+  }
+  else{
+    TrendingHitsModel trendingHitsModel=TrendingHitsModel(success: false, message: "no data", records: [], totalrecords: 0);
+    return trendingHitsModel;
+  }
+  
+    }
+
+  getNewRelease({required int limit}) async{
+     var newReleaseUrl=apiConstants.getTrendingHitsUrl(limit:limit);
+ var res=await apiCall.getRequestWithAuth(APIConstants.BASE_URL+newReleaseUrl );
+  if(res.statusCode==200){
+
+var data=jsonDecode(res.body);
+ print(data.toString());
+      TrendingHitsModel new_release=TrendingHitsModel.fromMap(data);
+      
+       return new_release;
+
+
+  }
+  else{
+    TrendingHitsModel new_release=TrendingHitsModel(success: false, message: "no data", records: [], totalrecords: 0);
+    return new_release;
+  }
+  }
 }

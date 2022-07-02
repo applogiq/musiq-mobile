@@ -21,6 +21,7 @@ import '../../../../../logic/services/api_call.dart';
 import '../../../../../model/api_model/artist_model.dart';
 import '../../../../../model/api_model/song_list_model.dart';
 import '../../../../../model/ui_model/view_all_song_list_model.dart';
+import '../home_components/search_notifications.dart';
 
 class ArtistListViewAll extends StatelessWidget {
    ArtistListViewAll({Key? key,}) : super(key: key);
@@ -63,13 +64,16 @@ class ArtistListViewAll extends StatelessWidget {
                               print(banner.bannerImageUrl.toString());
                             SongList songList=  await apiRoute.getSpecificArtistSong(index: viewAllController.artist.records[index].id);
                               // print(songList.records.length);
+                              if(songList.success==true){
                               List<ViewAllSongList> viewAllSongListModel=[];
-                              for(int i=0;i<songList.records.length;i++){
-                                viewAllSongListModel.add(ViewAllSongList(songList.records[i].id.toString(), generateSongImageUrl(songList.records[i].albumName,songList.records[i].albumId), songList.records[i].songName, songList.records[i].musicDirectorName[0],songList.records[i].albumName));
-                              }
+                                for(int i=0;i<songList.records.length;i++){
+                                    viewAllSongListModel.add(ViewAllSongList(songList.records[i].id.toString(), generateSongImageUrl(songList.records[i].albumName,songList.records[i].albumId), songList.records[i].songName, songList.records[i].musicDirectorName[0],songList.records[i].albumName,songList.records[i].albumId));
+                                  }
                            
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewAllScreenSongList(banner: banner, view_all_song_list_model: viewAllSongListModel)));
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewAllScreenSongList(banner: banner, view_all_song_list_model: viewAllSongListModel)));
                      
+                              }
+                            
 
 
 

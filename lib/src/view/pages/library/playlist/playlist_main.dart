@@ -45,7 +45,12 @@ class PlaylistScreen extends StatelessWidget {
           ? LoaderScreen()
           : Scaffold(
               floatingActionButton: PlaylistButton(),
-              body: Padding(
+              body:libraryController.view_all_play_list.records.length==0?
+    Center(
+      child: Text("No Playlist created"),
+    )
+    
+    : Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0),
                 child: GetBuilder<LibraryController>(
                   init: LibraryController(),
@@ -100,7 +105,7 @@ class PlaylistScreen extends StatelessWidget {
                                           playListSongModel
                                               .records[i].musicDirectorName[0],
                                           playListSongModel
-                                              .records[i].albumName));
+                                              .records[i].albumName,playListSongModel.records[i].albumName));
                                     }
 
                                     Navigator.of(context).push(

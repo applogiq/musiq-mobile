@@ -18,8 +18,17 @@ class APIConstants{
  static String PLAYLIST="playlist/user/";
  static String SPECIFIC_PLAYLIST="playlist-song/list/";
  static String CREATE_PLAYLIST="playlist/";
+ static String TRENDING_HITS="trending-hits";
+ static String NEW_RELEASE="new_release";
 
-//http://192.168.29.185:3000/api/v1/playlist/6
+
+//http://192.168.29.185:3000/api/v1/new_release?limit=5
+
+getNewReleaseUrl({int limit=100}){
+  var url="${NEW_RELEASE}?limit=${limit.toString()}";
+  return url;
+ 
+}
 
 getSpecificAlbumUrl(int id,int limit){
 
@@ -56,6 +65,13 @@ getSpecificArtistUrl(int id,int skipLength,int limit){
   var url="songs?artist_id=${id}&skip=${skipLength}&limit=${limit}";
   return url;
  }
+
+  getTrendingHitsUrl({required int limit}) {
+  var url="${TRENDING_HITS}?limit=${limit.toString()}";
+  return url;
+
+
+  }
 
 //  http://192.168.29.184:3000/api/v1/albums/?skip=0&limit=100
 

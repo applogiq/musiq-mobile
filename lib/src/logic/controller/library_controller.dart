@@ -25,7 +25,7 @@ Favourite favourite=await apiRoute.getFavourites();
   //  List<ViewAllSongList> viewAllSongList=[];
   view_all_songs_list.clear();
 for(int i=0;i<favourite.totalRecords;i++){
-  view_all_songs_list.add(ViewAllSongList(favourite.records[i].id.toString(), generateSongImageUrl(favourite.records[i].albumName.toString(), favourite.records[i].albumId.toString()), favourite.records[i].songName, favourite.records[i].musicDirectorName[0],favourite.records[i].albumName));
+  view_all_songs_list.add(ViewAllSongList(favourite.records[i].id.toString(), generateSongImageUrl(favourite.records[i].albumName.toString(), favourite.records[i].albumId.toString()), favourite.records[i].songName, favourite.records[i].musicDirectorName[0],favourite.records[i].albumName,favourite.records[i].albumName));
 }
 
    }

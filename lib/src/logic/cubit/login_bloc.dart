@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musiq/src/helpers/constants/api.dart';
 import 'package:musiq/src/helpers/constants/string.dart';
 import 'package:musiq/src/helpers/utils/navigation.dart';
+import 'package:musiq/src/view/pages/artist_preference/artist_preference.dart';
 import 'package:musiq/src/view/pages/common_screen/account_screen.dart/select_your%20fav_artist.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -208,7 +209,7 @@ isLoading.sink.add(false);
     Future.delayed(Duration(milliseconds: 600),(){
         if(user.records.preference.artist.length<3){
 
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>SelectYourFavList(artist_list: user.records.preference.artist,)));
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>ArtistPreferenceMain(artist_list: user.records.preference.artist,)));
   }
   else{
   Navigation.navigateReplaceToScreen(context, "bottom/");

@@ -8,9 +8,11 @@ import 'package:musiq/src/view/widgets/empty_box.dart';
 
 import '../../../../../../helpers/constants/color.dart';
 import '../../../../../../helpers/constants/style.dart';
+import '../../../../../../model/ui_model/play_screen_model.dart';
 import '../../../../../sandbox/app_bar_main.dart';
 import '../../../../../widgets/custom_button.dart';
 import '../../../../../widgets/custom_color_container.dart';
+import '../../../../play/play_screen_new.dart';
 import '../../widget/vertical_list_view.dart';
 
 class ViewAllScreenSongList extends StatefulWidget {
@@ -88,13 +90,13 @@ class _ViewAllScreenSongListState extends State<ViewAllScreenSongList> {
     return SafeArea(child: NotificationListener(
       child: Scaffold(
          appBar: PreferredSize(
-                preferredSize: Size.fromHeight(_isAppbar?height/2.5:80),
+                preferredSize: Size.fromHeight(_isAppbar?height/2.0:80),
                 child: _isAppbar?
                 PrimaryAppBar(isNetworkImage: true, 
                 imageURL:widget.banner.bannerImageUrl,
                  title: widget.banner.bannerTitle, 
-                 height: height/2.5,
-                  count: 3):SecondaryAppBar(title: widget.banner.bannerTitle),
+                 height: height/2.0,
+                  count: widget.view_all_song_list_model.length):SecondaryAppBar(title: widget.banner.bannerTitle),
               ),
               body:ListView.builder(
                 physics: const AlwaysScrollableScrollPhysics(),
@@ -102,9 +104,22 @@ class _ViewAllScreenSongListState extends State<ViewAllScreenSongList> {
                 itemCount: widget.view_all_song_list_model.length,
                 controller: _scrollController,
                 itemBuilder: (context,index){
-                  return Container(
-                    padding: EdgeInsets.symmetric(vertical:16),
-                    child: SongListTile(view_all_song_list_model: widget.view_all_song_list_model, index: index));
+                  return InkWell(
+                    onTap: (){
+                      print(index);
+                         List<PlayScreenModel> playScreenModel=[];
+                    print(widget.view_all_song_list_model[index].songId);
+                    for(int i=0;i<widget.view_all_song_list_model.length;i++){
+                      playScreenModel.add(PlayScreenModel(id: int.parse(widget.view_all_song_list_model[i].songId), songName: widget.view_all_song_list_model[i].songName, musicDirectorName: widget.view_all_song_list_model[i].songMusicDirector, albumId: widget.view_all_song_list_model[i].album_id,albumName:widget.view_all_song_list_model[i].albumName));
+                    }
+                    print(playScreenModel.length);
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MainPlayScreen(playScreenModel: playScreenModel, index: index)));
+ 
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical:16),
+                      child: SongListTile(view_all_song_list_model: widget.view_all_song_list_model, index: index)),
+                  );
                 }),
         // body: CustomScrollView(
         //    physics: ClampingScrollPhysics(),

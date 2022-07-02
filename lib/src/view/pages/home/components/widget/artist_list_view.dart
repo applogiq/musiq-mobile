@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
+import 'package:musiq/src/helpers/constants/images.dart';
+import 'package:musiq/src/helpers/constants/style.dart';
 import 'package:musiq/src/logic/services/api_call.dart';
 import 'package:musiq/src/logic/services/api_route.dart';
 import 'package:musiq/src/model/api_model/artist_model.dart';
@@ -80,19 +82,23 @@ class ArtistListView extends StatelessWidget {
                           onTap: ()async{
                                   
                              ViewAllBanner banner= ViewAllBanner(bannerId: artist.records[index].id.toString(),
-                              bannerImageUrl:  APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png",
+                              bannerImageUrl: generateArtistImageUrl(artist.records[index].artistId),
                            bannerTitle:  artist.records[index].artistName,
                        );
                               print(banner.bannerImageUrl.toString());
                             SongList songList=  await apiRoute.getSpecificArtistSong(index: artist.records[index].id);
-                              // print(songList.records.length);
-                              List<ViewAllSongList> viewAllSongListModel=[];
+                            if(songList.success==true){
+List<ViewAllSongList> viewAllSongListModel=[];
                               for(int i=0;i<songList.records.length;i++){
-                                viewAllSongListModel.add(ViewAllSongList(songList.records[i].id.toString(), generateSongImageUrl(songList.records[i].albumName,songList.records[i].albumId), songList.records[i].songName, songList.records[i].musicDirectorName[0],songList.records[i].albumName));
+                                viewAllSongListModel.add(ViewAllSongList(songList.records[i].id.toString(), generateSongImageUrl(songList.records[i].albumName,songList.records[i].albumId), songList.records[i].songName, songList.records[i].musicDirectorName[0],songList.records[i].albumName,songList.records[i].albumId));
                               }
                            
                             Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewAllScreenSongList(banner: banner, view_all_song_list_model: viewAllSongListModel)));
                      
+
+                            }
+   //// print(songList.records.length);
+                              
 
 
 // //                              Map<String, String> queryParams = {
@@ -127,10 +133,10 @@ class ArtistListView extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                             artist.records[index].isImage==false?Container(height: 240,width: 200,decoration: BoxDecoration(color: CustomColor.defaultCard,borderRadius: BorderRadius.circular(12),border: Border.all(color: CustomColor.defaultCardBorder,width: 2.0)),child: Center(child: Image.asset("assets/images/default/no_artist.png",width: 113,height: 118,)),): CustomColorContainer(
+                             artist.records[index].isImage==false?
+                             NoArtist(): CustomColorContainer(
                                 child: Image.network(
-                                   APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png",
-                            // "http://192.168.29.185:3000/api/v1/public/artists/AR001.png",
+                                  generateArtistImageUrl(artist.records[index].artistId),
                                   height: 240,
                                   width: 200,
                                   fit: BoxFit.cover,
@@ -141,8 +147,7 @@ class ArtistListView extends StatelessWidget {
                               ),
                               Text(
                                 artist.records[index].artistName,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w400, fontSize: 14),
+                                style: fontWeight400(),
                               ),
                             ],
                           ),
@@ -154,5 +159,20 @@ class ArtistListView extends StatelessWidget {
         )
       ],
     );
+  }
+}
+
+class NoArtist extends StatelessWidget {
+  const NoArtist({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(height: 240,
+    width: 200,
+    decoration: BoxDecoration(
+     color: CustomColor.defaultCard,borderRadius:
+      BorderRadius.circular(12),border: Border.all(color: CustomColor.defaultCardBorder,width: 2.0)),child: Center(child: Image.asset(Images.noArtist,width: 113,height: 118,)),);
   }
 }

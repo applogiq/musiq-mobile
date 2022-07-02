@@ -4,6 +4,10 @@ generateArtistImageUrl(artistId){
   var url =APIConstants.BASE_IMAGE_URL+artistId+".png";
   return url;
  }
+ generateAuraImageUrl(auraId){
+  var url=APIConstants.SONG_BASE_URL+APIConstants.AURA+auraId+".png";
+  return url;
+ }
 //  /${viewAllController.recentlyPlayed.records[index].name}/image/${viewAllController.recentlyPlayed.records[index].albumId.toString()}.png",
  
  generateSongImageUrl(albumName,albumId){

@@ -6,6 +6,8 @@ import 'package:musiq/src/helpers/constants/style.dart';
 import 'package:musiq/src/view/pages/home/components/widget/horizontal_list_view.dart';
 import 'package:musiq/src/view/pages/home/home_screen.dart';
 
+import '../home_components/search_notifications.dart';
+
 class SearchScreen extends StatelessWidget {
   SearchScreen({Key? key}) : super(key: key);
   List recentSearch = [
