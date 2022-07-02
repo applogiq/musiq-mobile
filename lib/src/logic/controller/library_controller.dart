@@ -20,7 +20,7 @@ class LibraryController extends GetxController{
   var isCreatePlayListError =false.obs;
 APIRoute apiRoute=APIRoute();
   loadFavouriteData()async{
-Favourite favourite=await apiRoute.getFavourites(id: 2);
+Favourite favourite=await apiRoute.getFavourites();
    if(favourite.success==true){
   //  List<ViewAllSongList> viewAllSongList=[];
   view_all_songs_list.clear();
@@ -39,7 +39,7 @@ for(int i=0;i<favourite.totalRecords;i++){
 
 loadPlayListData()async{
   isLoadedPlayList.value=false;
- view_all_play_list=await apiRoute.getPlaylists(id: 2);
+ view_all_play_list=await apiRoute.getPlaylists();
  playListNameExist.clear();
  for(int i=0;i<view_all_play_list.totalRecords;i++){
   playListNameExist.add(view_all_play_list.records[i].playlistName);

@@ -56,7 +56,8 @@ Future<Album> getAlbum({int limit=100})async{
        return album;
   }
 
-getFavourites({ required int id,int limit=100})async{
+getFavourites({ int limit=100})async{
+  var id=await storage.read(key: "id");
   //  var auraUrl=apiConstants.getAuraUrl(limit:limit);
   var res=await apiCall.getRequestWithAuth(APIConstants.BASE_URL+APIConstants.FAV+ id.toString());
   
@@ -89,8 +90,10 @@ getFavourites({ required int id,int limit=100})async{
   }
   
   }
-getPlaylists({ required int id,int limit=100})async{
-  //  var auraUrl=apiConstants.getAuraUrl(limit:limit);
+getPlaylists({ int limit=100})async{
+    var id=await storage.read(key: "id");
+ 
+ 
   var res=await apiCall.getRequestWithAuth(APIConstants.BASE_URL+APIConstants.PLAYLIST+ id.toString());
   
   if(res.statusCode==200){

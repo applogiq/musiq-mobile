@@ -13,7 +13,7 @@ import '../../view/pages/common_screen/account_screen.dart/select_your fav_artis
 import '../services/api_call.dart';
 
 class BasicController extends GetxController{
- final storage = FlutterSecureStorage();
+ final storage = const FlutterSecureStorage();
    APICall apiCall=APICall();
    
 
@@ -28,15 +28,13 @@ if(allValues["access_token"]!=null){
     var url=Uri.parse(APIConstants.BASE_URL.toString()+APIConstants.LOGIN.toString());
   
   var res= await apiCall.postRequestWithoutAuth(url,params);
-  print(res.statusCode);
+  
   var data=jsonDecode(res.body.toString());
   User user=User.fromMap(data);
-  print(user.toMap());
-  print(user.records.preference.artist.length);
+  
   if(user.records.preference.artist.length<3){
 
-    // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>SelectYourFavList(artist_list: user.records.preference.artist,)));
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>ArtistPreferenceMain(artist_list: user.records.preference.artist,
+     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>ArtistPreferenceMain(artist_list: user.records.preference.artist,
 
     )));
   }
@@ -51,12 +49,6 @@ else{
 }
   }
  
-//   startTime() async {
-//   var duration =  Duration(seconds: 3);
-//   return Timer(duration, goNext);
-// }
-goNext(context)async{
-  await Future.delayed(Duration(milliseconds: 2000));
-  Navigation.navigateReplaceToScreen(context, 'onboarding/');
-  }
+
+
 }

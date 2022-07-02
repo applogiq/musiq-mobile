@@ -9,6 +9,7 @@ import 'package:meta/meta.dart';
 import 'package:musiq/src/helpers/constants/string.dart';
 import 'package:musiq/src/helpers/utils/navigation.dart';
 import 'package:musiq/src/model/api_model/user_model.dart';
+import 'package:musiq/src/view/pages/artist_preference/artist_preference.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:http/http.dart'as http;
 
@@ -94,7 +95,7 @@ if(response.statusCode==201){
          var list1=await storage.read(key: "artist_list");
          print(list1);
               isLoading.sink.add(false);
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>SelectYourFavList(artist_list: user.records.preference.artist,)));
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>ArtistPreferenceMain(artist_list: user.records.preference.artist,)));
   
         // Navigation.navigateReplaceToScreen(context, 'selectArtistPref/');
     
