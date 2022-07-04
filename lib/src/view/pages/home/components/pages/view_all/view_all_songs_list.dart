@@ -16,9 +16,10 @@ import '../../../../play/play_screen_new.dart';
 import '../../widget/vertical_list_view.dart';
 
 class ViewAllScreenSongList extends StatefulWidget {
-   ViewAllScreenSongList({Key? key, required this.banner, required this.view_all_song_list_model}) : super(key: key);
+   ViewAllScreenSongList({Key? key, required this.banner, required this.view_all_song_list_model ,this.isEdit=false}) : super(key: key);
   final ViewAllBanner banner;
   final List<ViewAllSongList> view_all_song_list_model;
+  bool isEdit;
 
   @override
   State<ViewAllScreenSongList> createState() => _ViewAllScreenSongListState();

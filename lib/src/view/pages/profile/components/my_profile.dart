@@ -1,19 +1,28 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../helpers/constants/color.dart';
 import '../../../../helpers/constants/style.dart';
+import '../../../../logic/controller/profile_controller.dart';
 import '../../../widgets/custom_app_bar.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_color_container.dart';
 
 class MyProfile extends StatelessWidget {
-  const MyProfile({Key? key}) : super(key: key);
+  MyProfile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final ProfileController profileController = Get.put(ProfileController());
+
+    var size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size(double.maxFinite, 50),
@@ -24,32 +33,52 @@ class MyProfile extends StatelessWidget {
       body: SingleChildScrollView(
         // reverse: true,
         child: Container(
-            height: MediaQuery.of(context).size.height - 120,
+            height: MediaQuery.of(context).size.height - 1,
             width: MediaQuery.of(context).size.width,
             child: Column(
               children: [
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 34),
+                GetBuilder<ProfileController>(
+                  init: ProfileController(),
+                  initState: (_) {},
+                  builder: (_) {
+                    return Container(
+                  margin: EdgeInsets.symmetric(vertical: size.height*0.034),
                   height: 120,
                   width: 120,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: NetworkImage(
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOvIuFVvPFU596919Aj3EZMWryh0BAgjXX16N1kBboyn9Algcsl_hdUApl6j8qBcTE2nI&usqp=CAU",
-                        ),
-                        fit: BoxFit.cover),
+                    image: profileController.isImagePicked==false
+                        ? DecorationImage(
+                            image: NetworkImage(
+                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOvIuFVvPFU596919Aj3EZMWryh0BAgjXX16N1kBboyn9Algcsl_hdUApl6j8qBcTE2nI&usqp=CAU",
+                            ),
+                            fit: BoxFit.cover)
+                        : DecorationImage(
+                            image: FileImage(
+                              profileController.imagePath,
+                            ),
+                            fit: BoxFit.cover),
                   ),
                   child: Align(
                       alignment: Alignment.bottomRight,
-                      child: Container(
-                        padding: EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                            color: Colors.black,
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white)),
-                        child: Icon(Icons.edit),
+                      child: InkWell(
+                        onTap: (){
+                         profileController.changeImage();
+                        }
+                        ,
+                        child: Container(
+                          padding: EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                              color: Colors.black,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.white)),
+                          child: Icon(Icons.edit),
+                        ),
                       )),
+                );
+               
+             ;
+                  },
                 ),
                 Container(
                   padding: EdgeInsets.all(16),
@@ -62,14 +91,13 @@ class MyProfile extends StatelessWidget {
                         CustomTextField(
                           title: "Username",
                         ),
-                        CustomTextField(
-                          title: "Email",
-                        ),
                       ],
                     ),
                   ),
                 ),
-                Spacer(),
+                SizedBox(
+                  height: size.height * 0.01,
+                ),
                 CustomButton(
                   label: "Save",
                 )
@@ -81,7 +109,8 @@ class MyProfile extends StatelessWidget {
 }
 
 class CustomTextField extends StatefulWidget {
-  const CustomTextField({Key? key, required this.title, this.onChange, this.obsecureText = false})
+  const CustomTextField(
+      {Key? key, required this.title, this.onChange, this.obsecureText = false})
       : super(key: key);
   final String title;
   final ValueSetter<String>? onChange;
@@ -92,19 +121,21 @@ class CustomTextField extends StatefulWidget {
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
- bool obsecure = false;
+  bool obsecure = false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     obsecure = widget.obsecureText;
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
     obsecure = false;
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -131,23 +162,25 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 child: TextFormField(
                   cursorColor: Colors.white,
                   obscureText: obsecure,
-                  
                   onChanged: widget.onChange,
                   decoration: InputDecoration(
-                  
-                     suffixIcon: widget.obsecureText
-                    ? IconButton(
-                        onPressed: () {
-                          setState(() {
-                            obsecure = !obsecure;
-                          });
-                        },
-                        icon: Icon(
-                            obsecure ? Icons.visibility : Icons.visibility_off,color: Colors.white,))
-                    : const SizedBox(
-                        width: 0,
-                        height: 0,
-                      ),
+                    suffixIcon: widget.obsecureText
+                        ? IconButton(
+                            onPressed: () {
+                              setState(() {
+                                obsecure = !obsecure;
+                              });
+                            },
+                            icon: Icon(
+                              obsecure
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.white,
+                            ))
+                        : const SizedBox(
+                            width: 0,
+                            height: 0,
+                          ),
                     border: InputBorder.none,
                     hintStyle: TextStyle(fontSize: 14),
                   ),

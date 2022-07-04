@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/helpers/constants/string.dart';
 import 'package:musiq/src/view/pages/library/favourites/no_favourite.dart';
 
 import '../../../../logic/controller/library_controller.dart';
@@ -15,7 +16,7 @@ class FavouritesMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return libraryController.view_all_songs_list.length==0?
-   NoFavoutiesScreen()
+   NoSongScreen(isFav: true,mainTitle: ConstantText.noSongHere,subTitle: ConstantText.yourfavNoAvailable,)
     
     : Padding(
       padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0),

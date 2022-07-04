@@ -109,7 +109,7 @@ class _PlayScreenState extends State<PlayScreen> {
               alignment: Alignment.bottomCenter,
               children: [
                 Container(
-                  height: MediaQuery.of(context).size.height-10,
+                  height: MediaQuery.of(context).size.height - 10,
                   child: Column(
                     children: [
                       Expanded(
@@ -119,8 +119,7 @@ class _PlayScreenState extends State<PlayScreen> {
                               image: DecorationImage(
                                   image: NetworkImage(
                                       // "https://mir-s3-cdn-cf.behance.net/project_modules/fs/fe529a64193929.5aca8500ba9ab.jpg",
-                                      "${APIConstants.SONG_BASE_URL}public/music/tamil/${widget.songList.records[songController.selectedIndex.value].albumName[0].toUpperCase()}/${widget.songList.records[songController.selectedIndex.value].albumName}/image/${widget.songList.records[songController.selectedIndex.value].albumId}.png"
-                                      ),
+                                      "${APIConstants.SONG_BASE_URL}public/music/tamil/${widget.songList.records[songController.selectedIndex.value].albumName[0].toUpperCase()}/${widget.songList.records[songController.selectedIndex.value].albumName}/image/${widget.songList.records[songController.selectedIndex.value].albumId}.png"),
                                   fit: BoxFit.cover)),
                           child: Stack(children: [
                             Container(
@@ -243,7 +242,6 @@ class _PlayScreenState extends State<PlayScreen> {
                                 widget
                                     .songList
                                     .records[songController.selectedIndex.value]
-                                    
                                     .musicDirectorName[0]
                                     .toString(),
                                 style: fontWeight400(
@@ -259,8 +257,8 @@ class _PlayScreenState extends State<PlayScreen> {
                       Container(
                         // padding: EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                           color: Color.fromRGBO(33, 33, 44, 1),
-                    borderRadius: BorderRadius.only(
+                            color: Color.fromRGBO(33, 33, 44, 1),
+                            borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(30),
                                 topRight: Radius.circular(30))),
                         child: ListTile(
@@ -276,9 +274,7 @@ class _PlayScreenState extends State<PlayScreen> {
                               Obx(() => Text(
                                     widget
                                         .songList
-                                        .records[
-                                            songController.nextIndex.value]
-                                        
+                                        .records[songController.nextIndex.value]
                                         .songName
                                         .toString(),
                                     style: fontWeight400(size: 14.0),
@@ -291,7 +287,6 @@ class _PlayScreenState extends State<PlayScreen> {
                     ],
                   ),
                 ),
-              
                 songController.isBottomSheetView.value == true
                     ? Container(
                         height: MediaQuery.of(context).size.height - 80,
@@ -352,7 +347,11 @@ class ShuffleButton extends StatelessWidget {
                         ? CustomColor.secondaryColor
                         : Colors.white,
                   ))),
-          Icon(Icons.favorite_rounded)
+          InkWell(onTap: (){ 
+            songController.checkFav();
+          },child: Obx(() => Icon(Icons.favorite_rounded,color: songController.isFav.value
+                        ? CustomColor.secondaryColor
+                        : Colors.white,),),)
         ],
       ),
     );
@@ -411,7 +410,6 @@ class ProgressBarWidget extends StatelessWidget {
         ));
   }
 }
-
 
 class PlayPrevious extends StatelessWidget {
   const PlayPrevious({

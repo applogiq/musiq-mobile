@@ -7,6 +7,7 @@ class SongController extends GetxController{
   var selectedIndex=0.obs;
   var nextIndex=0.obs;
   var isShuffle=false.obs;
+  var isFav=false.obs;
   var isRepeated=false.obs;
   var isBottomSheetView=false.obs;
    late AudioPlayer player;
@@ -206,4 +207,15 @@ async{
 
 
 }
+
+  void checkFav() async{
+   Map params= {
+ 
+  "song_id": 1
+};
+    if(isFav.value==true){
+
+    }
+isFav.toggle();
+  }
 }

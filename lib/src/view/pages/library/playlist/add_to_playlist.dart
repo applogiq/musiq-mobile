@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:musiq/src/view/pages/library/favourites/no_favourite.dart';
-import 'package:musiq/src/view/pages/library/playlist/no_playlist_song.dart';
+import 'package:musiq/src/view/pages/library/playlist/playlist_floating_button.dart';
+import 'package:musiq/src/view/widgets/custom_app_bar.dart';
 
 import '../../../../helpers/constants/color.dart';
-import '../../../../helpers/constants/images.dart';
 import '../../../../helpers/constants/string.dart';
 import '../../../../helpers/constants/style.dart';
 import '../../../../helpers/constants/style/box_decoration.dart';
@@ -14,50 +16,28 @@ import '../../../../logic/services/api_route.dart';
 import '../../../../model/api_model/playlist_song_model.dart';
 import '../../../../model/ui_model/view_all_song_list_model.dart';
 import '../../../widgets/custom_color_container.dart';
-import '../../../widgets/custom_dialog_box.dart';
 import '../../home/components/pages/view_all/view_all_songs_list.dart';
 import '../../home/components/widget/loader.dart';
-import 'playlist_floating_button.dart';
-enum Options { play, queue, delete }
-class PlaylistScreen extends StatelessWidget {
-  PlaylistScreen({
-    Key? key,
-    
-  }) : super(key: key);
+import '../favourites/no_favourite.dart';
+import 'no_playlist_song.dart';
 
-    LibraryController libraryController = Get.put(LibraryController());
-  
-  APIRoute apiRoute = APIRoute();
-  PopupMenuItem _buildPopupMenuItem(String title, value,  {int position = 0,int id=0,}) {
-    return PopupMenuItem(
-      onTap: ()async{
-        if(Options.delete==Options.values[value]){
-        await  libraryController.deletePlaylist(id);
-       
-      
-
-        }
-      },
-      value:value,
-      child: Row(
-        children: [
-          Text(title),
-        ],
-      ),
-    );
-  }
-
+class AddToPlaylist extends StatelessWidget {
+   AddToPlaylist({Key? key, required this.song_id}) : super(key: key);
+   final int song_id;
+   LibraryController libraryController = Get.put(LibraryController());
+ APIRoute apiRoute = APIRoute();
   @override
   Widget build(BuildContext context) {
     libraryController.loadPlayListData();
     return Obx(() {
       return libraryController.isLoadedPlayList.value == false
           ? LoaderScreen()
-          : Scaffold(
-              floatingActionButton: PlaylistButton(),
-              body:
-    
-    Padding(
+          : SafeArea(child: Scaffold(
+      appBar: PreferredSize(
+        preferredSize:  Size(MediaQuery.of(context).size.width, 60),
+        child: CustomAppBarWidget(title: "Add to playlist",height: 54.0,),
+        ),
+        body:    Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0),
                 child: GetBuilder<LibraryController>(
                   init: LibraryController(),
@@ -72,64 +52,26 @@ class PlaylistScreen extends StatelessWidget {
                         (index) => Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: InkWell(
-                            onTap: libraryController.view_all_play_list
-                                        .records[index].noOfSongs ==
-                                    0
-                                ? () {
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>NoPlaylistSong(appBarTitle: libraryController.view_all_play_list
-                                                .records[index].playlistName
-                                                .toString(),playListId: libraryController.view_all_play_list
-                                                .records[index].id
-                                                .toString(), )));
-                                }
-                                : () async {
-                                    
-                                    PlayListSongModel playListSongModel =
-                                        await apiRoute.getSpecificPlaylist(
-                                            libraryController.view_all_play_list
-                                                .records[index].id);
-                                    ViewAllBanner banner = ViewAllBanner(
-                                        bannerId: libraryController
-                                            .view_all_play_list
-                                            .records[index]
-                                            .id
-                                            .toString(),
-                                        bannerImageUrl: generateSongImageUrl(
-                                            libraryController.view_all_play_list
-                                                .records[index].albumName,
-                                            libraryController.view_all_play_list
-                                                .records[index].albumId),
-                                        bannerTitle: libraryController
-                                            .view_all_play_list
-                                            .records[index]
-                                            .playlistName);
-                                     List<ViewAllSongList> viewAllSongListModel =
-                                        [];
-                                    for (int i = 0;
-                                        i < playListSongModel.records.length;
-                                        i++) {
-                                      viewAllSongListModel.add(ViewAllSongList(
-                                          playListSongModel.records[i].songId,
-                                          generateSongImageUrl(
-                                              playListSongModel
-                                                  .records[i].albumName,
-                                              playListSongModel
-                                                  .records[i].albumId),
-                                          playListSongModel.records[i].songName,
-                                          playListSongModel
-                                              .records[i].musicDirectorName[0],
-                                          playListSongModel
-                                              .records[i].albumName,playListSongModel.records[i].albumName));
-                                    }
+                            onTap: ()async{
+                              
+                              Map params={};
 
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ViewAllScreenSongList(
-                                                    banner: banner,
-                                                    view_all_song_list_model:
-                                                        viewAllSongListModel)));
-                                  },
+                              params["playlist_id"]=libraryController.view_all_play_list.records[index].id;
+                              params["song_id"]=song_id;
+                              print(params);
+                              await apiRoute.addSongToPlaylist(params);
+                              Fluttertoast.showToast(
+        msg: "Added to ${libraryController.view_all_play_list
+                                            .records[index].playlistName}",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: CustomColor.subTitle2,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
+    Navigator.of(context).pop();
+                            },
                             child: Row(
                               children: [
                                 libraryController.view_all_play_list
@@ -219,36 +161,8 @@ class PlaylistScreen extends StatelessWidget {
                                         ],
                                       ),
                                     )),
-                                Expanded(
-                                  flex: 2,
-                                  child: Align(
-                                    // alignment: Alignment.centerRight,
-                                    child: PopupMenuButton(
-                                      color: CustomColor.appBarColor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(8.0),
-                                          bottomRight: Radius.circular(8.0),
-                                          topLeft: Radius.circular(8.0),
-                                          topRight: Radius.circular(8.0),
-                                        ),
-                                      ),
-                                      onSelected: (value) {
-                                        print(value);
-                                        // _onMenuItemSelected(value as int);
-                                        // _onMenuItemSelected(value as int);
-                                      },
-                                      itemBuilder: (ctx) => [
-                                        _buildPopupMenuItem('Play All',Options.play.index),
-                                        _buildPopupMenuItem('Add to queue',Options.queue.index),
-                                        _buildPopupMenuItem('Delete',Options.delete.index,id: libraryController
-                                                    .view_all_play_list
-                                                    .records[index].id
-                                                    ),
-                                      ],
-                                    ),
-                                  ),
-                                )
+                             
+                            
                               ],
                             ),
                           ),
@@ -258,9 +172,9 @@ class PlaylistScreen extends StatelessWidget {
                   },
                 ),
               ),
-            );
+  
+      floatingActionButton: PlaylistButton(),
+    ));
     });
   }
-
- 
 }

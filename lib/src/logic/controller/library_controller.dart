@@ -97,4 +97,16 @@ createPlaylist(context)async{
   }
 }
 
+   deletePlaylist(int id) async{
+   var res=  await apiRoute.deletePlaylist(id);
+     print(res.body);
+  var data=jsonDecode(res.body);
+  print(data);
+  view_all_play_list=PlayListModel.fromMap(jsonDecode(res.body));
+  update();
+  }
+
+renamePlaylistUrl(int playListId,String name)async{
+  var res=await apiRoute.renamePlaylist(playListId, name);
+}
 }

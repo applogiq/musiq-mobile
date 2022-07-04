@@ -61,4 +61,15 @@ postRequestWithAuth(String url,Map params)async{
     
     return response;
 }
+deleteRequestWithAuth(String url,Map params)async{
+   var token=await storage.read(key: "access_token");
+  
+ header["Authorization"]="Bearer $token";
+    
+  var res=await http.delete(Uri.parse(url),headers:header,body: jsonEncode(params) );
+  print(res.statusCode);
+  return res;
+}
+
+
 }

@@ -18,14 +18,25 @@ class APIConstants{
  static String PLAYLIST="playlist/user/";
  static String SPECIFIC_PLAYLIST="playlist-song/list/";
  static String CREATE_PLAYLIST="playlist/";
+ static String PLAYLIST_SONG="playlist-song/";
  static String TRENDING_HITS="trending-hits";
  static String NEW_RELEASE="new_release";
  static String RECENT_LIST="recent-list/";
 
+// http://192.168.29.185:3000/api/v1/playlist-song/3436
 
-//http://192.168.29.185:3000/api/v1/recent-list/
+//http://192.168.29.185:3000/api/v1/playlist-song/
 
+getRenamePlaylistUrl({required int playListId,required String name}){
+  var url=BASE_URL+CREATE_PLAYLIST+playListId.toString()+"?name="+name;
+  return url;
+}
+getDeletePlaylistUrl({required int playListId}){
+  var url=BASE_URL+CREATE_PLAYLIST+playListId.toString();
+  print(url);
+  return url;
 
+}
 getNewReleaseUrl({int limit=100}){
   var url="${NEW_RELEASE}?limit=${limit.toString()}";
   return url;

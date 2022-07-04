@@ -12,6 +12,7 @@ import 'package:musiq/src/view/pages/profile/components/my_profile.dart';
 
 import '../../../helpers/utils/auth.dart';
 import '../../widgets/custom_button.dart';
+import '../../widgets/empty_box.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({Key? key}) : super(key: key);
@@ -19,13 +20,15 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ProfileController profileController=Get.put(ProfileController());
+     var size = MediaQuery.of(context).size;
+  
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile"),
       ),
       body: ListView(shrinkWrap: true, children: [
         Container(
-          margin: EdgeInsets.symmetric(vertical: 34),
+           margin: EdgeInsets.symmetric(vertical: size.height*0.034),
           height: 120,
           width: 120,
           clipBehavior: Clip.antiAlias,
@@ -37,63 +40,166 @@ class ProfilePage extends StatelessWidget {
             fit: BoxFit.fitHeight,
           ),
         ),
-        ListView.builder(
-            physics: BouncingScrollPhysics(),
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return ListTile(
-                onTap: () {
-                  Navigator.of(context)
-                      .pushNamed(profileController.profileContent[index].navigateScreen);
-                },
-                trailing: profileController.profileContent[index].isArrow
-                    ? Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        size: 20,
-                      )
-                    : Container(height: 0, width: 0),
-                title: Text(
-                  profileController.profileContent[index].title,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: profileController.profileContent[index].isHighLight
-                          ? CustomColor.secondaryColor
-                          : Colors.white),
-                ),
-              );
-            },
-            itemCount:profileController. profileContent.length),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 18),
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.start
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AboutUsTextWidget(
-                title: "Terms of use",
-              ),
-              AboutUsTextWidget(
-                title: "Privacy policy",
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AboutUsTextWidget(
-                    title: "Version :",
+        ProfileNavigationTile(profileController: profileController),
+         ListTile(
+          onTap: () {
+            profileController.isAboutOpen.toggle();
+            // Navigator.of(context).pushNamed(
+            //     profileController.profileContent[index].navigateScreen);
+          },
+          trailing: Obx(() => profileController.isAboutOpen.value
+              ? RotatedBox(
+                  quarterTurns: 1,
+                  child: Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 20,
                   ),
-                  AboutUsTextWidget(
-                    title: "2.30.23",
-                  ),
-                ],
-              ),
-            ],
+                )
+              : Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 20,
+                )),
+          title: Text(
+            "About",
+            style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color:
+                    //  profileController.profileContent[index].isHighLight
+                    //     ? CustomColor.secondaryColor
+                    //     :
+                    Colors.white),
           ),
         ),
-        SignOutWidget()
+        Obx(() => profileController.isAboutOpen.value
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 18),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AboutUsTextWidget(
+                      title: "Terms of use",
+                    ),
+                    AboutUsTextWidget(
+                      title: "Privacy policy",
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        AboutUsTextWidget(
+                          title: "Version :",
+                        ),
+                        AboutUsTextWidget(
+                          title: "2.30.23",
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            : EmptyBox()),
+        SizedBox(
+          height: size.height * 0.01,
+        ),
+        SignOutWidget(),
+        // ListView.builder(
+        //     physics: BouncingScrollPhysics(),
+        //     shrinkWrap: true,
+        //     itemBuilder: (context, index) {
+        //       return ListTile(
+        //         onTap: () {
+        //           Navigator.of(context)
+        //               .pushNamed(profileController.profileContent[index].navigateScreen);
+        //         },
+        //         trailing: profileController.profileContent[index].isArrow
+        //             ? Icon(
+        //                 Icons.arrow_forward_ios_rounded,
+        //                 size: 20,
+        //               )
+        //             : Container(height: 0, width: 0),
+        //         title: Text(
+        //           profileController.profileContent[index].title,
+        //           style: TextStyle(
+        //               fontWeight: FontWeight.w500,
+        //               color: profileController.profileContent[index].isHighLight
+        //                   ? CustomColor.secondaryColor
+        //                   : Colors.white),
+        //         ),
+        //       );
+        //     },
+        //     itemCount:profileController. profileContent.length),
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(horizontal: 18),
+        //   child: Column(
+        //     // mainAxisAlignment: MainAxisAlignment.start
+        //     crossAxisAlignment: CrossAxisAlignment.start,
+        //     children: [
+        //       AboutUsTextWidget(
+        //         title: "Terms of use",
+        //       ),
+        //       AboutUsTextWidget(
+        //         title: "Privacy policy",
+        //       ),
+        //       Row(
+        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //         children: [
+        //           AboutUsTextWidget(
+        //             title: "Version :",
+        //           ),
+        //           AboutUsTextWidget(
+        //             title: "2.30.23",
+        //           ),
+        //         ],
+        //       ),
+        //     ],
+        //   ),
+        // ),
+       
+       
+       
       ]),
     );
   }
 }
+class ProfileNavigationTile extends StatelessWidget {
+  const ProfileNavigationTile({
+    Key? key,
+    required this.profileController,
+  }) : super(key: key);
+
+  final ProfileController profileController;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        physics: BouncingScrollPhysics(),
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return ListTile(
+            onTap: () {
+              Navigator.of(context).pushNamed(
+                  profileController.profileContent[index].navigateScreen);
+            },
+            trailing: profileController.profileContent[index].isArrow
+                ? Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 20,
+                  )
+                : Container(height: 0, width: 0),
+            title: Text(
+              profileController.profileContent[index].title,
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: profileController.profileContent[index].isHighLight
+                      ? CustomColor.secondaryColor
+                      : Colors.white),
+            ),
+          );
+        },
+        itemCount: profileController.profileContent.length);
+  }
+}
+
+
 
 class SignOutWidget extends StatelessWidget {
    SignOutWidget({

@@ -15,8 +15,10 @@ class CustomDialogBox extends StatelessWidget {
   final String title, fieldName, buttonText;
  
 
-  const CustomDialogBox({Key? key,required this.title,required this.fieldName,required this.buttonText,}) : super(key: key);
-
+   CustomDialogBox({Key? key,required this.title,required this.fieldName,required this.buttonText,this.initialText="",this.isRename=false,this.playlistId=0}) : super(key: key);
+final String initialText;
+ int playlistId;
+final bool isRename;
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -87,13 +89,14 @@ class CustomDialogBox extends StatelessWidget {
                   constraints:
                       BoxConstraints.expand(height: 46, width: double.maxFinite),
                   child: TextFormField(
+                    initialValue: initialText,
                      cursorColor: Colors.white,
                     onChanged: (value){
                       libraryController.checkPlayListName(value);
                     },
                     
                     
-                    
+                    // inputFormatters: [WhitelistingTextInputFormatter(RegExp("[a-zA-Z]")),],,
                     decoration: InputDecoration(
                     
                        border: InputBorder.none,
@@ -114,7 +117,10 @@ class CustomDialogBox extends StatelessWidget {
           ],
         ),
         InkWell(onTap: (){
-          libraryController.createPlaylist(context);
+        
+        //  isRename?libraryController.renamePlaylistUrl(playlistId, name): 
+         libraryController.createPlaylist(context);
+        
         },child: CustomButton(label:buttonText,horizontalMargin:60,verticalMargin: 8,))
      
             ],

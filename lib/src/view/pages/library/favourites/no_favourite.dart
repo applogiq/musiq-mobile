@@ -6,18 +6,24 @@ import 'package:musiq/src/helpers/constants/images.dart';
 import 'package:musiq/src/helpers/constants/string.dart';
 import 'package:musiq/src/helpers/constants/style.dart';
 
-class NoFavoutiesScreen extends StatelessWidget {
-  const NoFavoutiesScreen({Key? key}) : super(key: key);
+class NoSongScreen extends StatelessWidget {
+   NoSongScreen({Key? key,this.isFav=false, required this.mainTitle, required this.subTitle,}) : super(key: key);
+  bool isFav;
+  final String mainTitle;
+  final String subTitle;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
 Image.asset(Images.noFav,width: 200,),
-Text(ConstantText.noSongHere,style: fontWeight500(size: 16.0),),
-Text(ConstantText.yourfavNoAvailable,style: fontWeight400(color: CustomColor.subTitle),),
-      ],
+Text(mainTitle,style: fontWeight500(size: 16.0),),
+Text(subTitle,style: fontWeight400(color: CustomColor.subTitle),),
+        ],
+      ),
     );
   }
 }

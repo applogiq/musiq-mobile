@@ -44,8 +44,15 @@ class ConstantText{
   static String trendingHitsText='Trending Hits';
   static String recommendedSongsText='Recommended songs';
   static String createPlaylist='Create playlist';
+  static String renamePlaylist='Rename playlist';
   static String create='Create';
   static String playListNameExist='This name is already taken';
+
+  static String noSongInPlayList="Your songs will appear here";
+
+  static var noPlaylistHere="No Playlist Here";
+
+  static var browseSong="Browse songs";
 // This name is already taken
   
 

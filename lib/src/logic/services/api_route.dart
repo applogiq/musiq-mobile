@@ -247,4 +247,24 @@ var data=jsonDecode(res.body);
     Map params={"song_id": id};
     var res=await apiCall.putRequestWithAuth(url,params );
   }
+  deletePlaylist(int playListId)
+  async{
+      var url =apiConstants.getDeletePlaylistUrl(playListId: playListId);
+    Map params={"song_id": playListId};
+    var res=await apiCall.deleteRequestWithAuth(url,params );
+    return res;
+  }
+   renamePlaylist(int playListId,String name)
+  async{
+      var url =apiConstants.getRenamePlaylistUrl(playListId: playListId,name: name);
+    //  var res=await apiCall.putRequestWithAuth(url,params );
+    // return res;
+  }
+
+  addSongToPlaylist(Map params) async{
+     String url=APIConstants.BASE_URL+APIConstants.PLAYLIST_SONG;
+    var res=await apiCall.postRequestWithAuth(url, params);
+    print(res.statusCode);
+    return res;
+  }
 }

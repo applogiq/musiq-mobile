@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:musiq/src/helpers/utils/image_url_generate.dart';
 import 'package:musiq/src/model/ui_model/play_screen_model.dart';
 import 'package:musiq/src/view/pages/home/components/pages/view_all/view_all_songs_list.dart';
+import 'package:musiq/src/view/pages/library/playlist/add_to_playlist.dart';
 import 'package:musiq/src/view/pages/play/play_screen.dart';
 
 import '../../../helpers/constants/api.dart';
@@ -58,9 +59,10 @@ class MainPlayScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                   image: NetworkImage(
+                                    generateSongImageUrl(playScreenModel[index].albumName, playScreenModel[index].albumId)
                                     // playScreenModel[index].
                                       // "https://mir-s3-cdn-cf.behance.net/project_modules/fs/fe529a64193929.5aca8500ba9ab.jpg",
-                                      "${APIConstants.SONG_BASE_URL}public/music/tamil/${ playScreenModel[index].albumName[0].toUpperCase()}/${ playScreenModel[index].albumName}/image/${ playScreenModel[index].albumId}.png"
+                                      // "${APIConstants.SONG_BASE_URL}public/music/tamil/${ playScreenModel[index].albumName[0].toUpperCase()}/${ playScreenModel[index].albumName}/image/${ playScreenModel[index].albumId}.png"
                                       ),
                                   fit: BoxFit.cover)),
                           child: Stack(children: [
@@ -190,8 +192,32 @@ class MainPlayScreen extends StatelessWidget {
                                 style: fontWeight400(
                                     size: 14.0, color: CustomColor.subTitle),
                               ),
-                            
-                            ShuffleButton(songController: songController),
+                            Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          InkWell(
+              onTap: () async {
+                songController.shuffleSong();
+              },
+              child: Obx(() => Icon(
+                    Icons.shuffle_rounded,
+                    color: songController.isShuffle.value
+                        ? CustomColor.secondaryColor
+                        : Colors.white,
+                  ))),
+          InkWell(onTap: (){ 
+            print(playScreenModel[index].id);
+            songController.checkFav();
+          },child: Obx(() => Icon(Icons.favorite_rounded,color: songController.isFav.value
+                        ? CustomColor.secondaryColor
+                        : Colors.white,),),)
+        ],
+      ),
+    ),
+  
+                            // ShuffleButton(songController: songController),
                             ProgressBarWidget(songController: songController),
                             PlayerController(songController: songController)
                           ],
@@ -282,7 +308,11 @@ class PlayerController extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(Icons.playlist_add_rounded, size: 34),
+            InkWell(onTap: (){
+             songController.songList[songController.player.currentIndex??0].id;
+             print(songController.songList[songController.player.currentIndex??0].id);
+              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>AddToPlaylist(song_id: songController.songList[songController.player.currentIndex??0].id,)));
+            },child: Icon(Icons.playlist_add_rounded, size: 34)),
             PlayPrevious(songController: songController),
             PlayPauseController(songController: songController),
             PlayNext(songController: songController),
