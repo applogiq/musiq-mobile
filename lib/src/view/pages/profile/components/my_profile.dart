@@ -6,6 +6,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:musiq/src/helpers/constants/string.dart';
 
 import '../../../../helpers/constants/color.dart';
 import '../../../../helpers/constants/style.dart';
@@ -13,13 +14,16 @@ import '../../../../logic/controller/profile_controller.dart';
 import '../../../widgets/custom_app_bar.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_color_container.dart';
+import '../../../widgets/empty_box.dart';
+import 'image_picker_sheet.dart';
 
 class MyProfile extends StatelessWidget {
   MyProfile({Key? key}) : super(key: key);
-
+String value="Name";
   @override
   Widget build(BuildContext context) {
     final ProfileController profileController = Get.put(ProfileController());
+    profileController.loadData();
 
     var size = MediaQuery.of(context).size;
 
@@ -37,60 +41,108 @@ class MyProfile extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             child: Column(
               children: [
-                GetBuilder<ProfileController>(
-                  init: ProfileController(),
-                  initState: (_) {},
-                  builder: (_) {
-                    return Container(
-                  margin: EdgeInsets.symmetric(vertical: size.height*0.034),
-                  height: 120,
-                  width: 120,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: profileController.isImagePicked==false
-                        ? DecorationImage(
-                            image: NetworkImage(
-                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOvIuFVvPFU596919Aj3EZMWryh0BAgjXX16N1kBboyn9Algcsl_hdUApl6j8qBcTE2nI&usqp=CAU",
-                            ),
-                            fit: BoxFit.cover)
-                        : DecorationImage(
-                            image: FileImage(
-                              profileController.imagePath,
-                            ),
-                            fit: BoxFit.cover),
-                  ),
-                  child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: InkWell(
-                        onTap: (){
-                         profileController.changeImage();
-                        }
-                        ,
-                        child: Container(
-                          padding: EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                              color: Colors.black,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white)),
-                          child: Icon(Icons.edit),
-                        ),
-                      )),
-                );
-               
-             ;
-                  },
-                ),
+                ProfileImageEdit(
+                    size: size, profileController: profileController),
                 Container(
                   padding: EdgeInsets.all(16),
                   child: Form(
                     child: Column(
                       children: [
-                        CustomTextField(
-                          title: "Name",
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: Text(
+                                value,
+                                style: fontWeight500(size: 14.0),
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: CustomColorContainer(
+                                left: 16,
+                                right: 24,
+                                verticalPadding: 0,
+                                bgColor: CustomColor.textfieldBg,
+                                child: ConstrainedBox(
+                                  constraints: BoxConstraints.expand(
+                                      height: 46, width: double.maxFinite),
+                                  child: Obx(() => TextFormField(
+                                        initialValue: profileController.nameValue.value,
+                                        cursorColor: Colors.white,
+                                        onChanged: (value) {
+                                          profileController.checkName(value);
+                                          // libraryController.checkPlayListName(value);
+                                        },
+
+                                        // inputFormatters: [WhitelistingTextInputFormatter(RegExp("[a-zA-Z]")),],,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          hintStyle: TextStyle(fontSize: 14),
+                                        ),
+                                      )),
+                                ),
+                              ),
+                            ),
+
+                             Obx((){
+                              return profileController.isNameError.value? Padding(
+                                 padding: const EdgeInsets.only(left:8.0),
+                                 child: Text(profileController.nameError.value,style: const TextStyle(color: Colors.red),),
+                               ):EmptyBox();
+                             }),
+                          ],
                         ),
-                        CustomTextField(
-                          title: "Username",
+                       Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: Text(
+                                ConstantText.userName,
+                                style: fontWeight500(size: 14.0),
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: CustomColorContainer(
+                                left: 16,
+                                right: 24,
+                                verticalPadding: 0,
+                                bgColor: CustomColor.textfieldBg,
+                                child: ConstrainedBox(
+                                  constraints: BoxConstraints.expand(
+                                      height: 46, width: double.maxFinite),
+                                  child: Obx(() => TextFormField(
+                                        initialValue: profileController.userNameValue.value,
+                                        cursorColor: Colors.white,
+                                        onChanged: (value) {
+                                          profileController.checkUserName(value);
+                                          // libraryController.checkPlayListName(value);
+                                        },
+
+                                        // inputFormatters: [WhitelistingTextInputFormatter(RegExp("[a-zA-Z]")),],,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          hintStyle: TextStyle(fontSize: 14),
+                                        ),
+                                      )),
+                                ),
+                              ),
+                            ),
+
+                             Obx((){
+                              return profileController.isUserNameError.value? Padding(
+                                 padding: const EdgeInsets.only(left:8.0),
+                                 child: Text(profileController.userNameError.value,style: const TextStyle(color: Colors.red),),
+                               ):EmptyBox();
+                             }),
+                          ],
                         ),
+                       
                       ],
                     ),
                   ),
@@ -98,12 +150,79 @@ class MyProfile extends StatelessWidget {
                 SizedBox(
                   height: size.height * 0.01,
                 ),
-                CustomButton(
-                  label: "Save",
+                InkWell(
+                  onTap: (){
+                        profileController.saveUpdate();
+                  },
+                  child: CustomButton(
+                    label: "Save",
+                  ),
                 )
               ],
             )),
       ),
+    );
+  }
+}
+
+class ProfileImageEdit extends StatelessWidget {
+  const ProfileImageEdit({
+    Key? key,
+    required this.size,
+    required this.profileController,
+  }) : super(key: key);
+
+  final Size size;
+  final ProfileController profileController;
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<ProfileController>(
+      init: ProfileController(),
+      initState: (_) {},
+      builder: (_) {
+        return Container(
+          margin: EdgeInsets.symmetric(vertical: size.height * 0.034),
+          height: 120,
+          width: 120,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            image: profileController.isImagePicked == false
+                ? DecorationImage(
+                    image: NetworkImage(
+                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOvIuFVvPFU596919Aj3EZMWryh0BAgjXX16N1kBboyn9Algcsl_hdUApl6j8qBcTE2nI&usqp=CAU",
+                    ),
+                    fit: BoxFit.cover)
+                : DecorationImage(
+                    image: FileImage(
+                      profileController.imagePath,
+                    ),
+                    fit: BoxFit.cover),
+          ),
+          child: Align(
+              alignment: Alignment.bottomRight,
+              child: InkWell(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) => bulidsheet(context),
+                    backgroundColor: Colors.transparent,
+                  );
+                  //  profileController.changeImage();
+                },
+                child: Container(
+                  padding: EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white)),
+                  child: Icon(Icons.edit),
+                ),
+              )),
+        );
+
+        ;
+      },
     );
   }
 }

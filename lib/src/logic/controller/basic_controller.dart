@@ -31,6 +31,20 @@ if(allValues["access_token"]!=null){
   
   var data=jsonDecode(res.body.toString());
   User user=User.fromMap(data);
+    await storage.deleteAll();
+  
+  var userData = user.records.toMap();
+          for (final name in userData.keys) {
+            final value = userData[name];
+            debugPrint('$name,$value');
+            await storage.write(
+              key: name,
+              value: value.toString(),
+            );
+          }
+         await storage.write(key: "artist_list", value:jsonEncode(user.records.preference.artist));
+         await storage.write(key: "password_cred", value:params["password"]);
+         var list1=await storage.read(key: "artist_list");
   
   if(user.records.preference.artist.length<3){
 
