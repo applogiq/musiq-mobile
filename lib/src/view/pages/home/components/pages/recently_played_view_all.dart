@@ -45,158 +45,168 @@ class RecentlyPlayedViewAll extends StatelessWidget {
       child: Obx(() {
         return viewAllController.isLoaded.value
             ? Scaffold(
-              appBar: PreferredSize(preferredSize: Size(size.width,viewAllController.scrollPosition.value==0.0? size.height/2.5:80),
-              child:viewAllController.scrollPosition.value==0.0? 
-               PrimaryAppBar(isNetworkImage: isNetworkImage,count: 2, imageURL:
-                                "${APIConstants.SONG_BASE_URL}public/music/tamil/${viewAllController.recentlyPlayed.records[0].albumName[0].toUpperCase()}/${viewAllController.recentlyPlayed.records[0].albumName}/image/${viewAllController.recentlyPlayed.records[0].albumId.toString()}.png",
-
-                title: title,height: size.height/2.5,)
-              :SecondaryAppBar(title: title)
-        ),
+                appBar: PreferredSize(
+                    preferredSize: Size(
+                        size.width,
+                        viewAllController.scrollPosition.value == 0.0
+                            ? size.height / 2.5
+                            : 80),
+                    child: viewAllController.scrollPosition.value == 0.0
+                        ? PrimaryAppBar(
+                            isNetworkImage: isNetworkImage,
+                            count: 2,
+                            imageURL:
+                                "${APIConstants.SONG_BASE_URL}public/music/tamil/${viewAllController.recentlyPlayed.records[0][0].albumName[0].toUpperCase()}/${viewAllController.recentlyPlayed.records[0][0].albumName}/image/${viewAllController.recentlyPlayed.records[0][0].albumId.toString()}.png",
+                            title: title,
+                            height: size.height / 2.5,
+                          )
+                        : SecondaryAppBar(title: title)),
                 body: ListView(
-                      controller: viewAllController.scrollController,
-                      shrinkWrap: true,
-                        //  physics: ClampingScrollPhysics(),
+                  controller: viewAllController.scrollController,
+                  shrinkWrap: true,
+                  //  physics: ClampingScrollPhysics(),
 
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-        children: List.generate(
-      viewAllController.recentlyPlayed.records.length,
-      (index) => Container(
-        alignment: Alignment.centerLeft,
-        padding: EdgeInsets.all(8),
-        child: InkWell(
-          onTap: () {
-           
-          },
-          child: Row(
-            children: [
-
-              Expanded(
-                flex: 3,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: CustomColorContainer(
-                    child: Image.network(
-                          "${APIConstants.SONG_BASE_URL}public/music/tamil/${viewAllController.recentlyPlayed.records[index].albumName[0].toUpperCase()}/${viewAllController.recentlyPlayed.records[index].albumName}/image/${viewAllController.recentlyPlayed.records[index].albumId.toString()}.png",
- height: 70,
-                      width: 70,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                  flex: 9,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                          Text(
-                            viewAllController.recentlyPlayed.records[index].songName.toString(),
-                            style: fontWeight400(),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: List.generate(
+                          viewAllController.recentlyPlayed.records.length,
+                          (index) => Container(
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.all(8),
+                            child: InkWell(
+                              onTap: () {},
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 3,
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: CustomColorContainer(
+                                        child: Image.network(
+                                          "${APIConstants.SONG_BASE_URL}public/music/tamil/${viewAllController.recentlyPlayed.records[index][0].albumName[0].toUpperCase()}/${viewAllController.recentlyPlayed.records[index][0].albumName}/image/${viewAllController.recentlyPlayed.records[index][0].albumId.toString()}.png",
+                                          height: 70,
+                                          width: 70,
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                      flex: 9,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              viewAllController.recentlyPlayed
+                                                  .records[index][0].songName
+                                                  .toString(),
+                                              style: fontWeight400(),
+                                            ),
+                                            Text(
+                                              viewAllController.recentlyPlayed
+                                                  .records[index][0].albumName,
+                                              style: fontWeight400(
+                                                size: 12.0,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      )),
+                                  Expanded(
+                                      child: Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Icon(Icons.more_vert_rounded)))
+                                ],
+                              ),
+                            ),
                           ),
-                          Text(
-                           viewAllController.recentlyPlayed.records[index].albumName,
-                            style: fontWeight400(size: 12.0,),
-                          ),
-                      ],
-                    ),
-                  )),
-              Expanded(
-                  child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Icon(Icons.more_vert_rounded)))
-            ],
-          ),
-        ),
-      ),
-    ),
-    ),
                         ),
-
-                      ],
+                      ),
                     ),
-                    
-                    )
-
-              
+                  ],
+                ),
+              )
             : LoaderScreen();
-      }),);
+      }),
+    );
   }
 }
 
 class PrimaryAppBar extends StatelessWidget {
-  const PrimaryAppBar({
-    Key? key,
-    required this.isNetworkImage,
-    required this.imageURL,
-    required this.title, required this.height,
-    required this.count
-  }) : super(key: key);
+  const PrimaryAppBar(
+      {Key? key,
+      required this.isNetworkImage,
+      required this.imageURL,
+      required this.title,
+      required this.height,
+      required this.count})
+      : super(key: key);
 
   final bool isNetworkImage;
   final String imageURL;
   final String title;
-  final double height; 
-  final int count; 
+  final double height;
+  final int count;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-       children: [
-         Expanded(
-           child: Stack(
-             children: [
-               Container(
+      children: [
+        Expanded(
+          child: Stack(
+            children: [
+              Container(
                 height: height,
-                 decoration: BoxDecoration(
-                     image:isNetworkImage==false?
-                      DecorationImage(
-                   image: AssetImage(imageURL),
-                   // fit: BoxFit.cover,
-                   colorFilter: ColorFilter.mode(
-                       Colors.black.withOpacity(0.8), BlendMode.dstIn),
-                 )
-                     :
-
-                      DecorationImage(
-                   image: NetworkImage(   
-                    imageURL,
-                   
-),
-                   fit: BoxFit.fill,
-                   colorFilter: ColorFilter.mode(
-                       Colors.black.withOpacity(0.8), BlendMode.dstIn),
-                 )),
-               ),
-               GradientCover(),
-               AppBarOverlayContent(title: title,count: count,)
-             ],
-           ),
-         ),
-       ],
-     );
+                decoration: BoxDecoration(
+                    image: isNetworkImage == false
+                        ? DecorationImage(
+                            image: AssetImage(imageURL),
+                            // fit: BoxFit.cover,
+                            colorFilter: ColorFilter.mode(
+                                Colors.black.withOpacity(0.8), BlendMode.dstIn),
+                          )
+                        : DecorationImage(
+                            image: NetworkImage(
+                              imageURL,
+                            ),
+                            fit: BoxFit.fill,
+                            colorFilter: ColorFilter.mode(
+                                Colors.black.withOpacity(0.8), BlendMode.dstIn),
+                          )),
+              ),
+              GradientCover(),
+              AppBarOverlayContent(
+                title: title,
+                count: count,
+              )
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }
 
 class AppBarOverlayContent extends StatelessWidget {
   const AppBarOverlayContent({
     Key? key,
-    required this.title, required this.count,
+    required this.title,
+    required this.count,
   }) : super(key: key);
 
   final String title;
   final int count;
-PopupMenuItem _buildPopupMenuItem(String title, String routeName) {
+  PopupMenuItem _buildPopupMenuItem(String title, String routeName) {
     return PopupMenuItem(
       onTap: () {
         if (routeName == "hide") {
-        
           // setState(() {
           //   hideLyrics;
           // });
@@ -207,12 +217,12 @@ PopupMenuItem _buildPopupMenuItem(String title, String routeName) {
       child: Text(title),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding:
-            const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+        padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -228,27 +238,24 @@ PopupMenuItem _buildPopupMenuItem(String title, String routeName) {
             ),
             Spacer(),
             Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   title,
                   style: fontWeight600(size: 22.0),
                 ),
                 PopupMenuButton(
-                                    shape: RoundedRectangleBorder(),
-                                    padding: EdgeInsets.all(0.0),
-                                    itemBuilder: (ctx) => [
-                                      _buildPopupMenuItem('Add to queue', 'share'),
-                                      _buildPopupMenuItem(
-                                          'Add to playlist', "song_info"),
-                                    ]
-                                  ),
+                    shape: RoundedRectangleBorder(),
+                    padding: EdgeInsets.all(0.0),
+                    itemBuilder: (ctx) => [
+                          _buildPopupMenuItem('Add to queue', 'share'),
+                          _buildPopupMenuItem('Add to playlist', "song_info"),
+                        ]),
               ],
             ),
             Text(
               "$count Songs",
-            //  "",
+              //  "",
               style: fontWeight400(
                 color: CustomColor.subTitle2,
               ),
@@ -256,23 +263,23 @@ PopupMenuItem _buildPopupMenuItem(String title, String routeName) {
             Padding(
               padding: const EdgeInsets.only(top: 24),
               child: InkWell(
-                onTap: (){
-            //                             var songPlayList=[];
-            // for(int i=0;i<songList.totalrecords;i++){
+                onTap: () {
+                  //                             var songPlayList=[];
+                  // for(int i=0;i<songList.totalrecords;i++){
 
-            //   songPlayList.add(songList.records[i].id);
-            // }
-            // // print(index);
-            // Navigator.of(context).push(MaterialPageRoute(
-            //     builder: (context) => PlayScreen(
-            //       songList: songList,
-            //       index: 0,
-            //       id:songList.records[0].id.toString(),
-            //           imageURL:  "${APIConstants.SONG_BASE_URL}public/music/tamil/${songList.records[0].albumDetails.name[0].toUpperCase()}/${songList.records[0].albumDetails.name}/image/${songList.records[0].albumDetails.albumId}.png",
-            //           songName: songList.records[0].name,
-            //           artistName: songList.records[0].albumDetails.musicDirectorName[0].toString(),
-            //           songplayList: songPlayList,
-            //         )));
+                  //   songPlayList.add(songList.records[i].id);
+                  // }
+                  // // print(index);
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //     builder: (context) => PlayScreen(
+                  //       songList: songList,
+                  //       index: 0,
+                  //       id:songList.records[0].id.toString(),
+                  //           imageURL:  "${APIConstants.SONG_BASE_URL}public/music/tamil/${songList.records[0].albumDetails.name[0].toUpperCase()}/${songList.records[0].albumDetails.name}/image/${songList.records[0].albumDetails.albumId}.png",
+                  //           songName: songList.records[0].name,
+                  //           artistName: songList.records[0].albumDetails.musicDirectorName[0].toString(),
+                  //           songplayList: songPlayList,
+                  //         )));
                 },
                 child: CustomButton(
                   isIcon: true,
@@ -322,11 +329,10 @@ class SecondaryAppBar extends StatelessWidget {
   }) : super(key: key);
 
   final String title;
-PopupMenuItem _buildPopupMenuItem(String title, String routeName) {
+  PopupMenuItem _buildPopupMenuItem(String title, String routeName) {
     return PopupMenuItem(
       onTap: () {
         if (routeName == "hide") {
-        
           // setState(() {
           //   hideLyrics;
           // });
@@ -337,25 +343,31 @@ PopupMenuItem _buildPopupMenuItem(String title, String routeName) {
       child: Text(title),
     );
   }
+
   @override
   Widget build(BuildContext context) {
-    return CustomAppBarWidget(title: title,actions: [ Padding(
-      padding: const EdgeInsets.symmetric(horizontal:4.0),
-      child: PlayButtonWidget(bgColor: CustomColor.secondaryColor,iconColor: Colors.white,),
-    ),
-     Padding(
-       padding: const EdgeInsets.only(right:0.0),
-       child:    PopupMenuButton(
-                                    shape: RoundedRectangleBorder(),
-                                    padding: EdgeInsets.all(0.0),
-                                    itemBuilder: (ctx) => [
-                                      _buildPopupMenuItem('Add to queue', 'share'),
-                                      _buildPopupMenuItem(
-                                          'Add to playlist', "song_info"),
-                                    ]
-                                  ),
-     ),],
-     height: 70.0,
-     );
+    return CustomAppBarWidget(
+      title: title,
+      actions: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          child: PlayButtonWidget(
+            bgColor: CustomColor.secondaryColor,
+            iconColor: Colors.white,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 0.0),
+          child: PopupMenuButton(
+              shape: RoundedRectangleBorder(),
+              padding: EdgeInsets.all(0.0),
+              itemBuilder: (ctx) => [
+                    _buildPopupMenuItem('Add to queue', 'share'),
+                    _buildPopupMenuItem('Add to playlist', "song_info"),
+                  ]),
+        ),
+      ],
+      height: 70.0,
+    );
   }
 }

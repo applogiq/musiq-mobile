@@ -10,133 +10,137 @@ User userFromMap(String str) => User.fromMap(json.decode(str));
 String userToMap(User data) => json.encode(data.toMap());
 
 class User {
-    User({
-        required this.status,
-        required this.message,
-        required this.records,
-    });
+  User({
+    required this.status,
+    required this.message,
+    required this.records,
+  });
 
-    bool status;
-    String message;
-    Records records;
+  bool status;
+  String message;
+  Records records;
 
-    factory User.fromMap(Map<String, dynamic> json) => User(
+  factory User.fromMap(Map<String, dynamic> json) => User(
         status: json["status"],
         message: json["message"],
         records: Records.fromMap(json["records"]),
-    );
+      );
 
-    Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap() => {
         "status": status,
         "message": message,
         "records": records.toMap(),
-    };
+      };
 }
 
 class Records {
-    Records({
-        required this.accessToken,
-        required this.refreshToken,
-        required this.createdAt,
-        required this.isActive,
-        required this.fullname,
-        required this.updatedAt,
-        required this.username,
-        required this.email,
-        required this.createdBy,
-        required this.createdUserBy,
-        required this.password,
-        required this.preference,
-        required this.updatedBy,
-        required this.registerId,
-        required this.otp,
-        required this.updatedUserBy,
-        required this.isDelete,
-        required this.otpTime,
-        required this.id,
-        required this.isImage,
-    });
+  Records({
+    required this.isActive,
+    required this.username,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.email,
+    required this.password,
+    required this.createdBy,
+    required this.preference,
+    required this.createdUserBy,
+    required this.isPreference,
+    required this.updatedBy,
+    required this.registerId,
+    required this.otp,
+    required this.id,
+    required this.updatedUserBy,
+    required this.otpTime,
+    required this.fullname,
+    required this.isDelete,
+    required this.isImage,
+    required this.accessToken,
+    required this.refreshToken,
+  });
 
-    String accessToken;
-    String refreshToken;
-    DateTime createdAt;
-    bool isActive;
-    String fullname;
-    dynamic updatedAt;
-    String username;
-    String email;
-    dynamic createdBy;
-    int createdUserBy;
-    String password;
-    Preference preference;
-    dynamic updatedBy;
-    int registerId;
-    dynamic otp;
-    dynamic updatedUserBy;
-    bool isDelete;
-    dynamic otpTime;
-    int id;
-    dynamic isImage;
+  bool isActive;
+  String username;
+  DateTime createdAt;
+  dynamic updatedAt;
+  String email;
+  String password;
+  dynamic createdBy;
+  Preference preference;
+  int createdUserBy;
+  bool isPreference;
+  dynamic updatedBy;
+  int registerId;
+  dynamic otp;
+  int id;
+  dynamic updatedUserBy;
+  dynamic otpTime;
+  String fullname;
+  bool isDelete;
+  dynamic isImage;
+  String accessToken;
+  String refreshToken;
 
-    factory Records.fromMap(Map<String, dynamic> json) => Records(
-        accessToken: json["access_token"],
-        refreshToken: json["refresh_token"],
-        createdAt: DateTime.parse(json["created_at"]),
+  factory Records.fromMap(Map<String, dynamic> json) => Records(
         isActive: json["is_active"],
-        fullname: json["fullname"],
-        updatedAt: json["updated_at"],
         username: json["username"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"],
         email: json["email"],
-        createdBy: json["created_by"],
-        createdUserBy: json["created_user_by"],
         password: json["password"],
+        createdBy: json["created_by"],
         preference: Preference.fromMap(json["preference"]),
+        createdUserBy: json["created_user_by"],
+        isPreference: json["is_preference"],
         updatedBy: json["updated_by"],
         registerId: json["register_id"],
         otp: json["otp"],
-        updatedUserBy: json["updated_user_by"],
-        isDelete: json["is_delete"],
-        otpTime: json["otp_time"],
         id: json["id"],
+        updatedUserBy: json["updated_user_by"],
+        otpTime: json["otp_time"],
+        fullname: json["fullname"],
+        isDelete: json["is_delete"],
         isImage: json["is_image"],
-    );
+        accessToken: json["access_token"],
+        refreshToken: json["refresh_token"],
+      );
 
-    Map<String, dynamic> toMap() => {
-        "access_token": accessToken,
-        "refresh_token": refreshToken,
-        "created_at": createdAt.toIso8601String(),
+  Map<String, dynamic> toMap() => {
         "is_active": isActive,
-        "fullname": fullname,
-        "updated_at": updatedAt,
         "username": username,
+        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt,
         "email": email,
-        "created_by": createdBy,
-        "created_user_by": createdUserBy,
         "password": password,
+        "created_by": createdBy,
         "preference": preference.toMap(),
+        "created_user_by": createdUserBy,
+        "is_preference": isPreference,
         "updated_by": updatedBy,
         "register_id": registerId,
         "otp": otp,
-        "updated_user_by": updatedUserBy,
-        "is_delete": isDelete,
-        "otp_time": otpTime,
         "id": id,
+        "updated_user_by": updatedUserBy,
+        "otp_time": otpTime,
+        "fullname": fullname,
+        "is_delete": isDelete,
         "is_image": isImage,
-    };
+        "access_token": accessToken,
+        "refresh_token": refreshToken,
+      };
 }
 
 class Preference {
-    Preference({
-        required this.artist,
-    });
+  Preference({
+    required this.artist,
+  });
 
-    List<dynamic> artist;
+  List<dynamic> artist;
 
-    factory Preference.fromMap(Map<String, dynamic> json) => Preference(
+  factory Preference.fromMap(Map<String, dynamic> json) => Preference(
         artist: List<dynamic>.from(json["artist"].map((x) => x)),
-    );
+      );
 
-    Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap() => {
         "artist": List<dynamic>.from(artist.map((x) => x)),
-    };
+      };
 }
