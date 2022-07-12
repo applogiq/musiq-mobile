@@ -4,7 +4,9 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:musiq/src/helpers/constants/color.dart';
+import 'package:musiq/src/helpers/constants/images.dart';
 import 'package:musiq/src/helpers/constants/style.dart';
+import 'package:musiq/src/helpers/utils/image_url_generate.dart';
 import 'package:musiq/src/helpers/utils/navigation.dart';
 import 'package:musiq/src/logic/controller/profile_controller.dart';
 import 'package:musiq/src/model/profile_model.dart';
@@ -16,150 +18,158 @@ import '../../widgets/empty_box.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({Key? key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
-    final ProfileController profileController=Get.put(ProfileController());
-     var size = MediaQuery.of(context).size;
-  
+    final ProfileController profileController = Get.put(ProfileController());
+    profileController.loadProfile();
+    var size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile"),
       ),
-      body: ListView(shrinkWrap: true, children: [
-        Container(
-           margin: EdgeInsets.symmetric(vertical: size.height*0.034),
-          height: 120,
-          width: 120,
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-          ),
-          child: Image.network(
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOvIuFVvPFU596919Aj3EZMWryh0BAgjXX16N1kBboyn9Algcsl_hdUApl6j8qBcTE2nI&usqp=CAU",
-            fit: BoxFit.fitHeight,
-          ),
-        ),
-        ProfileNavigationTile(profileController: profileController),
-         ListTile(
-          onTap: () {
-            profileController.isAboutOpen.toggle();
-            // Navigator.of(context).pushNamed(
-            //     profileController.profileContent[index].navigateScreen);
-          },
-          trailing: Obx(() => profileController.isAboutOpen.value
-              ? RotatedBox(
-                  quarterTurns: 1,
-                  child: Icon(
+      body: SingleChildScrollView(
+        child: Column(children: [
+          Obx(() {
+            return Container(
+              margin: EdgeInsets.symmetric(vertical: size.height * 0.034),
+              height: 120,
+              width: 120,
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+              ),
+              child: profileController.isImage.value == true
+                  ? Image.network(
+                      generateProfileImageUrl(
+                          profileController.registerId.value),
+                      fit: BoxFit.cover)
+                  : Image.asset(
+                      Images.user_default,
+                      fit: BoxFit.fitHeight,
+                    ),
+            );
+          }),
+          ProfileNavigationTile(profileController: profileController),
+          ListTile(
+            onTap: () {
+              profileController.isAboutOpen.toggle();
+              // Navigator.of(context).pushNamed(
+              //     profileController.profileContent[index].navigateScreen);
+            },
+            trailing: Obx(() => profileController.isAboutOpen.value
+                ? RotatedBox(
+                    quarterTurns: 1,
+                    child: Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      size: 20,
+                    ),
+                  )
+                : Icon(
                     Icons.arrow_forward_ios_rounded,
                     size: 20,
+                  )),
+            title: Text(
+              "About",
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color:
+                      //  profileController.profileContent[index].isHighLight
+                      //     ? CustomColor.secondaryColor
+                      //     :
+                      Colors.white),
+            ),
+          ),
+          Obx(() => profileController.isAboutOpen.value
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AboutUsTextWidget(
+                        title: "Terms of use",
+                      ),
+                      AboutUsTextWidget(
+                        title: "Privacy policy",
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          AboutUsTextWidget(
+                            title: "Version :",
+                          ),
+                          AboutUsTextWidget(
+                            title: "2.30.23",
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 )
-              : Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 20,
-                )),
-          title: Text(
-            "About",
-            style: TextStyle(
-                fontWeight: FontWeight.w500,
-                color:
-                    //  profileController.profileContent[index].isHighLight
-                    //     ? CustomColor.secondaryColor
-                    //     :
-                    Colors.white),
+              : EmptyBox()),
+          SizedBox(
+            height: size.height * 0.01,
           ),
-        ),
-        Obx(() => profileController.isAboutOpen.value
-            ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AboutUsTextWidget(
-                      title: "Terms of use",
-                    ),
-                    AboutUsTextWidget(
-                      title: "Privacy policy",
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        AboutUsTextWidget(
-                          title: "Version :",
-                        ),
-                        AboutUsTextWidget(
-                          title: "2.30.23",
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              )
-            : EmptyBox()),
-        SizedBox(
-          height: size.height * 0.01,
-        ),
-        SignOutWidget(),
-        // ListView.builder(
-        //     physics: BouncingScrollPhysics(),
-        //     shrinkWrap: true,
-        //     itemBuilder: (context, index) {
-        //       return ListTile(
-        //         onTap: () {
-        //           Navigator.of(context)
-        //               .pushNamed(profileController.profileContent[index].navigateScreen);
-        //         },
-        //         trailing: profileController.profileContent[index].isArrow
-        //             ? Icon(
-        //                 Icons.arrow_forward_ios_rounded,
-        //                 size: 20,
-        //               )
-        //             : Container(height: 0, width: 0),
-        //         title: Text(
-        //           profileController.profileContent[index].title,
-        //           style: TextStyle(
-        //               fontWeight: FontWeight.w500,
-        //               color: profileController.profileContent[index].isHighLight
-        //                   ? CustomColor.secondaryColor
-        //                   : Colors.white),
-        //         ),
-        //       );
-        //     },
-        //     itemCount:profileController. profileContent.length),
-        // Padding(
-        //   padding: const EdgeInsets.symmetric(horizontal: 18),
-        //   child: Column(
-        //     // mainAxisAlignment: MainAxisAlignment.start
-        //     crossAxisAlignment: CrossAxisAlignment.start,
-        //     children: [
-        //       AboutUsTextWidget(
-        //         title: "Terms of use",
-        //       ),
-        //       AboutUsTextWidget(
-        //         title: "Privacy policy",
-        //       ),
-        //       Row(
-        //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //         children: [
-        //           AboutUsTextWidget(
-        //             title: "Version :",
-        //           ),
-        //           AboutUsTextWidget(
-        //             title: "2.30.23",
-        //           ),
-        //         ],
-        //       ),
-        //     ],
-        //   ),
-        // ),
-       
-       
-       
-      ]),
+          SignOutWidget(),
+          // ListView.builder(
+          //     physics: BouncingScrollPhysics(),
+          //     shrinkWrap: true,
+          //     itemBuilder: (context, index) {
+          //       return ListTile(
+          //         onTap: () {
+          //           Navigator.of(context)
+          //               .pushNamed(profileController.profileContent[index].navigateScreen);
+          //         },
+          //         trailing: profileController.profileContent[index].isArrow
+          //             ? Icon(
+          //                 Icons.arrow_forward_ios_rounded,
+          //                 size: 20,
+          //               )
+          //             : Container(height: 0, width: 0),
+          //         title: Text(
+          //           profileController.profileContent[index].title,
+          //           style: TextStyle(
+          //               fontWeight: FontWeight.w500,
+          //               color: profileController.profileContent[index].isHighLight
+          //                   ? CustomColor.secondaryColor
+          //                   : Colors.white),
+          //         ),
+          //       );
+          //     },
+          //     itemCount:profileController. profileContent.length),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 18),
+          //   child: Column(
+          //     // mainAxisAlignment: MainAxisAlignment.start
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       AboutUsTextWidget(
+          //         title: "Terms of use",
+          //       ),
+          //       AboutUsTextWidget(
+          //         title: "Privacy policy",
+          //       ),
+          //       Row(
+          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //         children: [
+          //           AboutUsTextWidget(
+          //             title: "Version :",
+          //           ),
+          //           AboutUsTextWidget(
+          //             title: "2.30.23",
+          //           ),
+          //         ],
+          //       ),
+          //     ],
+          //   ),
+          // ),
+        ]),
+      ),
     );
   }
 }
+
 class ProfileNavigationTile extends StatelessWidget {
   const ProfileNavigationTile({
     Key? key,
@@ -199,20 +209,18 @@ class ProfileNavigationTile extends StatelessWidget {
   }
 }
 
-
-
 class SignOutWidget extends StatelessWidget {
-   SignOutWidget({
+  SignOutWidget({
     Key? key,
   }) : super(key: key);
-Auth auth=Auth();
+  Auth auth = Auth();
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: ()async{
-       var isLog=await auth.logOut();
+      onTap: () async {
+        var isLog = await auth.logOut();
         print(isLog.toString());
-        if(isLog){
+        if (isLog) {
           Navigation.navigateReplaceToScreen(context, "login/");
         }
         print("SIGNOUT");
