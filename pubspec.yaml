@@ -9,6 +9,11 @@ environment:
   sdk: ">=2.17.0 <3.0.0"
 dependencies:
   audio_video_progress_bar: ^0.10.0
+  # image_cropper: ^2.0.3
+  # image_crop: ^0.4.0
+  image_cropper: ^2.0.3
+  # crop_your_image: ^0.7.2
+  flutter_native_image: ^0.0.6+1
   bloc: ^8.0.3
   cupertino_icons: ^1.0.2
   flutter:

@@ -31,7 +31,7 @@ class SongController extends GetxController {
         children: List.generate(
             songPlayList.length,
             (index) => AudioSource.uri(Uri.parse(
-                "http://192.168.29.184:3000/api/v1/audio?song_id=${songPlayList[index].id}"))),
+                "http://192.168.29.101:3000/api/v1/audio?song_id=${songPlayList[index].id}"))),
       ),
       initialIndex: index,
       initialPosition: Duration.zero,

@@ -5,9 +5,11 @@ import 'dart:typed_data';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+// import 'package:image_crop/image_crop.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:musiq/src/helpers/constants/string.dart';
 
+import '../../helpers/utils/app_helper.dart';
 import '../../model/profile_model.dart';
 import '../services/api_route.dart';
 
@@ -26,6 +28,10 @@ class ProfileController extends GetxController {
   var isUserNameError = false.obs;
   var isNameError = false.obs;
   var registerId = "".obs;
+  late File _file;
+  late File _sample;
+  late File _lastCropped;
+  late Uint8List imagebytes;
 
   loadProfile() async {
     var isImageAvailable = await storage.read(key: "is_image");
@@ -79,6 +85,8 @@ class ProfileController extends GetxController {
     if (image != null) {
       isImagePicked = true;
       imagePath = File(image.path);
+      imagebytes = await imagePath.readAsBytes();
+
       update();
 
       return true;
@@ -86,6 +94,34 @@ class ProfileController extends GetxController {
     update();
     return false;
   }
+
+  // Future<void> cropImage(cropKey) async {
+  //   final scale = cropKey.currentState.scale;
+  //   final area = cropKey.currentState.area;
+  //   if (area == null) {
+  //     // cannot crop, widget is not setup
+  //     return;
+  //   }
+
+  //   // scale up to use maximum possible number of pixels
+  //   // this will sample image in higher resolution to make cropped image larger
+  //   final sample = await ImageCrop.sampleImage(
+  //     file: _file,
+  //     preferredSize: (2000 / scale).round(),
+  //   );
+
+  //   final file = await ImageCrop.cropImage(
+  //     file: sample,
+  //     area: area,
+  //   );
+
+  //   sample.delete();
+
+  //   _lastCropped?.delete();
+  //   _lastCropped = file;
+
+  //   print('$file');
+  // }
 
   openCamera() async {
     ImagePicker picker = ImagePicker();
@@ -116,6 +152,42 @@ class ProfileController extends GetxController {
     }
     nameValue.value = value;
     // update();
+  }
+
+  getImageFrom({required ImageSource source}) async {
+    ImagePicker picker = ImagePicker();
+
+    final _pickedImage = await picker.pickImage(
+        source: source, maxHeight: 600, maxWidth: 800, imageQuality: 100);
+
+    if (_pickedImage != null) {
+      var image = File(_pickedImage.path.toString());
+      final _sizeInKbBefore = image.lengthSync() / 1024;
+      print('Before Compress $_sizeInKbBefore kb');
+      var _compressedImage = await AppHelper.compress(image: image);
+      final _sizeInKbAfter = _compressedImage.lengthSync() / 1024;
+      print('After Compress $_sizeInKbAfter kb');
+      var _croppedImage = await AppHelper.cropImage(_compressedImage);
+      if (_croppedImage == null) {
+        print("NU:L");
+        return;
+      }
+      isImagePicked = true;
+
+      imagePath = File(_croppedImage.path);
+      // imagePath = _croppedImage.path;
+
+      print("FILE");
+      print(imagePath);
+      update();
+
+      // imagePath = File(_croppedImage.path);
+      // imagePath = _croppedImage;
+      // update();
+      // setState(() {
+      //   fileImage = _croppedImage;
+      // });
+    }
   }
 
   void checkUserName(String value) {

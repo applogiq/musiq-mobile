@@ -7,6 +7,7 @@ class APIConstants {
   static String SONG_BASE_URL = "http://192.168.29.101:3000/";
   static String BASE_IMAGE_URL =
       "http://192.168.29.101:3000/api/v1/public/artists/";
+  // 192.168.29.101
   static String LOGIN = "users/login";
   static String REGISTER = "users/register";
   static String FAV = "favourite/";

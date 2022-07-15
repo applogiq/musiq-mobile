@@ -32,25 +32,85 @@ class ProfilePage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(children: [
           Obx(() {
-            return Container(
-              margin: EdgeInsets.symmetric(vertical: size.height * 0.034),
-              height: 120,
-              width: 120,
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-              ),
-              child: profileController.isImage.value == true
-                  ? Image.network(
-                      generateProfileImageUrl(
-                          profileController.registerId.value),
-                      fit: BoxFit.cover)
-                  : Image.asset(
-                      Images.user_default,
-                      fit: BoxFit.fitHeight,
+            return profileController.isImage.value == true
+                ? CircleAvatar(
+                    radius: 60,
+                    backgroundColor: Colors.transparent,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(60),
+                      child: Image.network(
+                        generateProfileImageUrl(
+                            profileController.registerId.value),
+                        height: 120,
+                        width: 120,
+                        fit: BoxFit.cover,
+                        frameBuilder: (_, image, loadingBuilder, __) {
+                          if (loadingBuilder == null) {
+                            return const SizedBox(
+                              height: 120,
+                              child: Center(
+                                  child: CircularProgressIndicator(
+                                color: Colors.grey,
+                              )),
+                            );
+                          }
+                          return image;
+                        },
+                        loadingBuilder: (BuildContext context, Widget image,
+                            ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) return image;
+                          return SizedBox(
+                            height: 120,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.grey,
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            ),
+                          );
+                        },
+                        errorBuilder: (_, __, ___) => Image.asset(
+                          Images.user_default,
+                          height: 120,
+                          width: 120,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
                     ),
-            );
+                  )
+                : CircleAvatar(
+                    radius: 50,
+                    backgroundImage: AssetImage(
+                      Images.user_default,
+                    ),
+                  );
           }),
+
+          // Obx(() {
+          //   return Container(
+          //     margin: EdgeInsets.symmetric(vertical: size.height * 0.034),
+          //     height: 120,
+          //     width: 120,
+          //     clipBehavior: Clip.antiAlias,
+          //     decoration: BoxDecoration(
+          //       shape: BoxShape.circle,
+          //     ),
+          //     child: profileController.isImage.value == true
+          //         ? Image.network(
+          // generateProfileImageUrl(
+          //     profileController.registerId.value),
+          //             fit: BoxFit.cover)
+          //         : Image.asset(
+          //             Images.user_default,
+          //             fit: BoxFit.fitHeight,
+          //           ),
+          //   );
+          // }),
+
           ProfileNavigationTile(profileController: profileController),
           ListTile(
             onTap: () {
