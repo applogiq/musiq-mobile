@@ -15,12 +15,13 @@ import '../../../play/play_screen_new.dart';
 import 'horizontal_list_view.dart';
 
 class TrendingHitsWidget extends StatelessWidget {
-   TrendingHitsWidget({
-    Key? key, required this.trendingHitsModel,
+  TrendingHitsWidget({
+    Key? key,
+    required this.trendingHitsModel,
   }) : super(key: key);
-final TrendingHitsModel trendingHitsModel;
-late TrendingHitsModel trendingHitsModels;
-APIRoute apiRoute=APIRoute();
+  final TrendingHitsModel trendingHitsModel;
+  late TrendingHitsModel trendingHitsModels;
+  APIRoute apiRoute = APIRoute();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,43 +30,56 @@ APIRoute apiRoute=APIRoute();
       child: Column(
         children: [
           Row(
-      children: [
-        Text(
-          ConstantText.trendingHitsText,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-        ),
-        Spacer(),
-        InkWell(
-          onTap: ()async {
-              trendingHitsModels=  await apiRoute.getTrendingHits();
-                              // print(songList.records.length);
-                              List<ViewAllSongList> viewAllSongListModel=[];
-                              for(int i=0;i<trendingHitsModels.records.length;i++){
-                                viewAllSongListModel.add(ViewAllSongList(trendingHitsModels.records[i].id.toString(), generateSongImageUrl(trendingHitsModels.records[i].albumName,trendingHitsModels.records[i].albumId), trendingHitsModels.records[i].songName, trendingHitsModels.records[i].musicDirectorName[0],trendingHitsModels.records[i].albumName,trendingHitsModels.records[i].albumId));
-                              }
-                                    ViewAllBanner banner= ViewAllBanner(bannerId: trendingHitsModels.records[0].albumId,
-                              bannerImageUrl: generateSongImageUrl(trendingHitsModels.records[0].albumName, trendingHitsModels.records[0].albumId),
-                        
-                           bannerTitle:  "Trending Hits",
-                       );
-                           
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewAllScreenSongList(banner: banner, view_all_song_list_model: viewAllSongListModel)));
-                     
+            children: [
+              Text(
+                ConstantText.trendingHitsText,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
+              Spacer(),
+              InkWell(
+                onTap: () async {
+                  trendingHitsModels = await apiRoute.getTrendingHits();
+                  // print(songList.records.length);
+                  List<ViewAllSongList> viewAllSongListModel = [];
+                  for (int i = 0; i < trendingHitsModels.records.length; i++) {
+                    viewAllSongListModel.add(ViewAllSongList(
+                        trendingHitsModels.records[i].id.toString(),
+                        generateSongImageUrl(
+                            trendingHitsModels.records[i].albumName,
+                            trendingHitsModels.records[i].albumId),
+                        trendingHitsModels.records[i].songName,
+                        trendingHitsModels.records[i].musicDirectorName[0],
+                        trendingHitsModels.records[i].albumName,
+                        trendingHitsModels.records[i].albumId));
+                  }
+                  ViewAllBanner banner = ViewAllBanner(
+                    bannerId: trendingHitsModels.records[0].albumId,
+                    bannerImageUrl: generateSongImageUrl(
+                        trendingHitsModels.records[0].albumName,
+                        trendingHitsModels.records[0].albumId),
+                    bannerTitle: "Trending Hits",
+                  );
+
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ViewAllScreenSongList(
+                          banner: banner,
+                          view_all_song_list_model: viewAllSongListModel)));
+
 //             Navigator.of(context).push(MaterialPageRoute(
 //                 builder: (context) =>  TrendingHitsViewAll(
 //                   title: ConstantText.trendingHitsText,
 // ),),);
-          },
-          child: Text(
-            "View All",
-            style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: CustomColor.secondaryColor),
+                },
+                child: Text(
+                  "View All",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: CustomColor.secondaryColor),
+                ),
+              )
+            ],
           ),
-        )
-      ],
-    ),
 
           Container(
             padding: EdgeInsets.only(top: 16, right: 12, left: 12),
@@ -77,22 +91,23 @@ APIRoute apiRoute=APIRoute();
                 children: [
                   Expanded(
                     child: InkWell(
-                      onTap: (){
-                         List<PlayScreenModel> playScreenModel=[];
+                      onTap: () {
+                        List<PlayScreenModel> playScreenModel = [];
                         //  playScreenModel.add(PlayScreenModel(id: t, songName: songName, musicDirectorName: musicDirectorName, albumId: albumId, albumName: albumName))
-                    // print(recentlyPlayed.records[index].id);
-                    // for(int i=0;i<recentlyPlayed.records.length;i++){
-                    //   playScreenModel.add(PlayScreenModel(id: recentlyPlayed.records[i].id, songName: recentlyPlayed.records[i].songName, musicDirectorName: recentlyPlayed.records[i].musicDirectorName[0], albumId: recentlyPlayed.records[i].albumId,albumName:recentlyPlayed.records[i].albumName));
-                    // }
-                    // print(playScreenModel.length);
-                    // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MainPlayScreen(playScreenModel: playScreenModel, index: index)));
- 
+                        // print(recentlyPlayed.records[index].id);
+                        // for(int i=0;i<recentlyPlayed.records.length;i++){
+                        //   playScreenModel.add(PlayScreenModel(id: recentlyPlayed.records[i].id, songName: recentlyPlayed.records[i].songName, musicDirectorName: recentlyPlayed.records[i].musicDirectorName[0], albumId: recentlyPlayed.records[i].albumId,albumName:recentlyPlayed.records[i].albumName));
+                        // }
+                        // print(playScreenModel.length);
+                        // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MainPlayScreen(playScreenModel: playScreenModel, index: index)));
                       },
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           image: DecorationImage(
-                            image: NetworkImage(generateSongImageUrl(trendingHitsModel.records[2].albumName, trendingHitsModel.records[2].albumId)),
+                            image: NetworkImage(generateSongImageUrl(
+                                trendingHitsModel.records[0].albumName,
+                                trendingHitsModel.records[0].albumId)),
                             fit: BoxFit.fill,
                           ),
                         ),
@@ -114,8 +129,9 @@ APIRoute apiRoute=APIRoute();
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               image: DecorationImage(
-                                image: NetworkImage(generateSongImageUrl(trendingHitsModel.records[1].albumName, trendingHitsModel.records[1].albumId)),
-
+                                image: NetworkImage(generateSongImageUrl(
+                                    trendingHitsModel.records[1].albumName,
+                                    trendingHitsModel.records[1].albumId)),
                                 fit: BoxFit.fill,
                               ),
                             ),
@@ -133,8 +149,9 @@ APIRoute apiRoute=APIRoute();
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             image: DecorationImage(
-                              image: NetworkImage(generateSongImageUrl(trendingHitsModel.records[0].albumName, trendingHitsModel.records[0].albumId)),
-
+                              image: NetworkImage(generateSongImageUrl(
+                                  trendingHitsModel.records[2].albumName,
+                                  trendingHitsModel.records[2].albumId)),
                               fit: BoxFit.fill,
                             ),
                           ),

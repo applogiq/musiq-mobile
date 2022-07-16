@@ -17,6 +17,10 @@ class ArtistSongList extends StatelessWidget {
       : super(key: key);
   final SongList songList;
   final art.Record record;
+  load() {
+    print("SS");
+  }
+
   @override
   Widget build(BuildContext context) {
     final ViewAllController viewAllController = Get.put(ViewAllController());
@@ -34,6 +38,7 @@ class ArtistSongList extends StatelessWidget {
                   ? PrimaryAppBar(
                       isNetworkImage: record.isImage,
                       count: songList.records.length,
+                      callback: load,
                       imageURL: record.isImage
                           ? generateArtistImageUrl(record.artistId)
                           : Images.noArtist,

@@ -41,6 +41,10 @@ class RecentlyPlayedViewAll extends StatelessWidget {
 
     final ViewAllController viewAllController = Get.put(ViewAllController());
     viewAllController.recentlyPlayedViewAll();
+    load() {
+      print("fsdfd");
+    }
+
     return SafeArea(
       child: Obx(() {
         return viewAllController.isLoaded.value
@@ -59,6 +63,7 @@ class RecentlyPlayedViewAll extends StatelessWidget {
                                 "${APIConstants.SONG_BASE_URL}public/music/tamil/${viewAllController.recentlyPlayed.records[0][0].albumName[0].toUpperCase()}/${viewAllController.recentlyPlayed.records[0][0].albumName}/image/${viewAllController.recentlyPlayed.records[0][0].albumId.toString()}.png",
                             title: title,
                             height: size.height / 2.5,
+                            callback: load,
                           )
                         : SecondaryAppBar(title: title)),
                 body: ListView(
@@ -140,13 +145,14 @@ class RecentlyPlayedViewAll extends StatelessWidget {
 }
 
 class PrimaryAppBar extends StatelessWidget {
-  const PrimaryAppBar(
+  PrimaryAppBar(
       {Key? key,
       required this.isNetworkImage,
       required this.imageURL,
       required this.title,
       required this.height,
-      required this.count})
+      required this.count,
+      required this.callback})
       : super(key: key);
 
   final bool isNetworkImage;
@@ -154,6 +160,7 @@ class PrimaryAppBar extends StatelessWidget {
   final String title;
   final double height;
   final int count;
+  VoidCallback callback;
 
   @override
   Widget build(BuildContext context) {
@@ -185,6 +192,7 @@ class PrimaryAppBar extends StatelessWidget {
               AppBarOverlayContent(
                 title: title,
                 count: count,
+                callback: callback,
               )
             ],
           ),
@@ -195,14 +203,16 @@ class PrimaryAppBar extends StatelessWidget {
 }
 
 class AppBarOverlayContent extends StatelessWidget {
-  const AppBarOverlayContent({
-    Key? key,
-    required this.title,
-    required this.count,
-  }) : super(key: key);
+  AppBarOverlayContent(
+      {Key? key,
+      required this.title,
+      required this.count,
+      required this.callback})
+      : super(key: key);
 
   final String title;
   final int count;
+  VoidCallback callback;
   PopupMenuItem _buildPopupMenuItem(String title, String routeName) {
     return PopupMenuItem(
       onTap: () {
@@ -281,11 +291,14 @@ class AppBarOverlayContent extends StatelessWidget {
                   //           songplayList: songPlayList,
                   //         )));
                 },
-                child: CustomButton(
-                  isIcon: true,
-                  label: "Play All",
-                  verticalMargin: 0,
-                  horizontalMargin: 0,
+                child: InkWell(
+                  onTap: callback,
+                  child: CustomButton(
+                    isIcon: true,
+                    label: "Play All",
+                    verticalMargin: 0,
+                    horizontalMargin: 0,
+                  ),
                 ),
               ),
             )

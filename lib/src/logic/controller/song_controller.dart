@@ -3,8 +3,6 @@ import 'package:just_audio/just_audio.dart';
 import 'package:musiq/src/logic/services/api_route.dart';
 import 'package:musiq/src/model/ui_model/play_screen_model.dart';
 
-import '../../helpers/constants/api.dart';
-
 class SongController extends GetxController {
   var selectedIndex = 0.obs;
   var nextIndex = 0.obs;
@@ -33,7 +31,7 @@ class SongController extends GetxController {
         children: List.generate(
             songPlayList.length,
             (index) => AudioSource.uri(Uri.parse(
-                "${APIConstants.BASE_URL}audio?song_id=${songPlayList[index].id}"))),
+                "https://api-musiq.applogiq.org/api/v1/audio?song_id=${songPlayList[index].id}"))),
       ),
       initialIndex: index,
       initialPosition: Duration.zero,

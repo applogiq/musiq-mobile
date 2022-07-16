@@ -10,19 +10,37 @@ import '../../../../../helpers/constants/api.dart';
 
 class TrendingHitsViewAll extends StatelessWidget {
   const TrendingHitsViewAll({Key? key, required this.title}) : super(key: key);
- final String title;
+  final String title;
+  load() {
+    print("TRE");
+  }
+
   @override
   Widget build(BuildContext context) {
-    final ViewAllController viewAllController=Get.put(ViewAllController());
+    final ViewAllController viewAllController = Get.put(ViewAllController());
     viewAllController.trendingHitsViewAll();
-     var size = MediaQuery.of(context).size;
+    var size = MediaQuery.of(context).size;
 
-    return Obx(()=>viewAllController.isLoaded.value?SafeArea(child:Scaffold(
-              appBar: PreferredSize(preferredSize: Size(size.width,viewAllController.scrollPosition.value==0.0? size.height/2.5:80),
-              child:viewAllController.scrollPosition.value==0.0? 
-               PrimaryAppBar(isNetworkImage: true, count: 2,imageURL: viewAllController.defaultImage
-, title: title,height: size.height/2.5,)
-              :SecondaryAppBar(title: title))
-        ),):LoaderScreen());
+    return Obx(() => viewAllController.isLoaded.value
+        ? SafeArea(
+            child: Scaffold(
+                appBar: PreferredSize(
+                    preferredSize: Size(
+                        size.width,
+                        viewAllController.scrollPosition.value == 0.0
+                            ? size.height / 2.5
+                            : 80),
+                    child: viewAllController.scrollPosition.value == 0.0
+                        ? PrimaryAppBar(
+                            callback: load,
+                            isNetworkImage: true,
+                            count: 2,
+                            imageURL: viewAllController.defaultImage,
+                            title: title,
+                            height: size.height / 2.5,
+                          )
+                        : SecondaryAppBar(title: title))),
+          )
+        : LoaderScreen());
   }
 }
