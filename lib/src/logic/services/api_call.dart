@@ -80,6 +80,19 @@ class APICall {
     return res;
   }
 
+  deleteRequestWithAuthId(String url) async {
+    var token = await storage.read(key: "access_token");
+
+    header["Authorization"] = "Bearer $token";
+
+    var res = await http.delete(
+      Uri.parse(url),
+      headers: header,
+    );
+    print(res.statusCode);
+    return res;
+  }
+
   putRequestWithAuthUrlId(String endPoint, Map params) async {
     var token = await storage.read(key: "access_token");
     header["Authorization"] = "Bearer $token";

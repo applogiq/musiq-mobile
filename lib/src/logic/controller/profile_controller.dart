@@ -139,8 +139,13 @@ class ProfileController extends GetxController {
     return false;
   }
 
-  deleteImage() async {
+  deleteImage(context) async {
     isImagePicked = false;
+    var res = await apiRoute.deleteProfileImage();
+    if (res.statusCode == 200) {
+      BasicController basicController = BasicController();
+      basicController.checkLogged(context);
+    }
     update();
   }
 

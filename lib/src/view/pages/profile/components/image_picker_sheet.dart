@@ -24,11 +24,12 @@ Widget bulidsheet(context) {
           Divider(thickness: 1, color: CustomColor.textfieldBg),
           ListTile(
               onTap: () async {
-                profileController.getImageFrom(source: ImageSource.camera);
+                await profileController.getImageFrom(
+                    source: ImageSource.camera);
 
                 // var isPicked = await profileController.openCamera();
                 // if (isPicked) {
-                //   Navigator.of(context).pop();
+                Navigator.of(context).pop();
                 // }
               },
               leading: Icon(
@@ -43,7 +44,9 @@ Widget bulidsheet(context) {
           ListTile(
               onTap: () async {
                 // Navigator.pop(context);
-                profileController.getImageFrom(source: ImageSource.gallery);
+                await profileController.getImageFrom(
+                    source: ImageSource.gallery);
+                Navigator.pop(context);
                 // var isPicked = await profileController.openGallery();
                 // if (isPicked) {
                 //   Navigator.of(context).push(MaterialPageRoute(
@@ -63,9 +66,9 @@ Widget bulidsheet(context) {
               )),
           profileController.isImagePicked || profileController.isImage.value
               ? ListTile(
-                  onTap: () {
-                    profileController.deleteImage();
-                    Navigator.of(context).pop();
+                  onTap: () async {
+                    profileController.deleteImage(context);
+                    // Navigator.of(context).pop();
                   },
                   leading: Icon(
                     Icons.delete,

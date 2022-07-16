@@ -242,6 +242,16 @@ class APIRoute {
     var res = await apiCall.putRequestWithAuth(url, params);
   }
 
+  deleteProfileImage() async {
+    var id = await storage.read(key: "id");
+    print("user id");
+    print(id);
+    var url = apiConstants.getDeleteImageUrl(userId: id.toString());
+    print(url);
+    var res = await apiCall.deleteRequestWithAuthId(url);
+    return res;
+  }
+
   deletePlaylist(int playListId) async {
     var url = apiConstants.getDeletePlaylistUrl(playListId: playListId);
     Map params = {"song_id": playListId};
