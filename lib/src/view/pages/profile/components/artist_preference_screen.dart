@@ -18,6 +18,7 @@ class ArtistPreferenceScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final ArtistPreferenceController artistPreferenceController =
         Get.put(ArtistPreferenceController());
+    artistPreferenceController.isLoaded.value = false;
     artistPreferenceController.loadData(artist_list!);
     return Obx(() {
       return artistPreferenceController.isLoaded.value
