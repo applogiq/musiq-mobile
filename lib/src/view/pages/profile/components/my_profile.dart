@@ -164,7 +164,7 @@ class MyProfile extends StatelessWidget {
                 Obx(() {
                   return InkWell(
                     onTap: () {
-                      profileController.saveUpdate();
+                      profileController.saveUpdate(context);
                     },
                     child: profileController.isLoaded.value
                         ? CustomButton(

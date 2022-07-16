@@ -270,5 +270,6 @@ class APIRoute {
     print(url);
 
     var res = await apiCall.putRequestWithAuthUrlId(url, params);
+    return res;
   }
 }

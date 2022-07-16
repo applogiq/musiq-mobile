@@ -1,12 +1,13 @@
 // http://192.168.29.184:8000/users/login
 
 class APIConstants {
-  String MAIN_URL = "http://192.168.29.101:3000";
-  static String BASE_URL = "http://192.168.29.101:3000/api/v1/";
+  // https://api-musiq.applogiq.org/
+  String MAIN_URL = "https://api-musiq.applogiq.org/";
+  static String BASE_URL = "https://api-musiq.applogiq.org/api/v1/";
 
-  static String SONG_BASE_URL = "http://192.168.29.101:3000/";
+  static String SONG_BASE_URL = "https://api-musiq.applogiq.org/";
   static String BASE_IMAGE_URL =
-      "http://192.168.29.101:3000/api/v1/public/artists/";
+      "https://api-musiq.applogiq.org/api/v1/public/artists/";
   // 192.168.29.101
   static String LOGIN = "users/login";
   static String REGISTER = "users/register";
@@ -29,9 +30,15 @@ class APIConstants {
   static String RECENT_LIST = "recent-list/";
   static String USER = "users/";
 
+  // https://api-musiq.applogiq.org/api/v1/users/image/1
+
 // http://192.168.29.185:3000/api/v1/users/12
 
 //http://192.168.29.185:3000/api/v1/playlist-song/
+  getDeleteImageUrl({required String userId}) {
+    var url = "${BASE_URL}users/image/${userId}";
+    return url;
+  }
 
   getRenamePlaylistUrl({required int playListId, required String name}) {
     var url =

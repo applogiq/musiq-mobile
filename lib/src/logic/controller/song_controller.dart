@@ -3,6 +3,8 @@ import 'package:just_audio/just_audio.dart';
 import 'package:musiq/src/logic/services/api_route.dart';
 import 'package:musiq/src/model/ui_model/play_screen_model.dart';
 
+import '../../helpers/constants/api.dart';
+
 class SongController extends GetxController {
   var selectedIndex = 0.obs;
   var nextIndex = 0.obs;
@@ -31,7 +33,7 @@ class SongController extends GetxController {
         children: List.generate(
             songPlayList.length,
             (index) => AudioSource.uri(Uri.parse(
-                "http://192.168.29.101:3000/api/v1/audio?song_id=${songPlayList[index].id}"))),
+                "${APIConstants.BASE_URL}audio?song_id=${songPlayList[index].id}"))),
       ),
       initialIndex: index,
       initialPosition: Duration.zero,

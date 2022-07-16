@@ -61,7 +61,7 @@ Widget bulidsheet(context) {
                 "Choose from gallery",
                 style: fontWeight400(),
               )),
-          profileController.isImagePicked
+          profileController.isImagePicked || profileController.isImage.value
               ? ListTile(
                   onTap: () {
                     profileController.deleteImage();

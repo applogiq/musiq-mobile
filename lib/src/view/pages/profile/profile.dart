@@ -169,7 +169,7 @@ class ProfilePage extends StatelessWidget {
                 )
               : EmptyBox()),
           SizedBox(
-            height: size.height * 0.01,
+            height: size.height * 0.12,
           ),
           SignOutWidget(),
           // ListView.builder(

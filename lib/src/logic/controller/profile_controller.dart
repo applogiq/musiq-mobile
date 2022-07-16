@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 // import 'package:image_crop/image_crop.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:musiq/src/helpers/constants/string.dart';
+import 'package:musiq/src/logic/controller/basic_controller.dart';
 
 import '../../helpers/utils/app_helper.dart';
 import '../../model/profile_model.dart';
@@ -73,6 +74,7 @@ class ProfileController extends GetxController {
   String base64StringImage = "";
 
   convertToBase64Image() async {
+    // base64StringImage = "";
     Uint8List imagebytes = await imagePath.readAsBytes();
     String base64string = base64.encode(imagebytes);
 
@@ -204,14 +206,17 @@ class ProfileController extends GetxController {
     userNameValue.value = value;
   }
 
-  void saveUpdate() async {
+  void saveUpdate(context) async {
     isLoaded.value = true;
     if (isNameError.value && isUserNameError.value) {
       print("Fix Error");
     } else {
       if (isImagePicked) {
+        print("IMAGE");
         convertToBase64Image();
       } else {
+        print("IMAGE EMPTY");
+
         base64StringImage = "";
       }
       if (userNameValue.value == initialUserName.value) {
@@ -234,7 +239,13 @@ class ProfileController extends GetxController {
           "image": base64StringImage
         };
         print(params);
-        await apiRoute.profileUpdate(params);
+        var res = await apiRoute.profileUpdate(params);
+        if (res.statusCode == 200) {
+          BasicController basicController = BasicController();
+          basicController.checkLogged(context);
+        } else {
+          print("No Updates");
+        }
       }
     }
     isLoaded.value = false;
