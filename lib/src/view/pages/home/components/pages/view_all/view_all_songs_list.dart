@@ -122,7 +122,10 @@ class _ViewAllScreenSongListState extends State<ViewAllScreenSongList> {
                   height: height / 2.0,
                   callback: loadData,
                   count: widget.view_all_song_list_model.length)
-              : SecondaryAppBar(title: widget.banner.bannerTitle),
+              : SecondaryAppBar(
+                  title: widget.banner.bannerTitle,
+                  callback: loadData,
+                ),
         ),
         body: ListView.builder(
             physics: const AlwaysScrollableScrollPhysics(),

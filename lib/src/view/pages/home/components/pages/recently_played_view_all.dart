@@ -336,11 +336,10 @@ class GradientCover extends StatelessWidget {
 }
 
 class SecondaryAppBar extends StatelessWidget {
-  const SecondaryAppBar({
-    Key? key,
-    required this.title,
-  }) : super(key: key);
-
+  SecondaryAppBar({Key? key, required this.title, this.callback})
+      : super(key: key);
+  VoidCallback? callback;
+  load() {}
   final String title;
   PopupMenuItem _buildPopupMenuItem(String title, String routeName) {
     return PopupMenuItem(
@@ -364,9 +363,12 @@ class SecondaryAppBar extends StatelessWidget {
       actions: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4.0),
-          child: PlayButtonWidget(
-            bgColor: CustomColor.secondaryColor,
-            iconColor: Colors.white,
+          child: InkWell(
+            onTap: callback,
+            child: PlayButtonWidget(
+              bgColor: CustomColor.secondaryColor,
+              iconColor: Colors.white,
+            ),
           ),
         ),
         Padding(
