@@ -156,7 +156,7 @@ class _ViewAllScreenSongListState extends State<ViewAllScreenSongList> {
                           playScreenModel: playScreenModel, index: index)));
                 },
                 child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 16),
+                    padding: EdgeInsets.symmetric(vertical: 8),
                     child: SongListTile(
                         view_all_song_list_model:
                             widget.view_all_song_list_model,
@@ -431,14 +431,14 @@ class SongListTile extends StatelessWidget {
               view_all_song_list_model[index].songImageUrl,
               height: 70,
               width: 70,
-              fit: BoxFit.fill,
+              fit: BoxFit.cover,
             ),
           ),
         ),
         Expanded(
-            flex: 9,
+            flex: 8,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(12.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -449,39 +449,41 @@ class SongListTile extends StatelessWidget {
                   ),
                   Text(
                     view_all_song_list_model[index].albumName +
-                        "-" +
+                        " - " +
                         view_all_song_list_model[index].songMusicDirector,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
-                    style: fontWeight400(
-                      size: 12.0,
-                    ),
+                    style:
+                        fontWeight400(size: 12.0, color: CustomColor.subTitle),
                   ),
                 ],
               ),
             )),
         Expanded(
-            child: Align(
-          alignment: Alignment.centerRight,
-          child: PopupMenuButton(
-            color: CustomColor.appBarColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(8.0),
-                bottomRight: Radius.circular(8.0),
-                topLeft: Radius.circular(8.0),
-                topRight: Radius.circular(8.0),
+            child: Padding(
+          padding: const EdgeInsets.only(right: 16.0),
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: PopupMenuButton(
+              color: CustomColor.appBarColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(8.0),
+                  bottomRight: Radius.circular(8.0),
+                  topLeft: Radius.circular(8.0),
+                  topRight: Radius.circular(8.0),
+                ),
               ),
+              onSelected: (value) {
+                _onMenuItemSelected(value as int);
+              },
+              itemBuilder: (ctx) => [
+                _buildPopupMenuItem('Play next'),
+                _buildPopupMenuItem('Add to queue'),
+                _buildPopupMenuItem('Remove'),
+                _buildPopupMenuItem('Song info'),
+              ],
             ),
-            onSelected: (value) {
-              _onMenuItemSelected(value as int);
-            },
-            itemBuilder: (ctx) => [
-              _buildPopupMenuItem('Play next'),
-              _buildPopupMenuItem('Add to queue'),
-              _buildPopupMenuItem('Remove'),
-              _buildPopupMenuItem('Song info'),
-            ],
           ),
         ))
       ],

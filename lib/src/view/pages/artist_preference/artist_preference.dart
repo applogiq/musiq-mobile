@@ -14,22 +14,31 @@ import '../common_screen/account_screen.dart/select_your fav_artist.dart';
 import 'artist_preference_body.dart';
 
 class ArtistPreferenceMain extends StatelessWidget {
-   ArtistPreferenceMain({Key? key,required this.artist_list}) : super(key: key);
-  List? artist_list=[]; 
-
+  ArtistPreferenceMain({Key? key, required this.artist_list}) : super(key: key);
+  List? artist_list = [];
 
   @override
   Widget build(BuildContext context) {
     final NetworkController _networkController = Get.find<NetworkController>();
-    final ArtistPreferenceController artistPreferenceController=Get.put(ArtistPreferenceController());
+    final ArtistPreferenceController artistPreferenceController =
+        Get.put(ArtistPreferenceController());
     artistPreferenceController.loadData(artist_list!);
-    return Obx(() =>_networkController.connectionType.value==0?OfflineScreen():artistPreferenceController.isLoaded.value?Scaffold(appBar:  PreferredSize(preferredSize: Size(MediaQuery.of(context).size.width, 80),
-      child: ArtistPreferenceAppBarWidget(),
-      ),
-      bottomNavigationBar:artistPreferenceController.userFollowedArtist.length<3?EmptyBox(): InkWell(
-          onTap: ()async {
-             Navigator.of(context)
-                .pushReplacement(MaterialPageRoute(builder: (context) => MainPage()));
+    return Obx(() => _networkController.connectionType.value == 0
+        ? OfflineScreen()
+        : artistPreferenceController.isLoaded.value
+            ? Scaffold(
+                appBar: PreferredSize(
+                  preferredSize: Size(MediaQuery.of(context).size.width, 80),
+                  child: ArtistPreferenceAppBarWidget(),
+                ),
+                bottomNavigationBar:
+                    artistPreferenceController.userFollowedArtist.length < 3
+                        ? EmptyBox()
+                        : InkWell(
+                            onTap: () async {
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => MainPage()));
 //             isLoad=true;
 //             setState(() {
 //               isLoad;
@@ -42,13 +51,12 @@ class ArtistPreferenceMain extends StatelessWidget {
 //                 .pushReplacement(MaterialPageRoute(builder: (context) => CustomBottomBar()));
 //             });
 //             });
-          },
-          child: CustomButton(label: "Save")),
-      body: ArtistPreferenceScreenBody(artist_list: artist_list,),
-      ):LoaderScreen()
-      
-       );
+                            },
+                            child: CustomButton(label: "Save")),
+                body: ArtistPreferenceScreenBody(
+                  artist_list: artist_list,
+                ),
+              )
+            : LoaderScreen());
   }
 }
-
-

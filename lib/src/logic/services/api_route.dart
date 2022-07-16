@@ -103,6 +103,8 @@ class APIRoute {
 
     var res = await apiCall.getRequestWithAuth(
         APIConstants.BASE_URL + APIConstants.PLAYLIST + id.toString());
+    var url = APIConstants.BASE_URL + APIConstants.PLAYLIST + id.toString();
+    print(url);
 
     if (res.statusCode == 200) {
       print(jsonDecode(res.body));

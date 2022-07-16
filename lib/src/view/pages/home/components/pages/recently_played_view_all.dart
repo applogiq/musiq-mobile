@@ -255,7 +255,15 @@ class AppBarOverlayContent extends StatelessWidget {
                   style: fontWeight600(size: 22.0),
                 ),
                 PopupMenuButton(
-                    shape: RoundedRectangleBorder(),
+                    color: CustomColor.appBarColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(8.0),
+                        bottomRight: Radius.circular(8.0),
+                        topLeft: Radius.circular(8.0),
+                        topRight: Radius.circular(8.0),
+                      ),
+                    ),
                     padding: EdgeInsets.all(0.0),
                     itemBuilder: (ctx) => [
                           _buildPopupMenuItem('Add to queue', 'share'),
@@ -323,8 +331,8 @@ class GradientCover extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment(0.0, 1),
             stops: [
-              0.3,
-              0.75,
+              0.1,
+              0.9,
             ],
             colors: [
               Color.fromRGBO(22, 21, 28, 0),

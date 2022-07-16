@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 // FocusScope.of(context).requestFocus(FocusNode());
     return MultiBlocProvider(
-       providers:blocProvidersRoute,
+      providers: blocProvidersRoute,
       child: GetMaterialApp(
         initialBinding: NetworkBinding(),
         debugShowCheckedModeBanner: false,

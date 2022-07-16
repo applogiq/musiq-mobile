@@ -1,34 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:musiq/src/helpers/constants/images.dart';
 import 'package:musiq/src/helpers/constants/style.dart';
 import 'package:musiq/src/model/Image_model.dart';
+import 'package:musiq/src/view/pages/artist_preference/artist_preference_body.dart';
+import 'package:musiq/src/view/pages/home/components/widget/loader.dart';
 
 import '../../../../helpers/constants/color.dart';
+import '../../../../logic/controller/artist_preference_controller.dart';
 import '../../../widgets/custom_app_bar.dart';
 import '../../../widgets/custom_color_container.dart';
 
 class ArtistPreferenceScreen extends StatelessWidget {
-  const ArtistPreferenceScreen({Key? key}) : super(key: key);
-
+  ArtistPreferenceScreen({Key? key}) : super(key: key);
+  List? artist_list = [];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size(double.maxFinite, 50),
-        child: CustomAppBarWidget(
-          title: "Artist Preference",
-        ),
-      ),
-      body: ListView(
-        shrinkWrap: true,
-        children: [
-          SizedBox(
-            height: 12,
-          ),
-          CustomArtistVerticalList(images: Images().artistPrefList),
-        ],
-      ),
-    );
+    final ArtistPreferenceController artistPreferenceController =
+        Get.put(ArtistPreferenceController());
+    artistPreferenceController.loadData(artist_list!);
+    return Obx(() {
+      return artistPreferenceController.isLoaded.value
+          ? Scaffold(
+              appBar: PreferredSize(
+                preferredSize: Size(double.maxFinite, 50),
+                child: CustomAppBarWidget(
+                  title: "Artist Preference",
+                ),
+              ),
+              body: ArtistPreferenceScreenBody(
+                artist_list: [],
+              ))
+          : LoaderScreen();
+    });
+    // return Scaffold(
+    // appBar: PreferredSize(
+    //   preferredSize: Size(double.maxFinite, 50),
+    //   child: CustomAppBarWidget(
+    //     title: "Artist Preference",
+    //   ),
+    // ),
+    // body: ArtistPreferenceScreenBody(
+    //   artist_list: [],
+    // ));
   }
 }
 
@@ -157,6 +171,5 @@ class _CustomArtistVerticalListState extends State<CustomArtistVerticalList> {
         ),
       ),
     ));
- 
   }
 }

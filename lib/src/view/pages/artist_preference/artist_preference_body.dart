@@ -68,11 +68,15 @@ class ArtistPreferenceScreenBody extends StatelessWidget {
                                 initState: (_) {},
                                 builder: (_) {
                                   return Text(
-                                    artistPreferenceController
-                                        .artistModel!.records[index].followers
-                                        !=null?artistPreferenceController
-                                        .artistModel!.records[index].followers
-                                        .toString():"0",
+                                    artistPreferenceController.artistModel!
+                                                .records[index].followers !=
+                                            null
+                                        ? artistPreferenceController
+                                            .artistModel!
+                                            .records[index]
+                                            .followers
+                                            .toString()
+                                        : "0",
                                     // artistPreferenceController.artistModel!
                                     //             .records[index].followers !=
                                     //         null
@@ -110,7 +114,8 @@ class ArtistPreferenceScreenBody extends StatelessWidget {
                               onTap: () async {
                                 artistPreferenceController.checkFollow(
                                     artistPreferenceController
-                                        .artistModel!.records[index],index);
+                                        .artistModel!.records[index],
+                                    index);
                                 // artistPreferenceController.followAndUnfollow(artistPreferenceController.artistModel!.records[index].id);
                                 // print();
                                 // followAndUnfollow(
@@ -130,8 +135,9 @@ class ArtistPreferenceScreenBody extends StatelessWidget {
                                     vertical: 4),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(6),
-                                  color: artist_list!.contains(
-                                          artistPreferenceController
+                                  color: artistPreferenceController
+                                          .userFollowedArtist
+                                          .contains(artistPreferenceController
                                               .artistModel!
                                               .records[index]
                                               .artistId)
