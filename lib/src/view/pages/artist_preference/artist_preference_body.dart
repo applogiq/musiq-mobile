@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:musiq/src/helpers/constants/images.dart';
 import 'package:musiq/src/helpers/utils/image_url_generate.dart';
 import 'package:musiq/src/model/api_model/artist_model.dart';
+import 'package:musiq/src/view/pages/home/components/widget/artist_list_view.dart';
 
 import '../../../helpers/constants/color.dart';
 import '../../../helpers/constants/style.dart';
@@ -33,7 +34,10 @@ class ArtistPreferenceScreenBody extends StatelessWidget {
                     child: artistPreferenceController
                                 .artistModel!.records[index].isImage ==
                             false
-                        ? NoArtistImage()
+                        ? NoArtist(
+                            height: 80,
+                            width: 80,
+                          )
                         : ArtistImagesWidget(
                             artistPreferenceController:
                                 artistPreferenceController,
@@ -98,69 +102,65 @@ class ArtistPreferenceScreenBody extends StatelessWidget {
                         ],
                       ),
                     )),
-                Expanded(
-                    flex: 4,
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Obx(() => Padding(
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Obx(() => Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: artistPreferenceController
+                                    .userFollowedArtist
+                                    .contains(artistPreferenceController
+                                        .artistModel!.records[index].artistId)
+                                ? 12
+                                : 16,
+                            vertical: 4),
+                        child: InkWell(
+                          onTap: () async {
+                            artistPreferenceController.checkFollow(
+                                artistPreferenceController
+                                    .artistModel!.records[index],
+                                index);
+                            // artistPreferenceController.followAndUnfollow(artistPreferenceController.artistModel!.records[index].id);
+                            // print();
+                            // followAndUnfollow(
+                            //     artistPreferenceController.artistModel!.records,
+                            //     index);
+                          },
+                          child: Container(
                             padding: EdgeInsets.symmetric(
-                                horizontal: artist_list!.contains(
-                                        artistPreferenceController.artistModel!
-                                            .records[index].artistId)
-                                    ? 4
-                                    : 16,
+                                horizontal: artistPreferenceController
+                                        .userFollowedArtist
+                                        .contains(artistPreferenceController
+                                            .artistModel!
+                                            .records[index]
+                                            .artistId)
+                                    ? 12
+                                    : 10,
                                 vertical: 4),
-                            child: InkWell(
-                              onTap: () async {
-                                artistPreferenceController.checkFollow(
-                                    artistPreferenceController
-                                        .artistModel!.records[index],
-                                    index);
-                                // artistPreferenceController.followAndUnfollow(artistPreferenceController.artistModel!.records[index].id);
-                                // print();
-                                // followAndUnfollow(
-                                //     artistPreferenceController.artistModel!.records,
-                                //     index);
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: artistPreferenceController
-                                            .userFollowedArtist
-                                            .contains(artistPreferenceController
-                                                .artistModel!
-                                                .records[index]
-                                                .artistId)
-                                        ? 6
-                                        : 2,
-                                    vertical: 4),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(6),
-                                  color: artistPreferenceController
-                                          .userFollowedArtist
-                                          .contains(artistPreferenceController
-                                              .artistModel!
-                                              .records[index]
-                                              .artistId)
-                                      ? CustomColor.followingColor
-                                      : CustomColor.secondaryColor,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    artistPreferenceController
-                                            .userFollowedArtist
-                                            .contains(artistPreferenceController
-                                                .artistModel!
-                                                .records[index]
-                                                .artistId)
-                                        ? "Unfollow"
-                                        : "Follow",
-                                    style: fontWeight400(),
-                                  ),
-                                ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              color: artistPreferenceController
+                                      .userFollowedArtist
+                                      .contains(artistPreferenceController
+                                          .artistModel!.records[index].artistId)
+                                  ? CustomColor.followingColor
+                                  : CustomColor.secondaryColor,
+                            ),
+                            child: Center(
+                              child: Text(
+                                artistPreferenceController.userFollowedArtist
+                                        .contains(artistPreferenceController
+                                            .artistModel!
+                                            .records[index]
+                                            .artistId)
+                                    ? "Unfollow"
+                                    : "Follow",
+                                style: fontWeight400(),
                               ),
                             ),
-                          )),
-                    ))
+                          ),
+                        ),
+                      )),
+                )
               ],
             ),
           );
@@ -221,8 +221,9 @@ class NoArtistImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Image.asset(
       Images.noArtist,
-      width: 80,
-      height: 80,
+      width: 70,
+      height: 70,
+      fit: BoxFit.contain,
     );
   }
 }

@@ -262,10 +262,13 @@ class APIRoute {
   }
 
   renamePlaylist(int playListId, String name) async {
-    var url =
-        apiConstants.getRenamePlaylistUrl(playListId: playListId, name: name);
-    //  var res=await apiCall.putRequestWithAuth(url,params );
-    // return res;
+    var url = apiConstants.getRenamePlaylistUrl(
+      playListId: playListId,
+    );
+    print(url);
+    Map params = {"name": name};
+    var res = await apiCall.putRequestWithAuth(url, params);
+    return res;
   }
 
   addSongToPlaylist(Map params) async {

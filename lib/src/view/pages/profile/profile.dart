@@ -8,6 +8,7 @@ import 'package:musiq/src/helpers/constants/images.dart';
 import 'package:musiq/src/helpers/constants/style.dart';
 import 'package:musiq/src/helpers/utils/image_url_generate.dart';
 import 'package:musiq/src/helpers/utils/navigation.dart';
+import 'package:musiq/src/logic/controller/bottom_nav_controller.dart';
 import 'package:musiq/src/logic/controller/profile_controller.dart';
 import 'package:musiq/src/model/profile_model.dart';
 import 'package:musiq/src/view/pages/profile/components/my_profile.dart';
@@ -283,7 +284,12 @@ class SignOutWidget extends StatelessWidget {
         if (isLog) {
           Navigation.navigateReplaceToScreen(context, "login/");
         }
+        BottomNavigationBarController bottomNavigationBarController =
+            BottomNavigationBarController();
+        bottomNavigationBarController.selectedBottomIndex.value = 0;
         print("SIGNOUT");
+        print(
+            bottomNavigationBarController.selectedBottomIndex.value.toString());
       },
       child: CustomButton(
         label: "Sign Out",

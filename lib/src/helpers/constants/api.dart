@@ -39,10 +39,12 @@ class APIConstants {
     var url = "${BASE_URL}users/image/${userId}";
     return url;
   }
+// https://api-musiq.applogiq.org/api/v1/playlist/9
 
-  getRenamePlaylistUrl({required int playListId, required String name}) {
-    var url =
-        BASE_URL + CREATE_PLAYLIST + playListId.toString() + "?name=" + name;
+  getRenamePlaylistUrl({
+    required int playListId,
+  }) {
+    var url = CREATE_PLAYLIST + playListId.toString();
     return url;
   }
 

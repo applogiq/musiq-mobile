@@ -76,7 +76,6 @@ class APICall {
 
     var res = await http.delete(Uri.parse(url),
         headers: header, body: jsonEncode(params));
-    print(res.statusCode);
     return res;
   }
 

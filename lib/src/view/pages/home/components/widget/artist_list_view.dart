@@ -20,46 +20,43 @@ import '../pages/artist_view_all_screen.dart';
 import 'horizontal_list_view.dart';
 
 class ArtistListView extends StatelessWidget {
-   ArtistListView({
+  ArtistListView({
     Key? key,
     required this.artist,
   }) : super(key: key);
 
   final ArtistModel artist;
-  APICall apiCall=APICall();
-   APIRoute apiRoute=APIRoute();
+  APICall apiCall = APICall();
+  APIRoute apiRoute = APIRoute();
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 0.0),
-          child:  Row(
-      children: [
-        Text(
-          "Artists",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-        ),
-        Spacer(),
-        InkWell(
-          onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => 
-                     ArtistListViewAll()
-                    ));
-          },
-          child: Text(
-            "View All",
-            style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: CustomColor.secondaryColor),
-          ),
-        )
-      ],
-    )
-        ),
+            padding: EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 0.0),
+            child: Row(
+              children: [
+                Text(
+                  "Artists",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
+                Spacer(),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ArtistListViewAll()));
+                  },
+                  child: Text(
+                    "View All",
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: CustomColor.secondaryColor),
+                  ),
+                )
+              ],
+            )),
         Container(
           padding: EdgeInsets.only(top: 4),
           height: 300,
@@ -73,33 +70,45 @@ class ArtistListView extends StatelessWidget {
                       index == 0
                           ? SizedBox(
                               width: 12,
-                             
                             )
                           : SizedBox(),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 6),
                         child: InkWell(
-                          onTap: ()async{
-                                  
-                             ViewAllBanner banner= ViewAllBanner(bannerId: artist.records[index].id.toString(),
-                              bannerImageUrl: generateArtistImageUrl(artist.records[index].artistId),
-                           bannerTitle:  artist.records[index].artistName,
-                       );
-                              print(banner.bannerImageUrl.toString());
-                            SongList songList=  await apiRoute.getSpecificArtistSong(index: artist.records[index].id);
-                            if(songList.success==true){
-List<ViewAllSongList> viewAllSongListModel=[];
-                              for(int i=0;i<songList.records.length;i++){
-                                viewAllSongListModel.add(ViewAllSongList(songList.records[i].id.toString(), generateSongImageUrl(songList.records[i].albumName,songList.records[i].albumId), songList.records[i].songName, songList.records[i].musicDirectorName[0],songList.records[i].albumName,songList.records[i].albumId));
+                          onTap: () async {
+                            ViewAllBanner banner = ViewAllBanner(
+                              bannerId: artist.records[index].id.toString(),
+                              bannerImageUrl: generateArtistImageUrl(
+                                  artist.records[index].artistId),
+                              bannerTitle: artist.records[index].artistName,
+                            );
+                            print(banner.bannerImageUrl.toString());
+                            SongList songList =
+                                await apiRoute.getSpecificArtistSong(
+                                    index: artist.records[index].id);
+                            if (songList.success == true) {
+                              List<ViewAllSongList> viewAllSongListModel = [];
+                              for (int i = 0;
+                                  i < songList.records.length;
+                                  i++) {
+                                viewAllSongListModel.add(ViewAllSongList(
+                                    songList.records[i].id.toString(),
+                                    generateSongImageUrl(
+                                        songList.records[i].albumName,
+                                        songList.records[i].albumId),
+                                    songList.records[i].songName,
+                                    songList.records[i].musicDirectorName[0],
+                                    songList.records[i].albumName,
+                                    songList.records[i].albumId));
                               }
-                           
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ViewAllScreenSongList(banner: banner, view_all_song_list_model: viewAllSongListModel)));
-                     
 
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ViewAllScreenSongList(
+                                      banner: banner,
+                                      view_all_song_list_model:
+                                          viewAllSongListModel)));
                             }
-   //// print(songList.records.length);
-                              
-
+                            //// print(songList.records.length);
 
 // //                              Map<String, String> queryParams = {
 // //   'artist_id': artist.records[index].id.toString(),
@@ -116,7 +125,7 @@ List<ViewAllSongList> viewAllSongListModel=[];
 // //                               Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ViewAllScreen(songList: songList,title: artist.records[index].artistName,
 // //                               isNetworkImage: artist.records[index].isImage,
 // //                             imageURL: artist.records[index].isImage? APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png":
-// //                                   "assets/images/default/no_artist.png", 
+// //                                   "assets/images/default/no_artist.png",
 // //                             )));
 //                         }
 //                         else{
@@ -125,23 +134,24 @@ List<ViewAllSongList> viewAllSongListModel=[];
 //                             // Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ViewAllScreen(title: artist.records[index].name,
 //                             // imageURL: artist.records[index].isImage? APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png":
 //                             //       "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png",
-                            
+
 //                             // )));
-                            
                           },
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                             artist.records[index].isImage==false?
-                             NoArtist(): CustomColorContainer(
-                                child: Image.network(
-                                  generateArtistImageUrl(artist.records[index].artistId),
-                                  height: 240,
-                                  width: 200,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
+                              artist.records[index].isImage == false
+                                  ? NoArtist()
+                                  : CustomColorContainer(
+                                      child: Image.network(
+                                        generateArtistImageUrl(
+                                            artist.records[index].artistId),
+                                        height: 240,
+                                        width: 200,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                               SizedBox(
                                 height: 6,
                               ),
@@ -153,7 +163,6 @@ List<ViewAllSongList> viewAllSongListModel=[];
                           ),
                         ),
                       ),
-                  
                     ],
                   )),
         )
@@ -163,16 +172,26 @@ List<ViewAllSongList> viewAllSongListModel=[];
 }
 
 class NoArtist extends StatelessWidget {
-  const NoArtist({
-    Key? key,
-  }) : super(key: key);
+  NoArtist({Key? key, this.height = 240, this.width = 200}) : super(key: key);
+  double height;
+  double width;
 
   @override
   Widget build(BuildContext context) {
-    return Container(height: 240,
-    width: 200,
-    decoration: BoxDecoration(
-     color: CustomColor.defaultCard,borderRadius:
-      BorderRadius.circular(12),border: Border.all(color: CustomColor.defaultCardBorder,width: 2.0)),child: Center(child: Image.asset(Images.noArtist,width: 113,height: 118,)),);
+    return Container(
+      height: height,
+      width: width,
+      padding: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+          color: CustomColor.defaultCard,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: CustomColor.defaultCardBorder, width: 2.0)),
+      child: Center(
+          child: Image.asset(
+        Images.noArtist,
+        width: 113,
+        height: 118,
+      )),
+    );
   }
 }

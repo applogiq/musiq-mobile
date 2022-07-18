@@ -1,5 +1,6 @@
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:musiq/src/logic/controller/library_controller.dart';
 
 import '../../../../helpers/constants/color.dart';
 import '../../../../helpers/constants/string.dart';
@@ -12,6 +13,8 @@ class PlaylistButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LibraryController libraryController = Get.put(LibraryController());
+
     return FloatingActionButton(
       mini: false,
       onPressed: () {
@@ -23,6 +26,7 @@ class PlaylistButton extends StatelessWidget {
                 title: ConstantText.createPlaylist,
                 fieldName: ConstantText.name,
                 buttonText: ConstantText.create,
+                // callback: libraryController.createPlaylist(context),
               );
               ;
             });
@@ -37,7 +41,6 @@ class PlaylistButton extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.white.withOpacity(0.3),
-             
             ),
           ],
         ),
