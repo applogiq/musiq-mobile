@@ -287,4 +287,13 @@ class APIRoute {
     var res = await apiCall.putRequestWithAuthUrlId(url, params);
     return res;
   }
+
+  addToFavourite(params)async{
+    var url=APIConstants.BASE_URL+APIConstants.FAVOURITE;
+    
+    print(url);
+    print(params);
+    var res=await apiCall.postRequestWithAuth(url, params);
+    return res;
+  }
 }

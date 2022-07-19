@@ -7,6 +7,7 @@ class SongController extends GetxController {
   var selectedIndex = 0.obs;
   var nextIndex = 0.obs;
   var isShuffle = false.obs;
+  var isLyricsHide=false.obs;
   var isFav = false.obs;
   var isRepeated = false.obs;
   var isBottomSheetView = false.obs;
@@ -93,7 +94,8 @@ class SongController extends GetxController {
       player.seekToNext();
       selectedIndex.value = index!;
       nextIndex.value = player.nextIndex!;
-      ;
+      
+    update();
     }
   }
 
@@ -104,6 +106,7 @@ class SongController extends GetxController {
       selectedIndex.value = index!;
       nextIndex.value = player.nextIndex!;
     }
+    update();
   }
 
   playOrPause() {
@@ -184,8 +187,19 @@ class SongController extends GetxController {
   }
 
   void checkFav() async {
-    Map params = {"song_id": 1};
-    if (isFav.value == true) {}
+      APIRoute apiRoute = APIRoute();
+    Map params = {"song_id": songList[
+                                          player.currentIndex ??
+                                              0]
+                                      .id
+                                      .toString()};
+                                      print(params);
+    if (isFav.value == true) {
+
+    }
+    else{
+      // apiRoute.addToFavourite(params);
+    }
     isFav.toggle();
   }
 }

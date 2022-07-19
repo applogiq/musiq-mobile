@@ -25,12 +25,16 @@ class MainPlayScreen extends StatelessWidget {
   final List<PlayScreenModel> playScreenModel;
   final int index;
   bool hideLyrics = false;
+  final SongController songController = Get.put(SongController());
 
   PopupMenuItem _buildPopupMenuItem(String title, String routeName) {
     return PopupMenuItem(
       onTap: () {
         if (routeName == "hide") {
-          hideLyrics = !hideLyrics;
+          songController.isLyricsHide.value =
+              !songController.isLyricsHide.value;
+          // hideLyrics = !hideLyrics;
+
           // setState(() {
           //   hideLyrics;
           // });
@@ -44,7 +48,6 @@ class MainPlayScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SongController songController = Get.put(SongController());
     songController.loadSong(playScreenModel, index);
     return SafeArea(
       child: Scaffold(
@@ -58,13 +61,28 @@ class MainPlayScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       Expanded(
-                        flex: 6,
-                        child: Container(
+                          flex: 6,
+                          child: GetBuilder<SongController>(
+                            init: SongController(),
+                            initState: (_) {},
+                            builder: (_) {
+                              return Container(
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                   image: NetworkImage(generateSongImageUrl(
-                                          playScreenModel[index].albumName,
-                                          playScreenModel[index].albumId)
+                                    songController
+                                      .songList[
+                                          songController.player.currentIndex ??
+                                              0]
+                                      .albumName
+                                      .toString(),
+                                      songController
+                                      .songList[
+                                          songController.player.currentIndex ??
+                                              0]
+                                      .albumId
+                                      .toString(),
+                                          )
                                       // playScreenModel[index].
                                       // "https://mir-s3-cdn-cf.behance.net/project_modules/fs/fe529a64193929.5aca8500ba9ab.jpg",
                                       // "${APIConstants.SONG_BASE_URL}public/music/tamil/${ playScreenModel[index].albumName[0].toUpperCase()}/${ playScreenModel[index].albumName}/image/${ playScreenModel[index].albumId}.png"
@@ -109,7 +127,7 @@ class MainPlayScreen extends StatelessWidget {
                                     padding: const EdgeInsets.only(bottom: 0.0),
                                     child: Align(
                                       alignment: Alignment.bottomCenter,
-                                      child: hideLyrics == true
+                                      child: songController.isLyricsHide == true
                                           ? SizedBox(
                                               height: 0,
                                               width: 0,
@@ -165,7 +183,7 @@ class MainPlayScreen extends StatelessWidget {
                                       _buildPopupMenuItem(
                                           'Song Info', "song_info"),
                                       _buildPopupMenuItem(
-                                          hideLyrics
+                                          songController.isLyricsHide.value
                                               ? 'Show Lyrics'
                                               : 'Hide Lyrics',
                                           "hide"),
@@ -175,8 +193,10 @@ class MainPlayScreen extends StatelessWidget {
                               ),
                             ),
                           ]),
-                        ),
-                      ),
+                        )
+                    ;
+                            },
+                          )),
                       Expanded(
                         flex: 6,
                         child: Column(
@@ -184,18 +204,41 @@ class MainPlayScreen extends StatelessWidget {
                             SizedBox(
                               height: 18,
                             ),
-                            Text(playScreenModel[index].songName,
-                                style: fontWeight500(size: 16.0)),
-                            Text(
-                              playScreenModel[index].musicDirectorName,
-                              // widget
-                              //     .songList
-                              //     .records[songController.selectedIndex.value]
+                            GetBuilder<SongController>(
+                              init: SongController(),
+                              initState: (_) {},
+                              builder: (_) {
+                                return Text(
+                                    songController
+                                        .songList[songController
+                                                .player.currentIndex ??
+                                            0]
+                                        .songName
+                                        .toString(),
+                                    style: fontWeight500(size: 16.0));
+                              },
+                            ),
+                            GetBuilder<SongController>(
+                              init: SongController(),
+                              initState: (_) {},
+                              builder: (_) {
+                                return Text(
+                                  songController
+                                      .songList[
+                                          songController.player.currentIndex ??
+                                              0]
+                                      .musicDirectorName
+                                      .toString(),
+                                  // widget
+                                  //     .songList
+                                  //     .records[songController.selectedIndex.value]
 
-                              //     .musicDirectorName[0]
-                              //     .toString(),
-                              style: fontWeight400(
-                                  size: 14.0, color: CustomColor.subTitle),
+                                  //     .musicDirectorName[0]
+                                  //     .toString(),
+                                  style: fontWeight400(
+                                      size: 14.0, color: CustomColor.subTitle),
+                                );
+                              },
                             ),
                             Padding(
                               padding: const EdgeInsets.all(16.0),
@@ -238,30 +281,32 @@ class MainPlayScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Container(
-                        // padding: EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                            color: Color.fromRGBO(33, 33, 44, 1),
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(30),
-                                topRight: Radius.circular(30))),
-                        child: ListTile(
-                          onTap: () {
-                            songController.isBottomSheetView.toggle();
-                            // isOpen?bottomSheetHeight=MediaQuery.of(context).size.height:bottomSheetHeight=80.0,
-                          },
-                          title: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              UpNext(),
-                              Text(
-                                playScreenModel[index].albumName,
-                                style: fontWeight400(size: 14.0),
-                              ),
-                            ],
+                      Expanded(
+                        child: Container(
+                          // padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                              color: Color.fromRGBO(33, 33, 44, 1),
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30))),
+                          child: ListTile(
+                            onTap: () {
+                              songController.isBottomSheetView.toggle();
+                              // isOpen?bottomSheetHeight=MediaQuery.of(context).size.height:bottomSheetHeight=80.0,
+                            },
+                            title: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                UpNext(),
+                                Text(
+                                  playScreenModel[index].albumName,
+                                  style: fontWeight400(size: 14.0),
+                                ),
+                              ],
+                            ),
+                            trailing: Icon(Icons.keyboard_arrow_up),
                           ),
-                          trailing: Icon(Icons.keyboard_arrow_up),
                         ),
                       )
                     ],
@@ -269,7 +314,7 @@ class MainPlayScreen extends StatelessWidget {
                 ),
                 songController.isBottomSheetView.value == true
                     ? Container(
-                        height: MediaQuery.of(context).size.height - 80,
+                        height: MediaQuery.of(context).size.height -80,
                         padding: EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           color: Color.fromRGBO(33, 33, 44, 1),

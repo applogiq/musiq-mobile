@@ -29,6 +29,8 @@ class APIConstants {
   static String NEW_RELEASE = "new_release";
   static String RECENT_LIST = "recent-list/";
   static String USER = "users/";
+  static String FAVOURITE = "favourite/";
+// https://api-musiq.applogiq.org/api/v1/favourite/
 
   // https://api-musiq.applogiq.org/api/v1/users/image/1
 
