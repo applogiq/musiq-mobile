@@ -64,6 +64,7 @@ class APIRoute {
   }
 
   getFavourites({int limit = 100}) async {
+
     var id = await storage.read(key: "id");
     //  var auraUrl=apiConstants.getAuraUrl(limit:limit);
     var res = await apiCall.getRequestWithAuth(
@@ -294,6 +295,15 @@ class APIRoute {
     print(url);
     print(params);
     var res=await apiCall.postRequestWithAuth(url, params);
+    return res;
+  }
+
+  deleteFavourite(Map params)async {
+    var url=APIConstants.BASE_URL+APIConstants.FAVOURITE;
+    
+    print(url);
+    print(params);
+    var res=await apiCall.deleteRequestWithAuthUserId(url, params);
     return res;
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../helpers/constants/color.dart';
 import '../../../../helpers/constants/style.dart';
 import '../../../../helpers/utils/image_url_generate.dart';
+import '../../../../logic/controller/song_controller.dart';
 import '../../../../model/ui_model/play_screen_model.dart';
 import '../../../widgets/custom_color_container.dart';
 
@@ -11,10 +12,10 @@ class ReorderListUpNextSongTile extends StatefulWidget {
   const ReorderListUpNextSongTile({
     Key? key,
     required this.playScreenModel,
-    required this.index,
+    required this.index, required this.songController,
     
   }) : super(key: key);
-
+final SongController songController;
   final List<PlayScreenModel> playScreenModel;
   final int index;
 

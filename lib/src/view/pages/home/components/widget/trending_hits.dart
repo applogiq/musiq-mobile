@@ -93,6 +93,39 @@ class TrendingHitsWidget extends StatelessWidget {
                     child: InkWell(
                       onTap: () {
                         List<PlayScreenModel> playScreenModel = [];
+                             print(trendingHitsModel
+                                                    .records[0].id);
+                                                for (int i = 0;
+                                                    i <
+                                                        trendingHitsModel
+                                                            .records.length;
+                                                    i++) {
+                                                  playScreenModel.add(PlayScreenModel(
+                                                      id: trendingHitsModel
+                                                          .records[i].id,
+                                                      songName: trendingHitsModel
+                                                          .records[i]
+                                                          .songName,
+                                                      musicDirectorName:
+                                                          trendingHitsModel
+                                                                  .records[i]
+                                                                  .musicDirectorName[
+                                                              0],
+                                                      albumId: trendingHitsModel
+                                                          .records[i]
+                                                          .albumId,
+                                                      albumName: trendingHitsModel
+                                                          .records[i]
+                                                          .albumName));
+                                                }
+                                                print(playScreenModel.length);
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            MainPlayScreen(
+                                                                playScreenModel:
+                                                                    playScreenModel,
+                                                                index: 0)));
                         //  playScreenModel.add(PlayScreenModel(id: t, songName: songName, musicDirectorName: musicDirectorName, albumId: albumId, albumName: albumName))
                         // print(recentlyPlayed.records[index].id);
                         // for(int i=0;i<recentlyPlayed.records.length;i++){
@@ -125,19 +158,57 @@ class TrendingHitsWidget extends StatelessWidget {
                     child: Column(
                       children: [
                         Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              image: DecorationImage(
-                                image: NetworkImage(generateSongImageUrl(
-                                    trendingHitsModel.records[1].albumName,
-                                    trendingHitsModel.records[1].albumId)),
-                                fit: BoxFit.fill,
+                          child: InkWell(
+                            onTap: (){
+                               List<PlayScreenModel> playScreenModel = [];
+                             print(trendingHitsModel
+                                                    .records[0].id);
+                                                for (int i = 0;
+                                                    i <
+                                                        trendingHitsModel
+                                                            .records.length;
+                                                    i++) {
+                                                  playScreenModel.add(PlayScreenModel(
+                                                      id: trendingHitsModel
+                                                          .records[i].id,
+                                                      songName: trendingHitsModel
+                                                          .records[i]
+                                                          .songName,
+                                                      musicDirectorName:
+                                                          trendingHitsModel
+                                                                  .records[i]
+                                                                  .musicDirectorName[
+                                                              0],
+                                                      albumId: trendingHitsModel
+                                                          .records[i]
+                                                          .albumId,
+                                                      albumName: trendingHitsModel
+                                                          .records[i]
+                                                          .albumName));
+                                                }
+                                                print(playScreenModel.length);
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            MainPlayScreen(
+                                                                playScreenModel:
+                                                                    playScreenModel,
+                                                                index: 1)));
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                image: DecorationImage(
+                                  image: NetworkImage(generateSongImageUrl(
+                                      trendingHitsModel.records[1].albumName,
+                                      trendingHitsModel.records[1].albumId)),
+                                  fit: BoxFit.fill,
+                                ),
                               ),
-                            ),
-                            child: Align(
-                              alignment: Alignment.bottomRight,
-                              child: PlayButtonWidget(),
+                              child: Align(
+                                alignment: Alignment.bottomRight,
+                                child: PlayButtonWidget(),
+                              ),
                             ),
                           ),
                         ),
@@ -145,21 +216,59 @@ class TrendingHitsWidget extends StatelessWidget {
                           height: 12,
                         ),
                         Expanded(
-                            child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            image: DecorationImage(
-                              image: NetworkImage(generateSongImageUrl(
-                                  trendingHitsModel.records[2].albumName,
-                                  trendingHitsModel.records[2].albumId)),
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          child: Align(
-                            alignment: Alignment.bottomRight,
-                            child: PlayButtonWidget(),
-                          ),
-                        )),
+                            child: InkWell(
+                              onTap: (){
+                                 List<PlayScreenModel> playScreenModel = [];
+                             print(trendingHitsModel
+                                                    .records[0].id);
+                                                for (int i = 0;
+                                                    i <
+                                                        trendingHitsModel
+                                                            .records.length;
+                                                    i++) {
+                                                  playScreenModel.add(PlayScreenModel(
+                                                      id: trendingHitsModel
+                                                          .records[i].id,
+                                                      songName: trendingHitsModel
+                                                          .records[i]
+                                                          .songName,
+                                                      musicDirectorName:
+                                                          trendingHitsModel
+                                                                  .records[i]
+                                                                  .musicDirectorName[
+                                                              0],
+                                                      albumId: trendingHitsModel
+                                                          .records[i]
+                                                          .albumId,
+                                                      albumName: trendingHitsModel
+                                                          .records[i]
+                                                          .albumName));
+                                                }
+                                                print(playScreenModel.length);
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            MainPlayScreen(
+                                                                playScreenModel:
+                                                                    playScreenModel,
+                                                                index: 2)));
+                              },
+                              child: Container(
+                                                      decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              image: DecorationImage(
+                                image: NetworkImage(generateSongImageUrl(
+                                    trendingHitsModel.records[2].albumName,
+                                    trendingHitsModel.records[2].albumId)),
+                                fit: BoxFit.fill,
+                              ),
+                                                      ),
+                                                      child: Align(
+                              alignment: Alignment.bottomRight,
+                              child: PlayButtonWidget(),
+                                                      ),
+                                                    ),
+                            )),
                       ],
                     ),
                   ),

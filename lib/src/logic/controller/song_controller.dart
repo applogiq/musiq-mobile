@@ -1,14 +1,17 @@
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musiq/src/logic/services/api_route.dart';
+import 'package:musiq/src/model/api_model/favourite_model.dart';
 import 'package:musiq/src/model/ui_model/play_screen_model.dart';
 
 class SongController extends GetxController {
+  APIRoute apiRoute=APIRoute();
   var selectedIndex = 0.obs;
   var nextIndex = 0.obs;
   var isShuffle = false.obs;
   var isLyricsHide=false.obs;
   var isFav = false.obs;
+  late Favourite favourite;
   var isRepeated = false.obs;
   var isBottomSheetView = false.obs;
   late AudioPlayer player;
@@ -17,11 +20,20 @@ class SongController extends GetxController {
   var totalDurationValue = 0.obs;
   var progressDurationValue = 0.obs;
   var bufferDurationValue = 0.obs;
+  List favId=[];
   List<PlayScreenModel> songList = [];
   loadSong(List<PlayScreenModel> songPlayList, int index) async {
+    
     songList = songPlayList;
     player = AudioPlayer();
+     favourite = await apiRoute.getFavourites();
 
+    for(int i=0;i<favourite.records.length;i++){
+      favId.add(favourite.records[i].id);
+    }
+    // if(player.playing){
+    //   player.stop();
+    // }
 //    if(isPlaying==player.playerState.playing){
 // print("ALREADY PLAYING");
 //    }
@@ -38,7 +50,7 @@ class SongController extends GetxController {
       initialPosition: Duration.zero,
     );
     selectedIndex.value = index;
-
+update();
     //  }
   }
 
@@ -61,7 +73,7 @@ class SongController extends GetxController {
       initialPosition: Duration.zero,
     );
     selectedIndex.value = index;
-
+update();
     //  }
   }
 
@@ -142,9 +154,12 @@ class SongController extends GetxController {
     }
   }
 
-  favourite() {}
+  
   addToPlaylist() {}
   play() {
+    if(player.playing){
+      player.stop();
+    }
     putRecentSongs(
         songList[int.parse(player.currentIndex.toString())].id.toString());
     isPlay.toggle();
@@ -195,11 +210,28 @@ class SongController extends GetxController {
                                       .toString()};
                                       print(params);
     if (isFav.value == true) {
-
+ var res=await apiRoute.deleteFavourite(params);
+   print(res.statusCode);
+    if(res.statusCode==200){
+       favourite = await apiRoute.getFavourites();
+favId.clear();
+    for(int i=0;i<favourite.records.length;i++){
+      favId.add(favourite.records[i].id);
+    }
+    }
     }
     else{
-      // apiRoute.addToFavourite(params);
+    var res=await apiRoute.addToFavourite(params);
+    print(res.statusCode);
+    if(res.statusCode==200){
+       favourite = await apiRoute.getFavourites();
+favId.clear();
+    for(int i=0;i<favourite.records.length;i++){
+      favId.add(favourite.records[i].id);
+    }
+    }
     }
     isFav.toggle();
+    update();
   }
 }

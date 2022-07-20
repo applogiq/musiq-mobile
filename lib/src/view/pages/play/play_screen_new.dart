@@ -57,7 +57,7 @@ class MainPlayScreen extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               children: [
                 Container(
-                  height: MediaQuery.of(context).size.height - 20,
+                  height: MediaQuery.of(context).size.height - 70,
                   child: Column(
                     children: [
                       Expanded(
@@ -67,138 +67,144 @@ class MainPlayScreen extends StatelessWidget {
                             initState: (_) {},
                             builder: (_) {
                               return Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: NetworkImage(generateSongImageUrl(
-                                    songController
-                                      .songList[
-                                          songController.player.currentIndex ??
-                                              0]
-                                      .albumName
-                                      .toString(),
-                                      songController
-                                      .songList[
-                                          songController.player.currentIndex ??
-                                              0]
-                                      .albumId
-                                      .toString(),
-                                          )
-                                      // playScreenModel[index].
-                                      // "https://mir-s3-cdn-cf.behance.net/project_modules/fs/fe529a64193929.5aca8500ba9ab.jpg",
-                                      // "${APIConstants.SONG_BASE_URL}public/music/tamil/${ playScreenModel[index].albumName[0].toUpperCase()}/${ playScreenModel[index].albumName}/image/${ playScreenModel[index].albumId}.png"
-                                      ),
-                                  fit: BoxFit.cover)),
-                          child: Stack(children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      stops: [
-                                    0.6,
-                                    0.99
-                                  ],
-                                      colors: [
-                                    Color.fromRGBO(22, 21, 28, 0),
-                                    Color.fromRGBO(22, 21, 28, 1),
-                                  ])),
-                            ),
-                            Container(
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter,
-                                              //     stops: [
-                                              //   0.4,
-                                              //   0.01,
-                                              // ],
-                                              colors: [
-                                            Color.fromRGBO(22, 21, 28, 0.3),
-                                            Color.fromRGBO(22, 21, 28, 0),
-                                          ])),
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: NetworkImage(
+                                            generateSongImageUrl(
+                                          songController
+                                              .songList[songController
+                                                      .player.currentIndex ??
+                                                  0]
+                                              .albumName
+                                              .toString(),
+                                          songController
+                                              .songList[songController
+                                                      .player.currentIndex ??
+                                                  0]
+                                              .albumId
+                                              .toString(),
+                                        )
+                                            // playScreenModel[index].
+                                            // "https://mir-s3-cdn-cf.behance.net/project_modules/fs/fe529a64193929.5aca8500ba9ab.jpg",
+                                            // "${APIConstants.SONG_BASE_URL}public/music/tamil/${ playScreenModel[index].albumName[0].toUpperCase()}/${ playScreenModel[index].albumName}/image/${ playScreenModel[index].albumId}.png"
+                                            ),
+                                        fit: BoxFit.cover)),
+                                child: Stack(children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                            stops: [
+                                          0.6,
+                                          0.99
+                                        ],
+                                            colors: [
+                                          Color.fromRGBO(22, 21, 28, 0),
+                                          Color.fromRGBO(22, 21, 28, 1),
+                                        ])),
+                                  ),
+                                  Container(
+                                    child: Column(
+                                      children: [
+                                        Expanded(
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                gradient: LinearGradient(
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment.bottomCenter,
+                                                    //     stops: [
+                                                    //   0.4,
+                                                    //   0.01,
+                                                    // ],
+                                                    colors: [
+                                                  Color.fromRGBO(
+                                                      22, 21, 28, 0.3),
+                                                  Color.fromRGBO(22, 21, 28, 0),
+                                                ])),
+                                          ),
+                                        ),
+                                        Expanded(
+                                            child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 0.0),
+                                          child: Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: songController
+                                                        .isLyricsHide ==
+                                                    true
+                                                ? SizedBox(
+                                                    height: 0,
+                                                    width: 0,
+                                                  )
+                                                : Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                        "Waste time with a masterpiece,",
+                                                        style: fontWeight500(
+                                                            size: 16.0),
+                                                      ),
+                                                      Text(
+                                                        "don't waste time with a masterpiece (huh)",
+                                                        style: fontWeight500(
+                                                            size: 16.0,
+                                                            color: CustomColor
+                                                                .subTitle),
+                                                      ),
+                                                      Text(
+                                                          "You should be rollin' with me,",
+                                                          style: fontWeight500(
+                                                              size: 16.0,
+                                                              color: CustomColor
+                                                                  .subTitle)),
+                                                    ],
+                                                  ),
+                                          ),
+                                        ))
+                                      ],
                                     ),
                                   ),
-                                  Expanded(
-                                      child: Padding(
-                                    padding: const EdgeInsets.only(bottom: 0.0),
-                                    child: Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: songController.isLyricsHide == true
-                                          ? SizedBox(
-                                              height: 0,
-                                              width: 0,
-                                            )
-                                          : Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                Text(
-                                                  "Waste time with a masterpiece,",
-                                                  style:
-                                                      fontWeight500(size: 16.0),
-                                                ),
-                                                Text(
-                                                  "don't waste time with a masterpiece (huh)",
-                                                  style: fontWeight500(
-                                                      size: 16.0,
-                                                      color:
-                                                          CustomColor.subTitle),
-                                                ),
-                                                Text(
-                                                    "You should be rollin' with me,",
-                                                    style: fontWeight500(
-                                                        size: 16.0,
-                                                        color: CustomColor
-                                                            .subTitle)),
-                                              ],
-                                            ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 30),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        InkWell(
+                                            onTap: () {
+                                              songController.player.stop();
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Icon(Icons
+                                                .arrow_back_ios_new_rounded)),
+                                        PopupMenuButton(
+                                          shape: RoundedRectangleBorder(),
+                                          padding: EdgeInsets.all(0.0),
+                                          itemBuilder: (ctx) => [
+                                            _buildPopupMenuItem(
+                                                'Share', 'share'),
+                                            _buildPopupMenuItem(
+                                                'Song Info', "song_info"),
+                                            _buildPopupMenuItem(
+                                                songController
+                                                        .isLyricsHide.value
+                                                    ? 'Show Lyrics'
+                                                    : 'Hide Lyrics',
+                                                "hide"),
+                                          ],
+                                        )
+                                      ],
                                     ),
-                                  ))
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16.0, vertical: 30),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  InkWell(
-                                      onTap: () {
-                                        songController.player.stop();
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Icon(
-                                          Icons.arrow_back_ios_new_rounded)),
-                                  PopupMenuButton(
-                                    shape: RoundedRectangleBorder(),
-                                    padding: EdgeInsets.all(0.0),
-                                    itemBuilder: (ctx) => [
-                                      _buildPopupMenuItem('Share', 'share'),
-                                      _buildPopupMenuItem(
-                                          'Song Info', "song_info"),
-                                      _buildPopupMenuItem(
-                                          songController.isLyricsHide.value
-                                              ? 'Show Lyrics'
-                                              : 'Hide Lyrics',
-                                          "hide"),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ]),
-                        )
-                    ;
+                                  ),
+                                ]),
+                              );
                             },
                           )),
                       Expanded(
-                        flex: 6,
+                        flex: 5,
                         child: Column(
                           children: [
                             SizedBox(
@@ -262,15 +268,25 @@ class MainPlayScreen extends StatelessWidget {
                                       print(playScreenModel[index].id);
                                       songController.checkFav();
                                     },
-                                    child: Obx(
-                                      () => Icon(
-                                        Icons.favorite_rounded,
-                                        color: songController.isFav.value
-                                            ? CustomColor.secondaryColor
-                                            : Colors.white,
-                                      ),
+                                    child: GetBuilder<SongController>(
+                                      init: SongController(),
+                                      initState: (_) {},
+                                      builder: (_) {
+                                        return Icon(
+                                          Icons.favorite_rounded,
+                                          color: songController.favId
+                                                  .contains((songController
+                                                      .songList[songController
+                                                              .player
+                                                              .currentIndex ??
+                                                          0]
+                                                      .id))
+                                              ? CustomColor.secondaryColor
+                                              : Colors.white,
+                                        );
+                                      },
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
                             ),
@@ -314,7 +330,7 @@ class MainPlayScreen extends StatelessWidget {
                 ),
                 songController.isBottomSheetView.value == true
                     ? Container(
-                        height: MediaQuery.of(context).size.height -80,
+                        height: MediaQuery.of(context).size.height - 80,
                         padding: EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           color: Color.fromRGBO(33, 33, 44, 1),
@@ -335,6 +351,7 @@ class MainPlayScreen extends StatelessWidget {
                                       Icon(Icons.keyboard_arrow_down_rounded)),
                             ),
                             ReorderListUpNextSongTile(
+                              songController: songController,
                                 playScreenModel: playScreenModel, index: index)
                           ],
                         ),
