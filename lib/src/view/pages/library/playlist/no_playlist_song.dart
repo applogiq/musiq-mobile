@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musiq/src/view/pages/home/components/pages/search_screen.dart';
-import 'package:musiq/src/view/widgets/custom_app_bar.dart';
-import 'package:musiq/src/view/widgets/custom_button.dart';
-
-import '../../../../helpers/constants/color.dart';
-import '../../../../helpers/constants/string.dart';
+import '../../../../constants/color.dart';
+import '../../../../constants/string.dart';
 import '../../../../logic/controller/library_controller.dart';
-import '../../../widgets/custom_dialog_box.dart';
+
+import '../../../../widgets/custom_button.dart';
+import '../../../../widgets/custom_dialog_box.dart';
 import '../favourites/no_favourite.dart';
 
 enum Options { play, rename, delete }

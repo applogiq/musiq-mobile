@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:musiq/src/view/pages/home/components/pages/recently_played_view_all.dart';
-import 'package:musiq/src/view/widgets/empty_box.dart';
+
+import '../../widgets/empty_box.dart';
+
 
 class HomeView extends StatefulWidget {
   @override

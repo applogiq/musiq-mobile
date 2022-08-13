@@ -6,7 +6,7 @@ import 'package:musiq/src/logic/services/api_route.dart';
 import 'package:musiq/src/model/api_model/artist_model.dart' as art;
 import 'package:musiq/src/view/pages/home/components/pages/artist_song_list_view_all.dart';
 
-import '../../helpers/constants/api.dart';
+import '../../constants/api.dart';
 import '../../model/api_model/recent_song_model.dart';
 import '../../model/api_model/song_list_model.dart';
 

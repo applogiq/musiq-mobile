@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:musiq/src/helpers/constants/color.dart';
-import 'package:musiq/src/helpers/constants/string.dart';
-import 'package:musiq/src/helpers/constants/style.dart';
 import 'package:musiq/src/helpers/utils/navigation.dart';
-import 'package:musiq/src/view/widgets/custom_button.dart';
-
-import '../../../../helpers/constants/images.dart';
+import '../../../../constants/color.dart';
+import '../../../../constants/images.dart';
+import '../../../../constants/string.dart';
+import '../../../../constants/style.dart';
+import '../../../../widgets/custom_button.dart';
 import 'components/background_image.dart';
 import 'components/logo_image.dart';
 

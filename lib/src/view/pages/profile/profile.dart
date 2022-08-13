@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:musiq/src/helpers/constants/color.dart';
-import 'package:musiq/src/helpers/constants/images.dart';
-import 'package:musiq/src/helpers/constants/style.dart';
 import 'package:musiq/src/helpers/utils/image_url_generate.dart';
 import 'package:musiq/src/helpers/utils/navigation.dart';
 import 'package:musiq/src/logic/controller/bottom_nav_controller.dart';
@@ -13,9 +10,12 @@ import 'package:musiq/src/logic/controller/profile_controller.dart';
 import 'package:musiq/src/model/profile_model.dart';
 import 'package:musiq/src/view/pages/profile/components/my_profile.dart';
 
+import '../../../constants/color.dart';
+import '../../../constants/images.dart';
+import '../../../constants/style.dart';
 import '../../../helpers/utils/auth.dart';
-import '../../widgets/custom_button.dart';
-import '../../widgets/empty_box.dart';
+import '../../../widgets/custom_button.dart';
+import '../../../widgets/empty_box.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({Key? key}) : super(key: key);

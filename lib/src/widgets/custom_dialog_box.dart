@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:musiq/src/helpers/constants/color.dart';
-import 'package:musiq/src/helpers/constants/string.dart';
-import 'package:musiq/src/helpers/constants/style.dart';
+import 'package:musiq/src/constants/color.dart';
+import 'package:musiq/src/constants/style.dart';
 import 'package:musiq/src/logic/controller/library_controller.dart';
-import 'package:musiq/src/view/widgets/custom_button.dart';
-import 'package:musiq/src/view/widgets/custom_text_field_with_error.dart';
-
+import 'package:musiq/src/widgets/custom_button.dart';
 import 'custom_color_container.dart';
 import 'empty_box.dart';
 

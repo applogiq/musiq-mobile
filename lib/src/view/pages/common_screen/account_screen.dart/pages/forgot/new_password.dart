@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/helpers/constants/style.dart';
 import 'package:musiq/src/logic/cubit/forgot/cubit/forgotpassword_cubit.dart';
-import 'package:musiq/src/view/pages/common_screen/account_screen.dart/register_screen.dart';
-import 'package:musiq/src/view/widgets/custom_button.dart';
 
-import '../../../../../../helpers/constants/string.dart';
-import '../../../../../widgets/custom_app_bar.dart';
-import '../../../../../widgets/custom_text_field_with_error.dart';
+import '../../../../../../constants/string.dart';
+import '../../../../../../constants/style.dart';
+import '../../../../../../widgets/custom_app_bar.dart';
+import '../../../../../../widgets/custom_button.dart';
+import '../../../../../../widgets/custom_text_field_with_error.dart';
+
 
 class NewPasswordScreen extends StatefulWidget {
   const NewPasswordScreen({Key? key, required this.email}) : super(key: key);

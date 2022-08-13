@@ -1,23 +1,11 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:get/get.dart';
-import 'package:musiq/src/helpers/constants/color.dart';
-import 'package:musiq/src/helpers/constants/images.dart';
-import 'package:musiq/src/helpers/constants/string.dart';
-import 'package:musiq/src/helpers/utils/image_url_generate.dart';
-import 'package:musiq/src/logic/controller/library_controller.dart';
-import 'package:musiq/src/logic/services/api_route.dart';
-import 'package:musiq/src/model/api_model/playlist_song_model.dart';
-import 'package:musiq/src/view/pages/home/components/pages/view_all/view_all_songs_list.dart';
-import 'package:musiq/src/view/pages/home/components/widget/loader.dart';
-import 'package:musiq/src/view/pages/home/components/widget/vertical_list_view.dart';
 
-import '../../../helpers/constants/style.dart';
-import '../../../model/ui_model/view_all_song_list_model.dart';
-import '../../widgets/custom_color_container.dart';
-import '../../widgets/custom_dialog_box.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:musiq/src/logic/controller/library_controller.dart';
+import 'package:musiq/src/view/pages/home/components/widget/loader.dart';
+
+import '../../../constants/color.dart';
+import '../../../constants/images.dart';
 import 'favourites/favourite_main.dart';
 import 'playlist/playlist_main.dart';
 

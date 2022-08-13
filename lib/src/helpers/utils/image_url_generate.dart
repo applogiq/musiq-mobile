@@ -1,4 +1,6 @@
-import '../constants/api.dart';
+
+
+import '../../constants/api.dart';
 
 generateArtistImageUrl(artistId) {
   var url = APIConstants.BASE_IMAGE_URL + artistId + ".png";

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/view/pages/common_screen/account_screen.dart/register_screen.dart';
-import 'package:musiq/src/view/widgets/empty_box.dart';
-
-import '../../helpers/constants/color.dart';
-import '../../helpers/constants/style.dart';
+import 'package:musiq/src/widgets/empty_box.dart';
+import '../constants/color.dart';
+import '../constants/style.dart';
 import 'custom_color_container.dart';
 
 class PasswordTextFieldWithError extends StatefulWidget {

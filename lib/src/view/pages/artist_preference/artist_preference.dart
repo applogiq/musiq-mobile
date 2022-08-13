@@ -6,10 +6,12 @@ import 'package:musiq/src/logic/controller/artist_preference_controller.dart';
 import 'package:musiq/src/view/pages/bottom_nav_bar/main_page.dart';
 import 'package:musiq/src/view/pages/common_screen/offline_screen.dart';
 import 'package:musiq/src/view/pages/home/components/widget/loader.dart';
-import 'package:musiq/src/view/widgets/empty_box.dart';
+
 
 import '../../../logic/controller/network_controller.dart';
-import '../../widgets/custom_button.dart';
+
+import '../../../widgets/custom_button.dart';
+import '../../../widgets/empty_box.dart';
 import '../common_screen/account_screen.dart/select_your fav_artist.dart';
 import 'artist_preference_body.dart';
 

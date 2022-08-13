@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../../../helpers/constants/color.dart';
+import '../../../../constants/color.dart';
 import '../../../../logic/controller/bottom_nav_controller.dart';
 import 'bottom_nav_item.dart';
 

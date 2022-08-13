@@ -1,19 +1,17 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:musiq/src/helpers/constants/string.dart';
+import 'package:musiq/src/constants/color.dart';
+import 'package:musiq/src/constants/string.dart';
 import 'package:musiq/src/helpers/utils/image_url_generate.dart';
+import 'package:musiq/src/widgets/custom_button.dart';
+import 'package:musiq/src/widgets/custom_color_container.dart';
+import 'package:musiq/src/widgets/empty_box.dart';
 
-import '../../../../helpers/constants/color.dart';
-import '../../../../helpers/constants/images.dart';
-import '../../../../helpers/constants/style.dart';
+import '../../../../constants/images.dart';
+import '../../../../constants/style.dart';
 import '../../../../logic/controller/profile_controller.dart';
-import '../../../widgets/custom_app_bar.dart';
-import '../../../widgets/custom_button.dart';
-import '../../../widgets/custom_color_container.dart';
-import '../../../widgets/empty_box.dart';
+import '../../../../widgets/custom_app_bar.dart';
 import 'image_picker_sheet.dart';
 
 class MyProfile extends StatelessWidget {

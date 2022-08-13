@@ -1,15 +1,12 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:musiq/src/view/pages/common_screen/account_screen.dart/register_screen.dart';
-import 'package:musiq/src/view/widgets/custom_color_container.dart';
-import 'package:musiq/src/view/widgets/empty_box.dart';
+import 'package:musiq/src/widgets/custom_color_container.dart';
+import 'package:musiq/src/widgets/empty_box.dart';
 
-import '../../helpers/constants/color.dart';
-import '../../helpers/constants/style.dart';
-
+import '../constants/color.dart';
+import '../constants/style.dart';
 class CustomPasswordTextField extends StatefulWidget {
   const CustomPasswordTextField({Key? key, required this.stream,required this.
 cubit, this.onChange, required this.onTap, required this.obscure, required this.label,  }) : super(key: key);

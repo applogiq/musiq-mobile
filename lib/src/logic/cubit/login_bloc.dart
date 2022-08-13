@@ -4,13 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:musiq/src/helpers/constants/api.dart';
-import 'package:musiq/src/helpers/constants/string.dart';
 import 'package:musiq/src/helpers/utils/navigation.dart';
 import 'package:musiq/src/view/pages/artist_preference/artist_preference.dart';
 import 'package:musiq/src/view/pages/common_screen/account_screen.dart/select_your%20fav_artist.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../constants/api.dart';
+import '../../constants/string.dart';
 import '../../helpers/utils/validation.dart';
 import 'package:http/http.dart' as http;
 

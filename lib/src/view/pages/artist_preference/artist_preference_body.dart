@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:musiq/src/helpers/constants/images.dart';
 import 'package:musiq/src/helpers/utils/image_url_generate.dart';
 import 'package:musiq/src/model/api_model/artist_model.dart';
 import 'package:musiq/src/view/pages/home/components/widget/artist_list_view.dart';
 
-import '../../../helpers/constants/color.dart';
-import '../../../helpers/constants/style.dart';
+import '../../../constants/color.dart';
+import '../../../constants/images.dart';
+import '../../../constants/style.dart';
 import '../../../logic/controller/artist_preference_controller.dart';
-import '../../widgets/custom_color_container.dart';
+import '../../../widgets/custom_color_container.dart';
+
 
 class ArtistPreferenceScreenBody extends StatelessWidget {
   ArtistPreferenceScreenBody({Key? key, required this.artist_list})

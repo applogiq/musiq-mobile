@@ -4,7 +4,7 @@ import 'package:musiq/src/view/pages/home/home_screen.dart';
 import 'package:musiq/src/view/pages/library/library.dart';
 import 'package:musiq/src/view/pages/profile/profile.dart';
 
-import '../../helpers/constants/color.dart';
+import '../../constants/color.dart';
 import '../../model/ui_model/bottom_nav_model.dart';
 
 class BottomNavigationBarController extends GetxController {

@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/helpers/constants/color.dart';
-import 'package:musiq/src/helpers/constants/style.dart';
-import 'package:musiq/src/model/api_model/song_list_model.dart';
-import 'package:musiq/src/view/pages/play/play_screen.dart';
-import 'package:musiq/src/view/widgets/custom_color_container.dart';
 
-import '../../../../../helpers/constants/api.dart';
-
+import '../../../../../constants/style.dart';
+import '../../../../../widgets/custom_color_container.dart';
 class CustomSongVerticalList extends StatelessWidget {
   CustomSongVerticalList(
       {Key? key, required this.songList, this.playButton = true})

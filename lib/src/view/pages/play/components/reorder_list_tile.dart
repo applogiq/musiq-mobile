@@ -1,12 +1,13 @@
 
 import 'package:flutter/material.dart';
 
-import '../../../../helpers/constants/color.dart';
-import '../../../../helpers/constants/style.dart';
+import '../../../../constants/color.dart';
+import '../../../../constants/style.dart';
 import '../../../../helpers/utils/image_url_generate.dart';
 import '../../../../logic/controller/song_controller.dart';
 import '../../../../model/ui_model/play_screen_model.dart';
-import '../../../widgets/custom_color_container.dart';
+import '../../../../widgets/custom_color_container.dart';
+
 
 class ReorderListUpNextSongTile extends StatefulWidget {
   const ReorderListUpNextSongTile({

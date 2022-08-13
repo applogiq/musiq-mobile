@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
-import '../../../../../helpers/constants/images.dart';
-
+import '../../../../../constants/images.dart';
 class LoaderScreen extends StatelessWidget {
   const LoaderScreen({Key? key}) : super(key: key);
 

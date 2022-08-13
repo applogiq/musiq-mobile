@@ -1,23 +1,18 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:musiq/src/helpers/constants/color.dart';
-import 'package:musiq/src/helpers/constants/images.dart';
-import 'package:musiq/src/helpers/constants/style.dart';
 import 'package:musiq/src/logic/services/api_call.dart';
 import 'package:musiq/src/logic/services/api_route.dart';
 import 'package:musiq/src/model/api_model/artist_model.dart';
 import 'package:musiq/src/model/api_model/song_list_model.dart';
 import 'package:musiq/src/view/pages/home/components/pages/view_all/view_all_songs_list.dart';
-import 'package:musiq/src/view/pages/home/components/pages/view_all_screen.dart';
-import 'package:musiq/src/view/pages/home/home_screen.dart';
 
-import '../../../../../helpers/constants/api.dart';
+import '../../../../../constants/color.dart';
+import '../../../../../constants/images.dart';
+import '../../../../../constants/style.dart';
 import '../../../../../helpers/utils/image_url_generate.dart';
 import '../../../../../model/ui_model/view_all_song_list_model.dart';
-import '../../../../widgets/custom_color_container.dart';
+import '../../../../../widgets/custom_color_container.dart';
 import '../pages/artist_view_all_screen.dart';
-import 'horizontal_list_view.dart';
 
 class ArtistListView extends StatelessWidget {
   ArtistListView({

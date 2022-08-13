@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:musiq/src/helpers/constants/color.dart';
+
+import '../../constants/color.dart';
 
 class AppHelper {
   static Future<CroppedFile?> cropImage(File? imageFile) async {

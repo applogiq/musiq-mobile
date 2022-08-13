@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
-import 'package:musiq/src/helpers/constants/color.dart';
+
 import 'package:musiq/src/logic/cubit/forgot/cubit/forgotpassword_cubit.dart';
 
-import '../../../../../../helpers/constants/string.dart';
-import '../../../../../../helpers/constants/style.dart';
-import '../../../../../widgets/custom_app_bar.dart';
-import '../../../../../widgets/custom_button.dart';
-import '../../../../../widgets/empty_box.dart';
+import '../../../../../../constants/color.dart';
+import '../../../../../../constants/string.dart';
+import '../../../../../../constants/style.dart';
+import '../../../../../../widgets/custom_app_bar.dart';
+import '../../../../../../widgets/custom_button.dart';
+import '../../../../../../widgets/empty_box.dart';
+
 
 class OTPScreen extends StatefulWidget {
   OTPScreen({

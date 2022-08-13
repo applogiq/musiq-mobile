@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/helpers/constants/images.dart';
+
+import '../../../../../constants/images.dart';
 
 class LogoWidget extends StatelessWidget {
   const LogoWidget({

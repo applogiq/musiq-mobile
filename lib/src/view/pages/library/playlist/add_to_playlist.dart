@@ -1,25 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:musiq/src/view/pages/library/playlist/playlist_floating_button.dart';
-import 'package:musiq/src/view/widgets/custom_app_bar.dart';
-
-import '../../../../helpers/constants/color.dart';
-import '../../../../helpers/constants/string.dart';
-import '../../../../helpers/constants/style.dart';
-import '../../../../helpers/constants/style/box_decoration.dart';
+import '../../../../constants/color.dart';
+import '../../../../constants/string.dart';
+import '../../../../constants/style.dart';
+import '../../../../constants/style/box_decoration.dart';
 import '../../../../helpers/utils/image_url_generate.dart';
 import '../../../../logic/controller/library_controller.dart';
 import '../../../../logic/services/api_route.dart';
-import '../../../../model/api_model/playlist_song_model.dart';
-import '../../../../model/ui_model/view_all_song_list_model.dart';
-import '../../../widgets/custom_color_container.dart';
-import '../../home/components/pages/view_all/view_all_songs_list.dart';
+import '../../../../widgets/custom_app_bar.dart';
+import '../../../../widgets/custom_color_container.dart';
 import '../../home/components/widget/loader.dart';
 import '../favourites/no_favourite.dart';
-import 'no_playlist_song.dart';
 
 class AddToPlaylist extends StatelessWidget {
    AddToPlaylist({Key? key, required this.song_id}) : super(key: key);

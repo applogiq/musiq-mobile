@@ -1,13 +1,12 @@
 
 import 'package:flutter/material.dart';
-import 'package:musiq/src/helpers/constants/style.dart';
+import 'package:musiq/src/constants/color.dart';
+import 'package:musiq/src/constants/style.dart';
 import 'package:musiq/src/helpers/utils/image_url_generate.dart';
 import 'package:musiq/src/model/api_model/trending_hits_model.dart';
+import 'package:musiq/src/widgets/custom_color_container.dart';
 
-import '../../../../../helpers/constants/color.dart';
-import '../../../../../helpers/constants/images.dart';
 import '../../../../../model/ui_model/play_screen_model.dart';
-import '../../../../widgets/custom_color_container.dart';
 import '../../../play/play_screen_new.dart';
 import '../widget/horizontal_list_view.dart';
 

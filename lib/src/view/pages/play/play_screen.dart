@@ -5,9 +5,6 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:musiq/src/helpers/constants/color.dart';
-import 'package:musiq/src/helpers/constants/images.dart';
-import 'package:musiq/src/helpers/constants/style.dart';
 import 'package:musiq/src/logic/controller/song_controller.dart';
 import 'package:musiq/src/logic/progress/audio_progress.dart';
 import 'package:musiq/src/model/api_model/song_list_model.dart';
@@ -15,9 +12,11 @@ import 'package:musiq/src/view/pages/home/components/widget/play_button_widget.d
 import 'package:musiq/src/view/pages/home/components/widget/reordable_vertical_list.dart';
 import 'package:musiq/src/view/pages/home/components/widget/vertical_list_view.dart';
 import 'package:musiq/src/view/pages/play/play_screen_new.dart';
-import 'package:musiq/src/view/widgets/empty_box.dart';
 
-import '../../../helpers/constants/api.dart';
+import '../../../constants/api.dart';
+import '../../../constants/color.dart';
+import '../../../constants/style.dart';
+import '../../../widgets/empty_box.dart';
 
 class PlayScreen extends StatefulWidget {
   PlayScreen(

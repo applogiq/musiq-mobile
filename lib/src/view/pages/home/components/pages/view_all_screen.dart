@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:musiq/src/helpers/constants/color.dart';
-import 'package:musiq/src/helpers/constants/images.dart';
-import 'package:musiq/src/helpers/constants/style.dart';
+import 'package:musiq/src/constants/color.dart';
+import 'package:musiq/src/constants/style.dart';
 import 'package:musiq/src/model/api_model/song_list_model.dart';
 import 'package:musiq/src/view/pages/home/components/widget/play_button_widget.dart';
-import 'package:musiq/src/view/pages/home/components/widget/vertical_list_view.dart';
-import 'package:musiq/src/view/widgets/custom_button.dart';
-
-import '../../../../../helpers/constants/api.dart';
-import '../../../play/play_screen.dart';
+import 'package:musiq/src/widgets/custom_button.dart';
 
 class ViewAllScreen extends StatefulWidget {
   ViewAllScreen(

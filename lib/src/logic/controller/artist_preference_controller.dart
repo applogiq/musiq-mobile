@@ -5,7 +5,8 @@ import 'package:get/get.dart';
 import 'package:musiq/src/logic/controller/basic_controller.dart';
 import 'package:musiq/src/model/api_model/artist_model.dart';
 
-import '../../helpers/constants/api.dart';
+
+import '../../constants/api.dart';
 import '../../model/api_model/user_model.dart';
 import '../services/api_call.dart';
 import '../services/api_route.dart';

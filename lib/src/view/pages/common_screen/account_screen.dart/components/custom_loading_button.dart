@@ -1,12 +1,9 @@
 
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:musiq/src/helpers/constants/color.dart';
-import 'package:musiq/src/helpers/constants/style.dart';
 
+import '../../../../../constants/color.dart';
+import '../../../../../constants/style.dart';
 import '../../../../../logic/cubit/login_bloc.dart';
 
 class CustomProgressButton extends StatefulWidget {

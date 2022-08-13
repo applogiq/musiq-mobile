@@ -11,7 +11,8 @@ import 'package:musiq/src/model/api_model/playlist_song_model.dart';
 import 'package:musiq/src/model/api_model/song_list_model.dart';
 import 'package:musiq/src/model/api_model/trending_hits_model.dart';
 
-import '../../helpers/constants/api.dart';
+
+import '../../constants/api.dart';
 import '../../model/api_model/artist_model.dart';
 import '../../model/api_model/recent_song_model.dart';
 

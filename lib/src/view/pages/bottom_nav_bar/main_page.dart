@@ -13,16 +13,16 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      final BottomNavigationBarController barController =
-        Get.put(BottomNavigationBarController());
-          final NetworkController _networkController = Get.find<NetworkController>();
+      // final BottomNavigationBarController barController =
+      //   Get.put(BottomNavigationBarController());
+      //     final NetworkController _networkController = Get.find<NetworkController>();
 
     double width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
-        body:Obx(() =>_networkController.connectionType.value==0?OfflineScreen(): barController.pages[barController.selectedBottomIndex.value],),
-        bottomNavigationBar: BottomNavigationBarWidget(
-          width: width, navBarController: barController),
+        // body:Obx(() =>_networkController.connectionType.value==0?OfflineScreen(): barController.pages[barController.selectedBottomIndex.value],),
+        // bottomNavigationBar: BottomNavigationBarWidget(
+        //   width: width, navBarController: barController),
       ),
     );
   }

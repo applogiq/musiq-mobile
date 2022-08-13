@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/helpers/constants/string.dart';
 import 'package:musiq/src/view/pages/library/favourites/no_favourite.dart';
 
+import '../../../../constants/string.dart';
 import '../../../../logic/controller/library_controller.dart';
 import '../../home/components/pages/view_all/view_all_songs_list.dart';
 

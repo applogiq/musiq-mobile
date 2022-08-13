@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:musiq/src/helpers/constants/color.dart';
-import 'package:musiq/src/helpers/constants/images.dart';
-import 'package:musiq/src/helpers/constants/string.dart';
-import 'package:musiq/src/helpers/constants/style.dart';
-import 'package:musiq/src/view/widgets/custom_button.dart';
+
+import '../../../constants/color.dart';
+import '../../../constants/images.dart';
+import '../../../constants/string.dart';
+import '../../../constants/style.dart';
+import '../../../widgets/custom_button.dart';
 
 class OfflineScreen extends StatelessWidget {
   const OfflineScreen({Key? key}) : super(key: key);

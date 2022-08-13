@@ -6,7 +6,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:musiq/src/view/pages/artist_preference/artist_preference.dart';
 
-import '../../helpers/constants/api.dart';
+
+import '../../constants/api.dart';
 import '../../helpers/utils/navigation.dart';
 import '../../model/api_model/user_model.dart';
 import '../../view/pages/common_screen/account_screen.dart/select_your fav_artist.dart';
@@ -60,4 +61,6 @@ class BasicController extends GetxController {
       Navigation.navigateReplaceToScreen(context, 'onboarding/');
     }
   }
+
+
 }

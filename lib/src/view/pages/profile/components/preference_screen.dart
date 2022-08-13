@@ -1,11 +1,8 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:musiq/src/helpers/constants/color.dart';
-import 'package:musiq/src/view/widgets/custom_switch.dart';
 
-import '../../../widgets/custom_app_bar.dart';
+import 'package:flutter/material.dart';
+import 'package:musiq/src/widgets/custom_app_bar.dart';
+
+import '../../../../constants/color.dart';
 
 class PreferenceScreen extends StatelessWidget {
   const PreferenceScreen({Key? key}) : super(key: key);

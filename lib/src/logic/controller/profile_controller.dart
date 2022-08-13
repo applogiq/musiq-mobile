@@ -7,9 +7,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 // import 'package:image_crop/image_crop.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:musiq/src/helpers/constants/string.dart';
 import 'package:musiq/src/logic/controller/basic_controller.dart';
 
+import '../../constants/string.dart';
 import '../../helpers/utils/app_helper.dart';
 import '../../model/profile_model.dart';
 import '../services/api_route.dart';

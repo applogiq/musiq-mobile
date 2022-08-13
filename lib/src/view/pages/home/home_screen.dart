@@ -1,15 +1,8 @@
-import 'dart:convert';
+
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:musiq/src/helpers/constants/color.dart';
-import 'package:musiq/src/helpers/constants/images.dart';
-import 'package:musiq/src/helpers/constants/style.dart';
 import 'package:musiq/src/helpers/utils/image_url_generate.dart';
-import 'package:musiq/src/helpers/utils/play_navigation.dart';
-import 'package:musiq/src/logic/services/api_call.dart';
 import 'package:musiq/src/logic/services/api_route.dart';
 import 'package:musiq/src/model/api_model/album_model.dart';
 import 'package:musiq/src/model/api_model/aura_model.dart';
@@ -17,25 +10,21 @@ import 'package:musiq/src/model/api_model/aura_song_model.dart';
 import 'package:musiq/src/model/api_model/trending_hits_model.dart';
 import 'package:musiq/src/model/ui_model/play_screen_model.dart';
 import 'package:musiq/src/model/ui_model/view_all_song_list_model.dart';
-import 'package:musiq/src/view/pages/home/components/pages/recently_played_view_all.dart';
-import 'package:musiq/src/view/pages/home/components/pages/search_screen.dart';
 import 'package:musiq/src/view/pages/home/components/pages/view_all/view_all_songs_list.dart';
-import 'package:musiq/src/view/pages/home/components/pages/view_all_screen.dart';
 import 'package:musiq/src/view/pages/home/components/widget/artist_list_view.dart';
-import 'package:musiq/src/view/pages/home/components/widget/horizontal_list_view.dart';
 import 'package:musiq/src/view/pages/home/components/widget/loader.dart';
 import 'package:musiq/src/view/pages/home/components/widget/trending_hits.dart';
-import 'package:musiq/src/view/pages/home/components/widget/vertical_list_view.dart';
 import 'package:musiq/src/view/pages/play/play_screen_new.dart';
-import 'package:musiq/src/view/widgets/custom_color_container.dart';
-import 'package:musiq/src/view/widgets/empty_box.dart';
 
-import '../../../helpers/constants/api.dart';
-import '../../../model/api_model/artist_model.dart';
-import 'package:http/http.dart' as http;
 
+import '../../../constants/api.dart';
+import '../../../constants/color.dart';
+import '../../../constants/images.dart';
+import '../../../constants/style.dart';
 import '../../../model/api_model/recent_song_model.dart';
 import '../../../model/api_model/song_list_model.dart';
+import '../../../widgets/custom_color_container.dart';
+import '../../../widgets/empty_box.dart';
 import 'components/home_components/based_on_your_interest.dart';
 import 'components/home_components/current_mood.dart';
 import 'components/home_components/new_release.dart';

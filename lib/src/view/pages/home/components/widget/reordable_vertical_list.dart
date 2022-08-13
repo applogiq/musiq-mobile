@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/helpers/constants/color.dart';
-import 'package:musiq/src/helpers/constants/style.dart';
-import 'package:musiq/src/view/pages/play/play_screen.dart';
-import 'package:musiq/src/view/widgets/custom_color_container.dart';
 
+import '../../../../../constants/color.dart';
+import '../../../../../constants/style.dart';
 import '../../../../../model/Image_model.dart';
+import '../../../../../widgets/custom_color_container.dart';
 
 class CustomReorderableVerticalList extends StatefulWidget {
   CustomReorderableVerticalList(

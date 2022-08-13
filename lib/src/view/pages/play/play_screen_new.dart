@@ -8,12 +8,10 @@ import 'package:musiq/src/view/pages/home/components/pages/view_all/view_all_son
 import 'package:musiq/src/view/pages/library/playlist/add_to_playlist.dart';
 import 'package:musiq/src/view/pages/play/play_screen.dart';
 
-import '../../../helpers/constants/api.dart';
-import '../../../helpers/constants/color.dart';
-import '../../../helpers/constants/style.dart';
+import '../../../constants/color.dart';
+import '../../../constants/style.dart';
 import '../../../logic/controller/song_controller.dart';
-import '../../widgets/custom_color_container.dart';
-import '../../widgets/empty_box.dart';
+import '../../../widgets/empty_box.dart';
 import 'components/reorder_list_tile.dart';
 
 class MainPlayScreen extends StatelessWidget {

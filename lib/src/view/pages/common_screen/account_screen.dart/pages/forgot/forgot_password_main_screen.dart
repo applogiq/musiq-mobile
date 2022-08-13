@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:musiq/src/helpers/constants/string.dart';
-import 'package:musiq/src/helpers/utils/navigation.dart';
 import 'package:musiq/src/logic/cubit/forgot/cubit/forgotpassword_cubit.dart';
-import 'package:musiq/src/view/widgets/custom_button.dart';
-import 'package:musiq/src/view/widgets/custom_text_field_with_error.dart';
-import 'package:musiq/src/view/widgets/empty_box.dart';
 
-import '../../../../../../logic/cubit/login_bloc.dart';
-import '../../../../../widgets/custom_app_bar.dart';
+import '../../../../../../constants/string.dart';
+import '../../../../../../widgets/custom_app_bar.dart';
+import '../../../../../../widgets/custom_button.dart';
+import '../../../../../../widgets/custom_text_field_with_error.dart';
+import '../../../../../../widgets/empty_box.dart';
 
 class ForgotPasswordMainScreen extends StatefulWidget {
   const ForgotPasswordMainScreen({Key? key,}) : super(key: key);

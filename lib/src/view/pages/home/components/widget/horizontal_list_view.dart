@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/helpers/constants/images.dart';
-import 'package:musiq/src/view/pages/home/components/pages/artist_view_all_screen.dart';
-import 'package:musiq/src/view/pages/home/components/pages/view_all_screen.dart';
 import 'package:musiq/src/view/pages/home/components/widget/loader.dart';
-import 'package:musiq/src/view/widgets/custom_color_container.dart';
 
-import '../../../../../helpers/constants/color.dart';
+import '../../../../../constants/color.dart';
+import '../../../../../widgets/custom_color_container.dart';
 
 class CustomHorizontalListview extends StatelessWidget {
   CustomHorizontalListview(

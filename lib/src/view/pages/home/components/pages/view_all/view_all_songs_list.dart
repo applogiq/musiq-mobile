@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:musiq/src/constants/color.dart';
+import 'package:musiq/src/constants/style.dart';
 import 'package:musiq/src/model/ui_model/view_all_song_list_model.dart';
 import 'package:musiq/src/view/pages/home/components/pages/recently_played_view_all.dart';
-import 'package:musiq/src/view/widgets/empty_box.dart';
-
-import '../../../../../../helpers/constants/color.dart';
-import '../../../../../../helpers/constants/style.dart';
+import 'package:musiq/src/widgets/custom_color_container.dart';
 import '../../../../../../model/ui_model/play_screen_model.dart';
-import '../../../../../sandbox/app_bar_main.dart';
-import '../../../../../widgets/custom_button.dart';
-import '../../../../../widgets/custom_color_container.dart';
 import '../../../../play/play_screen_new.dart';
-import '../../widget/vertical_list_view.dart';
 
 class ViewAllScreenSongList extends StatefulWidget {
   ViewAllScreenSongList(

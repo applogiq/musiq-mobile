@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/helpers/constants/style.dart';
-
-import '../../helpers/constants/color.dart';
-
+import 'package:musiq/src/constants/color.dart';
+import 'package:musiq/src/constants/style.dart';
 class CustomButton extends StatelessWidget {
   CustomButton(
       {Key? key, required this.label, this.verticalMargin = 16,this.horizontalMargin = 16, this.isIcon = false,this.isValid=true,this.radius=12,this.isLoading=false})

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/helpers/constants/string.dart';
 import 'package:musiq/src/helpers/utils/image_url_generate.dart';
 import 'package:musiq/src/model/api_model/trending_hits_model.dart';
 import 'package:musiq/src/view/pages/home/components/pages/trending_hits_view_all_screen.dart';
 import 'package:musiq/src/view/pages/home/components/pages/view_all/view_all_songs_list.dart';
 import 'package:musiq/src/view/pages/home/components/widget/play_button_widget.dart';
 
-import '../../../../../helpers/constants/api.dart';
-import '../../../../../helpers/constants/color.dart';
+import '../../../../../constants/color.dart';
+import '../../../../../constants/string.dart';
 import '../../../../../logic/services/api_route.dart';
 import '../../../../../model/ui_model/play_screen_model.dart';
 import '../../../../../model/ui_model/view_all_song_list_model.dart';

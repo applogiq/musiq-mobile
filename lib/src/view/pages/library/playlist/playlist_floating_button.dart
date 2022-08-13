@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:musiq/src/logic/controller/library_controller.dart';
 
-import '../../../../helpers/constants/color.dart';
-import '../../../../helpers/constants/string.dart';
-import '../../../widgets/custom_dialog_box.dart';
+import '../../../../constants/color.dart';
+import '../../../../constants/string.dart';
+import '../../../../widgets/custom_dialog_box.dart';
+
 
 class PlaylistButton extends StatelessWidget {
   const PlaylistButton({

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:musiq/src/helpers/constants/color.dart';
-import 'package:musiq/src/helpers/constants/style.dart';
 import 'package:musiq/src/logic/controller/profile_controller.dart';
 import 'package:musiq/src/view/pages/profile/components/crop_image.dart';
+
+import '../../../../constants/color.dart';
+import '../../../../constants/style.dart';
 
 Widget bulidsheet(context) {
   ProfileController profileController = Get.find<ProfileController>();

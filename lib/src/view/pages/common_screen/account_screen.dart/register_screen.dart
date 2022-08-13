@@ -1,17 +1,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:musiq/src/helpers/constants/color.dart';
-import 'package:musiq/src/helpers/constants/style.dart';
 import 'package:musiq/src/view/pages/common_screen/offline_screen.dart';
-import 'package:musiq/src/view/widgets/custom_button.dart';
-import 'package:musiq/src/view/widgets/custom_color_container.dart';
-
-import '../../../../helpers/constants/string.dart';
+import '../../../../constants/color.dart';
+import '../../../../constants/string.dart';
+import '../../../../constants/style.dart';
 import '../../../../logic/controller/network_controller.dart';
 import '../../../../logic/cubit/register/register_cubit.dart';
-import '../../../widgets/custom_app_bar.dart';
-import '../../../widgets/custom_text_field_with_error.dart';
+import '../../../../widgets/custom_app_bar.dart';
+import '../../../../widgets/custom_button.dart';
+import '../../../../widgets/custom_color_container.dart';
+import '../../../../widgets/custom_text_field_with_error.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);

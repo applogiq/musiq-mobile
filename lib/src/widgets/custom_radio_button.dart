@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/helpers/constants/color.dart';
+import 'package:musiq/src/model/radio_model.dart';
 
-import '../../model/radio_model.dart';
+import '../constants/color.dart';
 
 class CustomRadio extends StatefulWidget {
+  const CustomRadio({Key? key}) : super(key: key);
+
   @override
-  createState() {
-    return new CustomRadioState();
-  }
+  createState() => CustomRadioState();
+  
 }
 
 class CustomRadioState extends State<CustomRadio> {
@@ -24,11 +25,11 @@ class CustomRadioState extends State<CustomRadio> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       shrinkWrap: true,
       itemCount: sampleData.length,
       itemBuilder: (BuildContext context, int index) {
-        return new InkWell(
+        return  InkWell(
           //highlightColor: Colors.red,
           onTap: () {
             setState(() {
@@ -36,7 +37,7 @@ class CustomRadioState extends State<CustomRadio> {
               sampleData[index].isSelected = true;
             });
           },
-          child: new RadioItem(sampleData[index]),
+          child:  RadioItem(sampleData[index]),
         );
       },
     );
@@ -49,12 +50,12 @@ class RadioItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: new EdgeInsets.symmetric(vertical: 12),
-      child: new Row(
+      padding:  const EdgeInsets.symmetric(vertical: 12),
+      child:  Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          new Container(
+           Container(
             // margin: new EdgeInsets.only(left: 10.0),
             child: Text(
               _item.text,
@@ -66,13 +67,11 @@ class RadioItem extends StatelessWidget {
             ),
           ),
           _item.isSelected
-              ? Container(
-                  child: new Center(
-                      child: Icon(
-                    Icons.check,
-                    color: Colors.white,
-                  )),
-                )
+              ? const Center(
+                  child:  Icon(
+                Icons.check,
+                color: Colors.white,
+              ))
               : Container(),
         ],
       ),

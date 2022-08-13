@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/constants/color.dart';
+import 'package:musiq/src/widgets/custom_color_container.dart';
 
-import '../../../../../helpers/constants/color.dart';
-import '../../../../widgets/custom_color_container.dart';
 import '../pages/search_screen.dart';
 
 class SearchAndNotifications extends StatelessWidget {

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:musiq/src/constants/images.dart';
+import 'package:musiq/src/constants/style.dart';
 import 'package:musiq/src/helpers/utils/image_url_generate.dart';
 import 'package:musiq/src/logic/controller/view_all_controller.dart';
 import 'package:musiq/src/model/api_model/song_list_model.dart';
+import 'package:musiq/src/widgets/custom_color_container.dart';
 
-import '../../../../../helpers/constants/images.dart';
-import '../../../../../helpers/constants/style.dart';
 import '../../../../../model/api_model/artist_model.dart' as art;
-import '../../../../widgets/custom_color_container.dart';
+
 import 'recently_played_view_all.dart';
 
 class ArtistSongList extends StatelessWidget {

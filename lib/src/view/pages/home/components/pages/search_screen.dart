@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:musiq/src/helpers/constants/style.dart';
+import 'package:musiq/src/constants/style.dart';
 import 'package:musiq/src/view/pages/home/components/widget/horizontal_list_view.dart';
-import 'package:musiq/src/view/pages/home/home_screen.dart';
 
 import '../home_components/search_notifications.dart';
 

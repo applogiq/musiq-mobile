@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/model/api_model/aura_model.dart';
+import 'package:musiq/src/widgets/custom_color_container.dart';
 
-import '../../../../../helpers/constants/api.dart';
+import '../../../../../constants/api.dart';
 import '../../../../../helpers/utils/image_url_generate.dart';
 import '../../../../../logic/services/api_route.dart';
 import '../../../../../model/api_model/aura_song_model.dart';
 import '../../../../../model/ui_model/view_all_song_list_model.dart';
-import '../../../../widgets/custom_color_container.dart';
 import '../pages/view_all/view_all_songs_list.dart';
 import '../widget/horizontal_list_view.dart';
 

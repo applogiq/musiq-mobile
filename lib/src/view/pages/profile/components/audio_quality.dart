@@ -1,13 +1,10 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:musiq/src/helpers/constants/color.dart';
-import 'package:musiq/src/helpers/constants/style.dart';
 
-import '../../../widgets/custom_app_bar.dart';
-import '../../../widgets/custom_radio_button.dart';
-
+import '../../../../constants/color.dart';
+import '../../../../constants/style.dart';
+import '../../../../widgets/custom_app_bar.dart';
+import '../../../../widgets/custom_radio_button.dart';
 class AudioQualitySettingScreen extends StatelessWidget {
   const AudioQualitySettingScreen({Key? key}) : super(key: key);
 

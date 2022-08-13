@@ -12,9 +12,10 @@ import 'package:musiq/src/view/pages/common_screen/account_screen.dart/pages/for
 import 'package:musiq/src/view/pages/common_screen/account_screen.dart/pages/forgot/new_password.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../../../../helpers/constants/api.dart';
 import 'package:http/http.dart'as http;
-import '../../../../helpers/constants/string.dart';
+
+import '../../../../constants/api.dart';
+import '../../../../constants/string.dart';
 
 part 'forgotpassword_state.dart';
 
