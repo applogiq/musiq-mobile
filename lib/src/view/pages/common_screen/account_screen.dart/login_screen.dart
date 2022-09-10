@@ -20,171 +20,171 @@ import 'components/custom_loading_button.dart';
 import 'components/logo_image.dart';
 
 class LoginScreen extends StatefulWidget {
-   LoginScreen({Key? key, this.passwordReset=false}) : super(key: key);
-   bool passwordReset;
+  LoginScreen({Key? key, this.passwordReset = false}) : super(key: key);
+  bool passwordReset;
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
- late LoginBloc _loginScreenCubit;
- late bool passwordReset;
+  late LoginBloc _loginScreenCubit;
+  late bool passwordReset;
   @override
   void initState() {
-    
     super.initState();
-  
-    this._loginScreenCubit=LoginBloc();
-    passwordReset=widget.passwordReset;
+
+    this._loginScreenCubit = LoginBloc();
+    passwordReset = widget.passwordReset;
   }
+
   @override
   void dispose() {
-    
     super.dispose();
     _loginScreenCubit.dispose();
-  
   }
-  resetPasswordTimer()async{
-Future.delayed(Duration(seconds: 2),(){
-  setState(() {
-    
- widget.passwordReset=false;
-  });
-});
+
+  resetPasswordTimer() async {
+    Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        widget.passwordReset = false;
+      });
+    });
   }
+
   @override
   Widget build(BuildContext context) {
-          final NetworkController _networkController = Get.find<NetworkController>();
-
     return SafeArea(
-      child: Obx((){
-        return _networkController.connectionType.value==0?OfflineScreen():Scaffold(
-        body: SingleChildScrollView(
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height-40,
-            width: MediaQuery.of(context).size.width,
-            child: Stack(
-              children: [
-                const Background(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Spacer(),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0),
-                        child: LogoWidget(
-                          size: 60,
-                        ),
+        child: Scaffold(
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height - 40,
+          width: MediaQuery.of(context).size.width,
+          child: Stack(
+            children: [
+              const Background(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Spacer(),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: LogoWidget(
+                        size: 60,
                       ),
-                      const SizedBox(
-                        height: 12,
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        ConstantText.welcomeBack,
+                        style: fontWeight600(size: 24.0),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text(
-                          ConstantText.welcomeBack,
-                          style: fontWeight600(size: 24.0),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      TextFieldWithError(
-                          onTap: () {},
-                          label: ConstantText.email,
-                          cubit: _loginScreenCubit,
-                          stream: _loginScreenCubit.userNameStream,
-                          isValidatorEnable: true,
-                          onChange: (text) {
-                            _loginScreenCubit.updateUserName(text);
-                          }),
-                      PasswordTextFieldWithError(
-                          onTap: () async {
-                            _loginScreenCubit.passwordTap();
-                          },
-                          isPassword: true,
-                          label: ConstantText.password,
-                          cubit: _loginScreenCubit,
-                          stream: _loginScreenCubit.passwordStream,
-                          isValidatorEnable: true,
-                          onChange: (text) {
-                            _loginScreenCubit.updatePassword(text);
-                          }),
-                      InkWell(onTap: () => Navigation.navigateToScreen(context, "forgotMain/"),child: ForgotPassword()),
-                      widget.passwordReset?
-                      FutureBuilder(
-                        future: resetPasswordTimer()
-                        ,builder:(context,snapshot){
-                        return Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 50,
-                  margin: EdgeInsets.symmetric(vertical: 16),
-                  padding: EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color:  CustomColor.successStatusColor,
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.info,
-                          color: snapshot.hasError ? Colors.red : Colors.green),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        ConstantText.passwordResetSuccess,
-                        style: fontWeight400(
-                          size: 14.0,
-                          color: CustomColor.subTitle2,
-                        ),
-                      ),
-                      Spacer(),
-                      InkWell(
-                          onTap: () {
-                           },
-                          child: Icon(Icons.close))
-                    ],
-                  ),
-                );
-                      } ):EmptyBox(),
-                       StatusContainer(cubit: _loginScreenCubit),
-                      LoginButton(loginScreenCubit: _loginScreenCubit),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 2.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              ConstantText.registerPrefix,
-                              style: fontWeight500(size: 14.0),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    // TextFieldWithError(
+                    //     onTap: () {},
+                    //     label: ConstantText.email,
+                    //     cubit: _loginScreenCubit,
+                    //     stream: _loginScreenCubit.userNameStream,
+                    //     isValidatorEnable: true,
+                    //     onChange: (text) {
+                    //       _loginScreenCubit.updateUserName(text);
+                    //     }),
+                    // PasswordTextFieldWithError(
+                    //     onTap: () async {
+                    //       _loginScreenCubit.passwordTap();
+                    //     },
+                    //     isPassword: true,
+                    //     label: ConstantText.password,
+                    //     cubit: _loginScreenCubit,
+                    //     stream: _loginScreenCubit.passwordStream,
+                    //     isValidatorEnable: true,
+                    //     onChange: (text) {
+                    //       _loginScreenCubit.updatePassword(text);
+                    //     }),
+
+                    InkWell(
+                        onTap: () =>
+                            Navigation.navigateToScreen(context, "forgotMain/"),
+                        child: ForgotPassword()),
+                    widget.passwordReset
+                        ? FutureBuilder(
+                            future: resetPasswordTimer(),
+                            builder: (context, snapshot) {
+                              return Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 50,
+                                margin: EdgeInsets.symmetric(vertical: 16),
+                                padding: EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: CustomColor.successStatusColor,
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.info,
+                                        color: snapshot.hasError
+                                            ? Colors.red
+                                            : Colors.green),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    Text(
+                                      ConstantText.passwordResetSuccess,
+                                      style: fontWeight400(
+                                        size: 14.0,
+                                        color: CustomColor.subTitle2,
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    InkWell(
+                                        onTap: () {}, child: Icon(Icons.close))
+                                  ],
+                                ),
+                              );
+                            })
+                        : EmptyBox(),
+                    StatusContainer(cubit: _loginScreenCubit),
+                    LoginButton(loginScreenCubit: _loginScreenCubit),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 2.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            ConstantText.registerPrefix,
+                            style: fontWeight500(size: 14.0),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigation.navigateReplaceToScreen(
+                                  context, "register/");
+                            },
+                            child: Text(
+                              " " + ConstantText.register,
+                              style:
+                                  fontWeight500(size: 14.0, color: Colors.red),
                             ),
-                            InkWell(
-                              onTap: () {
-                                Navigation.navigateReplaceToScreen(
-                                    context, "register/");
-                              },
-                              child: Text(
-                                " " + ConstantText.register,
-                                style: fontWeight500(
-                                    size: 14.0, color: Colors.red),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
         ),
-      );
-      }) );
+      ),
+    ));
   }
 
   Future<int> getValue() async {
@@ -344,14 +344,14 @@ class ForgotPassword extends StatelessWidget {
 
 class StatusContainer extends StatelessWidget {
   const StatusContainer({
-    Key? key,required this.cubit,
+    Key? key,
+    required this.cubit,
   }) : super(key: key);
-final cubit;
+  final cubit;
   @override
   Widget build(BuildContext context) {
-    
     return StreamBuilder(
-        stream:cubit.errorStream,
+        stream: cubit.errorStream,
         builder: (context, snapshot) {
           return snapshot.data == false
               ? EmptyBox()

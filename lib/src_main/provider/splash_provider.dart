@@ -14,8 +14,10 @@ class SplashProvider extends ChangeNotifier {
   SplashProvider() {
     checkLogged();
   }
+  String status = "splash";
   bool isLoading = true;
   bool isLogged = false;
+
   bool isArtistPreference = false;
 
   final storage = const FlutterSecureStorage();
