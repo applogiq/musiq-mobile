@@ -72,58 +72,16 @@ class RegisterScreen extends StatelessWidget {
                         },
                         onTap: () {
                           registerProvider.confirmPasswordTapped();
-                        })
-
-                    // StreamBuilder(
-                    //     stream: _regCubit.validateForm,
-                    //     builder: (context, snapshot) {
-                    //       return InkWell(
-                    //           onTap: () async {
-                    //             await _regCubit.createAccount();
-                    //             if (snapshot.hasError == null) {
-                    //               print("NULL");
-                    //             } else if (snapshot.hasError == true) {
-                    //               print("SOLVE ERROR");
-                    //             } else if (snapshot.hasError == false) {
-                    //               _regCubit.registerAPI(context);
-                    //             } else {
-                    //               print("OKAY");
-                    //             }
-                    //             // print("SSSSS");
-                    //             // print(snapshot.hasError==null&&snapshot.hasError==false);
-                    //             // print(snapshot.hasError==false);
-                    //             // print(snapshot.hasError==null);
-                    //             // print("DDDDDDDD");
-                    //             // if(snapshot.hasError==false){
-                    //             //   _regCubit.registerAPI(context);
-                    //             // }
-                    //           },
-                    //           child: StreamBuilder(
-                    //             stream: _regCubit.loadingStream,
-                    //             builder: (context, snapshot) {
-                    //               return _regCubit.isLoading.value == true
-                    //                   ? CustomButton(
-                    //                       label: ConstantText.createAccount,
-                    //                       verticalMargin: 0.0,
-                    //                       horizontalMargin: 0.0,
-                    //                       isLoading: true,
-                    //                     )
-                    //                   : CustomButton(
-                    //                       label: ConstantText.createAccount,
-                    //                       verticalMargin: 0.0,
-                    //                       horizontalMargin: 0.0,
-                    //                     );
-                    //             },
-                    //           ));
-                    //     })
-                    ,
+                        }),
                     const SizedBox(
                       height: 15,
                     ),
                     CustomElevatedButton(
                       onTap: () {
-                        registerProvider.createAccount();
+                        registerProvider.createAccount(context);
                       },
+                      isValid: !registerProvider.isButtonLoading,
+                      isLoading: registerProvider.isButtonLoading,
                       label: ConstantText.createAccount,
                       verticalMargin: 0.0,
                       horizontalMargin: 0.0,

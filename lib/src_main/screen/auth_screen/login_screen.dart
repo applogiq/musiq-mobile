@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src_main/constants/color.dart';
 import 'package:musiq/src_main/route/route_name.dart';
+import 'package:musiq/src_main/widgets/container/empty_box.dart';
 import 'package:provider/provider.dart';
 import '../../../src/widgets/custom_button.dart';
 import '../../constants/string.dart';
@@ -20,7 +22,6 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final loginProvider = Provider.of<LoginProvider>(context);
     final networkProvider = Provider.of<InternetConnectivityProvider>(context);
     return !networkProvider.isNetworkAvailable
         ? OfflineScreen()
@@ -57,37 +58,64 @@ class LoginScreen extends StatelessWidget {
                         const SizedBox(
                           height: 20,
                         ),
-                        TextFieldWithError(
-                            onTap: () {},
-                            label: ConstantText.email,
-                            errorMessage:
-                                loginProvider.emailAddressErrorMessage,
-                            isValidatorEnable: true,
-                            onChange: (text) {
-                              loginProvider.emailAddressChanged(text);
-                            }),
-                        PasswordTextFieldWithError(
-                            onTap: () async {
-                              loginProvider.passwordTap();
-                            },
-                            isPassword: true,
-                            label: ConstantText.password,
-                            errorMessage: loginProvider.passwordErrorMessage,
-                            isValidatorEnable: true,
-                            onChange: (text) {
-                              loginProvider.passwordChanged(text);
-                            }),
+                        Consumer<LoginProvider>(
+                            builder: (context, provider, _) {
+                          return TextFieldWithError(
+                              onTap: () {},
+                              label: ConstantText.email,
+                              errorMessage: provider.emailAddressErrorMessage,
+                              isValidatorEnable: true,
+                              onChange: (text) {
+                                provider.emailAddressChanged(text);
+                              });
+                        }),
+                        Consumer<LoginProvider>(
+                            builder: (context, provider, _) {
+                          return PasswordTextFieldWithError(
+                              onTap: () async {
+                                provider.passwordTap();
+                              },
+                              isPassword: true,
+                              label: ConstantText.password,
+                              errorMessage: provider.passwordErrorMessage,
+                              isValidatorEnable: true,
+                              onChange: (text) {
+                                provider.passwordChanged(text);
+                              });
+                        }),
                         InkWell(
                             onTap: () => Navigation.navigateToScreen(
                                 context, RouteName.forgotPassword),
                             child: ForgotPassword()),
-                        InkWell(
-                          onTap: loginProvider.login(),
-                          child: CustomButton(
-                            label: ConstantText.login,
-                            horizontalMargin: 0,
-                          ),
-                        ),
+                        StatusContainer(),
+                        Consumer<LoginProvider>(
+                            builder: (context, provider, _) {
+                          return Stack(
+                            children: [
+                              InkWell(
+                                onTap: provider.isLoginButtonEnable
+                                    ? () {
+                                        provider.login(context);
+                                      }
+                                    : () {},
+                                child: CustomButton(
+                                  isValid: provider.isLoginButtonEnable,
+                                  isLoading: provider.isLoading,
+                                  label: ConstantText.login,
+                                  horizontalMargin: 0,
+                                ),
+                              ),
+                              provider.isSuccess == true
+                                  ? Container(
+                                      margin: EdgeInsets.all(0),
+                                      width: MediaQuery.of(context).size.width,
+                                      color: Colors.transparent,
+                                      height: 52,
+                                    )
+                                  : EmptyBox()
+                            ],
+                          );
+                        }),
                         TextWithButton(
                             unClickableText: ConstantText.registerPrefix,
                             clickableText: ConstantText.register,
@@ -97,5 +125,56 @@ class LoginScreen extends StatelessWidget {
                   )
                 ])),
           ));
+  }
+}
+
+class StatusContainer extends StatelessWidget {
+  const StatusContainer({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<LoginProvider>(builder: (context, provider, _) {
+      return provider.isShowStatus == false
+          ? EmptyBox()
+          : Container(
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+              margin: EdgeInsets.symmetric(vertical: 16),
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: provider.isErrorStatus
+                    ? CustomColor.errorStatusColor
+                    : CustomColor.successStatusColor,
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.info,
+                      color:
+                          provider.isErrorStatus ? Colors.red : Colors.green),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    provider.isErrorStatus
+                        ? ConstantText.invalidEmailAndPassword
+                        : "Login Success",
+                    style: fontWeight400(
+                      size: 14.0,
+                      color: CustomColor.subTitle2,
+                    ),
+                  ),
+                  Spacer(),
+                  InkWell(
+                      onTap: () {
+                        provider.closeDialog();
+                      },
+                      child: Icon(Icons.close))
+                ],
+              ),
+            );
+    });
   }
 }

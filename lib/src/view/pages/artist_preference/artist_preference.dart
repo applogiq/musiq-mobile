@@ -7,7 +7,6 @@ import 'package:musiq/src/view/pages/bottom_nav_bar/main_page.dart';
 import 'package:musiq/src/view/pages/common_screen/offline_screen.dart';
 import 'package:musiq/src/view/pages/home/components/widget/loader.dart';
 
-
 import '../../../logic/controller/network_controller.dart';
 
 import '../../../widgets/custom_button.dart';

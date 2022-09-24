@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:musiq/src/view/pages/bottom_nav_bar/main_page.dart';
 import 'package:musiq/src/view/pages/common_screen/account_screen.dart/components/logo_image.dart';
 import 'package:musiq/src_main/helpers/utils/navigation.dart';
 import 'package:musiq/src_main/provider/splash_provider.dart';
 import 'package:musiq/src_main/route/route_name.dart';
 import 'package:musiq/src_main/screen/home_screen/home_screen.dart';
+import 'package:musiq/src_main/screen/main_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/images.dart';
@@ -30,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(Duration(seconds: 3), () {
       if (localData["access_token"] != null) {
         if (localData["is_preference"] == "true") {
-          Navigation.navigateReplaceToScreen(context, RouteName.home);
+          Navigation.navigateReplaceToScreen(context, RouteName.mainScreen);
         } else {
           Navigation.navigateReplaceToScreen(
               context, RouteName.artistPreference);

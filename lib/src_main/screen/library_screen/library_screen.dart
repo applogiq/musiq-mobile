@@ -3,16 +3,15 @@ import 'package:musiq/src_main/constants/images.dart';
 
 import '../../widgets/list/recommended_songs.dart';
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({Key? key}) : super(key: key);
-  Images images = Images();
+class LibraryScreen extends StatelessWidget {
+  const LibraryScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          Text("Home"),
+          Text("Library"),
         ],
       ),
     );

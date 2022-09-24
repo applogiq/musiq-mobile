@@ -1,15 +1,32 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:musiq/src_main/config/themes/theme.dart';
+import 'package:musiq/src_main/provider/artist_provider.dart';
+import 'package:musiq/src_main/provider/bottom_navigation_bar_provider.dart';
 import 'package:musiq/src_main/provider/forgot_password_provider.dart';
 import 'package:musiq/src_main/provider/internet_connectivity_provider.dart';
 import 'package:musiq/src_main/provider/login_provider.dart';
+import 'package:musiq/src_main/provider/profile_provider.dart';
 import 'package:musiq/src_main/provider/register_provider.dart';
 import 'package:musiq/src_main/provider/splash_provider.dart';
 import 'package:musiq/src_main/route/route.dart';
 import 'package:musiq/src_main/route/route_name.dart';
 import 'package:provider/provider.dart';
 
-void main() => runApp(MyApp());
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
+
+void main() {
+  HttpOverrides.global = MyHttpOverrides();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -32,6 +49,15 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (BuildContext context) => ForgotPasswordProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (BuildContext context) => BottomNavigationBarProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (BuildContext context) => ProfileProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (BuildContext context) => ArtistPreferenceProvider(),
         ),
       ],
       builder: (context, child) {

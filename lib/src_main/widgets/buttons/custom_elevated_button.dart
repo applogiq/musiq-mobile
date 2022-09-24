@@ -33,8 +33,9 @@ class CustomElevatedButton extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           height: 52,
           decoration: BoxDecoration(
-              color:
-                  isValid ? CustomColor.secondaryColor : CustomColor.subTitle,
+              color: isValid
+                  ? CustomColor.secondaryColor
+                  : CustomColor.secondaryColor.withOpacity(0.5),
               borderRadius: BorderRadius.circular(radius)),
           child: Center(
               child: Row(
