@@ -1,17 +1,16 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:musiq/src_main/config/themes/theme.dart';
-import 'package:musiq/src_main/provider/artist_provider.dart';
-import 'package:musiq/src_main/provider/bottom_navigation_bar_provider.dart';
-import 'package:musiq/src_main/provider/forgot_password_provider.dart';
-import 'package:musiq/src_main/provider/internet_connectivity_provider.dart';
-import 'package:musiq/src_main/provider/login_provider.dart';
-import 'package:musiq/src_main/provider/profile_provider.dart';
-import 'package:musiq/src_main/provider/register_provider.dart';
-import 'package:musiq/src_main/provider/splash_provider.dart';
-import 'package:musiq/src_main/route/route.dart';
-import 'package:musiq/src_main/route/route_name.dart';
+import 'package:musiq/src/config/themes/theme.dart';
+import 'package:musiq/src/features/auth/provider/forgot_password_provider.dart';
+import 'package:musiq/src/features/auth/provider/login_provider.dart';
+import 'package:musiq/src/features/auth/provider/register_provider.dart';
+import 'package:musiq/src/features/common/provider/bottom_navigation_bar_provider.dart';
+import 'package:musiq/src/features/common/provider/internet_connectivity_provider.dart';
+import 'package:musiq/src/features/common/provider/splash_provider.dart';
+import 'package:musiq/src/features/profile/provider/profile_provider.dart';
+import 'package:musiq/src/routing/route.dart';
+import 'package:musiq/src/routing/route_name.dart';
 import 'package:provider/provider.dart';
 
 class MyHttpOverrides extends HttpOverrides {
@@ -56,14 +55,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (BuildContext context) => ProfileProvider(),
         ),
-        ChangeNotifierProvider(
-          create: (BuildContext context) => ArtistPreferenceProvider(),
-        ),
+        // ChangeNotifierProvider(
+        //   create: (BuildContext context) => ArtistPreferenceProvider(),
+        // ),
       ],
       builder: (context, child) {
-        final splashProvider = Provider.of<SplashProvider>(context);
-        final networkProvider =
-            Provider.of<InternetConnectivityProvider>(context);
+        // final splashProvider = Provider.of<SplashProvider>(context);
+        // final networkProvider =
+        //     Provider.of<InternetConnectivityProvider>(context);
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: themeData(context),
