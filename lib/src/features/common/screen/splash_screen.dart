@@ -27,9 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(Duration(seconds: 3), () {
       if (localData["access_token"] != null) {
         if (localData["is_preference"] == "true") {
-          print("!323234");
-          Navigation.navigateReplaceToScreen(
-              context, RouteName.artistPreference);
+          Navigation.navigateReplaceToScreen(context, RouteName.mainScreen);
         } else {
           Navigation.navigateReplaceToScreen(
               context, RouteName.artistPreference);

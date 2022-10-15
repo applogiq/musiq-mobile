@@ -9,6 +9,7 @@ import 'package:musiq/src/features/auth/provider/register_provider.dart';
 import 'package:musiq/src/features/common/provider/bottom_navigation_bar_provider.dart';
 import 'package:musiq/src/features/common/provider/internet_connectivity_provider.dart';
 import 'package:musiq/src/features/common/provider/splash_provider.dart';
+import 'package:musiq/src/features/library/provider/library_provider.dart';
 import 'package:musiq/src/features/profile/provider/profile_provider.dart';
 import 'package:musiq/src/routing/route.dart';
 import 'package:musiq/src/routing/route_name.dart';
@@ -58,6 +59,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (BuildContext context) => ArtistPreferenceProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (BuildContext context) => LibraryProvider(),
         ),
       ],
       builder: (context, child) {
