@@ -19,7 +19,7 @@ class CustomButton extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         height: 52,
         decoration: BoxDecoration(
-            color:isValid? CustomColor.secondaryColor:CustomColor.subTitle,
+            color:isValid? CustomColor.secondaryColor:Color.fromRGBO(96, 20, 20, 1),
             borderRadius: BorderRadius.circular(radius)),
         child: Center(
             child: Row(

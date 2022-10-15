@@ -97,6 +97,8 @@ class LoginScreen extends StatelessWidget {
                                 onTap: provider.isLoginButtonEnable
                                     ? () {
                                         provider.login(context);
+                                        FocusScope.of(context).requestFocus(FocusNode());
+                                        provider.isErr();
                                       }
                                     : () {},
                                 child: CustomButton(

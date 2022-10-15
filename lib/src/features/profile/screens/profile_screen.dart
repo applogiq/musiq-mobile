@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/features/auth/provider/login_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/buttons/custom_button.dart';
@@ -21,7 +22,7 @@ class ProfileScreen extends StatelessWidget {
       child: Scaffold(
           appBar: AppBar(
             toolbarHeight: 70,
-            title: Text("Profile"),
+            title: const Text("Profile"),
           ),
           body: SingleChildScrollView(
             child: SizedBox(
@@ -58,7 +59,7 @@ class ProfileScreen extends StatelessWidget {
                             onTap: () {
                               provider.aboutToggle();
                             },
-                            title: Text(
+                            title: const Text(
                               "About",
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
@@ -69,14 +70,14 @@ class ProfileScreen extends StatelessWidget {
                                       Colors.white),
                             ),
                             trailing: provider.isAboutOpen
-                                ? RotatedBox(
+                                ? const RotatedBox(
                                     quarterTurns: 1,
                                     child: Icon(
                                       Icons.arrow_forward_ios_rounded,
                                       size: 20,
                                     ),
                                   )
-                                : Icon(
+                                : const Icon(
                                     Icons.arrow_forward_ios_rounded,
                                     size: 20,
                                   )),
@@ -87,20 +88,20 @@ class ProfileScreen extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    AboutUsTextWidget(
+                                    const AboutUsTextWidget(
                                       title: "Terms of use",
                                     ),
-                                    AboutUsTextWidget(
+                                    const AboutUsTextWidget(
                                       title: "Privacy policy",
                                     ),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        AboutUsTextWidget(
+                                        const AboutUsTextWidget(
                                           title: "Version :",
                                         ),
-                                        AboutUsTextWidget(
+                                        const AboutUsTextWidget(
                                           title: "2.30.23",
                                         ),
                                       ],
@@ -108,7 +109,7 @@ class ProfileScreen extends StatelessWidget {
                                   ],
                                 ),
                               )
-                            : SizedBox(),
+                            : const SizedBox(),
                       ],
                     );
                   }),
@@ -138,6 +139,7 @@ class SignOutWidget extends StatelessWidget {
         print(isLog.toString());
         if (isLog) {
           Navigation.navigateReplaceToScreen(context, RouteName.login);
+          // Provider.of<LoginProvider>(context,listen: false).isShowStatus == fa;
         }
 
         print("SIGNOUT");
@@ -162,13 +164,13 @@ class ProfileListTile extends StatelessWidget {
         Navigator.of(context)
             .pushNamed(ProfileProvider().profileContent[index].navigateScreen);
       },
-      trailing: Icon(
+      trailing: const Icon(
         Icons.arrow_forward_ios_rounded,
         size: 20,
       ),
       title: Text(
         ProfileProvider().profileContent[index].title,
-        style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
+        style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.white),
       ),
     );
   }

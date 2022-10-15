@@ -66,7 +66,8 @@ class _PasswordTextFieldWithErrorState
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
                     icon: Icon(
-                      obscure ? Icons.visibility : Icons.visibility_off,
+                      obscure ? Icons.visibility_off : Icons.visibility
+                      ,
                       color: Colors.white,
                     ),
                     onPressed: () {

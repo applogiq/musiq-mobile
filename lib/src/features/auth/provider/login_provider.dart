@@ -26,6 +26,10 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
     isShowStatus = false;
     isErrorStatus = false;
   }
+  isErr(){
+    isShowStatus=false;
+    notifyListeners();
+  }
 
   emailAddressChanged(value) {
     emailAddress = value;
@@ -81,7 +85,8 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
       await storeResponseData(user);
 
       navigateToNextPage(user, context);
-      // isSuccess = true;
+      //  isSuccess = true;
+      isShowStatus=false;
     } else if (response.statusCode == 404) {
       isShowStatus = true;
       isErrorStatus = true;
