@@ -7,6 +7,7 @@ import 'package:musiq/src/constants/string.dart';
 import '../../../routing/route_name.dart';
 import '../../../utils/navigation.dart';
 import '../../../utils/validation.dart';
+import '../../artist/screens/artist_preference_screen/artist_preference_screen.dart';
 import '../domain/models/user_model.dart';
 import '../domain/repository/auth_repo.dart';
 
@@ -213,8 +214,8 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
   navigateToNextPage(UserModel userModel, context) {
     Future.delayed(Duration(milliseconds: 600), () {
       if (userModel.records.isPreference == false) {
-        // Navigator.of(context).pushReplacement(
-        //     MaterialPageRoute(builder: (context) => ArtistPreferenceScreen()));
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => ArtistPreferenceScreen()));
       } else {
         Navigation.navigateReplaceToScreen(context, RouteName.mainScreen);
       }

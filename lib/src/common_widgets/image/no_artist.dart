@@ -1,0 +1,29 @@
+import 'package:flutter/material.dart';
+
+import '../../constants/color.dart';
+import '../../constants/images.dart';
+
+class NoArtist extends StatelessWidget {
+  NoArtist({Key? key, this.height = 240, this.width = 200}) : super(key: key);
+  double height;
+  double width;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: height,
+      width: width,
+      padding: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+          color: CustomColor.defaultCard,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: CustomColor.defaultCardBorder, width: 2.0)),
+      child: Center(
+          child: Image.asset(
+        Images.noArtist,
+        width: 113,
+        height: 118,
+      )),
+    );
+  }
+}

@@ -107,4 +107,27 @@ class NetworkApiService extends BaseApiServices {
 
     return responseJson;
   }
+
+  @override
+  Future getPutAuthApiResponse(String url, data) async {
+    dynamic responseJson;
+    try {
+      var token = await storage.read(key: "access_token");
+
+      header["Authorization"] = "Bearer $token";
+      print(header);
+
+      print(url);
+      print(jsonEncode(data));
+      Response response =
+          await put(Uri.parse(url), headers: header, body: jsonEncode(data))
+              .timeout(Duration(seconds: 10));
+
+      responseJson = returnResponse(response);
+    } on SocketException {
+      throw FetchDataException('No Internet Connection');
+    }
+
+    return responseJson;
+  }
 }

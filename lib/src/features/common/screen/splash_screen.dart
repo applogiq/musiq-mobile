@@ -28,7 +28,8 @@ class _SplashScreenState extends State<SplashScreen> {
       if (localData["access_token"] != null) {
         if (localData["is_preference"] == "true") {
           print("!323234");
-          Navigation.navigateReplaceToScreen(context, RouteName.mainScreen);
+          Navigation.navigateReplaceToScreen(
+              context, RouteName.artistPreference);
         } else {
           Navigation.navigateReplaceToScreen(
               context, RouteName.artistPreference);
