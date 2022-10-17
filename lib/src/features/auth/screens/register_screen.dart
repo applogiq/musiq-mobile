@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/utils/size_config.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/app_bar.dart';
@@ -13,13 +14,15 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     final registerProvider = Provider.of<RegisterProvider>(context);
     return SafeArea(
         child: Scaffold(
             appBar: PreferredSize(
-              preferredSize: const Size(double.maxFinite, 80),
+              preferredSize: 
+               Size(double.maxFinite, getProportionateScreenHeight(80)),
               child: Padding(
-                padding: const EdgeInsets.only(top: 8.0),
+                padding:  EdgeInsets.only(top: getProportionateScreenHeight(8)),
                 child: CustomAppBarWidget(
                   title: "New Account",
                 ),
@@ -27,10 +30,13 @@ class RegisterScreen extends StatelessWidget {
             ),
             body: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding:  EdgeInsets.symmetric(vertical:
+                 getProportionateScreenHeight(16),
+                 horizontal: getProportionateScreenWidth(16)),
                 child: Column(
                   children: [
                     TextFieldWithError(
+                      initialValue: "",
                         label: ConstantText.fullName,
                         onChange: (value) {
                           registerProvider.fullNameChanged(value);
@@ -38,6 +44,7 @@ class RegisterScreen extends StatelessWidget {
                         onTap: () {},
                         errorMessage: registerProvider.fullNameError),
                     TextFieldWithError(
+                      initialValue: "",
                         label: ConstantText.email,
                         onChange: (value) {
                           registerProvider.emailChanged(value);
@@ -47,6 +54,8 @@ class RegisterScreen extends StatelessWidget {
                         },
                         errorMessage: registerProvider.emailError),
                     TextFieldWithError(
+                      initialValue: "",
+                      // isPassword: true,
                         label: ConstantText.userName,
                         onChange: (value) {
                           registerProvider.userNameChanged(value);
@@ -56,6 +65,7 @@ class RegisterScreen extends StatelessWidget {
                         },
                         errorMessage: registerProvider.userNameError),
                     PasswordTextFieldWithError(
+                      isPassword: true,
                         label: ConstantText.password,
                         errorMessage: registerProvider.passwordError,
                         onChange: (value) {
@@ -65,6 +75,7 @@ class RegisterScreen extends StatelessWidget {
                           registerProvider.passwordTapped();
                         }),
                     PasswordTextFieldWithError(
+                      isPassword: true,
                         label: ConstantText.confirmPassword,
                         errorMessage: registerProvider.confirmPasswordError,
                         onChange: (value) {
@@ -73,8 +84,8 @@ class RegisterScreen extends StatelessWidget {
                         onTap: () {
                           registerProvider.confirmPasswordTapped();
                         }),
-                    const SizedBox(
-                      height: 15,
+                     SizedBox(
+                      height: getProportionateScreenHeight(15),
                     ),
                     CustomElevatedButton(
                       onTap: () {

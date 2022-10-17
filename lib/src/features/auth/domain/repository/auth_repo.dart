@@ -11,6 +11,7 @@ class AuthRepository {
           "https://api-musiq.applogiq.org/api/v1/users/login", params);
       return response;
     } catch (e) {
+      
       throw e;
     }
   }

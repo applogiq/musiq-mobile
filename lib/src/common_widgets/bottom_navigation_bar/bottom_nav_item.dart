@@ -34,9 +34,9 @@ class NavBarItem extends StatelessWidget {
                     color: provider.iconColor(index),
                   ),
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
+                // const SizedBox(
+                //   height: 8,
+                // ),
                 Text(
                   provider.bottomItems[index].labelData,
                   style: TextStyle(

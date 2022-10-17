@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/features/common/screen/main_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/buttons/custom_button.dart';
@@ -46,9 +47,9 @@ class _ArtistPreferenceScreenState extends State<ArtistPreferenceScreen> {
                         ? EmptyBox()
                         : InkWell(
                             onTap: () async {
-                              // Navigator.of(context).pushReplacement(
-                              //     MaterialPageRoute(
-                              //         builder: (context) => MainPage()));
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => MainScreen()));
                             },
                             child: CustomButton(label: "Save")),
                   );

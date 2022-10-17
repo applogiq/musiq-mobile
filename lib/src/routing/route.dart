@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:musiq/src/routing/route_name.dart';
 
 import '../features/artist/screens/artist_preference_screen/artist_preference_screen.dart';
+import '../features/auth/screens/forgot_screen/forgot_main_screen.dart';
 import '../features/auth/screens/login_screen.dart';
 import '../features/auth/screens/register_screen.dart';
 import '../features/common/screen/error_screen.dart';
@@ -25,9 +26,9 @@ class Routes {
       case RouteName.artistPreference:
         return MaterialPageRoute(
             builder: (BuildContext context) => ArtistPreferenceScreen());
-      // case RouteName.forgotPassword:
-      //   return MaterialPageRoute(
-      //       builder: (BuildContext context) => ForgotPasswordMainScreen());
+      case RouteName.forgotPassword:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => ForgotPasswordMainScreen());
       case RouteName.onboarding:
         return MaterialPageRoute(
             builder: (BuildContext context) => OnboardingScreen());

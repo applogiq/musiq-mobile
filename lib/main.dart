@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:musiq/src/config/themes/theme.dart';
 import 'package:musiq/src/features/artist/provider/artist_provider.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/utils/size_config.dart';
 import 'package:provider/provider.dart';
-
 import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../common_widgets/buttons/text_with_button.dart';
 import '../../../common_widgets/container/empty_box.dart';
@@ -14,18 +14,41 @@ import '../../../constants/string.dart';
 import '../../../constants/style.dart';
 import '../../../routing/route_name.dart';
 import '../../../utils/navigation.dart';
+import '../../common/provider/bottom_navigation_bar_provider.dart';
 import '../../common/provider/internet_connectivity_provider.dart';
 import '../../common/screen/offline_screen.dart';
 import '../provider/login_provider.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+ 
+ late var pro= Provider.of<LoginProvider>(context,listen: false);
+  
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      pro.emailAddress="";
+    });
+    super.initState();
+  }
+  @override
+  void dispose()async {
+pro.emailAddress="";
+    
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     final networkProvider = Provider.of<InternetConnectivityProvider>(context);
     return !networkProvider.isNetworkAvailable
-        ? OfflineScreen()
+        ? const OfflineScreen()
         : Scaffold(
             body: SingleChildScrollView(
             child: SizedBox(
@@ -34,34 +57,35 @@ class LoginScreen extends StatelessWidget {
                 child: Stack(children: [
                   const Background(),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    padding:  EdgeInsets.symmetric(horizontal: getProportionateScreenHeight(16)),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Spacer(),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          child: LogoWidget(
+                         Padding(
+                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenHeight(16)),
+                          child: const LogoWidget(
                             size: 60,
                           ),
                         ),
-                        const SizedBox(
-                          height: 12,
+                         SizedBox(
+                          height: getProportionateScreenHeight(12),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Text(
                             ConstantText.welcomeBack,
-                            style: fontWeight600(size: 24.0),
+                            style: fontWeight600(size: getProportionateScreenHeight(24)),
                           ),
                         ),
-                        const SizedBox(
-                          height: 20,
+                         SizedBox(
+                          height: getProportionateScreenHeight(20),
                         ),
                         Consumer<LoginProvider>(
                             builder: (context, provider, _) {
                           return TextFieldWithError(
+                            initialValue: "",
                               onTap: () {},
                               label: ConstantText.email,
                               errorMessage: provider.emailAddressErrorMessage,
@@ -84,11 +108,19 @@ class LoginScreen extends StatelessWidget {
                                 provider.passwordChanged(text);
                               });
                         }),
-                        InkWell(
-                            onTap: () => Navigation.navigateToScreen(
-                                context, RouteName.forgotPassword),
-                            child: ForgotPassword()),
-                        StatusContainer(),
+                        Consumer<LoginProvider>(
+                          builder: (context, pro, child) {
+                            
+                          
+                          return InkWell(
+                              onTap: () {Navigation.navigateToScreen(
+                                  context, RouteName.forgotPassword);
+                                  pro.isErr();
+                              },
+                              child: const ForgotPassword());
+                       
+   } ),
+                        const StatusContainer(),
                         Consumer<LoginProvider>(
                             builder: (context, provider, _) {
                           return Stack(
@@ -98,7 +130,8 @@ class LoginScreen extends StatelessWidget {
                                     ? () {
                                         provider.login(context);
                                         FocusScope.of(context).requestFocus(FocusNode());
-                                        provider.isErr();
+          Provider.of<BottomNavigationBarProvider>(context,listen: false).index;
+                                       
                                       }
                                     : () {},
                                 child: CustomButton(
@@ -110,12 +143,12 @@ class LoginScreen extends StatelessWidget {
                               ),
                               provider.isSuccess == true
                                   ? Container(
-                                      margin: EdgeInsets.all(0),
+                                      margin: const EdgeInsets.all(0),
                                       width: MediaQuery.of(context).size.width,
                                       color: Colors.transparent,
-                                      height: 52,
+                                      height: getProportionateScreenHeight(52),
                                     )
-                                  : EmptyBox()
+                                  : const EmptyBox()
                             ],
                           );
                         }),
@@ -140,12 +173,12 @@ class StatusContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<LoginProvider>(builder: (context, provider, _) {
       return provider.isShowStatus == false
-          ? EmptyBox()
+          ? const EmptyBox()
           : Container(
               width: MediaQuery.of(context).size.width,
-              height: 50,
-              margin: EdgeInsets.symmetric(vertical: 16),
-              padding: EdgeInsets.all(12),
+              height: getProportionateScreenHeight(52),
+              margin:  EdgeInsets.symmetric(vertical: getProportionateScreenWidth(16)),
+              padding:  EdgeInsets.symmetric(vertical: getProportionateScreenHeight(12),horizontal: getProportionateScreenWidth(12)),
               decoration: BoxDecoration(
                 color: provider.isErrorStatus
                     ? CustomColor.errorStatusColor
@@ -157,24 +190,24 @@ class StatusContainer extends StatelessWidget {
                   Icon(Icons.info,
                       color:
                           provider.isErrorStatus ? Colors.red : Colors.green),
-                  SizedBox(
-                    width: 8,
+                   SizedBox(
+                    width: getProportionateScreenWidth(8),
                   ),
                   Text(
                     provider.isErrorStatus
                         ? ConstantText.invalidEmailAndPassword
                         : "Login Success",
                     style: fontWeight400(
-                      size: 14.0,
+                      size: getProportionateScreenHeight(14),
                       color: CustomColor.subTitle2,
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   InkWell(
                       onTap: () {
                         provider.closeDialog();
                       },
-                      child: Icon(Icons.close))
+                      child: const Icon(Icons.close))
                 ],
               ),
             );

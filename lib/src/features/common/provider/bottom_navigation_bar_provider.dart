@@ -21,6 +21,12 @@ class BottomNavigationBarProvider extends ChangeNotifier {
     ProfileScreen()
   ];
   var selectedBottomIndex = 0;
+  int index=0;
+  // var initialIndex = 0;
+  indexes(){
+    selectedBottomIndex=0;
+    notifyListeners();
+  }
 
   changeIndex(int index) {
     selectedBottomIndex = index;

@@ -59,6 +59,7 @@ class _ForgotPasswordMainScreenState extends State<ForgotPasswordMainScreen> {
                     return Padding(
                       padding: const EdgeInsets.only(top: 24.0),
                       child: TextFieldWithError(
+                        initialValue: "",
                           errorMessage: provider.emailAddressErrorMessage,
                           label: ConstantText.email,
                           onTap: () {},

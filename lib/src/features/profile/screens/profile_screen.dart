@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/auth/provider/login_provider.dart';
+import 'package:musiq/src/features/common/provider/bottom_navigation_bar_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/buttons/custom_button.dart';
@@ -139,9 +140,13 @@ class SignOutWidget extends StatelessWidget {
         print(isLog.toString());
         if (isLog) {
           Navigation.navigateReplaceToScreen(context, RouteName.login);
+ 
           // Provider.of<LoginProvider>(context,listen: false).isShowStatus == fa;
         }
-
+//           Provider.of<BottomNavigationBarProvider>(context,listen: false).indexes();
+//          print(Provider.of<BottomNavigationBarProvider>(context,listen: false).indexes()
+// );
+ Provider.of<BottomNavigationBarProvider>(context,listen: false).indexes();
         print("SIGNOUT");
       },
       child: CustomButton(

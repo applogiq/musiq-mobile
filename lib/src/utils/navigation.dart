@@ -11,5 +11,13 @@ class Navigation{
     static navigateReplaceToScreen(BuildContext context, String screen) {
     Navigator.pushReplacementNamed(
         context, screen);
+       
   }
+ 
+}
+class OneTimeNavigation{
+   oneTimeNavigation(BuildContext context, Widget screen) {
+  Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => screen), (Route route) => false);
+}
 }

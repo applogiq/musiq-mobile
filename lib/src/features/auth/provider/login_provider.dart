@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musiq/src/constants/string.dart';
+import 'package:musiq/src/features/common/screen/main_screen.dart';
 
 import '../../../routing/route_name.dart';
 import '../../../utils/navigation.dart';
@@ -27,7 +28,9 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
     isErrorStatus = false;
   }
   isErr(){
-    isShowStatus=false;
+     emailAddressErrorMessage = "";
+      passwordErrorMessage = "";
+    
     notifyListeners();
   }
 
@@ -46,15 +49,23 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
   }
 
   passwordChanged(value) {
+    RegExp regex =
+        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
     password = value;
     if (value.isEmpty) {
       passwordErrorMessage = "Field is required";
-    } else {
+    } else if(!regex.hasMatch(value)){
+      passwordErrorMessage = "Enter valid password";
+     
+    }
+    
+    else {
       passwordErrorMessage = "";
     }
     validate();
     notifyListeners();
   }
+  
 
   validate() {
     changeErrorStatus();
@@ -79,14 +90,21 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
     if (response.statusCode == 200) {
       isShowStatus = true;
       isErrorStatus = false;
+      
       print(response.body);
       var data = jsonDecode(response.body.toString());
       UserModel user = UserModel.fromMap(data);
       await storeResponseData(user);
-
+      
       navigateToNextPage(user, context);
-      //  isSuccess = true;
+
+    await Future.delayed(Duration(seconds: 2));
+      isLoginButtonEnable=false;
       isShowStatus=false;
+       emailAddress="";
+      password=""; 
+          emailAddressErrorMessage = "";
+      passwordErrorMessage = "";
     } else if (response.statusCode == 404) {
       isShowStatus = true;
       isErrorStatus = true;
@@ -96,7 +114,20 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
   }
 
   passwordTap() {
-    emailAddressChanged(emailAddress);
+    // emailAddressChanged(emailAddress);
+    if(emailAddress.isEmpty){
+    emailAddressErrorMessage = "Field is required";
+
+    }
+   else if (!isEmailValid(emailAddress)) {
+      emailAddressErrorMessage = ConstantText.invalidEmail;
+    }
+    else{
+    emailAddressErrorMessage = "";
+
+    }
+    notifyListeners();
+    
   }
 
   void closeDialog() {
@@ -132,7 +163,9 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
         //           artist_list: userModel.records.preference.artist,
         //         )));
       } else {
-        Navigation.navigateReplaceToScreen(context, RouteName.mainScreen);
+        // Navigation.navigateReplaceToScreen(context, RouteName.mainScreen);
+      
+       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>MainScreen()), (route) => false);
       }
     });
   }

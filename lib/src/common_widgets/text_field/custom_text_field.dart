@@ -12,11 +12,11 @@ class TextFieldWithError extends StatelessWidget {
       required this.label,
       this.onChange,
       required this.onTap,
-      required this.errorMessage})
+      required this.errorMessage, required this.initialValue})
       : super(key: key);
   final bool isValidatorEnable;
   final bool isPassword;
-
+  final String initialValue;
   final String label;
   final String errorMessage;
   final ValueSetter<String>? onChange;
@@ -45,6 +45,7 @@ class TextFieldWithError extends StatelessWidget {
               constraints: const BoxConstraints.expand(
                   height: 46, width: double.maxFinite),
               child: TextFormField(
+                initialValue: "",
                 onTap: onTap,
                 cursorColor: Colors.white,
                 onChanged: onChange,
