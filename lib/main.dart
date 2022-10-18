@@ -4,6 +4,7 @@ import 'package:musiq/src/config/themes/theme.dart';
 import 'package:musiq/src/features/artist/provider/artist_provider.dart';
 import 'package:musiq/src/features/auth/provider/forgot_password_provider.dart';
 import 'package:musiq/src/features/auth/provider/login_provider.dart';
+import 'package:musiq/src/features/auth/provider/new_password_provider.dart';
 import 'package:musiq/src/features/auth/provider/register_provider.dart';
 import 'package:musiq/src/features/common/provider/bottom_navigation_bar_provider.dart';
 import 'package:musiq/src/features/common/provider/internet_connectivity_provider.dart';
@@ -57,6 +58,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (BuildContext context) => ArtistPreferenceProvider(),
+        ),
+         ChangeNotifierProvider(
+          create: (BuildContext context) => NewPasswordProcvider(),
         ),
       ],
       builder: (context, child) {

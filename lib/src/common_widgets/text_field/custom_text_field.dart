@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/utils/size_config.dart';
 
 import '../../constants/color.dart';
 import '../../constants/style.dart';
@@ -28,30 +29,30 @@ class TextFieldWithError extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 8),
+          padding:  EdgeInsets.only(left: getProportionateScreenHeight(8)),
           child: Text(
             label,
-            style: fontWeight500(size: 14.0),
+            style: fontWeight500(size: getProportionateScreenHeight(14)),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          padding:  EdgeInsets.symmetric(vertical: getProportionateScreenHeight(8)),
           child: CustomColorContainer(
-            left: 16,
-            right: 24,
+            left: getProportionateScreenWidth(16),
+            right: getProportionateScreenWidth(24),
             verticalPadding: 0,
             bgColor: CustomColor.textfieldBg,
             child: ConstrainedBox(
-              constraints: const BoxConstraints.expand(
-                  height: 46, width: double.maxFinite),
+              constraints:  BoxConstraints.expand(
+                  height: getProportionateScreenHeight(46), width: double.maxFinite),
               child: TextFormField(
                 initialValue: "",
                 onTap: onTap,
                 cursorColor: Colors.white,
                 onChanged: onChange,
-                decoration: const InputDecoration(
+                decoration:  InputDecoration(
                   border: InputBorder.none,
-                  hintStyle: TextStyle(fontSize: 14),
+                  hintStyle: TextStyle(fontSize: getProportionateScreenHeight(14)),
                 ),
               ),
             ),
@@ -62,7 +63,7 @@ class TextFieldWithError extends StatelessWidget {
             return const SizedBox.shrink();
           } else {
             return Padding(
-              padding: const EdgeInsets.only(left: 8.0),
+              padding:  EdgeInsets.only(left: getProportionateScreenWidth(8)),
               child: Text(
                 errorMessage.toString(),
                 style: const TextStyle(color: Colors.red),

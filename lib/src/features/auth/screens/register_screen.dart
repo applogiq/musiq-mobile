@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/constants/style.dart';
 import 'package:musiq/src/utils/size_config.dart';
 import 'package:provider/provider.dart';
 
@@ -87,6 +88,19 @@ class RegisterScreen extends StatelessWidget {
                      SizedBox(
                       height: getProportionateScreenHeight(15),
                     ),
+                 registerProvider.isButtonEnable?
+                     Container(
+                      height: 52,
+                    width: double.maxFinite,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color: Color.fromRGBO(96, 20, 20, 1)),
+                      child: Center(
+                        child: Text(
+                        "Create account",
+                        style: fontWeight500(size: 16.0),
+                    ),
+                      ),
+                     ):
+                 
                     CustomElevatedButton(
                       onTap: () {
                         registerProvider.createAccount(context);

@@ -12,14 +12,14 @@ class CustomAppBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
+    var pro = Provider.of<RegisterProvider>(context);
     return AppBar(
       toolbarHeight: height,
       titleSpacing: 0.1,
       leading: InkWell(
           onTap: () {
             Navigator.of(context).pop();
-            Provider.of<RegisterProvider>(context,listen: false).clearError();
+           pro.clearError();
           },
           child: Icon(Icons.arrow_back_ios_rounded)),
       title: Text(title),

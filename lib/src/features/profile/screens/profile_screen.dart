@@ -139,14 +139,14 @@ class SignOutWidget extends StatelessWidget {
         var isLog = await auth.logOut();
         print(isLog.toString());
         if (isLog) {
-          Navigation.navigateReplaceToScreen(context, RouteName.login);
- 
+          // Navigation.navigateReplaceToScreen(context, RouteName.login);
+       showAlertDialog(context);
           // Provider.of<LoginProvider>(context,listen: false).isShowStatus == fa;
         }
 //           Provider.of<BottomNavigationBarProvider>(context,listen: false).indexes();
 //          print(Provider.of<BottomNavigationBarProvider>(context,listen: false).indexes()
 // );
- Provider.of<BottomNavigationBarProvider>(context,listen: false).indexes();
+//  Provider.of<BottomNavigationBarProvider>(context,listen: false).indexes();
         print("SIGNOUT");
       },
       child: CustomButton(
@@ -196,3 +196,47 @@ class AboutUsTextWidget extends StatelessWidget {
     );
   }
 }
+showAlertDialog(BuildContext context) {  
+ 
+  AlertDialog alert = AlertDialog(  
+    backgroundColor:Color.fromRGBO(33, 33, 44, 1),
+    title: Center(child: Text("Sign Out")),  
+    
+    content: Text("Are you sure you want to Sign Out?",style: TextStyle(fontSize: 12),),  
+    actions: [  
+      GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Container(
+          height: getProportionateScreenHeight(44),
+          width: getProportionateScreenWidth(120),
+          child: Center(child: Text("Cancel")),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color: Color.fromRGBO(255, 255, 255, 0.1)),
+        ),
+      ) ,
+       GestureDetector(
+        onTap: () {
+          Navigation.navigateReplaceToScreen(context, RouteName.login); 
+      Provider.of<BottomNavigationBarProvider>(context,listen: false).indexes();
+        },
+         child: Container(
+          height: getProportionateScreenHeight(44),
+          width: getProportionateScreenWidth(120),
+          child: Center(child: Text("Confirm")),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color: Color.fromRGBO(254, 86, 49, 1)),
+             ),
+       ) ,
+      SizedBox(width: getProportionateScreenWidth(5),)
+    ],  
+  );  
+  
+  
+  showDialog(  
+    context: context,  
+    builder: (BuildContext context) {  
+      return alert;  
+    },  
+  );  
+}  
+// 33, 33, 44, 1

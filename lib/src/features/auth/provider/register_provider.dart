@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:musiq/src/constants/string.dart';
+import 'package:musiq/src/utils/size_config.dart';
 
 import '../../../routing/route_name.dart';
 import '../../../utils/navigation.dart';
@@ -24,6 +26,7 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
   String confirmPassword = "";
   String confirmPasswordError = "";
   bool isButtonLoading = false;
+  bool isButtonEnable = true;
 
   final storage = FlutterSecureStorage();
   fullNameChanged(value) {
@@ -73,7 +76,8 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
     password = value;
     if (value.isEmpty) {
       passwordError = "show toggle with field required";
-    } else if (password.isNotEmpty && confirmPassword.isNotEmpty) {
+    } 
+    else if (password.isNotEmpty && confirmPassword.isNotEmpty) {
       if (password.toString() == confirmPassword.toString()) {
         if (!validateStructure(password.toString())) {
           passwordError = "show toggle";
@@ -82,7 +86,8 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
           passwordError = "";
           confirmPasswordError = "";
         }
-      } else {
+      }
+       else {
         if (!validateStructure(password.toString())) {
           passwordError = "show toggle";
         }
@@ -118,6 +123,8 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
       confirmPasswordError = ConstantText.passwordNotMatch;
     } else {
       confirmPasswordError = "";
+     buttonEnable(value);
+
     }
     notifyListeners();
   }
@@ -156,6 +163,15 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
         var data = jsonDecode(response.body.toString());
         UserModel user = UserModel.fromMap(data);
         await storeResponseData(user);
+       Fluttertoast.showToast(
+        msg: "Account Created",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.SNACKBAR,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Color.fromRGBO(255, 255, 255, 0.6),
+        textColor: Colors.white,
+        fontSize: getProportionateScreenHeight(16)
+    );
         navigateToNextPage(user, context);
       } else if (response.statusCode == 400) {
         var data = jsonDecode(response.body.toString());
@@ -173,11 +189,17 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
   }
 
   clearError() {
+    fullName="";
+    userName="";
+    email="";
+    password="";
+    confirmPassword="";
     fullNameError = "";
     userNameError = "";
     emailError = "";
     passwordError = "";
     confirmPasswordError = "";
+    notifyListeners();
   }
 
   storeResponseData(UserModel userModel) async {
@@ -220,5 +242,20 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
         Navigation.navigateReplaceToScreen(context, RouteName.mainScreen);
       }
     });
+  }
+  buttonEnable(value){
+    if(fullName.isNotEmpty&&
+    email.isNotEmpty==""&&
+    userName.isNotEmpty==""&&
+    password.isNotEmpty==""&&
+    confirmPassword.isNotEmpty=="")
+    {
+      isButtonEnable=true;
+    }
+    else{
+      isButtonEnable=false;
+
+    }
+    notifyListeners();
   }
 }

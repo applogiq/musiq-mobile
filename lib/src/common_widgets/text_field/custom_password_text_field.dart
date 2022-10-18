@@ -49,6 +49,7 @@ class _PasswordTextFieldWithErrorState
             style: fontWeight500(size: 14.0),
           ),
         ),
+      
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: CustomColorContainer(
@@ -83,6 +84,7 @@ class _PasswordTextFieldWithErrorState
             ),
           ),
         ),
+       
         Builder(builder: (context) {
           if (widget.errorMessage == "") {
             return SizedBox.shrink();
