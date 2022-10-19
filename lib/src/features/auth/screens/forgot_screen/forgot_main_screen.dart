@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/constants/style.dart';
+import 'package:musiq/src/utils/size_config.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/app_bar.dart';
@@ -71,12 +73,30 @@ class _ForgotPasswordMainScreenState extends State<ForgotPasswordMainScreen> {
                   }),
                   Consumer<ForgotPasswordProvider>(
                       builder: (context, provider, _) {
-                    return CustomElevatedButton(
+                    return provider.isButtonEnable?  
+                      InkWell(
+                        onTap: () {
+                          // provider.login();
+                        },
+                        child: Container(
+                        height: getProportionateScreenHeight(52),
+                                          width: double.maxFinite,
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color: Color.fromRGBO(96, 20, 20, 1)),
+                        child: Center(
+                          child: Text(
+                          "Continue",
+                          style: fontWeight500(size: 16.0,color: Color.fromRGBO(255, 255, 255, 0.75)),
+                                          ),
+                        ),
+                                           ),
+                      ):
+                     CustomElevatedButton(
                         horizontalMargin: 0,
                         isLoading: provider.isLoad,
                         label: ConstantText.continueButton,
                         onTap: () {
-                          provider.sendOTP(context);
+                           provider.login(context);
+                          // provider.sendOTP(context);
                         });
                   })
                   // StreamBuilder(

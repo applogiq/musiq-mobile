@@ -36,6 +36,11 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
     } else {
       fullNameError = "";
     }
+    buttonEnable();
+    notifyListeners();
+  }
+  isEmailexsist(){
+    emailError == "Email already exists" ;
     notifyListeners();
   }
 
@@ -45,9 +50,12 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
       emailError = ConstantText.fieldRequired;
     } else if (!isEmailValid(value)) {
       emailError = ConstantText.invalidEmail;
-    } else {
+    }
+    
+    else {
       emailError = "";
     }
+    buttonEnable();
     notifyListeners();
   }
 
@@ -66,9 +74,12 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
       userNameError = ConstantText.fieldRequired;
     } else if (value.contains(" ")) {
       userNameError = ConstantText.invalidUserName;
-    } else {
+    } 
+    
+    else {
       userNameError = "";
     }
+    buttonEnable();
     notifyListeners();
   }
 
@@ -91,6 +102,9 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
         if (!validateStructure(password.toString())) {
           passwordError = "show toggle";
         }
+        else{
+          passwordError="";
+        }
         confirmPasswordError = ConstantText.passwordNotMatch;
       }
     } else if (!validateStructure(password)) {
@@ -99,7 +113,7 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
       passwordError = "";
       confirmPasswordError = "";
     }
-
+  buttonEnable();
     notifyListeners();
   }
 
@@ -112,6 +126,7 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
     } else {
       passwordError = "";
     }
+   // buttonEnable();
     notifyListeners();
   }
 
@@ -123,12 +138,13 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
       confirmPasswordError = ConstantText.passwordNotMatch;
     } else {
       confirmPasswordError = "";
-     buttonEnable(value);
 
     }
+     buttonEnable();
+
     notifyListeners();
   }
-
+  
   createAccount(context) async {
     userNameChanged(userName);
     emailChanged(email);
@@ -175,9 +191,10 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
         navigateToNextPage(user, context);
       } else if (response.statusCode == 400) {
         var data = jsonDecode(response.body.toString());
-        clearError();
+        // clearError();
         if (data['detail']["message"] == "email already exists") {
           emailError = "Email already exists";
+
         } else if (data['detail']["message"] == "username already exists") {
           userNameError = "Username already exists";
         }
@@ -243,17 +260,19 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
       }
     });
   }
-  buttonEnable(value){
+  buttonEnable(){
+    bool emailvalidate = email.isNotEmpty && isEmailValid(email);
+     bool ppasswordvalidate = password.isNotEmpty && (password.isNotEmpty == confirmPassword.isNotEmpty);
+     bool userVali = userName.isNotEmpty &&userName.contains("") ;
+     bool cpass = confirmPassword.isNotEmpty &&(password == confirmPassword) ;
     if(fullName.isNotEmpty&&
-    email.isNotEmpty==""&&
-    userName.isNotEmpty==""&&
-    password.isNotEmpty==""&&
-    confirmPassword.isNotEmpty=="")
+    emailvalidate&&userVali&&ppasswordvalidate&&cpass
+  )
     {
-      isButtonEnable=true;
+      isButtonEnable=false;
     }
     else{
-      isButtonEnable=false;
+      isButtonEnable=true;
 
     }
     notifyListeners();

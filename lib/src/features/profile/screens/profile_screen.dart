@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/auth/provider/login_provider.dart';
+import 'package:musiq/src/features/auth/provider/register_provider.dart';
 import 'package:musiq/src/features/common/provider/bottom_navigation_bar_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -219,6 +220,8 @@ showAlertDialog(BuildContext context) {
         onTap: () {
           Navigation.navigateReplaceToScreen(context, RouteName.login); 
       Provider.of<BottomNavigationBarProvider>(context,listen: false).indexes();
+      Provider.of<RegisterProvider>(context,listen: false).clearError(); 
+      Provider.of<RegisterProvider>(context,listen: false).isButtonEnable=true;       
         },
          child: Container(
           height: getProportionateScreenHeight(44),

@@ -51,7 +51,7 @@ class RegisterScreen extends StatelessWidget {
                           registerProvider.emailChanged(value);
                         },
                         onTap: () {
-                          registerProvider.emailTapped();
+                       registerProvider.emailTapped();
                         },
                         errorMessage: registerProvider.emailError),
                     TextFieldWithError(
@@ -62,7 +62,8 @@ class RegisterScreen extends StatelessWidget {
                           registerProvider.userNameChanged(value);
                         },
                         onTap: () {
-                          registerProvider.userNameTapped();
+                        registerProvider. emailError == "Email already exists" ?
+                        null:   registerProvider.userNameTapped();
                         },
                         errorMessage: registerProvider.userNameError),
                     PasswordTextFieldWithError(
@@ -70,33 +71,37 @@ class RegisterScreen extends StatelessWidget {
                         label: ConstantText.password,
                         errorMessage: registerProvider.passwordError,
                         onChange: (value) {
-                          registerProvider.passwordChanged(value);
+                         registerProvider.passwordChanged(value);
                         },
                         onTap: () {
-                          registerProvider.passwordTapped();
+                   registerProvider. emailError == "Email already exists" ||
+                    registerProvider.userNameError == "Username already exists"?
+                   null: registerProvider.passwordTapped();
                         }),
                     PasswordTextFieldWithError(
                       isPassword: true,
                         label: ConstantText.confirmPassword,
                         errorMessage: registerProvider.confirmPasswordError,
                         onChange: (value) {
-                          registerProvider.confirmPasswordChanged(value);
+                       registerProvider.confirmPasswordChanged(value);
                         },
                         onTap: () {
-                          registerProvider.confirmPasswordTapped();
+                         registerProvider. emailError == "Email already exists" || 
+                         registerProvider.userNameError == "Username already exists"?
+                         null:   registerProvider.confirmPasswordTapped();
                         }),
                      SizedBox(
                       height: getProportionateScreenHeight(15),
                     ),
                  registerProvider.isButtonEnable?
                      Container(
-                      height: 52,
+                      height: getProportionateScreenHeight(52),
                     width: double.maxFinite,
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color: Color.fromRGBO(96, 20, 20, 1)),
                       child: Center(
                         child: Text(
                         "Create account",
-                        style: fontWeight500(size: 16.0),
+                        style: fontWeight500(size: 16.0,color: Color.fromRGBO(255, 255, 255, 0.75)),
                     ),
                       ),
                      ):
