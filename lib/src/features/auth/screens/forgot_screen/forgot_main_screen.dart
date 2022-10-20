@@ -61,7 +61,7 @@ class _ForgotPasswordMainScreenState extends State<ForgotPasswordMainScreen> {
                     return Padding(
                       padding: const EdgeInsets.only(top: 24.0),
                       child: TextFieldWithError(
-                        initialValue: "",
+                          initialValue: "",
                           errorMessage: provider.emailAddressErrorMessage,
                           label: ConstantText.email,
                           onTap: () {},
@@ -73,70 +73,55 @@ class _ForgotPasswordMainScreenState extends State<ForgotPasswordMainScreen> {
                   }),
                   Consumer<ForgotPasswordProvider>(
                       builder: (context, provider, _) {
-                    return provider.isButtonEnable?  
-                      InkWell(
-                        onTap: () {
-                          // provider.login();
-                        },
-                        child: Container(
-                        height: getProportionateScreenHeight(52),
-                                          width: double.maxFinite,
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(12),color: Color.fromRGBO(96, 20, 20, 1)),
-                        child: Center(
-                          child: Text(
-                          "Continue",
-                          style: fontWeight500(size: 16.0,color: Color.fromRGBO(255, 255, 255, 0.75)),
-                                          ),
-                        ),
-                                           ),
-                      ):
-                     CustomElevatedButton(
-                        horizontalMargin: 0,
-                        isLoading: provider.isLoad,
-                        label: ConstantText.continueButton,
-                        onTap: () {
-                           provider.login(context);
-                          // provider.sendOTP(context);
-                        });
-                  })
-                  // StreamBuilder(
-                  //     // stream: _forgotpasswordCubit.errorStream,
-                  //     builder: (context, snap) {
-                  //   print(snap);
-                  //   return snap.hasError
-                  //       ? Padding(
-                  //           padding: const EdgeInsets.only(left: 8.0),
-                  //           child: Text(
-                  //             snap.error.toString(),
-                  //             style: const TextStyle(color: Colors.red),
-                  //             textAlign: TextAlign.left,
-                  //           ),
-                  //         )
-                  //       : EmptyBox();
-                  // }),
-
-                  // Padding(
-                  //     padding: const EdgeInsets.only(top: 100.0),
-                  //     child: StreamBuilder(
-                  //         stream: _forgotpasswordCubit.loadingStream,
-                  //         builder: (context, snapshot) {
-                  //           return snapshot.data == true
-                  //               ? CustomButton(
-                  //                   label: "label",
-                  //                   verticalMargin: 0.0,
-                  //                   horizontalMargin: 0.0,
-                  //                   isLoading: true,
-                  //                 )
-                  //               : InkWell(
-                  //                   onTap: () {
-                  //                     _forgotpasswordCubit.sendOTP(context);
-                  //                   },
-                  //                   child: CustomButton(
-                  //                     label: ConstantText.continueButton,
-                  //                     verticalMargin: 0.0,
-                  //                     horizontalMargin: 0.0,
-                  //                   ));
-                  //         })),
+                    return provider.isButtonEnable
+                        ? InkWell(
+                            onTap: () {
+                              // provider.login();
+                            },
+                            child: Container(
+                              height: getProportionateScreenHeight(52),
+                              width: double.maxFinite,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Color.fromRGBO(96, 20, 20, 1)),
+                              child: Center(
+                                child: Text(
+                                  "Continue",
+                                  style: fontWeight500(
+                                      size: 16.0,
+                                      color:
+                                          Color.fromRGBO(255, 255, 255, 0.75)),
+                                ),
+                              ),
+                            ),
+                          )
+                        : InkWell(
+                            onTap: () {
+                              provider.login(context);
+                              print(provider.emailAddress);
+                              provider.clearOTPError("");
+                            },
+                            child: Container(
+                              height: getProportionateScreenHeight(52),
+                              width: double.maxFinite,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: Color.fromRGBO(254, 86, 49, 1)),
+                              child: Center(
+                                  child: provider.emailButtonLoad
+                                      ? Text(
+                                          "Continue",
+                                          style: fontWeight500(
+                                              size: 16.0,
+                                              color: Color.fromRGBO(
+                                                  255, 255, 255, 0.75)),
+                                        )
+                                      : CircularProgressIndicator(
+                                          color: Colors.white,
+                                        )),
+                            ),
+                          );
+                  }),
                 ],
               ),
             ),

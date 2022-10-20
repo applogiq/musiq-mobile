@@ -59,9 +59,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (BuildContext context) => ArtistPreferenceProvider(),
         ),
-         ChangeNotifierProvider(
-          create: (BuildContext context) => NewPasswordProcvider(),
-        ),
+        //  ChangeNotifierProvider(
+        //   create: (BuildContext context) => NewPasswordProcvider(),
+        // ),
       ],
       builder: (context, child) {
         // final splashProvider = Provider.of<SplashProvider>(context);
