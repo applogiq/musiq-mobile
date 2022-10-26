@@ -1,20 +1,20 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:musiq/src/common_widgets/text/forgot_password.dart';
+import 'package:musiq/src/common_widgets/loader.dart';
 import 'package:musiq/src/features/auth/domain/models/forgot_password.dart';
 import 'package:musiq/src/features/auth/domain/models/otp_model.dart';
 import 'package:musiq/src/features/auth/screens/login_screen.dart';
-
 import '../../../constants/string.dart';
 import '../../../utils/validation.dart';
 import '../screens/forgot_screen/forgot_otp_screen.dart';
 import '../screens/forgot_screen/new_password.dart';
+
 import 'package:http/http.dart' as http;
 
 class ForgotPasswordProvider extends ChangeNotifier with InputValidationMixin {
   String emailAddress = "";
+  String otpStatus = "";
   String emailAddressErrorMessage = "";
   bool isButtonEnable = true;
   bool isLoad = false;
@@ -23,9 +23,11 @@ class ForgotPasswordProvider extends ChangeNotifier with InputValidationMixin {
   String newPasswordError = "";
   String confirmPassword = "";
   String confirmPasswordError = "";
-  bool emailButtonLoad = false;
+  bool   emailButtonLoad = false;
+  bool   resentOTPLoad = false;
   bool otpButtonEnable = true;
   bool isResetButtonEnable = true;
+  bool resentButtonEnable = true;
   ForgotPasswordModel? forgotPasswordModel;
   OTPvalidation _otp1 = OTPvalidation(
     "",
@@ -100,7 +102,7 @@ class ForgotPasswordProvider extends ChangeNotifier with InputValidationMixin {
       _otp1 = OTPvalidation(value, "");
 //  otpButtonEnable = false;
     } else {
-      _otp1 = OTPvalidation(value, "Field is mandatory");
+      _otp1 = OTPvalidation(value, "");
 //  otpButtonEnable = true;
 
     }
@@ -163,14 +165,25 @@ class ForgotPasswordProvider extends ChangeNotifier with InputValidationMixin {
     otpButtonenable();
     notifyListeners();
   }
-  clearOTPvalue(){
-    _otp6 = OTPvalidation("", "");
+
+  clearOTPvalue() {
+    _otp1 = OTPvalidation("", "");
     _otp2 = OTPvalidation("", "");
     _otp3 = OTPvalidation("", "");
     _otp4 = OTPvalidation("", "");
     _otp5 = OTPvalidation("", "");
     _otp6 = OTPvalidation("", "");
-   
+
+    notifyListeners();
+  }
+  otpvalueClearForValidation() {
+    _otp1 = OTPvalidation("", "check your OTP");
+    _otp2 = OTPvalidation("", "");
+    _otp3 = OTPvalidation("", "");
+    _otp4 = OTPvalidation("", "");
+    _otp5 = OTPvalidation("", "");
+    _otp6 = OTPvalidation("", "");
+
     notifyListeners();
   }
 
@@ -191,7 +204,9 @@ class ForgotPasswordProvider extends ChangeNotifier with InputValidationMixin {
   resendOTP(BuildContext context) async {
     try {
       print("1");
-      emailButtonLoad = false;
+     
+       resentOTPLoad = true;
+       notifyListeners();
       print(emailButtonLoad);
       var response = await http.post(
           Uri.parse("https://api-musiq.applogiq.org/api/v1/users/email"),
@@ -202,27 +217,23 @@ class ForgotPasswordProvider extends ChangeNotifier with InputValidationMixin {
       forgotPasswordModel =
           ForgotPasswordModel.fromJson(jsonDecode(response.body.toString()));
       saveEmail = forgotPasswordModel!.message.toString();
-      print(saveEmail);
-
-      print("rESENT");
-      print(response.statusCode);
-      print(response.body);
-      // print("3");
+     
       if (response.statusCode == 200) {
+        // LoaderScreen();
+    
+
         isClear();
 
         showAPiGetValues();
         await saveDetails();
         isClearError();
-          clearOTPvalue();
-         otpButtonEnable = true;
-
-        // otpButtonEnable = true;
-        emailButtonLoad = true;
+        clearOTPvalue();
+        otpButtonEnable = true;
+        resentOTPLoad = false;
+        notifyListeners();
       } else {
         print("error");
         otpButtonEnable = true;
-
       }
     } catch (e) {
       print("1");
@@ -258,22 +269,45 @@ class ForgotPasswordProvider extends ChangeNotifier with InputValidationMixin {
                 otp5.value +
                 otp6.value
           }));
+          print(response.statusCode);
+          var b = jsonDecode(response.body.toString());
+          print(b);
 
-      print(otp);
-      print("2");
-      print(response.statusCode);
-      print(response.body);
-      print("3");
       if (response.statusCode == 200) {
         print("hi");
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const NewPasswordScreen()));
-        //  isClear();
         emailButtonLoad = true;
+        otpButtonEnable = true;
         isclearError();
-      } else {
+        clearOTPvalue();
+      isResetButtonEnable = true;
+
+        
+      }
+       else if( response.statusCode == 400){
+        print("1");
+       var b = jsonDecode(response.body.toString());
+        print("2");
+        if(b["detail"]["message"] == "check your OTP"){
+        print(b);
+        _otp1 = OTPvalidation("", "check your OTP");
+        otpvalueClearForValidation();
+        emailButtonLoad = true;
+        otpButtonEnable = true;
+        }else{
+           _otp1 = OTPvalidation("", "");
+           emailButtonLoad = true;
+           otpButtonEnable = true;
+        }
+        // notifyListeners();
+       }
+      
+      else {
         print("error");
         emailButtonLoad = true;
+        otpButtonEnable = true;
+        clearOTPvalue();
       }
     } catch (e) {
       print("1");
@@ -320,11 +354,10 @@ class ForgotPasswordProvider extends ChangeNotifier with InputValidationMixin {
       forgotPasswordModel =
           ForgotPasswordModel.fromJson(jsonDecode(response.body.toString()));
       saveEmail = forgotPasswordModel!.message.toString();
-      print(saveEmail);
+     
 
      
-      print(response.body);
-      
+
       if (response.statusCode == 200) {
         Navigator.push(
             (context), MaterialPageRoute(builder: ((context) => OTPScreens())));
@@ -332,10 +365,21 @@ class ForgotPasswordProvider extends ChangeNotifier with InputValidationMixin {
         await saveDetails();
         isClearError();
         clearOTPvalue();
-         otpButtonEnable = true;
-        // otpButtonenable();
+        otpButtonEnable = true;
+     
 
-      } else {
+      } else if(response.statusCode == 404){
+        var b = jsonDecode(response.body.toString());
+        if(b["detail"]["message"] == "check your email"){
+          emailAddressErrorMessage = "check your email";
+        }else{
+          emailAddressErrorMessage = "";
+
+        }
+      }
+      
+      
+      else {
         print("error");
       }
       emailButtonLoad = true;
@@ -433,8 +477,8 @@ class ForgotPasswordProvider extends ChangeNotifier with InputValidationMixin {
   }
 
   resetButtonEnable() {
-    bool ppasswordvalidate = newPassword.isNotEmpty &&
-        (newPassword.isNotEmpty == confirmPassword.isNotEmpty);
+    bool ppasswordvalidate = newPassword.isNotEmpty && 
+        (newPassword.isNotEmpty == confirmPassword.isNotEmpty) && validateStructure(newPassword);
     bool cpass = confirmPassword.isNotEmpty && (newPassword == confirmPassword);
     if (ppasswordvalidate && cpass) {
       isResetButtonEnable = false;
@@ -492,6 +536,8 @@ class ForgotPasswordProvider extends ChangeNotifier with InputValidationMixin {
   }
 
   isclearError() {
+    newPassword = "";
+    confirmPassword = "";
     newPasswordError = "";
     confirmPasswordError = "";
     notifyListeners();

@@ -17,7 +17,9 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final registerProvider = Provider.of<RegisterProvider>(context);
-    return SafeArea(
+    return
+    
+     SafeArea(
         child: Scaffold(
             appBar: PreferredSize(
               preferredSize: 

@@ -71,6 +71,7 @@ class _ForgotPasswordMainScreenState extends State<ForgotPasswordMainScreen> {
                           }),
                     );
                   }),
+              SizedBox(height: getProportionateScreenHeight(50),),
                   Consumer<ForgotPasswordProvider>(
                       builder: (context, provider, _) {
                     return provider.isButtonEnable
@@ -122,6 +123,7 @@ class _ForgotPasswordMainScreenState extends State<ForgotPasswordMainScreen> {
                             ),
                           );
                   }),
+                
                 ],
               ),
             ),

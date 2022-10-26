@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:musiq/src/common_widgets/loader.dart';
 import 'package:musiq/src/features/auth/screens/forgot_screen/new_password.dart';
 import 'package:musiq/src/features/auth/screens/otp_field.dart';
 import 'package:musiq/src/features/auth/widgets/otp_widget.dart';
@@ -55,7 +56,9 @@ class _OTPScreensState extends State<OTPScreens> {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<ForgotPasswordProvider>(context);
-    return Scaffold(
+    return 
+    provider.resentOTPLoad?LoaderScreen():
+    Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size(double.maxFinite, 80),
         child: Padding(
@@ -103,7 +106,7 @@ class _OTPScreensState extends State<OTPScreens> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(
-                        horizontal: getProportionateScreenWidth(16)),
+                        horizontal: getProportionateScreenWidth(8)),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -134,17 +137,6 @@ class _OTPScreensState extends State<OTPScreens> {
                                   FocusScope.of(context).nextFocus();
                                 } else if (value.length == 0) {
                                   FocusScope.of(context).unfocus();
-                                }else if(fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty
-                                  ) {
-                                   otpButtonEnable = true;
-                                }else{
-                                   otpButtonEnable = false;
-                                  
                                 }
                               },
                             ),
@@ -179,17 +171,6 @@ class _OTPScreensState extends State<OTPScreens> {
                                   FocusScope.of(context).nextFocus();
                                 } else if (value.length == 0) {
                                   FocusScope.of(context).previousFocus();
-                                }else if(fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty
-                                  ) {
-                                   otpButtonEnable = true;
-                                }else{
-                                   otpButtonEnable = false;
-                                  
                                 }
                               },
                             ),
@@ -223,17 +204,6 @@ class _OTPScreensState extends State<OTPScreens> {
                                   FocusScope.of(context).nextFocus();
                                 } else if (value.length == 0) {
                                   FocusScope.of(context).previousFocus();
-                                }else if(fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty
-                                  ) {
-                                   otpButtonEnable = true;
-                                }else{
-                                   otpButtonEnable = false;
-                                  
                                 }
                               },
                             ),
@@ -268,17 +238,6 @@ class _OTPScreensState extends State<OTPScreens> {
                                   FocusScope.of(context).nextFocus();
                                 } else if (value.length == 0) {
                                   FocusScope.of(context).previousFocus();
-                                }else if(fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty
-                                  ) {
-                                   otpButtonEnable = true;
-                                }else{
-                                   otpButtonEnable = false;
-                                  
                                 }
                               },
                             ),
@@ -312,17 +271,6 @@ class _OTPScreensState extends State<OTPScreens> {
                                   FocusScope.of(context).nextFocus();
                                 } else if (value.length == 0) {
                                   FocusScope.of(context).previousFocus();
-                                }else if(fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty
-                                  ) {
-                                   otpButtonEnable = true;
-                                }else{
-                                   otpButtonEnable = false;
-                                  
                                 }
                               },
                             ),
@@ -356,17 +304,6 @@ class _OTPScreensState extends State<OTPScreens> {
                                   FocusScope.of(context).unfocus();
                                 } else if (value.length == 0) {
                                   FocusScope.of(context).previousFocus();
-                                }else if(fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty&&
-                                         fieldOne.text.isNotEmpty
-                                  ) {
-                                   otpButtonEnable = true;
-                                }else{
-                                   otpButtonEnable = false;
-                                  
                                 }
                               },
                             ),
@@ -382,7 +319,7 @@ class _OTPScreensState extends State<OTPScreens> {
                         padding: EdgeInsets.symmetric(
                             horizontal: getProportionateScreenWidth(16)),
                         child: Text(
-                         "",
+                         provider.otp1.error,
                           style: const TextStyle(
                               color: Color.fromRGBO(234, 41, 41, 1)),
                         ),
@@ -418,58 +355,57 @@ class _OTPScreensState extends State<OTPScreens> {
                   const Spacer(),
                   Consumer<ForgotPasswordProvider>(
                       builder: (context, provider, _) {
-                    return Padding(
-                      padding:  EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(16)),
-                      child:
-            
-           provider.otpButtonEnable?Container(
-                              height: getProportionateScreenHeight(52),
-                              width: double.maxFinite,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  color: const Color.fromRGBO(96, 20, 20, 1)),
-                              child: Center(
-                                child: Text(
-                                  "Continue",
-                                  style: fontWeight500(
-                                      size: 16.0,
-                                      color:
-                                          const Color.fromRGBO(255, 255, 255, 0.75)),
-                                ),
-                              ),
-                            ):InkWell(
-                              onTap: () {
-                                 provider.postotp(context);
-                                   fieldOne.clear();
-                              fieldTwo.clear();
-                              fieldThree.clear();
-                              fieldfour.clear();
-                              fieldFive.clear();
-                              fieldSix.clear();
-                              FocusScope.of(context).unfocus();
-                          provider.continueTapped(otpValue, context);
-                         
-                              },
-                              child: Container(
-                                height: getProportionateScreenHeight(52),
-                                width: double.maxFinite,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: const Color.fromRGBO(254, 86, 49, 1)),
-                                child: Center(
-                                  child:provider.emailButtonLoad? Text(
-                                    "Continue",
-                                    style: fontWeight500(
-                                        size: 16.0,
-                                        color:
-                                            const Color.fromRGBO(255, 255, 255, 0.75)),
-                                  ):CircularProgressIndicator(color: Colors.white,)
-                                ),
-                              ),
-                            )              
-                      
-                      
-                    );
+                    return provider.otpButtonEnable?Padding(
+                      padding:  EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(8)),
+                      child: Container(
+                                         height: getProportionateScreenHeight(52),
+                                         width: double.maxFinite,
+                                         decoration: BoxDecoration(
+                                             borderRadius: BorderRadius.circular(12),
+                                             color: const Color.fromRGBO(96, 20, 20, 1)),
+                                         child: Center(
+                                           child: Text(
+                                             "Continue",
+                                             style: fontWeight500(
+                                                 size: 16.0,
+                                                 color:
+                                                     const Color.fromRGBO(255, 255, 255, 0.75)),
+                                           ),
+                                         ),
+                                       ),
+                    ):InkWell(
+                                       onTap: () {
+                                          provider.postotp(context);
+                                            fieldOne.clear();
+                                       fieldTwo.clear();
+                                       fieldThree.clear();
+                                       fieldfour.clear();
+                                       fieldFive.clear();
+                                       fieldSix.clear();
+                                       FocusScope.of(context).unfocus();
+                                   provider.continueTapped(otpValue, context);
+                                  
+                                       },
+                                       child: Padding(
+                                          padding:  EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(8)),
+                                         child: Container(
+                                           height: getProportionateScreenHeight(52),
+                                           width: double.maxFinite,
+                                           decoration: BoxDecoration(
+                                               borderRadius: BorderRadius.circular(12),
+                                               color: const Color.fromRGBO(254, 86, 49, 1)),
+                                           child: Center(
+                                             child:provider.emailButtonLoad? Text(
+                                               "Continue",
+                                               style: fontWeight500(
+                                                   size: 16.0,
+                                                   color:
+                                                       const Color.fromRGBO(255, 255, 255, 0.75)),
+                                             ):CircularProgressIndicator(color: Colors.white,)
+                                           ),
+                                         ),
+                                       ),
+                                     );
                   }),
                   Spacer()
                 ],

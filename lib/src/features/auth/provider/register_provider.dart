@@ -262,7 +262,7 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
   }
   buttonEnable(){
     bool emailvalidate = email.isNotEmpty && isEmailValid(email);
-     bool ppasswordvalidate = password.isNotEmpty && (password.isNotEmpty == confirmPassword.isNotEmpty);
+     bool ppasswordvalidate = password.isNotEmpty && (password.isNotEmpty == confirmPassword.isNotEmpty) && validateStructure(password) ;
      bool userVali = userName.isNotEmpty &&userName.contains("") ;
      bool cpass = confirmPassword.isNotEmpty &&(password == confirmPassword) ;
     if(fullName.isNotEmpty&&
