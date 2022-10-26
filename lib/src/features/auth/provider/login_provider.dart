@@ -150,6 +150,12 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
     await storage.write(
         key: "artist_list",
         value: jsonEncode(userModel.records.preference.artist));
+        //  await storage.write(
+        // key: "access_token",
+        // value: jsonEncode(userModel.records.accessToken.toString()));
+        //   await storage.write(
+        // key: "id",
+        // value: jsonEncode(userModel.records.id.toString()));
     await storage.write(key: "password_cred", value: password);
     await storage.write(key: "isLogged", value: "true");
     var list1 = await storage.read(key: "artist_list");

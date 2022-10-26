@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/features/profile/screens/myprofile_screen.dart';
 import 'package:musiq/src/routing/route_name.dart';
 
 import '../features/artist/screens/artist_preference_screen/artist_preference_screen.dart';
@@ -38,6 +39,9 @@ class Routes {
       case RouteName.home:
         return MaterialPageRoute(
             builder: (BuildContext context) => HomeScreen());
+      case RouteName.myProfile:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => MyProfile());
 
       default:
         return MaterialPageRoute(

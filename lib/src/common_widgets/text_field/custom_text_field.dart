@@ -46,7 +46,7 @@ class TextFieldWithError extends StatelessWidget {
               constraints:  BoxConstraints.expand(
                   height: getProportionateScreenHeight(46), width: double.maxFinite),
               child: TextFormField(
-                initialValue: "",
+                initialValue: initialValue,
                 onTap: onTap,
                 cursorColor: Colors.white,
                 onChanged: onChange,

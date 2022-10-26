@@ -7,4 +7,5 @@ class RouteName {
   static const String artistPreference = "artist_preference_screen";
   static const String forgotPassword = "forgot_password";
   static const String mainScreen = "main_screen";
+  static const String myProfile = "myProfile";
 }

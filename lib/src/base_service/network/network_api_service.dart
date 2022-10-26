@@ -90,7 +90,7 @@ class NetworkApiService extends BaseApiServices {
     try {
       var token = await storage.read(key: "access_token");
 
-      header["Authorization"] = "Bearer $token";
+      header["Authorization"] = "Bearer ${token}";
       print(header);
 
       print(url);
