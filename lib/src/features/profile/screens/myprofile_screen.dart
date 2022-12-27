@@ -15,8 +15,21 @@ import 'package:provider/provider.dart';
 
 import '../../../common_widgets/text_field/custom_text_field.dart';
 
-class MyProfile extends StatelessWidget {
+class MyProfile extends StatefulWidget {
   const MyProfile({super.key});
+
+  @override
+  State<MyProfile> createState() => _MyProfileState();
+}
+
+class _MyProfileState extends State<MyProfile> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      Provider.of<ProfileProvider>(context, listen: false).getuserApi();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +42,13 @@ class MyProfile extends StatelessWidget {
         title: const Text("My Profile"),
         titleSpacing: 0.1,
         leading: InkWell(
-          onTap: () {
-            Navigator.pop(context);
-            pro.clearError();
-          },
-          child: const Icon(Icons.arrow_back_ios)),
+            onTap: () {
+              Navigator.pop(context);
+              pro.clearError();
+            },
+            child: const Icon(Icons.arrow_back_ios)),
       ),
-      body: Consumer<ProfileProvider>(
-        builder: (context, Provider, child) {
+      body: Consumer<ProfileProvider>(builder: (context, Provider, child) {
         return SingleChildScrollView(
           child: Column(
             children: [
@@ -46,14 +58,21 @@ class MyProfile extends StatelessWidget {
               Center(
                 child: Stack(
                   children: [
-                Provider.pickedImage ==null? CircleAvatar(
-                      radius: getProportionateScreenHeight(65),
-                     backgroundImage: AssetImage("assets/images/defaultimage.png")
-                     
-                    ):  CircleAvatar(
-                      radius: getProportionateScreenHeight(65),
-                     backgroundImage: FileImage(Provider.pickedImage!)
-                    ),
+                    Provider.pickedImage == null
+                        ? Provider.profileAPI!.records!.isImage == true
+                            ? CircleAvatar(
+                                radius: 65,
+                                backgroundImage:
+                                    NetworkImage(Provider.updatedImage),
+                              )
+                            : CircleAvatar(
+                                radius: getProportionateScreenHeight(65),
+                                backgroundImage: AssetImage(
+                                    "assets/images/defaultimage.png"))
+                        : CircleAvatar(
+                            radius: getProportionateScreenHeight(65),
+                            backgroundImage: MemoryImage(
+                                Provider.pickedImage!.readAsBytesSync())),
                     Positioned(
                       top: getProportionateScreenHeight(80),
                       left: getProportionateScreenWidth(77),
@@ -98,8 +117,8 @@ class MyProfile extends StatelessWidget {
                                             },
                                             icon: const Icon(
                                               Icons.close_rounded,
-                                              color:
-                                                  Color.fromRGBO(255, 255, 255, 1),
+                                              color: Color.fromRGBO(
+                                                  255, 255, 255, 1),
                                             ),
                                           ),
                                         ]),
@@ -107,33 +126,36 @@ class MyProfile extends StatelessWidget {
                                       const Divider(
                                         thickness: 1,
                                         height: 0,
-                                        color: Color.fromRGBO(255, 255, 255, 0.1),
+                                        color:
+                                            Color.fromRGBO(255, 255, 255, 0.1),
                                       ),
                                       ListTile(
                                           leading: const Icon(
                                             Icons.photo_camera,
-                                            color:
-                                                Color.fromRGBO(255, 255, 255, 0.7),
+                                            color: Color.fromRGBO(
+                                                255, 255, 255, 0.7),
                                             size: 24,
                                           ),
                                           title: InkWell(
                                             onTap: () {
-                                          Provider.pickImage(ImageSource.camera, context);
+                                              Provider.pickImage(
+                                                  ImageSource.camera, context);
                                             },
                                             child: Text(
                                               "Open camera",
                                               style: GoogleFonts.poppins(
                                                   textStyle: const TextStyle(
                                                       fontSize: 15,
-                                                      fontWeight: FontWeight.w400,
+                                                      fontWeight:
+                                                          FontWeight.w400,
                                                       color: Color.fromRGBO(
                                                           255, 255, 255, 1))),
                                             ),
                                           )),
                                       InkWell(
                                         onTap: () {
-                                          Provider.pickImage(ImageSource.gallery, context);
-      
+                                          Provider.pickImage(
+                                              ImageSource.gallery, context);
                                         },
                                         child: ListTile(
                                             leading: const Icon(
@@ -147,7 +169,8 @@ class MyProfile extends StatelessWidget {
                                               style: GoogleFonts.poppins(
                                                   textStyle: const TextStyle(
                                                       fontSize: 15,
-                                                      fontWeight: FontWeight.w400,
+                                                      fontWeight:
+                                                          FontWeight.w400,
                                                       color: Color.fromRGBO(
                                                           255, 255, 255, 1))),
                                             )),
@@ -196,7 +219,8 @@ class MyProfile extends StatelessWidget {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(100),
                                   color: Colors.black),
-                              child: const Icon(Icons.edit, color: Colors.white),
+                              child:
+                                  const Icon(Icons.edit, color: Colors.white),
                             ),
                           ),
                         ]),
@@ -209,19 +233,18 @@ class MyProfile extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: getProportionateScreenWidth(8)),
-                child: Consumer<ProfileProvider>(
-                  builder: (context,provider,_) {
-                    return TextFieldWithError(
-                        initialValue: provider.profileName,
-                        onTap: () {},
-                        label: "Name",
-                        errorMessage: Provider.nameError,
-                        isValidatorEnable: true,
-                        onChange: (value) {
-                          pro.nameChanged(value);
-                        });
-                  }
-                ),
+                child:
+                    Consumer<ProfileProvider>(builder: (context, provider, _) {
+                  return TextFieldWithError(
+                      initialValue: provider.profileName,
+                      onTap: () {},
+                      label: "Name",
+                      errorMessage: Provider.nameError,
+                      isValidatorEnable: true,
+                      onChange: (value) {
+                        pro.nameChanged(value);
+                      });
+                }),
               ),
               VerticalBox(height: 16),
               Padding(
@@ -237,15 +260,14 @@ class MyProfile extends StatelessWidget {
                       pro.userNameChanged(value);
                     }),
               ),
-            // Spacer(),
-            VerticalBox(height: 100),
+              // Spacer(),
+              VerticalBox(height: 100),
               Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: getProportionateScreenWidth(8)),
                 child: InkWell(
                   onTap: () {
-            pro.updateProfile();
-                    
+                    pro.updateProfile();
                   },
                   child: Container(
                     height: getProportionateScreenHeight(52),
@@ -257,18 +279,17 @@ class MyProfile extends StatelessWidget {
                       child: Text(
                         "Save",
                         style: fontWeight500(
-                            size: 16.0, color: Color.fromRGBO(255, 255, 255, 0.75)),
+                            size: 16.0,
+                            color: Color.fromRGBO(255, 255, 255, 0.75)),
                       ),
                     ),
                   ),
                 ),
               ),
-        
             ],
           ),
         );
-        }
-      ),
+      }),
     );
   }
 }
