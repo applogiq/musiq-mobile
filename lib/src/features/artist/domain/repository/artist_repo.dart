@@ -8,10 +8,10 @@ class ArtistRepo {
   Future<dynamic> followAndUnfollow(params) async {
     try {
       dynamic response = await apiServices.getPutAuthApiResponse(
-          APIConstants.BASE_URL + APIConstants.ARTIST_FOLLOWING, params);
+          APIConstants.kArtistFollowing, params);
       return response;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 }

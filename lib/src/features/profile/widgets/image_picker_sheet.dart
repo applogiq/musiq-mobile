@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:musiq/src/constants/color.dart';
 import 'package:musiq/src/constants/style.dart';
 
-
 Widget bulidsheet(context) {
   // ProfileController profileController = Get.find<ProfileController>();
   return IntrinsicHeight(
     child: Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(30), topRight: Radius.circular(30)),
         color: CustomColor.appBarColor,
       ),
@@ -21,14 +20,12 @@ Widget bulidsheet(context) {
           Divider(thickness: 1, color: CustomColor.textfieldBg),
           ListTile(
               onTap: () async {
-              
-
                 // var isPicked = await profileController.openCamera();
                 // if (isPicked) {
                 Navigator.of(context).pop();
                 // }
               },
-              leading: Icon(
+              leading: const Icon(
                 Icons.photo_camera,
                 color: Color.fromRGBO(255, 255, 255, 0.7),
                 size: 22,
@@ -40,7 +37,7 @@ Widget bulidsheet(context) {
           ListTile(
               onTap: () async {
                 // Navigator.pop(context);
-               
+
                 // var isPicked = await profileController.openGallery();
                 // if (isPicked) {
                 //   Navigator.of(context).push(MaterialPageRoute(
@@ -49,7 +46,7 @@ Widget bulidsheet(context) {
                 //           )));
                 // }
               },
-              leading: Icon(
+              leading: const Icon(
                 Icons.image,
                 color: Color.fromRGBO(255, 255, 255, 0.7),
                 size: 22,
@@ -59,20 +56,18 @@ Widget bulidsheet(context) {
                 style: fontWeight400(),
               )),
           ListTile(
-                  onTap: () async {
-                  
-                    // Navigator.of(context).pop();
-                  },
-                  leading: Icon(
-                    Icons.delete,
-                    color: Color.fromRGBO(255, 255, 255, 0.7),
-                    size: 22,
-                  ),
-                  title: Text(
-                    "Delete picture",
-                    style: fontWeight400(),
-                  ))
-             
+              onTap: () async {
+                // Navigator.of(context).pop();
+              },
+              leading: const Icon(
+                Icons.delete,
+                color: Color.fromRGBO(255, 255, 255, 0.7),
+                size: 22,
+              ),
+              title: Text(
+                "Delete picture",
+                style: fontWeight400(),
+              ))
         ],
       ),
     ),
@@ -95,7 +90,7 @@ class ProfilePhotoHeader extends StatelessWidget {
         onPressed: () {
           Navigator.pop(context);
         },
-        icon: Icon(
+        icon: const Icon(
           Icons.close_rounded,
           color: Colors.white,
         ),

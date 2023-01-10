@@ -19,22 +19,22 @@ class CustomHorizontalListview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.only(top: 8),
       height: alignText == TextAlign.center ? 180 : 200,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           itemCount: images.length,
           itemBuilder: (context, index) => Row(
                 children: [
                   index == 0
-                      ? SizedBox(
+                      ? const SizedBox(
                           width: 10,
                         )
-                      : SizedBox(),
+                      : const SizedBox(),
                   Container(
-                    padding: EdgeInsets.fromLTRB(6, 8, 6, 0),
+                    padding: const EdgeInsets.fromLTRB(6, 8, 6, 0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: alignText == TextAlign.center
@@ -50,19 +50,19 @@ class CustomHorizontalListview extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 6,
                         ),
                         Text(
                           images[index].title,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontWeight: FontWeight.w400, fontSize: 12),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 2,
                         ),
                         images[index].subTitle == ""
-                            ? SizedBox(
+                            ? const SizedBox(
                                 height: 0,
                               )
                             : Text(images[index].subTitle,
@@ -95,11 +95,11 @@ class HorizonalListViewWidget extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.fromLTRB(12.0, 20.0, 12.0, 0.0),
+          padding: const EdgeInsets.fromLTRB(12.0, 20.0, 12.0, 0.0),
           child: ListHeaderWidget(
             title: title,
             actionTitle: actionTitle,
-            dataList: [],
+            dataList: const [],
           ),
         ),
         listWidget
@@ -125,13 +125,13 @@ class ListHeaderWidget extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
-        Spacer(),
+        const Spacer(),
         InkWell(
           onTap: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => LoaderScreen()));
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const LoaderScreen()));
           },
           child: Text(
             actionTitle,

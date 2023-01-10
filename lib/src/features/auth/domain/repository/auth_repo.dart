@@ -8,32 +8,61 @@ class AuthRepository {
   Future<dynamic> login(params) async {
     try {
       dynamic response = await apiServices.getPostApiResponse(
-          "https://api-musiq.applogiq.org/api/v1/users/login", params);
+          APIConstants.kLoginEndPoint, params);
       return response;
     } catch (e) {
-      
-      throw e;
+      rethrow;
     }
   }
 
   Future<dynamic> register(params) async {
     try {
       dynamic response = await apiServices.getPostApiResponse(
-          "https://api-musiq.applogiq.org/api/v1/users/register", params);
+          APIConstants.kRegisterEndPoint, params);
       return response;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
   Future<dynamic> getArtists({limit = 100}) async {
     var artistUrl = APIConstants().getArtistUrl(0, limit);
     try {
-      dynamic response = await apiServices
-          .getGetAuthApiResponse(APIConstants.BASE_URL + artistUrl);
+      dynamic response = await apiServices.getGetAuthApiResponse(
+          APIConstants.baseUrl + APIConstants.versionUrl + artistUrl);
       return response;
     } catch (e) {
-      throw e;
+      rethrow;
+    }
+  }
+
+  emailVerfication(Map params) async {
+    try {
+      dynamic response = await apiServices.getPostApiResponse(
+          APIConstants.kEmailVerficationEndPoint, params);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  otpVerfication(Map params) async {
+    try {
+      dynamic response = await apiServices.getPostApiResponse(
+          APIConstants.kOTPVerficationEndPoint, params);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  passwordChanged(Map params) async {
+    try {
+      dynamic response = await apiServices.getPuthtApiResponse(
+          APIConstants.kPasswordChangeEndPoint, params);
+      return response;
+    } catch (e) {
+      rethrow;
     }
   }
 

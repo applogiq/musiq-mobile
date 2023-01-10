@@ -1,60 +1,63 @@
-class ConstantText{
-  static String app_name="MusiQ";
-  static String slogan="Queue your favourite music";
-  static String welcomeBack="Welcome Back";
-  static String name="Name";
-  static String noSongHere="No Songs Here";
-  static String yourfavNoAvailable="Your favourite songs will appear here";
-  static String fullName="Full Name";
-  static String userName="Username";
-  static String email="Email address";
-  static String password="Password";
-  static String confirmPassword="Confirm Password";
-  static String forgotPassword= "Forgot password ?";
-  static String forgotPassword2="Forgot password";
-  static String otp="Enter OTP";
-  static String subSlogan= "All your latest songs and podacsts\n in one palce";
-  static String register= "Register";
-  static String createAccount= "Create account";
-  static String login= "Login";
-  static String continueButton= "Continue";
-  static String loginPrefix= "Already have an account?";
-  static String fieldRequired= "Field is required";
-  static String invalidEmail= "Invalid Email Format";
-  static String invalidFormat= "Password Format is invalid";
-  static String invalidUserName= "User name does not contain space";
-  static String passwordNotMatch= "Password doesn't match";
-  static String registerPrefix= "Don't have an account?";
-  static String invalidEmailAndPassword= "Your email or password is Incorrect";
-  static String passwordToolTip= "The password must contain alteast 8 characters, include 1 uppercase, 1 lowercase, 1 number and 1 special character.";
-  static String noInternet= "No Internet";
-  static String pleaseTry= "Please check your connection";
-  static String retry= "Retry";
-  static String resendOTP= "Resend OTP";
-  static String resetPassswordAppbar= "Reset password";
-  static String forgotPasswordMain= "Please enter your email address linked with your account. We will send an OTP to your mail.";
-  static String resetPassswordTitle= "Please enter your new password";
-  static String resetPassswordNew= "New password";
-  static String resetPasssword= "Reset";
-  static String expiredOTP='The OTP you have entered has been expired. Please click "Resend OTP"';
-  static String invalidOTP='The OTP you have entered is invalid';
-  static String sendOTPSuccessfully='OTP send successfully';
-  static String passwordResetSuccess='Password reset successful';
-  static String recentlyPlayedText='Recently Played';
-  static String trendingHitsText='Trending Hits';
-  static String recommendedSongsText='Recommended songs';
-  static String createPlaylist='Create playlist';
-  static String renamePlaylist='Rename playlist';
-  static String create='Create';
-  static String playListNameExist='This name is already taken';
+class ConstantText {
+  static String app_name = "MusiQ";
+  static String slogan = "Queue your favourite music";
+  static String welcomeBack = "Welcome Back";
+  static String name = "Name";
+  static String noSongHere = "No Songs Here";
+  static String yourfavNoAvailable = "Your favourite songs will appear here";
+  static String fullName = "Full Name";
+  static String userName = "Username";
+  static String email = "Email address";
+  static String password = "Password";
+  static String confirmPassword = "Confirm Password";
+  static String forgotPassword = "Forgot password ?";
+  static String forgotPassword2 = "Forgot password";
+  static String otp = "Enter OTP";
+  static String subSlogan = "All your latest songs and podacsts\n in one palce";
+  static String register = "Register";
+  static String createAccount = "Create account";
+  static String login = "Login";
+  static String continueButton = "Continue";
+  static String loginPrefix = "Already have an account?";
+  static String fieldRequired = "Field is required";
+  static String invalidEmail = "Invalid Email Format";
+  static String incorrectEmail = "Email address doesn't exist";
+  static String invalidFormat = "Password Format is invalid";
+  static String invalidUserName = "User name does not contain space";
+  static String passwordNotMatch = "Password doesn't match";
+  static String registerPrefix = "Don't have an account?";
+  static String invalidEmailAndPassword = "Your email or password is Incorrect";
+  static String passwordToolTip =
+      "The password must contain alteast 8 characters, include 1 uppercase, 1 lowercase, 1 number and 1 special character.";
+  static String noInternet = "No Internet";
+  static String pleaseTry = "Please check your connection";
+  static String retry = "Retry";
+  static String resendOTP = "Resend OTP";
+  static String resetPassswordAppbar = "Reset password";
+  static String forgotPasswordMain =
+      "Please enter your email address linked with your account. We will send an OTP to your mail.";
+  static String resetPassswordTitle = "Please enter your new password";
+  static String resetPassswordNew = "New password";
+  static String resetPasssword = "Reset";
+  static String expiredOTP =
+      'The OTP you have entered has been expired. Please click "Resend OTP"';
+  static String invalidOTP = 'The OTP you have entered is invalid';
+  static String sendOTPSuccessfully = 'OTP send successfully';
+  static String passwordResetSuccess = 'Password reset successful';
+  static String recentlyPlayedText = 'Recently Played';
+  static String trendingHitsText = 'Trending Hits';
+  static String recommendedSongsText = 'Recommended songs';
+  static String createPlaylist = 'Create playlist';
+  static String renamePlaylist = 'Rename playlist';
+  static String create = 'Create';
+  static String save = 'Save';
+  static String playListNameExist = 'This name is already taken';
 
-  static String noSongInPlayList="Your songs will appear here";
+  static String noSongInPlayList = "Your songs will appear here";
 
-  static var noPlaylistHere="No Playlist Here";
+  static var noPlaylistHere = "No Playlist Here";
 
-  static var browseSong="Browse songs";
+  static var browseSong = "Browse songs";
 // This name is already taken
-  
 
-  
 }

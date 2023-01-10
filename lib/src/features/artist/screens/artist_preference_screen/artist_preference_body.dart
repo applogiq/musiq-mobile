@@ -23,7 +23,7 @@ class ArtistPreferenceScreenBody extends StatelessWidget {
           itemBuilder: (_, index) {
             return Container(
               alignment: Alignment.centerLeft,
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               child: Row(
                 children: [
                   Align(
@@ -53,13 +53,13 @@ class ArtistPreferenceScreenBody extends StatelessWidget {
                               provider.artistModel!.records[index].artistName,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 14),
                             ),
                             Row(
                               children: [
-                                Icon(Icons.people),
-                                SizedBox(
+                                const Icon(Icons.people),
+                                const SizedBox(
                                   width: 8,
                                 ),
                                 Consumer<ArtistPreferenceProvider>(

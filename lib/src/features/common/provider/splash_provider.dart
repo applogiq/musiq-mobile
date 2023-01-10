@@ -1,10 +1,5 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-import 'package:musiq/src/constants/api.dart';
 
 class SplashProvider extends ChangeNotifier {
   SplashProvider() {
@@ -29,7 +24,7 @@ class SplashProvider extends ChangeNotifier {
     } else {
       isLogged = false;
     }
-    await Future.delayed(Duration(seconds: 3), () {
+    await Future.delayed(const Duration(seconds: 3), () {
       isLoading = false;
     });
     notifyListeners();

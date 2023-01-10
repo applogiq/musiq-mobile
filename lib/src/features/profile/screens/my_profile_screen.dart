@@ -1,19 +1,14 @@
-import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:musiq/src/common_widgets/box/vertical_box.dart';
-import 'package:musiq/src/constants/string.dart';
-import 'package:musiq/src/constants/style.dart';
 import 'package:musiq/src/features/profile/provider/profile_provider.dart';
-import 'package:musiq/src/features/profile/widgets/custom_text_field.dart';
 import 'package:musiq/src/utils/size_config.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../common_widgets/text_field/custom_text_field.dart';
+import '../../../constants/string.dart';
 
 class MyProfile extends StatefulWidget {
   const MyProfile({super.key});
@@ -48,7 +43,7 @@ class _MyProfileState extends State<MyProfile> {
             },
             child: const Icon(Icons.arrow_back_ios)),
       ),
-      body: Consumer<ProfileProvider>(builder: (context, Provider, child) {
+      body: Consumer<ProfileProvider>(builder: (context, pro, child) {
         return SingleChildScrollView(
           child: Column(
             children: [
@@ -58,21 +53,20 @@ class _MyProfileState extends State<MyProfile> {
               Center(
                 child: Stack(
                   children: [
-                    Provider.pickedImage == null
-                        ? Provider.profileAPI!.records!.isImage == true
+                    pro.pickedImage == null
+                        ? pro.profileAPI!.records!.isImage == true
                             ? CircleAvatar(
                                 radius: 65,
-                                backgroundImage:
-                                    NetworkImage(Provider.updatedImage),
+                                backgroundImage: NetworkImage(pro.updatedImage),
                               )
                             : CircleAvatar(
                                 radius: getProportionateScreenHeight(65),
-                                backgroundImage: AssetImage(
+                                backgroundImage: const AssetImage(
                                     "assets/images/defaultimage.png"))
                         : CircleAvatar(
                             radius: getProportionateScreenHeight(65),
                             backgroundImage: MemoryImage(
-                                Provider.pickedImage!.readAsBytesSync())),
+                                pro.pickedImage!.readAsBytesSync())),
                     Positioned(
                       top: getProportionateScreenHeight(80),
                       left: getProportionateScreenWidth(77),
@@ -138,7 +132,7 @@ class _MyProfileState extends State<MyProfile> {
                                           ),
                                           title: InkWell(
                                             onTap: () {
-                                              Provider.pickImage(
+                                              pro.pickImage(
                                                   ImageSource.camera, context);
                                             },
                                             child: Text(
@@ -154,7 +148,7 @@ class _MyProfileState extends State<MyProfile> {
                                           )),
                                       InkWell(
                                         onTap: () {
-                                          Provider.pickImage(
+                                          pro.pickImage(
                                               ImageSource.gallery, context);
                                         },
                                         child: ListTile(
@@ -177,7 +171,7 @@ class _MyProfileState extends State<MyProfile> {
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          Provider.profileDeleteImage(context);
+                                          pro.profileDeleteImage(context);
                                         },
                                         child: ListTile(
                                             leading: const Icon(
@@ -239,53 +233,66 @@ class _MyProfileState extends State<MyProfile> {
                       initialValue: provider.profileName,
                       onTap: () {},
                       label: "Name",
-                      errorMessage: Provider.nameError,
+                      errorMessage: pro.nameError,
                       isValidatorEnable: true,
                       onChange: (value) {
                         pro.nameChanged(value);
                       });
                 }),
               ),
-              VerticalBox(height: 16),
+              const VerticalBox(height: 16),
               Padding(
                 padding: EdgeInsets.symmetric(
                     horizontal: getProportionateScreenWidth(8)),
                 child: TextFieldWithError(
-                    initialValue: Provider.profileUserName,
+                    initialValue: pro.profileUserName,
                     onTap: () {},
                     label: "Username",
-                    errorMessage: Provider.userNameError,
+                    errorMessage: pro.userNameError,
                     isValidatorEnable: true,
                     onChange: (value) {
                       pro.userNameChanged(value);
                     }),
               ),
               // Spacer(),
-              VerticalBox(height: 100),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: getProportionateScreenWidth(8)),
-                child: InkWell(
+              const VerticalBox(height: 100),
+              // Padding(
+              //   padding: EdgeInsets.symmetric(
+              //       horizontal: getProportionateScreenWidth(8)),
+              //   child: InkWell(
+              //     onTap: () {
+              //       pro.updateProfile();
+              //     },
+              //     child: Container(
+              //       height: getProportionateScreenHeight(52),
+              //       width: double.maxFinite,
+              //       decoration: BoxDecoration(
+              //           borderRadius: BorderRadius.circular(12),
+              //           color: const Color.fromRGBO(254, 86, 49, 1)),
+              //       child: Center(
+              //         child: Text(
+              //           "Save",
+              //           style: fontWeight500(
+              //               size: 16.0,
+              //               color: const Color.fromRGBO(255, 255, 255, 0.75)),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              Consumer<ProfileProvider>(builder: (context, provider, _) {
+                return InkWell(
                   onTap: () {
-                    pro.updateProfile();
+                    provider.updateProfile(context);
                   },
-                  child: Container(
-                    height: getProportionateScreenHeight(52),
-                    width: double.maxFinite,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Color.fromRGBO(254, 86, 49, 1)),
-                    child: Center(
-                      child: Text(
-                        "Save",
-                        style: fontWeight500(
-                            size: 16.0,
-                            color: Color.fromRGBO(255, 255, 255, 0.75)),
-                      ),
-                    ),
+                  child: CustomButton(
+                    isValid: true,
+                    isLoading: provider.isLoading,
+                    label: ConstantText.save,
+                    horizontalMargin: 0,
                   ),
-                ),
-              ),
+                );
+              }),
             ],
           ),
         );

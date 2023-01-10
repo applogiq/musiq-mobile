@@ -13,7 +13,8 @@ class TextFieldWithError extends StatelessWidget {
       required this.label,
       this.onChange,
       required this.onTap,
-      required this.errorMessage, required this.initialValue})
+      required this.errorMessage,
+      required this.initialValue})
       : super(key: key);
   final bool isValidatorEnable;
   final bool isPassword;
@@ -29,30 +30,31 @@ class TextFieldWithError extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding:  EdgeInsets.only(left: getProportionateScreenHeight(8)),
+          padding: const EdgeInsets.only(left: 8),
           child: Text(
             label,
             style: fontWeight500(size: getProportionateScreenHeight(14)),
           ),
         ),
         Padding(
-          padding:  EdgeInsets.symmetric(vertical: getProportionateScreenHeight(8)),
+          padding: const EdgeInsets.symmetric(vertical: 8),
           child: CustomColorContainer(
-            left: getProportionateScreenWidth(16),
+            left: 16,
             right: getProportionateScreenWidth(24),
             verticalPadding: 0,
             bgColor: CustomColor.textfieldBg,
             child: ConstrainedBox(
-              constraints:  BoxConstraints.expand(
-                  height: getProportionateScreenHeight(46), width: double.maxFinite),
+              constraints: const BoxConstraints.expand(
+                  height: 46, width: double.maxFinite),
               child: TextFormField(
                 initialValue: initialValue,
                 onTap: onTap,
                 cursorColor: Colors.white,
                 onChanged: onChange,
-                decoration:  InputDecoration(
+                decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintStyle: TextStyle(fontSize: getProportionateScreenHeight(14)),
+                  hintStyle:
+                      TextStyle(fontSize: getProportionateScreenHeight(14)),
                 ),
               ),
             ),
@@ -63,7 +65,7 @@ class TextFieldWithError extends StatelessWidget {
             return const SizedBox.shrink();
           } else {
             return Padding(
-              padding:  EdgeInsets.only(left: getProportionateScreenWidth(8)),
+              padding: EdgeInsets.only(left: getProportionateScreenWidth(8)),
               child: Text(
                 errorMessage.toString(),
                 style: const TextStyle(color: Colors.red),

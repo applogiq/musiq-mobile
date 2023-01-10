@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/common_widgets/text/forgot_password.dart';
-import 'package:musiq/src/features/auth/provider/forgot_password_provider.dart';
 import 'package:musiq/src/features/auth/provider/register_provider.dart';
 import 'package:provider/provider.dart';
 
 class CustomAppBarWidget extends StatelessWidget {
   CustomAppBarWidget(
-      {Key? key, required this.title, this.actions, this.height = 64.0})
+      {Key? key,
+      required this.title,
+      this.actions,
+      this.height = 64.0,
+      this.onBack})
       : super(key: key);
   final String title;
   var actions;
   var height;
-
+  Function? onBack;
   @override
   Widget build(BuildContext context) {
     var pro = Provider.of<RegisterProvider>(context);
@@ -20,11 +22,15 @@ class CustomAppBarWidget extends StatelessWidget {
       titleSpacing: 0.1,
       leading: InkWell(
           onTap: () {
+            if (onBack != null) {
+              onBack!();
+            }
             Navigator.of(context).pop();
-           pro.clearError();
-           Provider.of<ForgotPasswordProvider>(context,listen: false).isClearError();
+            pro.clearError();
+            // Provider.of<ForgotPasswordProvider>(context, listen: false)
+            //     .isClearError();
           },
-          child: Icon(Icons.arrow_back_ios_rounded)),
+          child: const Icon(Icons.arrow_back_ios_rounded)),
       title: Text(title),
       actions: actions,
     );

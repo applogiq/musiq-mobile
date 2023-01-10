@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/common/screen/main_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/buttons/custom_button.dart';
@@ -18,11 +17,10 @@ class ArtistPreferenceScreen extends StatefulWidget {
 class _ArtistPreferenceScreenState extends State<ArtistPreferenceScreen> {
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
     var provider =
         Provider.of<ArtistPreferenceProvider>(context, listen: false);
     provider.loadData([]);
+    super.initState();
   }
 
   @override
@@ -31,25 +29,23 @@ class _ArtistPreferenceScreenState extends State<ArtistPreferenceScreen> {
       child:
           Consumer<ArtistPreferenceProvider>(builder: (context, provider, _) {
         return !provider.isLoaded
-            ? LoaderScreen()
+            ? const LoaderScreen()
             : Scaffold(
                 appBar: PreferredSize(
                   preferredSize: Size(MediaQuery.of(context).size.width, 80),
-                  child: ArtistPreferenceAppBarWidget(),
+                  child: const ArtistPreferenceAppBarWidget(),
                 ),
                 body: ArtistPreferenceScreenBody(
-                  artist_list: [],
+                  artist_list: const [],
                 ),
                 bottomNavigationBar: Consumer<ArtistPreferenceProvider>(
                     builder: (context, pro, _) {
                   return SizedBox(
                     child: pro.userFollowedArtist.length < 3
-                        ? EmptyBox()
+                        ? const EmptyBox()
                         : InkWell(
-                            onTap: () async {
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (context) => MainScreen()));
+                            onTap: () {
+                              pro.navigateToHome(context);
                             },
                             child: CustomButton(label: "Save")),
                   );
@@ -69,14 +65,12 @@ class ArtistPreferenceAppBarWidget extends StatelessWidget {
     return AppBar(
       automaticallyImplyLeading: false,
       toolbarHeight: 80,
-      title: Text("Select 3 or more of your \nfavourite artists"),
+      title: const Text("Select 3 or more of your \nfavourite artists"),
       actions: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: GestureDetector(
-            onTap: () {
-              // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SearchScreen()));
-            },
+            onTap: () {},
             child: Image.asset(
               "assets/icons/search.png",
               height: 18,

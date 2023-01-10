@@ -1,12 +1,14 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:musiq/src/constants/api.dart';
 import 'package:musiq/src/features/artist/domain/repository/artist_repo.dart';
+import 'package:musiq/src/features/common/provider/bottom_navigation_bar_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../auth/domain/models/user_model.dart';
 import '../../auth/domain/repository/auth_repo.dart';
+import '../../common/screen/main_screen.dart';
 import '../domain/models/artist_model.dart';
 
 class ArtistPreferenceProvider extends ChangeNotifier {
@@ -14,7 +16,7 @@ class ArtistPreferenceProvider extends ChangeNotifier {
   var userFollowedArtist = [];
   ArtistModel? artistModel;
 
-  FlutterSecureStorage storage = FlutterSecureStorage();
+  FlutterSecureStorage storage = const FlutterSecureStorage();
 
   getUserFollowDatas() async {
     Map<String, String> allValues = await storage.readAll();
@@ -74,7 +76,7 @@ class ArtistPreferenceProvider extends ChangeNotifier {
 
   void checkFollow(Record record, int index) async {
     print(record.artistId);
-    var user_id = await storage.read(key: "register_id");
+    var userId = await storage.read(key: "register_id");
     if (userFollowedArtist.contains(record.artistId)) {
       artistModel!.records[index].followers = (record.followers! - 1);
 
@@ -84,7 +86,7 @@ class ArtistPreferenceProvider extends ChangeNotifier {
       Map<String, dynamic> params = {
         "artist_id": record.artistId,
         "follow": false,
-        "user_id": user_id
+        "user_id": userId
       };
       followAndUnfollow(params);
     } else {
@@ -98,10 +100,17 @@ class ArtistPreferenceProvider extends ChangeNotifier {
       Map<String, dynamic> params = {
         "artist_id": record.artistId,
         "follow": true,
-        "user_id": user_id
+        "user_id": userId
       };
       followAndUnfollow(params);
       notifyListeners();
     }
+  }
+
+  navigateToHome(BuildContext context) {
+    storage.write(key: "is_preference", value: "true");
+    context.read<BottomNavigationBarProvider>().selectedBottomIndex = 0;
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const MainScreen()));
   }
 }

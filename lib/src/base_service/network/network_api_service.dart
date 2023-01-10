@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -45,6 +46,23 @@ class NetworkApiService extends BaseApiServices {
     return responseJson;
   }
 
+  @override
+  Future getPuthtApiResponse(String url, data) async {
+    dynamic responseJson;
+    try {
+      print(url);
+      print(jsonEncode(data));
+      Response response =
+          await put(Uri.parse(url), headers: header, body: jsonEncode(data));
+
+      responseJson = returnResponse(response);
+    } on SocketException {
+      throw FetchDataException('No Internet Connection');
+    }
+
+    return responseJson;
+  }
+
   dynamic returnResponse(http.Response response) {
     switch (response.statusCode) {
       case 200:
@@ -74,7 +92,7 @@ class NetworkApiService extends BaseApiServices {
       print(jsonEncode(data));
       Response response =
           await post(Uri.parse(url), headers: header, body: jsonEncode(data))
-              .timeout(Duration(seconds: 10));
+              .timeout(const Duration(seconds: 10));
 
       responseJson = returnResponse(response);
     } on SocketException {
@@ -90,7 +108,7 @@ class NetworkApiService extends BaseApiServices {
     try {
       var token = await storage.read(key: "access_token");
 
-      header["Authorization"] = "Bearer ${token}";
+      header["Authorization"] = "Bearer $token";
       print(header);
 
       print(url);
@@ -98,7 +116,7 @@ class NetworkApiService extends BaseApiServices {
       Response response = await get(
         Uri.parse(url),
         headers: header,
-      ).timeout(Duration(seconds: 10));
+      ).timeout(const Duration(seconds: 10));
 
       responseJson = returnResponse(response);
     } on SocketException {
@@ -121,7 +139,7 @@ class NetworkApiService extends BaseApiServices {
       print(jsonEncode(data));
       Response response =
           await put(Uri.parse(url), headers: header, body: jsonEncode(data))
-              .timeout(Duration(seconds: 10));
+              .timeout(const Duration(seconds: 10));
 
       responseJson = returnResponse(response);
     } on SocketException {

@@ -1,14 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:http/http.dart ' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart ' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:musiq/src/constants/images.dart';
-import 'package:musiq/src/features/auth/domain/models/user_model.dart';
 import 'package:musiq/src/features/profile/domain/api_models/profile_update_api_model..dart';
+import 'package:musiq/src/features/profile/domain/repository/profile_repo.dart';
 
 import '../../../common_widgets/model/profile_model.dart';
 
@@ -26,7 +25,8 @@ class ProfileProvider extends ChangeNotifier {
   var profileImage = "";
   var registerid = "";
   String updatedImage = "";
-  FlutterSecureStorage secureStorage = FlutterSecureStorage();
+  bool isLoading = false;
+  FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
   ProfileProvider() {
     getuserApi();
@@ -55,7 +55,7 @@ class ProfileProvider extends ChangeNotifier {
     ProfileModel(
         title: "Preferences", isArrow: true, navigateScreen: "preferences"),
     ProfileModel(
-        title: "Contact us", isArrow: true, navigateScreen: "myProfile"),
+        title: "Contact us", isArrow: true, navigateScreen: "contact_us"),
   ];
 
   var isAboutOpen = false;
@@ -128,14 +128,14 @@ class ProfileProvider extends ChangeNotifier {
     print(accessToken);
     print(id);
     print(resid);
-    print("Bearer ${accessToken}");
+    print("Bearer $accessToken");
     try {
       var response = await http.get(
-          Uri.parse("https://api-musiq.applogiq.org/api/v1/users/${id}"),
+          Uri.parse("https://api-musiq.applogiq.org/api/v1/users/$id"),
           headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json',
-            'Authorization': 'Bearer ${accessToken}'
+            'Authorization': 'Bearer $accessToken'
           });
 
       print(response.statusCode);
@@ -160,40 +160,27 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateProfile() async {
-    var accessToken = await secureStorage.read(
-      key: "access_token",
-    );
+  updateProfile(BuildContext context) async {
+    Map params = {
+      "username": userName,
+      "fullname": name,
+      "image": getImageValue,
+    };
+
     var id = await secureStorage.read(
       key: "id",
     );
-    print(accessToken);
-    print(id.toString());
-
-    try {
-      var response = await http.put(
-        Uri.parse("https://api-musiq.applogiq.org/api/v1/users/${id}"),
-        headers: {
-          'accept': 'application/json',
-          "Authorization": " Bearer ${accessToken}",
-          'Content-Type': 'application/json'
-        },
-        body: jsonEncode({
-          "username": name,
-          "fullname": userName,
-          "image": getImageValue,
-        }),
-      );
-      print(response.statusCode);
-      print(response.body);
-
-      getuserApi();
-    } catch (e) {
-      print(e.toString());
-    }
+    isLoading = true;
     notifyListeners();
+    var response =
+        await ProfileRepository().updateProfile(id.toString(), params);
+    print(response.body.toString());
+    isLoading = false;
+    notifyListeners();
+    if (response.statusCode == 200) {
+      Navigator.pop(context);
+    }
   }
-
   // updatedProfileImage() async {
   //   var resgisterId = await secureStorage.read(key: "register_id");
   //   updatedImage =

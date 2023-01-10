@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/constants/style.dart';
-import 'package:musiq/src/utils/size_config.dart';
+import 'package:musiq/src/common_widgets/box/vertical_box.dart';
+import 'package:musiq/src/common_widgets/buttons/custom_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/app_bar.dart';
-import '../../../../common_widgets/buttons/custom_elevated_button.dart';
 import '../../../../common_widgets/text_field/custom_text_field.dart';
 import '../../../../constants/string.dart';
-import '../../provider/forgot_password_provider.dart';
+import '../../provider/new_password_provider.dart';
 
 class ForgotPasswordMainScreen extends StatefulWidget {
   const ForgotPasswordMainScreen({
@@ -35,9 +34,9 @@ class _ForgotPasswordMainScreenState extends State<ForgotPasswordMainScreen> {
     return SafeArea(
       child: Scaffold(
           appBar: PreferredSize(
-            preferredSize: Size(double.maxFinite, 80),
+            preferredSize: const Size(double.maxFinite, 80),
             child: Padding(
-              padding: EdgeInsets.only(top: 8.0),
+              padding: const EdgeInsets.only(top: 8.0),
               child: CustomAppBarWidget(
                 title: ConstantText.forgotPassword2,
               ),
@@ -71,59 +70,74 @@ class _ForgotPasswordMainScreenState extends State<ForgotPasswordMainScreen> {
                           }),
                     );
                   }),
-              SizedBox(height: getProportionateScreenHeight(50),),
+                  const VerticalBox(height: 60),
                   Consumer<ForgotPasswordProvider>(
-                      builder: (context, provider, _) {
-                    return provider.isButtonEnable
-                        ? InkWell(
-                            onTap: () {
-                              // provider.login();
-                            },
-                            child: Container(
-                              height: getProportionateScreenHeight(52),
-                              width: double.maxFinite,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  color: Color.fromRGBO(96, 20, 20, 1)),
-                              child: Center(
-                                child: Text(
-                                  "Continue",
-                                  style: fontWeight500(
-                                      size: 16.0,
-                                      color:
-                                          Color.fromRGBO(255, 255, 255, 0.75)),
-                                ),
-                              ),
-                            ),
-                          )
-                        : InkWell(
-                            onTap: () {
-                              provider.login(context);
-                              print(provider.emailAddress);
-                              provider.clearOTPError("");
-                            },
-                            child: Container(
-                              height: getProportionateScreenHeight(52),
-                              width: double.maxFinite,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  color: Color.fromRGBO(254, 86, 49, 1)),
-                              child: Center(
-                                  child: provider.emailButtonLoad
-                                      ? Text(
-                                          "Continue",
-                                          style: fontWeight500(
-                                              size: 16.0,
-                                              color: Color.fromRGBO(
-                                                  255, 255, 255, 0.75)),
-                                        )
-                                      : CircularProgressIndicator(
-                                          color: Colors.white,
-                                        )),
-                            ),
-                          );
-                  }),
-                
+                    builder: (context, value, child) {
+                      return GestureDetector(
+                        onTap: () {
+                          // value.navigateToNext(context);
+                          value.emailVerfied(context);
+                        },
+                        child: CustomButton(
+                          label: ConstantText.continueButton,
+                          horizontalMargin: 0,
+                          isValid: value.isEmailButtonEnable,
+                          isLoading: value.isEmailLoading,
+                        ),
+                      );
+                    },
+                  )
+                  // Consumer<ForgotPasswordProvider>(
+                  //     builder: (context, provider, _) {
+                  //   return provider.isButtonEnable
+                  //       ? InkWell(
+                  //           onTap: () {
+                  //             // provider.login();
+                  //           },
+                  //           child: Container(
+                  //             height: getProportionateScreenHeight(52),
+                  //             width: double.maxFinite,
+                  //             decoration: BoxDecoration(
+                  //                 borderRadius: BorderRadius.circular(12),
+                  //                 color: const Color.fromRGBO(96, 20, 20, 1)),
+                  //             child: Center(
+                  //               child: Text(
+                  //                 "Continue",
+                  //                 style: fontWeight500(
+                  //                     size: 16.0,
+                  //                     color: const Color.fromRGBO(
+                  //                         255, 255, 255, 0.75)),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         )
+                  //       : InkWell(
+                  //           onTap: () {
+                  //             provider.login(context);
+
+                  //             provider.clearOTPError("");
+                  //           },
+                  //           child: Container(
+                  //             height: getProportionateScreenHeight(52),
+                  //             width: double.maxFinite,
+                  //             decoration: BoxDecoration(
+                  //                 borderRadius: BorderRadius.circular(12),
+                  //                 color: const Color.fromRGBO(254, 86, 49, 1)),
+                  //             child: Center(
+                  //                 child: provider.emailButtonLoad
+                  //                     ? Text(
+                  //                         "Continue",
+                  //                         style: fontWeight500(
+                  //                             size: 16.0,
+                  //                             color: const Color.fromRGBO(
+                  //                                 255, 255, 255, 0.75)),
+                  //                       )
+                  //                     : const CircularProgressIndicator(
+                  //                         color: Colors.white,
+                  //                       )),
+                  //           ),
+                  //         );
+                  // }),
                 ],
               ),
             ),

@@ -24,12 +24,10 @@ class _SplashScreenState extends State<SplashScreen> {
   checkLogged() async {
     Map<String, String> localData = await storage.readAll();
 
-    await Future.delayed(Duration(seconds: 3), () {
+    await Future.delayed(const Duration(seconds: 1), () {
       if (localData["access_token"] != null) {
         if (localData["is_preference"] == "true") {
-          print("!323234");
-          Navigation.navigateReplaceToScreen(
-              context, RouteName.mainScreen);
+          Navigation.navigateReplaceToScreen(context, RouteName.mainScreen);
         } else {
           Navigation.navigateReplaceToScreen(
               context, RouteName.artistPreference);

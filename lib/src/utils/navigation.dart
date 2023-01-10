@@ -1,23 +1,27 @@
-
 import 'package:flutter/material.dart';
 
-class Navigation{
+class Navigation {
   static Future<dynamic> navigateToScreen(
       BuildContext context, String screen) async {
-    var value = await Navigator.pushNamed(
-        context, screen);
+    var value = await Navigator.pushNamed(context, screen);
     return value;
   }
-    static navigateReplaceToScreen(BuildContext context, String screen) {
-    Navigator.pushReplacementNamed(
-        context, screen);
-       
+
+  static navigateReplaceToScreen(BuildContext context, String screen) {
+    Navigator.pushReplacementNamed(context, screen);
   }
- 
+
+  static removeAllScreenFromStack(BuildContext context, Widget screen) {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => screen),
+        (Route route) => false);
+  }
 }
-class OneTimeNavigation{
-   oneTimeNavigation(BuildContext context, Widget screen) {
-  Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => screen), (Route route) => false);
-}
+
+class OneTimeNavigation {
+  oneTimeNavigation(BuildContext context, Widget screen) {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => screen),
+        (Route route) => false);
+  }
 }

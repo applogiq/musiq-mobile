@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musiq/src/constants/string.dart';
 import 'package:musiq/src/features/common/screen/main_screen.dart';
+import 'package:provider/provider.dart';
 
-import '../../../routing/route_name.dart';
-import '../../../utils/navigation.dart';
 import '../../../utils/validation.dart';
+import '../../common/provider/bottom_navigation_bar_provider.dart';
 import '../domain/models/user_model.dart';
 import '../domain/repository/auth_repo.dart';
 
@@ -16,21 +16,24 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
   String emailAddressErrorMessage = "";
   String password = "";
   String passwordErrorMessage = "";
-  final storage = FlutterSecureStorage();
+
+  final storage = const FlutterSecureStorage();
 
   bool isLoginButtonEnable = false;
   bool isShowStatus = false;
   bool isErrorStatus = false;
   bool isLoading = false;
   bool isSuccess = false;
+  bool isPasswordReset = false;
   changeErrorStatus() {
     isShowStatus = false;
     isErrorStatus = false;
   }
-  isErr(){
-     emailAddressErrorMessage = "";
-      passwordErrorMessage = "";
-    
+
+  isErr() {
+    emailAddressErrorMessage = "";
+    passwordErrorMessage = "";
+
     notifyListeners();
   }
 
@@ -54,18 +57,14 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
     password = value;
     if (value.isEmpty) {
       passwordErrorMessage = "Field is required";
-    } else if(!regex.hasMatch(value)){
+    } else if (!regex.hasMatch(value)) {
       passwordErrorMessage = "Enter valid password";
-     
-    }
-    
-    else {
+    } else {
       passwordErrorMessage = "";
     }
     validate();
     notifyListeners();
   }
-  
 
   validate() {
     changeErrorStatus();
@@ -79,7 +78,7 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
     notifyListeners();
   }
 
-  login(context) async {
+  login(BuildContext context) async {
     Map params = {"email": emailAddress, "password": password};
     isLoading = true;
     notifyListeners();
@@ -88,23 +87,23 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
     notifyListeners();
     print(response.statusCode);
     if (response.statusCode == 200) {
+      context.read<BottomNavigationBarProvider>().selectedBottomIndex = 0;
       isShowStatus = true;
       isErrorStatus = false;
-      
+
       print(response.body);
       var data = jsonDecode(response.body.toString());
       UserModel user = UserModel.fromMap(data);
       await storeResponseData(user);
-      
-      navigateToNextPage(user, context);
 
-    await Future.delayed(Duration(seconds: 2));
-      isLoginButtonEnable=false;
-      isShowStatus=false;
-       emailAddress="";
-      password=""; 
-          emailAddressErrorMessage = "";
+      await Future.delayed(const Duration(seconds: 2));
+      isLoginButtonEnable = false;
+      isShowStatus = false;
+      emailAddress = "";
+      password = "";
+      emailAddressErrorMessage = "";
       passwordErrorMessage = "";
+      navigateToNextPage(user, context);
     } else if (response.statusCode == 404) {
       isShowStatus = true;
       isErrorStatus = true;
@@ -115,19 +114,14 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
 
   passwordTap() {
     // emailAddressChanged(emailAddress);
-    if(emailAddress.isEmpty){
-    emailAddressErrorMessage = "Field is required";
-
-    }
-   else if (!isEmailValid(emailAddress)) {
+    if (emailAddress.isEmpty) {
+      emailAddressErrorMessage = "Field is required";
+    } else if (!isEmailValid(emailAddress)) {
       emailAddressErrorMessage = ConstantText.invalidEmail;
-    }
-    else{
-    emailAddressErrorMessage = "";
-
+    } else {
+      emailAddressErrorMessage = "";
     }
     notifyListeners();
-    
   }
 
   void closeDialog() {
@@ -150,19 +144,19 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
     await storage.write(
         key: "artist_list",
         value: jsonEncode(userModel.records.preference.artist));
-        //  await storage.write(
-        // key: "access_token",
-        // value: jsonEncode(userModel.records.accessToken.toString()));
-        //   await storage.write(
-        // key: "id",
-        // value: jsonEncode(userModel.records.id.toString()));
+    //  await storage.write(
+    // key: "access_token",
+    // value: jsonEncode(userModel.records.accessToken.toString()));
+    //   await storage.write(
+    // key: "id",
+    // value: jsonEncode(userModel.records.id.toString()));
     await storage.write(key: "password_cred", value: password);
     await storage.write(key: "isLogged", value: "true");
     var list1 = await storage.read(key: "artist_list");
   }
 
   navigateToNextPage(UserModel userModel, context) {
-    Future.delayed(Duration(milliseconds: 600), () {
+    Future.delayed(const Duration(milliseconds: 600), () {
       if (userModel.records.isPreference == false) {
         // Navigator.of(context).pushReplacement(MaterialPageRoute(
         //     builder: (context) => ArtistPreferenceMain(
@@ -170,9 +164,24 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
         //         )));
       } else {
         // Navigation.navigateReplaceToScreen(context, RouteName.mainScreen);
-      
-       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>MainScreen()), (route) => false);
+
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const MainScreen()),
+            (route) => false);
       }
     });
+  }
+
+  resetPasswordTimer() async {
+    await Future.delayed(const Duration(seconds: 2), () {
+      isPasswordReset = false;
+    });
+    notifyListeners();
+  }
+
+  closeResetPasswordTimer() async {
+    isPasswordReset = false;
+    notifyListeners();
   }
 }

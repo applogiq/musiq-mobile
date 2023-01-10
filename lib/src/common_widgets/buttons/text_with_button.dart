@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/auth/provider/login_provider.dart';
-import 'package:musiq/src/features/auth/provider/register_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/style.dart';
@@ -31,10 +30,8 @@ class TextWithButton extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-          
               Navigation.navigateToScreen(context, navigationString);
-            Provider.of<LoginProvider>(context,listen: false).isErr();
-             
+              Provider.of<LoginProvider>(context, listen: false).isErr();
             },
             child: Text(
               " $clickableText",

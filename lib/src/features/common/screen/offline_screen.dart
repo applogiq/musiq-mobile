@@ -15,7 +15,7 @@ class OfflineScreen extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            Spacer(),
+            const Spacer(),
             Image.asset(
               Images.noInternet,
               width: 95,
@@ -34,7 +34,7 @@ class OfflineScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 44),
               child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 140),
+                constraints: const BoxConstraints(maxWidth: 140),
                 child: CustomButton(
                   label: ConstantText.retry,
                   verticalMargin: 0.0,
@@ -42,7 +42,7 @@ class OfflineScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Spacer(),
+            const Spacer(),
           ],
         ),
       ),

@@ -13,7 +13,7 @@ class NoArtist extends StatelessWidget {
     return Container(
       height: height,
       width: width,
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
           color: CustomColor.defaultCard,
           borderRadius: BorderRadius.circular(12),

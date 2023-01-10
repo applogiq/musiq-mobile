@@ -28,7 +28,7 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
   bool isButtonLoading = false;
   bool isButtonEnable = true;
 
-  final storage = FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
   fullNameChanged(value) {
     fullName = value;
     if (value.isEmpty) {
@@ -39,8 +39,9 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
     buttonEnable();
     notifyListeners();
   }
-  isEmailexsist(){
-    emailError == "Email already exists" ;
+
+  isEmailexsist() {
+    emailError == "Email already exists";
     notifyListeners();
   }
 
@@ -50,9 +51,7 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
       emailError = ConstantText.fieldRequired;
     } else if (!isEmailValid(value)) {
       emailError = ConstantText.invalidEmail;
-    }
-    
-    else {
+    } else {
       emailError = "";
     }
     buttonEnable();
@@ -74,9 +73,7 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
       userNameError = ConstantText.fieldRequired;
     } else if (value.contains(" ")) {
       userNameError = ConstantText.invalidUserName;
-    } 
-    
-    else {
+    } else {
       userNameError = "";
     }
     buttonEnable();
@@ -87,8 +84,7 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
     password = value;
     if (value.isEmpty) {
       passwordError = "show toggle with field required";
-    } 
-    else if (password.isNotEmpty && confirmPassword.isNotEmpty) {
+    } else if (password.isNotEmpty && confirmPassword.isNotEmpty) {
       if (password.toString() == confirmPassword.toString()) {
         if (!validateStructure(password.toString())) {
           passwordError = "show toggle";
@@ -97,13 +93,11 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
           passwordError = "";
           confirmPasswordError = "";
         }
-      }
-       else {
+      } else {
         if (!validateStructure(password.toString())) {
           passwordError = "show toggle";
-        }
-        else{
-          passwordError="";
+        } else {
+          passwordError = "";
         }
         confirmPasswordError = ConstantText.passwordNotMatch;
       }
@@ -113,7 +107,7 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
       passwordError = "";
       confirmPasswordError = "";
     }
-  buttonEnable();
+    buttonEnable();
     notifyListeners();
   }
 
@@ -126,7 +120,7 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
     } else {
       passwordError = "";
     }
-   // buttonEnable();
+    // buttonEnable();
     notifyListeners();
   }
 
@@ -138,13 +132,12 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
       confirmPasswordError = ConstantText.passwordNotMatch;
     } else {
       confirmPasswordError = "";
-
     }
-     buttonEnable();
+    buttonEnable();
 
     notifyListeners();
   }
-  
+
   createAccount(context) async {
     userNameChanged(userName);
     emailChanged(email);
@@ -179,22 +172,20 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
         var data = jsonDecode(response.body.toString());
         UserModel user = UserModel.fromMap(data);
         await storeResponseData(user);
-       Fluttertoast.showToast(
-        msg: "Account Created",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.SNACKBAR,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Color.fromRGBO(255, 255, 255, 0.6),
-        textColor: Colors.white,
-        fontSize: getProportionateScreenHeight(16)
-    );
+        Fluttertoast.showToast(
+            msg: "Account Created",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.SNACKBAR,
+            timeInSecForIosWeb: 1,
+            backgroundColor: const Color.fromRGBO(255, 255, 255, 0.6),
+            textColor: Colors.white,
+            fontSize: getProportionateScreenHeight(16));
         navigateToNextPage(user, context);
       } else if (response.statusCode == 400) {
         var data = jsonDecode(response.body.toString());
         // clearError();
         if (data['detail']["message"] == "email already exists") {
           emailError = "Email already exists";
-
         } else if (data['detail']["message"] == "username already exists") {
           userNameError = "Username already exists";
         }
@@ -206,11 +197,11 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
   }
 
   clearError() {
-    fullName="";
-    userName="";
-    email="";
-    password="";
-    confirmPassword="";
+    fullName = "";
+    userName = "";
+    email = "";
+    password = "";
+    confirmPassword = "";
     fullNameError = "";
     userNameError = "";
     emailError = "";
@@ -251,29 +242,31 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
   }
 
   navigateToNextPage(UserModel userModel, context) {
-    Future.delayed(Duration(milliseconds: 600), () {
+    Future.delayed(const Duration(milliseconds: 600), () {
       if (userModel.records.isPreference == false) {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => ArtistPreferenceScreen()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => const ArtistPreferenceScreen()));
       } else {
         Navigation.navigateReplaceToScreen(context, RouteName.mainScreen);
       }
     });
   }
-  buttonEnable(){
-    bool emailvalidate = email.isNotEmpty && isEmailValid(email);
-     bool ppasswordvalidate = password.isNotEmpty && (password.isNotEmpty == confirmPassword.isNotEmpty) && validateStructure(password) ;
-     bool userVali = userName.isNotEmpty &&userName.contains("") ;
-     bool cpass = confirmPassword.isNotEmpty &&(password == confirmPassword) ;
-    if(fullName.isNotEmpty&&
-    emailvalidate&&userVali&&ppasswordvalidate&&cpass
-  )
-    {
-      isButtonEnable=false;
-    }
-    else{
-      isButtonEnable=true;
 
+  buttonEnable() {
+    bool emailvalidate = email.isNotEmpty && isEmailValid(email);
+    bool ppasswordvalidate = password.isNotEmpty &&
+        (password.isNotEmpty == confirmPassword.isNotEmpty) &&
+        validateStructure(password);
+    bool userVali = userName.isNotEmpty && userName.contains("");
+    bool cpass = confirmPassword.isNotEmpty && (password == confirmPassword);
+    if (fullName.isNotEmpty &&
+        emailvalidate &&
+        userVali &&
+        ppasswordvalidate &&
+        cpass) {
+      isButtonEnable = false;
+    } else {
+      isButtonEnable = true;
     }
     notifyListeners();
   }

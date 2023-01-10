@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/auth/provider/login_provider.dart';
-import 'package:musiq/src/features/auth/provider/register_provider.dart';
-import 'package:musiq/src/features/common/provider/bottom_navigation_bar_provider.dart';
+import 'package:musiq/src/features/profile/widgets/logout_dialog.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../constants/color.dart';
 import '../../../constants/images.dart';
 import '../../../constants/style.dart';
-import '../../../routing/route_name.dart';
-import '../../../utils/auth.dart';
-import '../../../utils/navigation.dart';
 import '../../../utils/size_config.dart';
 import '../provider/profile_provider.dart';
 
@@ -42,7 +37,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           body: SingleChildScrollView(
             child: SizedBox(
               width: SizeConfig.screenWidth,
-              height: SizeConfig.screenHeight - 120,
+              height: SizeConfig.screenHeight - 150,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -112,11 +107,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        const AboutUsTextWidget(
+                                      children: const [
+                                        AboutUsTextWidget(
                                           title: "Version :",
                                         ),
-                                        const AboutUsTextWidget(
+                                        AboutUsTextWidget(
                                           title: "2.30.23",
                                         ),
                                       ],
@@ -131,7 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Padding(
                     padding:
                         EdgeInsets.only(top: getProportionateScreenHeight(70)),
-                    child: SignOutWidget(),
+                    child: const SignOutWidget(),
                   )
                 ],
               ),
@@ -142,26 +137,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
 }
 
 class SignOutWidget extends StatelessWidget {
-  SignOutWidget({
+  const SignOutWidget({
     Key? key,
   }) : super(key: key);
-  Auth auth = Auth();
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        var isLog = await auth.logOut();
-        print(isLog.toString());
-        if (isLog) {
-          // Navigation.navigateReplaceToScreen(context, RouteName.login);
-          showAlertDialog(context);
-          // Provider.of<LoginProvider>(context,listen: false).isShowStatus == fa;
-        }
-//           Provider.of<BottomNavigationBarProvider>(context,listen: false).indexes();
-//          print(Provider.of<BottomNavigationBarProvider>(context,listen: false).indexes()
-// );
-//  Provider.of<BottomNavigationBarProvider>(context,listen: false).indexes();
-        print("SIGNOUT");
+        showAlertDialog(context);
       },
       child: CustomButton(
         label: "Sign Out",
@@ -212,57 +196,5 @@ class AboutUsTextWidget extends StatelessWidget {
   }
 }
 
-showAlertDialog(BuildContext context) {
-  AlertDialog alert = AlertDialog(
-    backgroundColor: Color.fromRGBO(33, 33, 44, 1),
-    title: Center(child: Text("Sign Out")),
-    content: Text(
-      "Are you sure you want to Sign Out?",
-      style: TextStyle(fontSize: 12),
-    ),
-    actions: [
-      GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Container(
-          height: getProportionateScreenHeight(44),
-          width: getProportionateScreenWidth(120),
-          child: Center(child: Text("Cancel")),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Color.fromRGBO(255, 255, 255, 0.1)),
-        ),
-      ),
-      GestureDetector(
-        onTap: () {
-          Navigation.navigateReplaceToScreen(context, RouteName.login);
-          Provider.of<BottomNavigationBarProvider>(context, listen: false)
-              .indexes();
-          Provider.of<RegisterProvider>(context, listen: false).clearError();
-          Provider.of<RegisterProvider>(context, listen: false).isButtonEnable =
-              true;
-        },
-        child: Container(
-          height: getProportionateScreenHeight(44),
-          width: getProportionateScreenWidth(120),
-          child: Center(child: Text("Confirm")),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: Color.fromRGBO(254, 86, 49, 1)),
-        ),
-      ),
-      SizedBox(
-        width: getProportionateScreenWidth(5),
-      )
-    ],
-  );
 
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
-}  
 // 33, 33, 44, 1

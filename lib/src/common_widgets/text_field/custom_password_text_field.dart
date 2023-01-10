@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../constants/color.dart';
 import '../../constants/style.dart';
 import '../container/custom_color_container.dart';
@@ -49,7 +50,7 @@ class _PasswordTextFieldWithErrorState
             style: fontWeight500(size: 14.0),
           ),
         ),
-      
+
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: CustomColorContainer(
@@ -57,8 +58,8 @@ class _PasswordTextFieldWithErrorState
             verticalPadding: 0,
             bgColor: CustomColor.textfieldBg,
             child: ConstrainedBox(
-              constraints:
-                  BoxConstraints.expand(height: 46, width: double.maxFinite),
+              constraints: const BoxConstraints.expand(
+                  height: 46, width: double.maxFinite),
               child: TextFormField(
                 onTap: widget.onTap,
                 obscureText: obscure,
@@ -67,8 +68,7 @@ class _PasswordTextFieldWithErrorState
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
                     icon: Icon(
-                      obscure ? Icons.visibility_off : Icons.visibility
-                      ,
+                      obscure ? Icons.visibility_off : Icons.visibility,
                       color: Colors.white,
                     ),
                     onPressed: () {
@@ -78,26 +78,26 @@ class _PasswordTextFieldWithErrorState
                     },
                   ),
                   border: InputBorder.none,
-                  hintStyle: TextStyle(fontSize: 14),
+                  hintStyle: const TextStyle(fontSize: 14),
                 ),
               ),
             ),
           ),
         ),
-       
+
         Builder(builder: (context) {
           if (widget.errorMessage == "") {
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
           } else if (widget.errorMessage == "show toggle") {
-            return PasswordMessage();
+            return const PasswordMessage();
           } else if (widget.errorMessage == "show toggle with field required") {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: const [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
                   child: Text("Field is Required",
-                      style: const TextStyle(color: Colors.red)),
+                      style: TextStyle(color: Colors.red)),
                 ),
                 PasswordMessage(),
               ],
@@ -105,11 +105,11 @@ class _PasswordTextFieldWithErrorState
           } else if (widget.errorMessage == "show toggle with invalid") {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: const [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
                   child: Text("Invalid Format",
-                      style: const TextStyle(color: Colors.red)),
+                      style: TextStyle(color: Colors.red)),
                 ),
                 PasswordMessage(),
               ],

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/profile/screens/myprofile_screen.dart';
+import 'package:musiq/src/features/auth/screens/forgot_screen/forgot_otp_screen.dart';
+import 'package:musiq/src/features/auth/screens/forgot_screen/new_password.dart';
+import 'package:musiq/src/features/profile/screens/my_profile_screen.dart';
+import 'package:musiq/src/features/profile/screens/preference_screen.dart';
 import 'package:musiq/src/routing/route_name.dart';
 
 import '../features/artist/screens/artist_preference_screen/artist_preference_screen.dart';
@@ -23,26 +26,35 @@ class Routes {
             builder: (BuildContext context) => const SplashScreen());
       case RouteName.mainScreen:
         return MaterialPageRoute(
-            builder: (BuildContext context) => MainScreen());
+            builder: (BuildContext context) => const MainScreen());
       case RouteName.artistPreference:
         return MaterialPageRoute(
-            builder: (BuildContext context) => ArtistPreferenceScreen());
+            builder: (BuildContext context) => const ArtistPreferenceScreen());
       case RouteName.forgotPassword:
         return MaterialPageRoute(
-            builder: (BuildContext context) => ForgotPasswordMainScreen());
+            builder: (BuildContext context) =>
+                const ForgotPasswordMainScreen());
       case RouteName.onboarding:
         return MaterialPageRoute(
-            builder: (BuildContext context) => OnboardingScreen());
+            builder: (BuildContext context) => const OnboardingScreen());
       case RouteName.register:
         return MaterialPageRoute(
             builder: (BuildContext context) => const RegisterScreen());
       case RouteName.home:
         return MaterialPageRoute(
-            builder: (BuildContext context) => HomeScreen());
+            builder: (BuildContext context) => const HomeScreen());
       case RouteName.myProfile:
         return MaterialPageRoute(
-            builder: (BuildContext context) => MyProfile());
-
+            builder: (BuildContext context) => const MyProfile());
+      case RouteName.preference:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const PreferenceScreen());
+      case RouteName.forgotPasswordOTP:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const OTPScreen());
+      case RouteName.forgotPasswordChangePassword:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const NewPasswordScreen());
       default:
         return MaterialPageRoute(
             builder: (BuildContext context) => const ErrorScreen());

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/auth/provider/forgot_password_provider.dart';
 import 'package:musiq/src/utils/size_config.dart';
 import 'package:provider/provider.dart';
+
 import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../common_widgets/buttons/text_with_button.dart';
 import '../../../common_widgets/container/empty_box.dart';
@@ -15,7 +15,6 @@ import '../../../constants/string.dart';
 import '../../../constants/style.dart';
 import '../../../routing/route_name.dart';
 import '../../../utils/navigation.dart';
-import '../../common/provider/bottom_navigation_bar_provider.dart';
 import '../../common/provider/internet_connectivity_provider.dart';
 import '../../common/screen/offline_screen.dart';
 import '../provider/login_provider.dart';
@@ -28,22 +27,23 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
- 
- late var pro= Provider.of<LoginProvider>(context,listen: false);
-  
+  late var pro = Provider.of<LoginProvider>(context, listen: false);
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      pro.emailAddress="";
+      pro.emailAddress = "";
     });
     super.initState();
   }
+
   @override
-  void dispose()async {
-pro.emailAddress="";
-    
+  void dispose() async {
+    pro.emailAddress = "";
+
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -58,35 +58,38 @@ pro.emailAddress="";
                 child: Stack(children: [
                   const Background(),
                   Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: getProportionateScreenHeight(16)),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: getProportionateScreenHeight(16)),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Spacer(),
-                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: getProportionateScreenHeight(16)),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: getProportionateScreenHeight(16)),
                           child: const LogoWidget(
                             size: 60,
                           ),
                         ),
-                         SizedBox(
+                        SizedBox(
                           height: getProportionateScreenHeight(12),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: Text(
                             ConstantText.welcomeBack,
-                            style: fontWeight600(size: getProportionateScreenHeight(24)),
+                            style: fontWeight600(
+                                size: getProportionateScreenHeight(24)),
                           ),
                         ),
-                         SizedBox(
+                        SizedBox(
                           height: getProportionateScreenHeight(20),
                         ),
                         Consumer<LoginProvider>(
                             builder: (context, provider, _) {
                           return TextFieldWithError(
-                            initialValue: "",
+                              initialValue: "",
                               onTap: () {},
                               label: ConstantText.email,
                               errorMessage: provider.emailAddressErrorMessage,
@@ -109,18 +112,57 @@ pro.emailAddress="";
                                 provider.passwordChanged(text);
                               });
                         }),
-                        Consumer<LoginProvider>(
-                          builder: (context, pro, child) {
-                            
-                          
+                        Consumer<LoginProvider>(builder: (context, pro, child) {
                           return InkWell(
-                              onTap: () {Navigation.navigateToScreen(
-                                  context, RouteName.forgotPassword);
-                                  pro.isErr();
+                              onTap: () {
+                                Navigation.navigateToScreen(
+                                    context, RouteName.forgotPassword);
+                                pro.isErr();
                               },
                               child: const ForgotPassword());
-                       
-   } ),
+                        }),
+                        Consumer<LoginProvider>(builder: (context, pro, _) {
+                          return pro.isPasswordReset
+                              ? FutureBuilder(
+                                  future: pro.resetPasswordTimer(),
+                                  builder: (context, snapshot) {
+                                    return Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 50,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 16),
+                                      padding: const EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                        color: CustomColor.successStatusColor,
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          const Icon(Icons.info,
+                                              color: Colors.green),
+                                          const SizedBox(
+                                            width: 8,
+                                          ),
+                                          Text(
+                                            ConstantText.passwordResetSuccess,
+                                            style: fontWeight400(
+                                              size: 14.0,
+                                              color: CustomColor.subTitle2,
+                                            ),
+                                          ),
+                                          const Spacer(),
+                                          InkWell(
+                                              onTap: () {
+                                                pro.closeResetPasswordTimer();
+                                              },
+                                              child: const Icon(Icons.close))
+                                        ],
+                                      ),
+                                    );
+                                  })
+                              : const EmptyBox();
+                        }),
                         const StatusContainer(),
                         Consumer<LoginProvider>(
                             builder: (context, provider, _) {
@@ -129,10 +171,13 @@ pro.emailAddress="";
                               InkWell(
                                 onTap: provider.isLoginButtonEnable
                                     ? () {
+                                        FocusScope.of(context)
+                                            .requestFocus(FocusNode());
                                         provider.login(context);
-                                        FocusScope.of(context).requestFocus(FocusNode());
-          Provider.of<BottomNavigationBarProvider>(context,listen: false).index;
-                                       
+                                        // Provider.of<BottomNavigationBarProvider>(
+                                        //         context,
+                                        //         listen: false)
+                                        //     .index;
                                       }
                                     : () {},
                                 child: CustomButton(
@@ -178,8 +223,11 @@ class StatusContainer extends StatelessWidget {
           : Container(
               width: MediaQuery.of(context).size.width,
               height: getProportionateScreenHeight(52),
-              margin:  EdgeInsets.symmetric(vertical: getProportionateScreenWidth(16)),
-              padding:  EdgeInsets.symmetric(vertical: getProportionateScreenHeight(12),horizontal: getProportionateScreenWidth(12)),
+              margin: EdgeInsets.symmetric(
+                  vertical: getProportionateScreenWidth(16)),
+              padding: EdgeInsets.symmetric(
+                  vertical: getProportionateScreenHeight(12),
+                  horizontal: getProportionateScreenWidth(12)),
               decoration: BoxDecoration(
                 color: provider.isErrorStatus
                     ? CustomColor.errorStatusColor
@@ -191,7 +239,7 @@ class StatusContainer extends StatelessWidget {
                   Icon(Icons.info,
                       color:
                           provider.isErrorStatus ? Colors.red : Colors.green),
-                   SizedBox(
+                  SizedBox(
                     width: getProportionateScreenWidth(8),
                   ),
                   Text(
