@@ -14,4 +14,17 @@ class ProfileRepository {
       rethrow;
     }
   }
+
+  Future<dynamic> getProfile(
+    String id,
+  ) async {
+    try {
+      dynamic response = await apiServices.getGetAuthApiResponse(
+        APIConstants.kUpdateProfileEndPoint + id.toString(),
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

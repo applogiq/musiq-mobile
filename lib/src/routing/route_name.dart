@@ -12,4 +12,6 @@ class RouteName {
   static const String mainScreen = "main_screen";
   static const String myProfile = "myProfile";
   static const String preference = "preferences";
+  static const String crop = "crop";
+  static const String search = "search";
 }

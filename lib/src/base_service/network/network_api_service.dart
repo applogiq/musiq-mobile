@@ -20,7 +20,7 @@ class NetworkApiService extends BaseApiServices {
     dynamic responseJson;
     try {
       final response =
-          await http.get(Uri.parse(url)).timeout(const Duration(seconds: 10));
+          await http.get(Uri.parse(url)).timeout(const Duration(seconds: 30));
       responseJson = returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet Connection');
@@ -33,8 +33,6 @@ class NetworkApiService extends BaseApiServices {
   Future getPostApiResponse(String url, dynamic data) async {
     dynamic responseJson;
     try {
-      print(url);
-      print(jsonEncode(data));
       Response response =
           await post(Uri.parse(url), headers: header, body: jsonEncode(data));
 
@@ -50,8 +48,6 @@ class NetworkApiService extends BaseApiServices {
   Future getPuthtApiResponse(String url, data) async {
     dynamic responseJson;
     try {
-      print(url);
-      print(jsonEncode(data));
       Response response =
           await put(Uri.parse(url), headers: header, body: jsonEncode(data));
 
@@ -86,13 +82,10 @@ class NetworkApiService extends BaseApiServices {
       var token = await storage.read(key: "access_token");
 
       header["Authorization"] = "Bearer $token";
-      print(header);
 
-      print(url);
-      print(jsonEncode(data));
       Response response =
           await post(Uri.parse(url), headers: header, body: jsonEncode(data))
-              .timeout(const Duration(seconds: 10));
+              .timeout(const Duration(seconds: 30));
 
       responseJson = returnResponse(response);
     } on SocketException {
@@ -109,14 +102,11 @@ class NetworkApiService extends BaseApiServices {
       var token = await storage.read(key: "access_token");
 
       header["Authorization"] = "Bearer $token";
-      print(header);
-
-      print(url);
 
       Response response = await get(
         Uri.parse(url),
         headers: header,
-      ).timeout(const Duration(seconds: 10));
+      ).timeout(const Duration(seconds: 30));
 
       responseJson = returnResponse(response);
     } on SocketException {
@@ -133,13 +123,10 @@ class NetworkApiService extends BaseApiServices {
       var token = await storage.read(key: "access_token");
 
       header["Authorization"] = "Bearer $token";
-      print(header);
 
-      print(url);
-      print(jsonEncode(data));
       Response response =
           await put(Uri.parse(url), headers: header, body: jsonEncode(data))
-              .timeout(const Duration(seconds: 10));
+              .timeout(const Duration(seconds: 30));
 
       responseJson = returnResponse(response);
     } on SocketException {

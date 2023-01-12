@@ -1,77 +1,103 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/constants/color.dart';
-import 'package:musiq/src/constants/style.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:musiq/src/features/profile/provider/profile_provider.dart';
+import 'package:provider/provider.dart';
 
-Widget bulidsheet(context) {
-  // ProfileController profileController = Get.find<ProfileController>();
-  return IntrinsicHeight(
-    child: Container(
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-        color: CustomColor.appBarColor,
-      ),
-      child: Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: ProfilePhotoHeader(),
-          ),
-          Divider(thickness: 1, color: CustomColor.textfieldBg),
-          ListTile(
-              onTap: () async {
-                // var isPicked = await profileController.openCamera();
-                // if (isPicked) {
-                Navigator.of(context).pop();
-                // }
-              },
-              leading: const Icon(
-                Icons.photo_camera,
-                color: Color.fromRGBO(255, 255, 255, 0.7),
-                size: 22,
-              ),
-              title: Text(
-                "Open camera",
-                style: fontWeight400(),
-              )),
-          ListTile(
-              onTap: () async {
-                // Navigator.pop(context);
+import '../../../constants/color.dart';
+import '../../../constants/style.dart';
 
-                // var isPicked = await profileController.openGallery();
-                // if (isPicked) {
-                //   Navigator.of(context).push(MaterialPageRoute(
-                //       builder: (context) => ImageCropperScreen(
-                //             imagePath: profileController.imagebytes,
-                //           )));
-                // }
-              },
-              leading: const Icon(
-                Icons.image,
-                color: Color.fromRGBO(255, 255, 255, 0.7),
-                size: 22,
-              ),
-              title: Text(
-                "Choose from gallery",
-                style: fontWeight400(),
-              )),
-          ListTile(
-              onTap: () async {
-                // Navigator.of(context).pop();
-              },
-              leading: const Icon(
-                Icons.delete,
-                color: Color.fromRGBO(255, 255, 255, 0.7),
-                size: 22,
-              ),
-              title: Text(
-                "Delete picture",
-                style: fontWeight400(),
-              ))
-        ],
+class ImagePickerSheet extends StatelessWidget {
+  const ImagePickerSheet({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return IntrinsicHeight(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+          color: CustomColor.appBarColor,
+        ),
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: ProfilePhotoHeader(),
+            ),
+            Divider(thickness: 1, color: CustomColor.textfieldBg),
+            ListTile(
+                onTap: () async {
+                  await context.read<ProfileProvider>().getImageFrom(
+                      source: ImageSource.camera, context: context);
+                  // await profileController.getImageFrom(
+                  //     source: ImageSource.camera);
+
+                  // // var isPicked = await profileController.openCamera();
+                  // // if (isPicked) {
+
+                  // }
+                },
+                leading: const Icon(
+                  Icons.photo_camera,
+                  color: Color.fromRGBO(255, 255, 255, 0.7),
+                  size: 22,
+                ),
+                title: Text(
+                  "Open camera",
+                  style: fontWeight400(),
+                )),
+            ListTile(
+                onTap: () async {
+                  await context.read<ProfileProvider>().getImageFrom(
+                      source: ImageSource.gallery, context: context);
+                  // await profileController.getImageFrom(
+                  //     source: ImageSource.camera);
+
+                  // // var isPicked = await profileController.openCamera();
+                  // // if (isPicked) {
+                  // Navigator.of(context).pop();
+                  // Navigator.pop(context);
+                  // await profileController.getImageFrom(
+                  //     source: ImageSource.gallery);
+                  // Navigator.pop(context);
+                  // var isPicked = await profileController.openGallery();
+                  // if (isPicked) {
+                  //   Navigator.of(context).push(MaterialPageRoute(
+                  //       builder: (context) => ImageCropperScreen(
+                  //             imagePath: profileController.imagebytes,
+                  //           )));
+                  // }
+                },
+                leading: const Icon(
+                  Icons.image,
+                  color: Color.fromRGBO(255, 255, 255, 0.7),
+                  size: 22,
+                ),
+                title: Text(
+                  "Choose from gallery",
+                  style: fontWeight400(),
+                )),
+            // profileController.isImagePicked || profileController.isImage.value
+            // ? ListTile(
+            //     onTap: () async {
+            //       profileController.deleteImage(context);
+            //       // Navigator.of(context).pop();
+            //     },
+            //     leading: Icon(
+            //       Icons.delete,
+            //       color: Color.fromRGBO(255, 255, 255, 0.7),
+            //       size: 22,
+            //     ),
+            //     title: Text(
+            //       "Delete picture",
+            //       style: fontWeight400(),
+            //     ))
+            // : SizedBox()
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 class ProfilePhotoHeader extends StatelessWidget {

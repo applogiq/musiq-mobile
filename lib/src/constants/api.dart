@@ -9,12 +9,13 @@ class APIConstants {
 
   static String kLoginEndPoint = "$baseUrl${versionUrl}users/login";
   static String kRegisterEndPoint = "$baseUrl${versionUrl}users/register";
+  static String kProfileEndPoint = "$baseUrl${versionUrl}users/";
   static String kEmailVerficationEndPoint = "$baseUrl${versionUrl}users/email";
   static String kOTPVerficationEndPoint =
       "$baseUrl${versionUrl}users/email/otp-verify";
   static String kPasswordChangeEndPoint =
       "$baseUrl${versionUrl}users/email/forget-password";
-  // users/email/forget-password
+
   static String kUpdateProfileEndPoint = "$baseUrl${versionUrl}users/";
   static String kRecentPlayedList = "$baseUrl${versionUrl}recent-list/";
   static String kArtistFollowing = "$baseUrl${versionUrl}users/follow";

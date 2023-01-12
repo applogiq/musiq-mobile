@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/constants/color.dart';
+import 'package:musiq/src/features/home/provider/home_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';
 
@@ -22,37 +24,38 @@ class SearchAndNotifications extends StatelessWidget {
                 isReadOnly: true,
                 onTap: () {
                   print("DATA");
+                  context.read<HomeProvider>().goToSearch(context);
                   // Navigator.of(context).push(
                   //     MaterialPageRoute(builder: (context) => SearchScreen()));
                 },
                 hint: "Search Music and Podcasts",
               ),
             ),
-            const SizedBox(
-              width: 8,
-            ),
-            CustomColorContainer(
-              bgColor: CustomColor.textfieldBg,
-              left: 12,
-              verticalPadding: 6,
-              child: Center(
-                child: Stack(
-                  children: [
-                    const Icon(Icons.notifications),
-                    Positioned(
-                      right: 2,
-                      child: Container(
-                        padding: const EdgeInsets.all(4.5),
-                        decoration: BoxDecoration(
-                          color: CustomColor.secondaryColor,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            )
+            // const SizedBox(
+            //   width: 8,
+            // ),
+            // CustomColorContainer(
+            //   bgColor: CustomColor.textfieldBg,
+            //   left: 12,
+            //   verticalPadding: 6,
+            //   child: Center(
+            //     child: Stack(
+            //       children: [
+            //         const Icon(Icons.notifications),
+            //         Positioned(
+            //           right: 2,
+            //           child: Container(
+            //             padding: const EdgeInsets.all(4.5),
+            //             decoration: BoxDecoration(
+            //               color: CustomColor.secondaryColor,
+            //               shape: BoxShape.circle,
+            //             ),
+            //           ),
+            //         )
+            //       ],
+            //     ),
+            //   ),
+            // )
           ],
         ),
       ),

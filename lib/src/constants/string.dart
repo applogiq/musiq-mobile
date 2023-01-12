@@ -58,6 +58,8 @@ class ConstantText {
   static var noPlaylistHere = "No Playlist Here";
 
   static var browseSong = "Browse songs";
+
+  static String myProfile = "My Profile";
 // This name is already taken
 
 }

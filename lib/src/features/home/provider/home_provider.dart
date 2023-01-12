@@ -7,6 +7,8 @@ import 'package:musiq/src/features/home/domain/model/aura_model.dart';
 import 'package:musiq/src/features/home/domain/model/song_list_model.dart';
 import 'package:musiq/src/features/home/domain/model/trending_hits_model.dart';
 import 'package:musiq/src/features/home/domain/repository/home_repo.dart';
+import 'package:musiq/src/routing/route_name.dart';
+import 'package:musiq/src/utils/navigation.dart';
 
 import '../domain/model/recent_song_model.dart';
 
@@ -126,5 +128,9 @@ class HomeProvider extends ChangeNotifier {
   changeLoadState(bool status) {
     isLoad = status;
     notifyListeners();
+  }
+
+  goToSearch(context) {
+    Navigation.navigateToScreen(context, RouteName.search);
   }
 }

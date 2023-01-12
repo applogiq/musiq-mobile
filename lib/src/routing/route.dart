@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/auth/screens/forgot_screen/forgot_otp_screen.dart';
 import 'package:musiq/src/features/auth/screens/forgot_screen/new_password.dart';
+import 'package:musiq/src/features/profile/screens/image_crop_screen.dart';
 import 'package:musiq/src/features/profile/screens/my_profile_screen.dart';
 import 'package:musiq/src/features/profile/screens/preference_screen.dart';
+import 'package:musiq/src/features/search/screens/search_screen.dart';
 import 'package:musiq/src/routing/route_name.dart';
 
 import '../features/artist/screens/artist_preference_screen/artist_preference_screen.dart';
@@ -55,6 +57,12 @@ class Routes {
       case RouteName.forgotPasswordChangePassword:
         return MaterialPageRoute(
             builder: (BuildContext context) => const NewPasswordScreen());
+      case RouteName.crop:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const ImageCrop());
+      case RouteName.search:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const SearchScreen());
       default:
         return MaterialPageRoute(
             builder: (BuildContext context) => const ErrorScreen());

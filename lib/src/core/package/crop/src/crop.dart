@@ -1,0 +1,674 @@
+import 'dart:math';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:image/image.dart' as image;
+import 'package:musiq/src/common_widgets/loader.dart';
+
+import 'calculator.dart';
+import 'controller.dart';
+import 'edge_alignment.dart';
+
+const dotTotalSize = 32.0;
+
+typedef CornerDotBuilder = Widget Function(
+    double size, EdgeAlignment edgeAlignment);
+
+typedef CroppingAreaBuilder = Rect Function(Rect imageRect);
+
+enum CropStatus { nothing, loading, ready, cropping }
+
+class Crop extends StatelessWidget {
+  final Uint8List image;
+
+  final ValueChanged<Uint8List> onCropped;
+
+  final double? aspectRatio;
+
+  final double? initialSize;
+
+  final CroppingAreaBuilder? initialAreaBuilder;
+
+  final Rect? initialArea;
+
+  final bool withCircleUi;
+
+  final CropController? controller;
+
+  final ValueChanged<Rect>? onMoved;
+
+  final ValueChanged<CropStatus>? onStatusChanged;
+
+  final Color? maskColor;
+
+  final Color baseColor;
+
+  final double radius;
+
+  final CornerDotBuilder? cornerDotBuilder;
+
+  final bool fixArea;
+
+  final bool interactive;
+
+  const Crop({
+    Key? key,
+    required this.image,
+    required this.onCropped,
+    this.aspectRatio,
+    this.initialSize,
+    this.initialAreaBuilder,
+    this.initialArea,
+    this.withCircleUi = false,
+    this.controller,
+    this.onMoved,
+    this.onStatusChanged,
+    this.maskColor,
+    this.baseColor = Colors.white,
+    this.radius = 0,
+    this.cornerDotBuilder,
+    this.fixArea = false,
+    this.interactive = false,
+  })  : assert((initialSize ?? 1.0) <= 1.0,
+            'initialSize must be less than 1.0, or null meaning not specified.'),
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (c, constraints) {
+        final newData = MediaQuery.of(c).copyWith(
+          size: constraints.biggest,
+        );
+        return MediaQuery(
+          data: newData,
+          child: _CropEditor(
+            image: image,
+            onCropped: onCropped,
+            aspectRatio: aspectRatio,
+            initialSize: initialSize,
+            initialAreaBuilder: initialAreaBuilder,
+            initialArea: initialArea,
+            withCircleUi: withCircleUi,
+            controller: controller,
+            onMoved: onMoved,
+            onStatusChanged: onStatusChanged,
+            maskColor: maskColor,
+            baseColor: baseColor,
+            radius: radius,
+            cornerDotBuilder: cornerDotBuilder,
+            fixArea: fixArea,
+            interactive: interactive,
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _CropEditor extends StatefulWidget {
+  final Uint8List image;
+  final ValueChanged<Uint8List> onCropped;
+  final double? aspectRatio;
+  final double? initialSize;
+  final CroppingAreaBuilder? initialAreaBuilder;
+  final Rect? initialArea;
+  final bool withCircleUi;
+  final CropController? controller;
+  final ValueChanged<Rect>? onMoved;
+  final ValueChanged<CropStatus>? onStatusChanged;
+  final Color? maskColor;
+  final Color baseColor;
+  final double radius;
+  final CornerDotBuilder? cornerDotBuilder;
+  final bool fixArea;
+  final bool interactive;
+
+  const _CropEditor({
+    Key? key,
+    required this.image,
+    required this.onCropped,
+    this.aspectRatio,
+    this.initialSize,
+    this.initialAreaBuilder,
+    this.initialArea,
+    this.withCircleUi = false,
+    this.controller,
+    this.onMoved,
+    this.onStatusChanged,
+    this.maskColor,
+    required this.baseColor,
+    required this.radius,
+    this.cornerDotBuilder,
+    required this.fixArea,
+    required this.interactive,
+  }) : super(key: key);
+
+  @override
+  _CropEditorState createState() => _CropEditorState();
+}
+
+class _CropEditorState extends State<_CropEditor> {
+  late CropController _cropController;
+  late Rect _rect;
+  image.Image? _targetImage;
+  late Rect _imageRect;
+
+  double? _aspectRatio;
+  bool _withCircleUi = false;
+  bool _isFitVertically = false;
+  Future<image.Image?>? _lastComputed;
+
+  bool get _isImageLoading => _lastComputed != null;
+
+  Calculator get calculator => _isFitVertically
+      ? const VerticalCalculator()
+      : const HorizontalCalculator();
+
+  set rect(Rect newRect) {
+    setState(() {
+      _rect = newRect;
+    });
+    widget.onMoved?.call(_rect);
+  }
+
+  int _pointerNum = 0;
+  double _scale = 1.0;
+  double _baseScale = 1.0;
+
+  void _startScale(ScaleStartDetails detail) {
+    _baseScale = _scale;
+  }
+
+  void _updateScale(ScaleUpdateDetails detail) {
+    var movedLeft = _imageRect.left + detail.focalPointDelta.dx;
+    if (movedLeft + _imageRect.width < _rect.right) {
+      movedLeft = _rect.right - _imageRect.width;
+    }
+
+    var movedTop = _imageRect.top + detail.focalPointDelta.dy;
+    if (movedTop + _imageRect.height < _rect.bottom) {
+      movedTop = _rect.bottom - _imageRect.height;
+    }
+    setState(() {
+      _imageRect = Rect.fromLTWH(
+        min(_rect.left, movedLeft),
+        min(_rect.top, movedTop),
+        _imageRect.width,
+        _imageRect.height,
+      );
+    });
+
+    if (_pointerNum >= 2) {
+      _applyScale(
+        _baseScale * detail.scale,
+        focalPoint: detail.localFocalPoint,
+      );
+    }
+  }
+
+  void _applyScale(
+    double nextScale, {
+    Offset? focalPoint,
+  }) {
+    late double baseHeight;
+    late double baseWidth;
+    final ratio = _targetImage!.height / _targetImage!.width;
+
+    if (_isFitVertically) {
+      baseHeight = MediaQuery.of(context).size.height;
+      baseWidth = baseHeight / ratio;
+    } else {
+      baseWidth = MediaQuery.of(context).size.width;
+      baseHeight = baseWidth * ratio;
+    }
+
+    final newWidth = baseWidth * nextScale;
+    final horizontalFocalPointBias = focalPoint == null
+        ? 0.5
+        : (focalPoint.dx - _imageRect.left) / _imageRect.width;
+    final leftPositionDelta =
+        (newWidth - _imageRect.width) * horizontalFocalPointBias;
+
+    final newHeight = baseHeight * nextScale;
+    final verticalFocalPointBias = focalPoint == null
+        ? 0.5
+        : (focalPoint.dy - _imageRect.top) / _imageRect.height;
+    final topPositionDelta =
+        (newHeight - _imageRect.height) * verticalFocalPointBias;
+
+    final newLeft = max(min(_rect.left, _imageRect.left - leftPositionDelta),
+        _rect.right - newWidth);
+    final newTop = max(min(_rect.top, _imageRect.top - topPositionDelta),
+        _rect.bottom - newHeight);
+
+    if (newWidth < _rect.width || newHeight < _rect.height) {
+      return;
+    }
+
+    setState(() {
+      _imageRect = Rect.fromLTRB(
+        newLeft,
+        newTop,
+        newLeft + newWidth,
+        newTop + newHeight,
+      );
+      _scale = nextScale;
+    });
+  }
+
+  @override
+  void initState() {
+    _cropController = widget.controller ?? CropController();
+    _cropController.delegate = CropControllerDelegate()
+      ..onCrop = _crop
+      ..onChangeAspectRatio = (aspectRatio) {
+        _resizeWith(aspectRatio, null);
+      }
+      ..onChangeWithCircleUi = (withCircleUi) {
+        _withCircleUi = withCircleUi;
+        _resizeWith(null, null);
+      }
+      ..onImageChanged = _resetImage
+      ..onChangeRect = (newRect) {
+        rect = calculator.correct(newRect, _imageRect);
+      }
+      ..onChangeArea = (newArea) {
+        _resizeWith(_aspectRatio, newArea);
+      };
+
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    final future = compute(_fromByteData, widget.image);
+    _lastComputed = future;
+    future.then((converted) {
+      if (_lastComputed == future) {
+        _targetImage = converted;
+        _withCircleUi = widget.withCircleUi;
+        _resetCroppingArea();
+
+        setState(() {
+          _lastComputed = null;
+        });
+        widget.onStatusChanged?.call(CropStatus.ready);
+      }
+    });
+    super.didChangeDependencies();
+  }
+
+  void _resetImage(Uint8List targetImage) {
+    widget.onStatusChanged?.call(CropStatus.loading);
+    final future = compute(_fromByteData, targetImage);
+    _lastComputed = future;
+    future.then((converted) {
+      if (_lastComputed == future) {
+        setState(() {
+          _targetImage = converted;
+          _lastComputed = null;
+        });
+        _resetCroppingArea();
+        widget.onStatusChanged?.call(CropStatus.ready);
+      }
+    });
+  }
+
+  void _resetCroppingArea() {
+    final screenSize = MediaQuery.of(context).size;
+
+    final imageRatio = _targetImage!.width / _targetImage!.height;
+    _isFitVertically = imageRatio < screenSize.aspectRatio;
+
+    _imageRect = calculator.imageRect(screenSize, imageRatio);
+
+    if (widget.initialAreaBuilder != null) {
+      rect = widget.initialAreaBuilder!(Rect.fromLTWH(
+        0,
+        0,
+        screenSize.width,
+        screenSize.height,
+      ));
+    } else {
+      _resizeWith(widget.aspectRatio, widget.initialArea);
+    }
+
+    if (widget.interactive) {
+      final initialScale = calculator.scaleToCover(screenSize, _imageRect);
+      _applyScale(initialScale);
+    }
+  }
+
+  void _resizeWith(double? aspectRatio, Rect? initialArea) {
+    _aspectRatio = _withCircleUi ? 1 : aspectRatio;
+
+    if (initialArea == null) {
+      rect = calculator.initialCropRect(
+        MediaQuery.of(context).size,
+        _imageRect,
+        _aspectRatio ?? 1,
+        widget.initialSize ?? 1,
+      );
+    } else {
+      final screenSizeRatio = calculator.screenSizeRatio(
+        _targetImage!,
+        MediaQuery.of(context).size,
+      );
+      rect = Rect.fromLTWH(
+        _imageRect.left + initialArea.left / screenSizeRatio,
+        _imageRect.top + initialArea.top / screenSizeRatio,
+        initialArea.width / screenSizeRatio,
+        initialArea.height / screenSizeRatio,
+      );
+    }
+  }
+
+  Future<void> _crop(bool withCircleShape) async {
+    assert(_targetImage != null);
+
+    final screenSizeRatio = calculator.screenSizeRatio(
+      _targetImage!,
+      MediaQuery.of(context).size,
+    );
+
+    widget.onStatusChanged?.call(CropStatus.cropping);
+
+    final cropResult = await compute(
+      withCircleShape ? _doCropCircle : _doCrop,
+      [
+        _targetImage!,
+        Rect.fromLTWH(
+          (_rect.left - _imageRect.left) * screenSizeRatio / _scale,
+          (_rect.top - _imageRect.top) * screenSizeRatio / _scale,
+          _rect.width * screenSizeRatio / _scale,
+          _rect.height * screenSizeRatio / _scale,
+        ),
+      ],
+    );
+    widget.onCropped(cropResult);
+
+    widget.onStatusChanged?.call(CropStatus.ready);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _isImageLoading
+        ? const Center(child: LoaderScreen())
+        : Stack(
+            children: [
+              Listener(
+                onPointerDown: (_) => _pointerNum++,
+                onPointerUp: (_) => _pointerNum--,
+                child: GestureDetector(
+                  onScaleStart: widget.interactive ? _startScale : null,
+                  onScaleUpdate: widget.interactive ? _updateScale : null,
+                  child: Container(
+                    color: widget.baseColor,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          left: _imageRect.left,
+                          top: _imageRect.top,
+                          child: Image.memory(
+                            widget.image,
+                            width: _isFitVertically
+                                ? null
+                                : MediaQuery.of(context).size.width * _scale,
+                            height: _isFitVertically
+                                ? MediaQuery.of(context).size.height * _scale
+                                : null,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              IgnorePointer(
+                child: ClipPath(
+                  clipper: _withCircleUi
+                      ? _CircleCropAreaClipper(_rect)
+                      : _CropAreaClipper(_rect, widget.radius),
+                  child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    color: widget.maskColor ?? Colors.black.withAlpha(100),
+                  ),
+                ),
+              ),
+              if (!widget.interactive && !widget.fixArea)
+                Positioned(
+                  left: _rect.left,
+                  top: _rect.top,
+                  child: GestureDetector(
+                    onPanUpdate: (details) {
+                      rect = calculator.moveRect(
+                        _rect,
+                        details.delta.dx,
+                        details.delta.dy,
+                        _imageRect,
+                      );
+                    },
+                    child: Container(
+                      width: _rect.width,
+                      height: _rect.height,
+                      color: Colors.transparent,
+                    ),
+                  ),
+                ),
+              Positioned(
+                left: _rect.left - (dotTotalSize / 2),
+                top: _rect.top - (dotTotalSize / 2),
+                child: GestureDetector(
+                  onPanUpdate: widget.fixArea
+                      ? null
+                      : (details) {
+                          rect = calculator.moveTopLeft(
+                            _rect,
+                            details.delta.dx,
+                            details.delta.dy,
+                            _imageRect,
+                            _aspectRatio,
+                          );
+                        },
+                  child: widget.cornerDotBuilder
+                          ?.call(dotTotalSize, EdgeAlignment.topLeft) ??
+                      const DotControl(),
+                ),
+              ),
+              Positioned(
+                left: _rect.right - (dotTotalSize / 2),
+                top: _rect.top - (dotTotalSize / 2),
+                child: GestureDetector(
+                  onPanUpdate: widget.fixArea
+                      ? null
+                      : (details) {
+                          rect = calculator.moveTopRight(
+                            _rect,
+                            details.delta.dx,
+                            details.delta.dy,
+                            _imageRect,
+                            _aspectRatio,
+                          );
+                        },
+                  child: widget.cornerDotBuilder
+                          ?.call(dotTotalSize, EdgeAlignment.topRight) ??
+                      const DotControl(),
+                ),
+              ),
+              Positioned(
+                left: _rect.left - (dotTotalSize / 2),
+                top: _rect.bottom - (dotTotalSize / 2),
+                child: GestureDetector(
+                  onPanUpdate: widget.fixArea
+                      ? null
+                      : (details) {
+                          rect = calculator.moveBottomLeft(
+                            _rect,
+                            details.delta.dx,
+                            details.delta.dy,
+                            _imageRect,
+                            _aspectRatio,
+                          );
+                        },
+                  child: widget.cornerDotBuilder
+                          ?.call(dotTotalSize, EdgeAlignment.bottomLeft) ??
+                      const DotControl(),
+                ),
+              ),
+              Positioned(
+                left: _rect.right - (dotTotalSize / 2),
+                top: _rect.bottom - (dotTotalSize / 2),
+                child: GestureDetector(
+                  onPanUpdate: widget.fixArea
+                      ? null
+                      : (details) {
+                          rect = calculator.moveBottomRight(
+                            _rect,
+                            details.delta.dx,
+                            details.delta.dy,
+                            _imageRect,
+                            _aspectRatio,
+                          );
+                        },
+                  child: widget.cornerDotBuilder
+                          ?.call(dotTotalSize, EdgeAlignment.bottomRight) ??
+                      const DotControl(),
+                ),
+              ),
+            ],
+          );
+  }
+}
+
+class _CropAreaClipper extends CustomClipper<Path> {
+  _CropAreaClipper(this.rect, this.radius);
+
+  final Rect rect;
+  final double radius;
+
+  @override
+  Path getClip(Size size) {
+    return Path()
+      ..addPath(
+        Path()
+          ..moveTo(rect.left, rect.top + radius)
+          ..arcToPoint(Offset(rect.left + radius, rect.top),
+              radius: Radius.circular(radius))
+          ..lineTo(rect.right - radius, rect.top)
+          ..arcToPoint(Offset(rect.right, rect.top + radius),
+              radius: Radius.circular(radius))
+          ..lineTo(rect.right, rect.bottom - radius)
+          ..arcToPoint(Offset(rect.right - radius, rect.bottom),
+              radius: Radius.circular(radius))
+          ..lineTo(rect.left + radius, rect.bottom)
+          ..arcToPoint(Offset(rect.left, rect.bottom - radius),
+              radius: Radius.circular(radius))
+          ..close(),
+        Offset.zero,
+      )
+      ..addRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height))
+      ..fillType = PathFillType.evenOdd;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => true;
+}
+
+class _CircleCropAreaClipper extends CustomClipper<Path> {
+  final Rect rect;
+
+  _CircleCropAreaClipper(this.rect);
+
+  @override
+  Path getClip(Size size) {
+    return Path()
+      ..addOval(Rect.fromCircle(center: rect.center, radius: rect.width / 2))
+      ..addRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height))
+      ..fillType = PathFillType.evenOdd;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => true;
+}
+
+class DotControl extends StatelessWidget {
+  const DotControl({
+    Key? key,
+    this.color = Colors.white,
+    this.padding = 8,
+  }) : super(key: key);
+
+  final Color color;
+
+  final double padding;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.transparent,
+      width: dotTotalSize,
+      height: dotTotalSize,
+      child: Center(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(dotTotalSize),
+          child: Container(
+            width: dotTotalSize - (padding * 2),
+            height: dotTotalSize - (padding * 2),
+            color: color,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+Uint8List _doCrop(List<dynamic> cropData) {
+  final originalImage = cropData[0] as image.Image;
+  final rect = cropData[1] as Rect;
+  return Uint8List.fromList(
+    image.encodePng(
+      image.copyCrop(
+        originalImage,
+        rect.left.toInt(),
+        rect.top.toInt(),
+        rect.width.toInt(),
+        rect.height.toInt(),
+      ),
+    ),
+  );
+}
+
+Uint8List _doCropCircle(List<dynamic> cropData) {
+  final originalImage = cropData[0] as image.Image;
+  final rect = cropData[1] as Rect;
+  return Uint8List.fromList(
+    image.encodePng(
+      image.copyCropCircle(
+        originalImage,
+        center:
+            image.Point(rect.left + rect.width / 2, rect.top + rect.height / 2),
+        radius: min(rect.width, rect.height) ~/ 2,
+      ),
+    ),
+  );
+}
+
+image.Image _fromByteData(Uint8List data) {
+  final tempImage = image.decodeImage(data);
+  assert(tempImage != null);
+
+  switch (tempImage?.exif.data[0x0112] ?? -1) {
+    case 3:
+      return image.copyRotate(tempImage!, 180);
+    case 6:
+      return image.copyRotate(tempImage!, 90);
+    case 8:
+      return image.copyRotate(tempImage!, -90);
+  }
+  return tempImage!;
+}
