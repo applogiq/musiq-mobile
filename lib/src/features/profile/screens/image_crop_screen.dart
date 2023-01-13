@@ -7,8 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../constants/string.dart';
-import '../../../core/package/crop/src/controller.dart';
-import '../../../core/package/crop/src/crop.dart';
+import '../../../core/package/crop/crop_your_image.dart';
 import '../../../utils/size_config.dart';
 
 class ImageCrop extends StatefulWidget {
@@ -58,7 +57,7 @@ class _ImageCropState extends State<ImageCrop> {
                     Navigator.pop(context);
                   },
                   child: const Icon(
-                    Icons.close,
+                    Icons.arrow_back_rounded,
                     color: Colors.white,
                   )),
               backgroundColor: const Color.fromRGBO(2, 10, 16, 1),
@@ -87,7 +86,7 @@ class _ImageCropState extends State<ImageCrop> {
                     baseColor: Colors.transparent,
                     maskColor: const Color.fromRGBO(2, 10, 16, 0.5),
                     controller: _controller,
-                    onCropped: (image) {
+                    onCropped: (image) async {
                       context.read<ProfileProvider>().saveImage(image, context);
                     },
                   ),
@@ -99,12 +98,13 @@ class _ImageCropState extends State<ImageCrop> {
                       builder: (context, provider, _) {
                     return InkWell(
                       onTap: () async {
+                        setState(() {
+                          isLoad = true;
+                        });
                         _controller.crop();
-
-                        // Navigator.pop(context);
                       },
                       child: CustomButton(
-                        isValid: provider.isCropSave,
+                        isValid: !isLoad,
                         isLoading: provider.isCropSaveLoading,
                         label: ConstantText.save,
                         horizontalMargin: 0,

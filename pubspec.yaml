@@ -12,14 +12,14 @@ dependencies:
   audio_video_progress_bar: ^0.10.0
   # image_cropper: ^2.0.3
   # image_crop: ^0.4.0
-  image_cropper: ^2.0.3
+  # image_cropper: ^2.0.3
   # crop_your_image: ^0.7.2
   flutter_native_image: ^0.0.6+1
- 
+
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
-  flutter_otp_text_field: ^1.0.1
+  # flutter_otp_text_field: ^1.0.1
   flutter_secure_storage: ^5.0.2
   image_picker: ^0.8.5+3
   google_fonts: ^3.0.1
@@ -27,6 +27,7 @@ dependencies:
   just_audio: ^0.9.24
   connectivity_plus: ^2.3.5
   fluttertoast: ^8.0.9
+  cached_network_image: ^3.2.3
 
 dev_dependencies:
   flutter_launcher_icons: "^0.9.2"

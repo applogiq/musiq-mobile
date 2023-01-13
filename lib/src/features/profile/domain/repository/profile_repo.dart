@@ -27,4 +27,17 @@ class ProfileRepository {
       rethrow;
     }
   }
+
+  Future<dynamic> deleteUserImage(
+    String id,
+  ) async {
+    try {
+      dynamic response = await apiServices.getDeleteAuthApiResponse(
+        APIConstants.kProfileImageDeleteEndPoint + id.toString(),
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

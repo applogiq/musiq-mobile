@@ -1,10 +1,7 @@
-import 'dart:math';
+part of crop_your_image;
 
-import 'package:flutter/material.dart';
-import 'package:image/image.dart' as image;
-
-abstract class Calculator {
-  const Calculator();
+abstract class _Calculator {
+  const _Calculator();
 
   Rect imageRect(Size screenSize, double imageRatio);
 
@@ -227,8 +224,8 @@ abstract class Calculator {
   }
 }
 
-class HorizontalCalculator extends Calculator {
-  const HorizontalCalculator();
+class _HorizontalCalculator extends _Calculator {
+  const _HorizontalCalculator();
 
   @override
   Rect imageRect(Size screenSize, double imageRatio) {
@@ -269,8 +266,8 @@ class HorizontalCalculator extends Calculator {
   }
 }
 
-class VerticalCalculator extends Calculator {
-  const VerticalCalculator();
+class _VerticalCalculator extends _Calculator {
+  const _VerticalCalculator();
 
   @override
   Rect imageRect(Size screenSize, double imageRatio) {

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/constants/images.dart';
 import 'package:musiq/src/features/profile/widgets/logout_dialog.dart';
+import 'package:musiq/src/utils/image_url_generate.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../constants/color.dart';
-import '../../../constants/images.dart';
 import '../../../constants/style.dart';
 import '../../../utils/size_config.dart';
 import '../provider/profile_provider.dart';
@@ -20,7 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<ProfileProvider>(context, listen: false).getuserApi();
+      Provider.of<ProfileProvider>(context, listen: false).getProfileDetails();
     });
     super.initState();
   }
@@ -44,11 +45,74 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Padding(
                     padding:
                         EdgeInsets.only(top: getProportionateScreenHeight(24)),
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: AssetImage(
-                        Images.user_default,
-                      ),
+                    child: Container(
+                      height: 120,
+                      width: 120,
+                      decoration: const BoxDecoration(shape: BoxShape.circle),
+                      child:
+                          Consumer<ProfileProvider>(builder: (context, pro, _) {
+                        return pro.myProfileLoading
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                color: CustomColor.secondaryColor,
+                              ))
+                            : pro.profileAPIModel.records == null
+                                ? Image.asset(Images.user_default)
+                                : (pro.profileAPIModel.records!.isImage == true
+                                    ? CircleAvatar(
+                                        backgroundColor: Colors.red,
+                                        radius: 65,
+                                        backgroundImage: const AssetImage(
+                                            'assets/gifs/loader.gif'),
+                                        child: CircleAvatar(
+                                          radius: 65,
+                                          backgroundColor: Colors.transparent,
+                                          backgroundImage: NetworkImage(
+                                            generateProfileImageUrl(pro
+                                                .profileAPIModel
+                                                .records!
+                                                .registerId),
+                                          ),
+                                        ),
+                                      )
+                                    :
+                                    // ? CircleAvatar(
+                                    //     radius: 50,
+                                    //     child: Image.network(
+                                    // generateProfileImageUrl(pro
+                                    //     .profileAPIModel
+                                    //     .records!
+                                    //     .registerId),
+                                    //       fit: BoxFit.cover,
+                                    //       loadingBuilder: (BuildContext context,
+                                    //           Widget child,
+                                    //           ImageChunkEvent?
+                                    //               loadingProgress) {
+                                    //         if (loadingProgress == null) {
+                                    //           return child;
+                                    //         }
+                                    //         return Center(
+                                    //           child: CircularProgressIndicator(
+                                    //             value: loadingProgress
+                                    //                         .expectedTotalBytes !=
+                                    //                     null
+                                    //                 ? loadingProgress
+                                    //                         .cumulativeBytesLoaded /
+                                    //                     loadingProgress
+                                    //                         .expectedTotalBytes!
+                                    //                 : null,
+                                    //           ),
+                                    //         );
+                                    //       },
+                                    //     ),
+                                    //   )
+
+                                    Image.asset(Images.user_default));
+                      }),
+                      // radius: 50,
+                      // backgroundImage: AssetImage(
+                      //   Images.user_default,
+                      // ),
                     ),
                   ),
                   Padding(

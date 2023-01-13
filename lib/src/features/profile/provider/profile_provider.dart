@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart ' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:musiq/src/constants/color.dart';
 import 'package:musiq/src/features/profile/domain/api_models/profile_update_api_model..dart';
 import 'package:musiq/src/features/profile/domain/repository/profile_repo.dart';
 import 'package:musiq/src/routing/route_name.dart';
@@ -33,6 +34,7 @@ class ProfileProvider extends ChangeNotifier {
   bool isCropSave = true;
 
   bool myProfileLoading = true;
+  String base64Value = "";
 
   Uint8List? memoryImage;
   ProfileAPIModel profileAPIModel =
@@ -45,6 +47,8 @@ class ProfileProvider extends ChangeNotifier {
         ProfileAPIModel(status: false, message: "No data", records: null);
     userName = "";
     name = "";
+    userNameErrorMessage = "";
+    nameErrorMessage = "";
   }
 
   getProfileDetails() async {
@@ -95,13 +99,12 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  profileUpdate() async {
+  profileUpdate(BuildContext context) async {
     isProfileSaveLoading = true;
     notifyListeners();
     Map params = {
       "image": fileImage != null ? uint8ListTob64(memoryImage!) : "",
-      "username":
-          userName.isEmpty ? profileAPIModel.records!.username : userName,
+      "username": userName == profileAPIModel.records!.username ? "" : userName,
       "fullname": name.isEmpty ? profileAPIModel.records!.fullname : name,
     };
     log(params.toString());
@@ -111,6 +114,17 @@ class ProfileProvider extends ChangeNotifier {
     try {
       var res = await ProfileRepository().updateProfile(id!, params);
       print(res.body);
+      print(res.statusCode);
+      if (res.statusCode == 200) {
+        userNameErrorMessage = "";
+        Navigation.navigateReplaceToScreen(context, RouteName.profile);
+      } else if (res.statusCode == 400) {
+        var jsonData = json.decode(res.body);
+        if (jsonData["detail"] == "Username already exist") {
+          userNameErrorMessage = "Username already exist";
+        }
+      } else {}
+
       // if (res.statusCode == 200) {
       //   print("IF");
 
@@ -197,10 +211,13 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   void saveImage(Uint8List image, BuildContext context) {
-    isCropSaveLoading = true;
-    notifyListeners();
+    print("Trigger");
     memoryImage = image;
+    if (memoryImage != null) {
+      base64Value = uint8ListTob64(memoryImage!);
 
+      // compress();
+    }
     Navigator.pop(context);
     Navigator.pop(context);
     notifyListeners();
@@ -212,7 +229,7 @@ class ProfileProvider extends ChangeNotifier {
         context: context,
         builder: (_) {
           return Dialog(
-            backgroundColor: Colors.white,
+            backgroundColor: CustomColor.bg,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: Column(
@@ -229,6 +246,32 @@ class ProfileProvider extends ChangeNotifier {
         });
   }
 
+  Future deleteImage(BuildContext context, BuildContext mainContext) async {
+    Navigator.of(context).pop();
+    fileImage = null;
+    memoryImage = null;
+
+    if (profileAPIModel.records != null) {
+      print("@");
+      if (profileAPIModel.records!.isImage == true) {
+        var id = await secureStorage.read(
+          key: "id",
+        );
+        var res = await ProfileRepository().deleteUserImage(id!);
+        if (res.statusCode == 200) {
+          await getProfileDetails();
+        }
+        return res;
+      }
+    } else {
+      return http.Response("", 200);
+    }
+    // if (memoryImage != null) {
+    //   memoryImage!.clear();
+    // }
+
+    notifyListeners();
+  }
 //! END
 
   File? pickedImage;
@@ -320,11 +363,7 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  profileDeleteImage(BuildContext context) {
-    pickedImage = null;
-    notifyListeners();
-    Navigator.pop(context);
-  }
+  profileDeleteImage(BuildContext context) {}
 
   clearError() {
     name = "";

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/routing/route_name.dart';
 
 import '../../../common_widgets/app_bar.dart';
 import '../../../constants/color.dart';
@@ -21,7 +22,7 @@ class PreferenceScreen extends StatelessWidget {
           child: PreferenceMainHeaderWidget(
             mainTitle: "Music Preference",
             subTitle1: "Artist Preference",
-            navigationScreen1: "artistPreference",
+            navigationScreen1: RouteName.profileArtistPreference,
             subTitle2: "Audio Quality",
             navigationScreen2: "audioQuality",
           ),
@@ -36,14 +37,14 @@ class PreferenceScreen extends StatelessWidget {
         //     navigationScreen2: "audioQuality",
         //   ),
         // ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
-          child: NotificationPreferenceHeaderWidget(
-            mainTitle: "Notification Preference",
-            subTitle1: "New Releases",
-            subTitle2: "Artist Updates",
-          ),
-        ),
+        // Padding(
+        //   padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
+        //   child: NotificationPreferenceHeaderWidget(
+        //     mainTitle: "Notification Preference",
+        //     subTitle1: "New Releases",
+        //     subTitle2: "Artist Updates",
+        //   ),
+        // ),
       ]),
     );
   }
@@ -80,13 +81,13 @@ class PreferenceMainHeaderWidget extends StatelessWidget {
             navigationRoute: navigationScreen1,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 24.0),
-          child: PreferenceListTile(
-            label: subTitle2,
-            navigationRoute: navigationScreen2,
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.only(top: 24.0),
+        //   child: PreferenceListTile(
+        //     label: subTitle2,
+        //     navigationRoute: navigationScreen2,
+        //   ),
+        // ),
       ],
     );
   }

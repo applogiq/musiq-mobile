@@ -82,6 +82,7 @@ class NetworkApiService extends BaseApiServices {
       var token = await storage.read(key: "access_token");
 
       header["Authorization"] = "Bearer $token";
+      print(header["Authorization"]);
 
       Response response =
           await post(Uri.parse(url), headers: header, body: jsonEncode(data))
@@ -102,6 +103,7 @@ class NetworkApiService extends BaseApiServices {
       var token = await storage.read(key: "access_token");
 
       header["Authorization"] = "Bearer $token";
+      print(header["Authorization"]);
 
       Response response = await get(
         Uri.parse(url),
@@ -123,10 +125,32 @@ class NetworkApiService extends BaseApiServices {
       var token = await storage.read(key: "access_token");
 
       header["Authorization"] = "Bearer $token";
+      print(header["Authorization"]);
 
       Response response =
           await put(Uri.parse(url), headers: header, body: jsonEncode(data))
               .timeout(const Duration(seconds: 30));
+
+      responseJson = returnResponse(response);
+    } on SocketException {
+      throw FetchDataException('No Internet Connection');
+    }
+
+    return responseJson;
+  }
+
+  @override
+  Future getDeleteAuthApiResponse(String url) async {
+    dynamic responseJson;
+    try {
+      var token = await storage.read(key: "access_token");
+
+      header["Authorization"] = "Bearer $token";
+      print(url);
+      Response response = await delete(
+        Uri.parse(url),
+        headers: header,
+      ).timeout(const Duration(seconds: 30));
 
       responseJson = returnResponse(response);
     } on SocketException {

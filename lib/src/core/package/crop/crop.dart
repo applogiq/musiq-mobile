@@ -1,13 +1,4 @@
-import 'dart:math';
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:image/image.dart' as image;
-import 'package:musiq/src/common_widgets/loader.dart';
-
-import 'calculator.dart';
-import 'controller.dart';
-import 'edge_alignment.dart';
+part of crop_your_image;
 
 const dotTotalSize = 32.0;
 
@@ -161,9 +152,9 @@ class _CropEditorState extends State<_CropEditor> {
 
   bool get _isImageLoading => _lastComputed != null;
 
-  Calculator get calculator => _isFitVertically
-      ? const VerticalCalculator()
-      : const HorizontalCalculator();
+  _Calculator get calculator => _isFitVertically
+      ? const _VerticalCalculator()
+      : const _HorizontalCalculator();
 
   set rect(Rect newRect) {
     setState(() {

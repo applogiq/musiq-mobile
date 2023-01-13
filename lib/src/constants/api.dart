@@ -10,6 +10,9 @@ class APIConstants {
   static String kLoginEndPoint = "$baseUrl${versionUrl}users/login";
   static String kRegisterEndPoint = "$baseUrl${versionUrl}users/register";
   static String kProfileEndPoint = "$baseUrl${versionUrl}users/";
+  static String kProfileImageDeleteEndPoint =
+      "$baseUrl${versionUrl}users/image/";
+  // users/image
   static String kEmailVerficationEndPoint = "$baseUrl${versionUrl}users/email";
   static String kOTPVerficationEndPoint =
       "$baseUrl${versionUrl}users/email/otp-verify";

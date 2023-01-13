@@ -1,6 +1,4 @@
-import 'dart:typed_data';
-
-import 'package:flutter/material.dart';
+part of crop_your_image;
 
 class CropController {
   late CropControllerDelegate _delegate;

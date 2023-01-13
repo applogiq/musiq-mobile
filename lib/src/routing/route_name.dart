@@ -11,7 +11,10 @@ class RouteName {
       "forgot_password_change_password";
   static const String mainScreen = "main_screen";
   static const String myProfile = "myProfile";
+  static const String profile = "profile";
   static const String preference = "preferences";
+  static const String profileArtistPreference = "profile_artist_preference";
+
   static const String crop = "crop";
   static const String search = "search";
 }

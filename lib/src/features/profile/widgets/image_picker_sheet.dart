@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:musiq/src/common_widgets/container/empty_box.dart';
 import 'package:musiq/src/features/profile/provider/profile_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -7,7 +8,8 @@ import '../../../constants/color.dart';
 import '../../../constants/style.dart';
 
 class ImagePickerSheet extends StatelessWidget {
-  const ImagePickerSheet({super.key});
+  const ImagePickerSheet({super.key, required this.mainContext});
+  final BuildContext mainContext;
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +79,41 @@ class ImagePickerSheet extends StatelessWidget {
                   "Choose from gallery",
                   style: fontWeight400(),
                 )),
+            (context.read<ProfileProvider>().fileImage != null ||
+                    context
+                            .read<ProfileProvider>()
+                            .profileAPIModel
+                            .records!
+                            .isImage ==
+                        true)
+                ? ListTile(
+                    onTap: () async {
+                      var res = await context
+                          .read<ProfileProvider>()
+                          .deleteImage(context, mainContext);
+                      // Navigator.of(context).pop();
+                      // Navigator.of(context).pop();
+
+                      // Navigator.of(mainContext).pop();
+
+                      // if (res.statusCode == 200) {
+                      //   Navigation.navigateReplaceToScreen(
+                      //       mainContext, RouteName.profile);
+                      // } else {}
+
+                      // profileController.deleteImage(context);
+                      // Navigator.of(context).pop();
+                    },
+                    leading: const Icon(
+                      Icons.delete,
+                      color: Color.fromRGBO(255, 255, 255, 0.7),
+                      size: 22,
+                    ),
+                    title: Text(
+                      "Delete picture",
+                      style: fontWeight400(),
+                    ))
+                : const EmptyBox()
             // profileController.isImagePicked || profileController.isImage.value
             // ? ListTile(
             //     onTap: () async {
