@@ -14,6 +14,10 @@ class RouteName {
   static const String profile = "profile";
   static const String preference = "preferences";
   static const String profileArtistPreference = "profile_artist_preference";
+  static const String artistViewAllScreen = "artist_view_all_screen";
+  static const String artistViewAllSongListScreen =
+      "artist_view_all_song_list_screen";
+  static const String viewAllScreen = "view_all_screen";
 
   static const String crop = "crop";
   static const String search = "search";

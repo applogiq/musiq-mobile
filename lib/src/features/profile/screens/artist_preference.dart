@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/artist/provider/artist_provider.dart';
-import 'package:musiq/src/features/artist/screens/artist_preference_screen/artist_preference_body.dart';
+import 'package:musiq/src/common_widgets/loader.dart';
 import 'package:provider/provider.dart';
+
+import '../../artist/provider/artist_provider.dart';
+import '../../artist/screens/artist_preference_screen/artist_preference_body.dart';
 
 class ProfileArtistPreferenceScreen extends StatefulWidget {
   const ProfileArtistPreferenceScreen({super.key});
@@ -16,7 +18,9 @@ class _ProfileArtistPreferenceScreenState
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<ArtistPreferenceProvider>(context, listen: false).loadData();
+      var provider =
+          Provider.of<ArtistPreferenceProvider>(context, listen: false);
+      provider.loadData([]);
     });
     super.initState();
   }
@@ -24,12 +28,20 @@ class _ProfileArtistPreferenceScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: true,
-          title: const Text("Artist Preference"),
-        ),
-        body: ArtistPreferenceScreenBody(
-          artist_list: const [],
-        ));
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        title: const Text("Artist Preference"),
+      ),
+      body: Consumer<ArtistPreferenceProvider>(builder: (context, pro, _) {
+        return !pro.isLoaded
+            ? const LoaderScreen()
+            : ArtistPreferenceScreenBody(
+                artist_list: const [],
+              );
+      }),
+      // body: ArtistPreferenceScreenBody(
+      //   artist_list: const [],
+      // ),
+    );
   }
 }

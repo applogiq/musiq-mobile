@@ -39,6 +39,13 @@ class APIConstants {
     var url = "$kTrendingHits?limit=${limit.toString()}";
     return url;
   }
+
+  static getSpecificArtistUrl(
+    String id,
+  ) {
+    var url = "$baseUrl${versionUrl}songs?artist_id=$id&skip=0&limit=100";
+    return url;
+  }
   // https://api-musiq.applogiq.org/
 //   String MAIN_URL = "https://api-musiq.applogiq.org/";
 //   static String BASE_URL = "https://api-musiq.applogiq.org/api/v1/";

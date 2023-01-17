@@ -11,7 +11,8 @@ class CustomButton extends StatelessWidget {
       this.isIcon = false,
       this.isValid = true,
       this.radius = 12,
-      this.isLoading = false})
+      this.isLoading = false,
+      this.height = 52})
       : super(key: key);
   final String label;
   double verticalMargin;
@@ -20,13 +21,14 @@ class CustomButton extends StatelessWidget {
   bool isIcon;
   bool isValid;
   bool isLoading;
+  final double height;
   @override
   Widget build(BuildContext context) {
     return Container(
         margin: EdgeInsets.symmetric(
             horizontal: horizontalMargin, vertical: verticalMargin),
         width: MediaQuery.of(context).size.width,
-        height: 52,
+        height: height,
         decoration: BoxDecoration(
             color: isValid
                 ? CustomColor.secondaryColor

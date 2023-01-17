@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/routing/route_name.dart';
+import 'package:musiq/src/utils/navigation.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../constants/color.dart';
@@ -30,6 +32,8 @@ class ArtistListView extends StatelessWidget {
                 const Spacer(),
                 InkWell(
                   onTap: () {
+                    Navigation.navigateToScreen(
+                        context, RouteName.artistViewAllScreen);
                     // Navigator.of(context).push(MaterialPageRoute(
                     //     builder: (context) => ArtistListViewAll()));
                   },

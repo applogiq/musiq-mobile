@@ -52,12 +52,14 @@ class ArtistPreferenceProvider extends ChangeNotifier {
   }
 
   void loadData(List datas) async {
+    isLoaded = false;
+    notifyListeners();
     userFollowedArtist = datas;
     if (datas.isEmpty) {
       await getUserFollowDatas();
     }
     print(userFollowedArtist);
-    isLoaded = false;
+
     var response = await AuthRepository().getArtists();
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body.toString());

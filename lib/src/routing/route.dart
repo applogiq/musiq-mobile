@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/auth/screens/forgot_screen/forgot_otp_screen.dart';
 import 'package:musiq/src/features/auth/screens/forgot_screen/new_password.dart';
+import 'package:musiq/src/features/home/domain/model/artist_view_all_model.dart';
+import 'package:musiq/src/features/home/screens/artist_view_all/artist_view_all_screen.dart';
+import 'package:musiq/src/features/home/screens/artist_view_all/artist_view_all_song_list_screen.dart';
 import 'package:musiq/src/features/profile/screens/artist_preference.dart';
 import 'package:musiq/src/features/profile/screens/image_crop_screen.dart';
 import 'package:musiq/src/features/profile/screens/my_profile_screen.dart';
@@ -21,6 +24,7 @@ import '../features/home/screens/home_screen.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
+    final args = settings.arguments;
     switch (settings.name) {
       case RouteName.login:
         return MaterialPageRoute(
@@ -72,6 +76,19 @@ class Routes {
         return MaterialPageRoute(
             builder: (BuildContext context) =>
                 const ProfileArtistPreferenceScreen());
+      case RouteName.artistViewAllScreen:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const ArtistViewAllScreen());
+      case RouteName.artistViewAllSongListScreen:
+        if (args is ArtistViewAllModel) {
+          return MaterialPageRoute(
+              builder: (BuildContext context) => ArtistViewAllSongListScreen(
+                    artistViewAllModel: args,
+                  ));
+        }
+
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const ErrorScreen());
       default:
         return MaterialPageRoute(
             builder: (BuildContext context) => const ErrorScreen());

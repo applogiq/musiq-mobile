@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 
 class Navigation {
-  static Future<dynamic> navigateToScreen(
-      BuildContext context, String screen) async {
-    var value = await Navigator.pushNamed(context, screen);
-    return value;
+  static Future<dynamic> navigateToScreen(BuildContext context, String screen,
+      {Object? args}) async {
+    if (args == null) {
+      print("null");
+      var value = await Navigator.pushNamed(context, screen);
+      return value;
+    } else {
+      print("unnull");
+      print(args);
+      var value = await Navigator.pushNamed(context, screen, arguments: args);
+      return value;
+    }
   }
 
   static navigateReplaceToScreen(BuildContext context, String screen) {

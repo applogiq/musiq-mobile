@@ -57,4 +57,14 @@ class HomeRepository {
       rethrow;
     }
   }
+
+  Future<dynamic> getSpecifArtistSong(String artistId) async {
+    try {
+      var endpoint = APIConstants.getSpecificArtistUrl(artistId);
+      dynamic response = await apiServices.getGetAuthApiResponse(endpoint);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

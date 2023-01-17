@@ -53,17 +53,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Consumer<ProfileProvider>(builder: (context, pro, _) {
                         return pro.myProfileLoading
                             ? Center(
-                                child: CircularProgressIndicator(
-                                color: CustomColor.secondaryColor,
+                                child: Image.asset(
+                                'assets/gifs/image_loader2.gif',
+                                height: 90,
                               ))
                             : pro.profileAPIModel.records == null
                                 ? Image.asset(Images.user_default)
                                 : (pro.profileAPIModel.records!.isImage == true
                                     ? CircleAvatar(
-                                        backgroundColor: Colors.red,
+                                        backgroundColor: Colors.black,
                                         radius: 65,
                                         backgroundImage: const AssetImage(
-                                            'assets/gifs/loader.gif'),
+                                            'assets/gifs/image_loader2.gif'),
                                         child: CircleAvatar(
                                           radius: 65,
                                           backgroundColor: Colors.transparent,
