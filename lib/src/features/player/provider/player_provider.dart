@@ -6,41 +6,20 @@ class PlayerProvider extends ChangeNotifier {
   late AudioPlayer player;
   var selectedIndex = 0;
 
-  void playOrPause() {
-    if (!isPlay) {
-      player.play();
-      isPlay = true;
-    } else {
-      player.stop();
-      isPlay = false;
-    }
-    notifyListeners();
-  }
-
-  loadSong() async {
+  loadSong(List songList) async {
     player = AudioPlayer();
 
-    // if(player.playing){
-    //   player.stop();
-    // }
-//    if(isPlaying==player.playerState.playing){
-// print("ALREADY PLAYING");
-//    }
-//    else{
     await player.setAudioSource(
       ConcatenatingAudioSource(
         useLazyPreparation: true,
         children: List.generate(
-            10,
+            songList.length,
             (index) => AudioSource.uri(Uri.parse(
-                "https://api-musiq.applogiq.org/api/v1/audio?song_id=${index + 1}"))),
+                "https://api-musiq.applogiq.org/api/v1/audio?song_id=${songList[index]}"))),
       ),
       initialIndex: selectedIndex,
       initialPosition: Duration.zero,
     );
-//     selectedIndex.value = index;
-// update();
-    //  }
     notifyListeners();
   }
 

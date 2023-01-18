@@ -8,6 +8,7 @@ import '../../../constants/images.dart';
 import '../../../constants/style.dart';
 import '../../../utils/image_url_generate.dart';
 import '../../artist/domain/models/artist_model.dart';
+import '../domain/model/artist_view_all_model.dart';
 
 class ArtistListView extends StatelessWidget {
   const ArtistListView({
@@ -66,72 +67,16 @@ class ArtistListView extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 6),
                         child: InkWell(
                           onTap: () {
-                            print(generateArtistImageUrl(
-                                artist.records[index].artistId));
+                            Navigation.navigateToScreen(
+                                context, RouteName.artistViewAllSongListScreen,
+                                args: ArtistViewAllModel(
+                                    id: artist.records[index].id.toString(),
+                                    artistId: artist.records[index].artistId
+                                        .toString(),
+                                    artistName: artist.records[index].artistName
+                                        .toString(),
+                                    isImage: artist.records[index].isImage));
                           },
-//                           onTap: () async {
-//                             ViewAllBanner banner = ViewAllBanner(
-//                               bannerId: artist.records[index].id.toString(),
-//                               bannerImageUrl: generateArtistImageUrl(
-//                                   artist.records[index].artistId),
-//                               bannerTitle: artist.records[index].artistName,
-//                             );
-//                             print(banner.bannerImageUrl.toString());
-//                             SongList songList =
-//                                 await apiRoute.getSpecificArtistSong(
-//                                     index: artist.records[index].id);
-//                             if (songList.success == true) {
-//                               List<ViewAllSongList> viewAllSongListModel = [];
-//                               for (int i = 0;
-//                                   i < songList.records.length;
-//                                   i++) {
-//                                 viewAllSongListModel.add(ViewAllSongList(
-//                                     songList.records[i].id.toString(),
-//                                     generateSongImageUrl(
-//                                         songList.records[i].albumName,
-//                                         songList.records[i].albumId),
-//                                     songList.records[i].songName,
-//                                     songList.records[i].musicDirectorName[0],
-//                                     songList.records[i].albumName,
-//                                     songList.records[i].albumId));
-//                               }
-
-//                               Navigator.of(context).push(MaterialPageRoute(
-//                                   builder: (context) => ViewAllScreenSongList(
-//                                       banner: banner,
-//                                       view_all_song_list_model:
-//                                           viewAllSongListModel)));
-//                             }
-//                             //// print(songList.records.length);
-
-// // //                              Map<String, String> queryParams = {
-// // //   'artist_id': artist.records[index].id.toString(),
-// // //   'skip': '0',
-// // //   'limit': '100',
-// // // };
-// // //  var urlSet="${APIConstants.BASE_URL}songs?artist_id=${queryParams["artist_id"]}&skip=${queryParams["skip"]}&limit=${queryParams["limit"]}";
-// // //                         var res= await apiCall.getRequestWithAuth(urlSet);
-// // //                         print(res.statusCode);
-// // //                         if(res.statusCode==200){
-// // //                           var data=jsonDecode(res.body);
-// // //                           SongList songList=SongList.fromMap(data);
-// // //                           print(songList.toMap());
-// // //                               Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ViewAllScreen(songList: songList,title: artist.records[index].artistName,
-// // //                               isNetworkImage: artist.records[index].isImage,
-// // //                             imageURL: artist.records[index].isImage? APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png":
-// // //                                   "assets/images/default/no_artist.png",
-// // //                             )));
-// //                         }
-// //                         else{
-
-// //                         }
-// //                             // Navigator.of(context).push(MaterialPageRoute(builder: (_)=>ViewAllScreen(title: artist.records[index].name,
-// //                             // imageURL: artist.records[index].isImage? APIConstants.BASE_IMAGE_URL+artist.records[index].artistId+".png":
-// //                             //       "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/450px-No_image_available.svg.png",
-
-// //                             // )));
-//                           },
-
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,

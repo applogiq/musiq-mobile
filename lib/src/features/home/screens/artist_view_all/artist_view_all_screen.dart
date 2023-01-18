@@ -70,7 +70,9 @@ class _ArtistViewAllScreenState extends State<ArtistViewAllScreen> {
                                           .toString(),
                                       artistName: pro
                                           .artistModel.records[index].artistName
-                                          .toString()));
+                                          .toString(),
+                                      isImage: pro
+                                          .artistModel.records[index].isImage));
                             },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,

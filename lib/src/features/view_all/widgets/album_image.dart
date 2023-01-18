@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/utils/image_url_generate.dart';
+
+import '../../../constants/color.dart';
+import '../../../constants/images.dart';
+import '../../../utils/image_url_generate.dart';
 
 class AlbumImage extends StatelessWidget {
   const AlbumImage({
@@ -10,6 +13,7 @@ class AlbumImage extends StatelessWidget {
     required this.shrinkToMaxAppBarHeightRatio,
     required this.albumImageSize,
     required this.id,
+    required this.isImage,
   }) : super(key: key);
 
   final EdgeInsets padding;
@@ -18,6 +22,7 @@ class AlbumImage extends StatelessWidget {
   final double shrinkToMaxAppBarHeightRatio;
   final double albumImageSize;
   final String id;
+  final bool isImage;
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +39,17 @@ class AlbumImage extends StatelessWidget {
             height: albumImageSize,
             width: albumImageSize,
             decoration: BoxDecoration(
-              color: Colors.deepPurpleAccent,
-              image: DecorationImage(
-                image: NetworkImage(generateArtistImageUrl(id)),
-                fit: BoxFit.fill,
-              ),
+              color:
+                  isImage ? Colors.deepPurpleAccent : CustomColor.defaultCard,
+              image: isImage
+                  ? DecorationImage(
+                      image: NetworkImage(generateArtistImageUrl(id)),
+                      fit: BoxFit.fill,
+                    )
+                  : DecorationImage(
+                      image: AssetImage(Images.noArtist),
+                      fit: BoxFit.fill,
+                    ),
               boxShadow: const [
                 BoxShadow(
                   color: Colors.black87,

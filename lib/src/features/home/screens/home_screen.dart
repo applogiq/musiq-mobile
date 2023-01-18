@@ -12,7 +12,6 @@ import 'package:provider/provider.dart';
 import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../constants/api.dart';
 import '../../../constants/color.dart';
-import '../../player/screen/player_screen.dart';
 import '../widgets/artist_list_view.dart';
 import '../widgets/search_notifications.dart';
 
@@ -61,7 +60,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     songList: pro.trendingSongListModel,
                   ),
                   CurrentMood(auraModel: pro.auraListModel),
-                  TopAlbum(album: pro.albumListModel)
+                  TopAlbum(album: pro.albumListModel),
+                  const SizedBox(
+                    height: 60,
+                  )
                 ],
               ),
       );
@@ -183,8 +185,8 @@ class HomeScreenSongList extends StatelessWidget {
                           : const SizedBox(),
                       InkWell(
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const PlayerScreen()));
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //     builder: (context) => const PlayerScreen()));
                           print(
                               "${APIConstants.baseUrl}public/music/tamil/${songList[index].albumName[0].toUpperCase()}/${songList[index].albumName}/image/${songList[index].albumId.toString()}.png");
                         },

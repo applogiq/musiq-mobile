@@ -67,4 +67,6 @@ class HomeRepository {
       rethrow;
     }
   }
+
+  getNewRelease() {}
 }

@@ -32,6 +32,7 @@ class HomeProvider extends ChangeNotifier {
     await recentSongList();
     await artistList();
     await trendingHitsSongList();
+    await newRelease();
     await auraSongList();
     await albumList();
     changeLoadState(false);
@@ -132,5 +133,15 @@ class HomeProvider extends ChangeNotifier {
 
   goToSearch(context) {
     Navigation.navigateToScreen(context, RouteName.search);
+  }
+
+  newRelease() async {
+    // var res = await homeRepository.getNewRelease();
+
+    // auraListModel.records.clear();
+    // if (res.statusCode == 200) {
+    //   var data = jsonDecode(res.body);
+    //   auraListModel = AuraModel.fromMap(data);
+    // }
   }
 }

@@ -4,12 +4,14 @@ import 'package:musiq/src/features/auth/screens/forgot_screen/new_password.dart'
 import 'package:musiq/src/features/home/domain/model/artist_view_all_model.dart';
 import 'package:musiq/src/features/home/screens/artist_view_all/artist_view_all_screen.dart';
 import 'package:musiq/src/features/home/screens/artist_view_all/artist_view_all_song_list_screen.dart';
+import 'package:musiq/src/features/player/screen/player_screen.dart';
 import 'package:musiq/src/features/profile/screens/artist_preference.dart';
 import 'package:musiq/src/features/profile/screens/image_crop_screen.dart';
 import 'package:musiq/src/features/profile/screens/my_profile_screen.dart';
 import 'package:musiq/src/features/profile/screens/preference_screen.dart';
 import 'package:musiq/src/features/profile/screens/profile_screen.dart';
 import 'package:musiq/src/features/search/screens/search_screen.dart';
+import 'package:musiq/src/features/view_all/domain/model/player_model.dart';
 import 'package:musiq/src/routing/route_name.dart';
 
 import '../features/artist/screens/artist_preference_screen/artist_preference_screen.dart';
@@ -79,6 +81,15 @@ class Routes {
       case RouteName.artistViewAllScreen:
         return MaterialPageRoute(
             builder: (BuildContext context) => const ArtistViewAllScreen());
+      case RouteName.player:
+        if (args is PlayerModel) {
+          return MaterialPageRoute(
+              builder: (BuildContext context) => PlayerScreen(
+                    playerModel: args,
+                  ));
+        }
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const ErrorScreen());
       case RouteName.artistViewAllSongListScreen:
         if (args is ArtistViewAllModel) {
           return MaterialPageRoute(

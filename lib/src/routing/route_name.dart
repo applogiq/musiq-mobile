@@ -21,4 +21,5 @@ class RouteName {
 
   static const String crop = "crop";
   static const String search = "search";
+  static const String player = "player_screen";
 }
