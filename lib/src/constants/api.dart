@@ -29,6 +29,8 @@ class APIConstants {
   static String kFavouriteList = "$baseUrl${versionUrl}favourite/";
   static String kPlayList = "$baseUrl${versionUrl}playlist/user/";
   static String kCreatePlayList = "$baseUrl${versionUrl}playlist/";
+  static String kNewRelease = "$baseUrl${versionUrl}new_release";
+  static String kFavourite = "$baseUrl${versionUrl}favourite/";
 
   getRecentlyPlayedUrl(String userId, int limit) {
     var url = "$kRecentPlayedList$userId?limit=${limit.toString()}";
@@ -44,6 +46,12 @@ class APIConstants {
     String id,
   ) {
     var url = "$baseUrl${versionUrl}songs?artist_id=$id&skip=0&limit=100";
+    return url;
+  }
+
+  static getArtistUrl(int skipLength, int limit) {
+    var url =
+        "$kArtistList?skip=${skipLength.toString()}&limit=${limit.toString()}";
     return url;
   }
   // https://api-musiq.applogiq.org/
@@ -134,11 +142,6 @@ class APIConstants {
 //     var url = "albums/?skip=${skipLength.toString()}&limit=${limit.toString()}";
 //     return url;
 //   }
-
-  getArtistUrl(int skipLength, int limit) {
-    var url = "artist/?skip=${skipLength.toString()}&limit=${limit.toString()}";
-    return url;
-  }
 
 //   getSpecificArtistUrl(int id, int skipLength, int limit) {
 //     var url = "songs?artist_id=$id&skip=$skipLength&limit=$limit";

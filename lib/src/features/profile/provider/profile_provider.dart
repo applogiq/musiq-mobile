@@ -16,6 +16,7 @@ import 'package:musiq/src/utils/navigation.dart';
 import '../../../common_widgets/model/profile_model.dart';
 import '../../../constants/images.dart';
 import '../../../constants/string.dart';
+import '../../../local/user_model.dart';
 
 class ProfileProvider extends ChangeNotifier {
 //! Start
@@ -111,38 +112,47 @@ class ProfileProvider extends ChangeNotifier {
     var id = await secureStorage.read(
       key: "id",
     );
-    try {
-      var res = await ProfileRepository().updateProfile(id!, params);
-      print(res.body);
-      print(res.statusCode);
-      if (res.statusCode == 200) {
-        userNameErrorMessage = "";
-        Navigation.navigateReplaceToScreen(context, RouteName.profile);
-      } else if (res.statusCode == 400) {
-        var jsonData = json.decode(res.body);
-        if (jsonData["detail"] == "Username already exist") {
-          userNameErrorMessage = "Username already exist";
-        }
-      } else {}
+    // try {
+    var res = await ProfileRepository().updateProfile(id!, params);
+    print(res.body);
+    print(res.statusCode);
+    if (res.statusCode == 200) {
+      userNameErrorMessage = "";
+      ProfileAPIModel profileAPIModel =
+          ProfileAPIModel.fromJson(jsonDecode(res.body.toString()));
+      print(profileAPIModel.records!.fullname);
+      User user = User(
+          fullName: profileAPIModel.records!.fullname.toString(),
+          email: profileAPIModel.records!.email.toString(),
+          registerId: profileAPIModel.records!.registerId.toString(),
+          userName: profileAPIModel.records!.username.toString());
+      // objectBox.insertUser(user);
+      Navigation.navigateReplaceToScreen(context, RouteName.profile);
+    } else if (res.statusCode == 400) {
+      var jsonData = json.decode(res.body);
+      if (jsonData["detail"] == "Username already exist") {
+        userNameErrorMessage = "Username already exist";
+      }
+    } else {}
 
-      // if (res.statusCode == 200) {
-      //   print("IF");
+    // if (res.statusCode == 200) {
+    //   print("IF");
 
-      //   var jsonData = jsonDecode(res.body);
-      //   log(jsonData.toString());
-      //   // profileAPIModel = ProfileAPIModel.fromJson(jsonData);
-      // } else {
-      //   print("Else");
+    //   var jsonData = jsonDecode(res.body);
+    //   log(jsonData.toString());
+    //   // profileAPIModel = ProfileAPIModel.fromJson(jsonData);
+    // } else {
+    //   print("Else");
 
-      //   // profileAPIModel =
-      //   //     ProfileAPIModel(status: false, message: "No data", records: null);
-      // }
-    } catch (e) {
-      print(e.toString());
-      print("ERRR");
-      // profileAPIModel =
-      //     ProfileAPIModel(status: false, message: "No data", records: null);
-    }
+    //   // profileAPIModel =
+    //   //     ProfileAPIModel(status: false, message: "No data", records: null);
+    // }
+    // } catch (e) {
+    //   print(e.toString());
+    //   print("ERRR");
+    //   // profileAPIModel =
+    //   //     ProfileAPIModel(status: false, message: "No data", records: null);
+    // }
 
     isProfileSaveLoading = false;
     notifyListeners();

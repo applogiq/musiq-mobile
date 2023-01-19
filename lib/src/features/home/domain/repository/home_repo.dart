@@ -38,9 +38,9 @@ class HomeRepository {
     }
   }
 
-  Future<dynamic> getArtist() async {
+  Future<dynamic> getArtist({int limit = 100}) async {
     try {
-      var endpoint = APIConstants.kArtistList;
+      var endpoint = APIConstants.getArtistUrl(0, limit);
       dynamic response = await apiServices.getGetAuthApiResponse(endpoint);
       return response;
     } catch (e) {
@@ -68,5 +68,13 @@ class HomeRepository {
     }
   }
 
-  getNewRelease() {}
+  getNewRelease() async {
+    try {
+      var endpoint = APIConstants.kNewRelease;
+      dynamic response = await apiServices.getGetAuthApiResponse(endpoint);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

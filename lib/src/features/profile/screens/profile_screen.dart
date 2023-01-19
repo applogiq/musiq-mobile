@@ -228,7 +228,10 @@ class ProfileListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () {
+      onTap: () async {
+        // await objectBox.clearUser();
+        // var usersList = await objectBox.getAll();
+        // print(usersList.map((e) => e.id));
         context.read<ProfileProvider>().removeMyProfileState();
         Navigator.of(context)
             .pushNamed(ProfileProvider().profileContent[index].navigateScreen);

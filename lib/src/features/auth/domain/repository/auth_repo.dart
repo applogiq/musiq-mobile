@@ -26,7 +26,7 @@ class AuthRepository {
   }
 
   Future<dynamic> getArtists({limit = 100}) async {
-    var artistUrl = APIConstants().getArtistUrl(0, limit);
+    var artistUrl = APIConstants.getArtistUrl(0, limit);
     try {
       dynamic response = await apiServices.getGetAuthApiResponse(
           APIConstants.baseUrl + APIConstants.versionUrl + artistUrl);

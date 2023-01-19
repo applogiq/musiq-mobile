@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:musiq/src/features/artist/domain/models/artist_model.dart';
 import 'package:musiq/src/features/home/domain/model/album_model.dart';
 import 'package:musiq/src/features/home/domain/model/aura_model.dart';
+import 'package:musiq/src/features/home/domain/model/new_release_model.dart';
 import 'package:musiq/src/features/home/domain/model/song_list_model.dart';
 import 'package:musiq/src/features/home/domain/model/trending_hits_model.dart';
 import 'package:musiq/src/features/home/domain/repository/home_repo.dart';
@@ -20,12 +22,19 @@ class HomeProvider extends ChangeNotifier {
       success: false, message: "No records", records: [], totalrecords: 0);
   List<SongListModel> recentSongListModel = [];
   List<SongListModel> trendingSongListModel = [];
+  List<SongListModel> newReleaseListModel = [];
   ArtistModel artistModel = ArtistModel(
       success: false, message: "No records", records: [], totalRecords: 0);
   AuraModel auraListModel = AuraModel(
       success: false, message: "no records", records: [], totalRecords: 0);
   Album albumListModel = Album(
       success: false, message: "No Records", records: [], totalrecords: 0);
+  NewReleaseModel newReleaseModel = NewReleaseModel(
+    success: false,
+    message: "No Records",
+    records: [],
+    totalrecords: 0,
+  );
   HomeRepository homeRepository = HomeRepository();
   getSongData() async {
     changeLoadState(true);
@@ -50,7 +59,7 @@ class HomeProvider extends ChangeNotifier {
   }
 
   artistList() async {
-    var res = await homeRepository.getArtist();
+    var res = await homeRepository.getArtist(limit: 10);
 
     artistModel.records.clear();
     if (res.statusCode == 200) {
@@ -136,12 +145,23 @@ class HomeProvider extends ChangeNotifier {
   }
 
   newRelease() async {
-    // var res = await homeRepository.getNewRelease();
+    var res = await homeRepository.getNewRelease();
 
-    // auraListModel.records.clear();
-    // if (res.statusCode == 200) {
-    //   var data = jsonDecode(res.body);
-    //   auraListModel = AuraModel.fromMap(data);
-    // }
+    newReleaseModel.records.clear();
+    newReleaseListModel.clear();
+    if (res.statusCode == 200) {
+      var data = jsonDecode(res.body);
+      newReleaseModel = NewReleaseModel.fromMap(data);
+      for (int i = 0; i < newReleaseModel.records.length; i++) {
+        newReleaseListModel.add(SongListModel(
+            id: newReleaseModel.records[i].id,
+            albumId: newReleaseModel.records[i].albumId,
+            songName: newReleaseModel.records[i].songName,
+            albumName: newReleaseModel.records[i].albumName,
+            musicDirectorName:
+                newReleaseModel.records[i].musicDirectorName[0].toString()));
+      }
+      log(newReleaseListModel.toString());
+    }
   }
 }

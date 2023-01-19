@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   HomeScreenSongList(
                     title: "New Releases",
                     isViewAll: true,
-                    songList: pro.trendingSongListModel,
+                    songList: pro.newReleaseListModel,
                   ),
                   CurrentMood(auraModel: pro.auraListModel),
                   TopAlbum(album: pro.albumListModel),

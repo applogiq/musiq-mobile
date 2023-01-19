@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:musiq/src/common_widgets/box/vertical_box.dart';
 import 'package:musiq/src/features/home/provider/artist_view_all_provider.dart';
 import 'package:musiq/src/features/player/provider/extension/player_controller_extension.dart';
@@ -11,7 +12,7 @@ import '../../../common_widgets/container/empty_box.dart';
 import '../../../constants/color.dart';
 import '../../../constants/style.dart';
 import '../../../core/package/audio_progress_bar.dart';
-import '../../../utils/image_url_generate.dart';
+import '../domain/model/player_song_list_model.dart';
 
 class PlayerScreen extends StatefulWidget {
   const PlayerScreen({super.key, required this.playerModel});
@@ -25,7 +26,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      context.read<PlayerProvider>().loadSong(widget.playerModel.songList);
+      context.read<PlayerProvider>().loadSong(widget.playerModel);
     });
     super.initState();
   }
@@ -157,73 +158,89 @@ class PlayerController extends StatelessWidget {
           const VerticalBox(height: 18),
           Consumer<ArtistViewAllProvider>(
             builder: (context, pro, _) {
-              return Column(
-                children: [
-                  Text(
-                      pro.collectionViewAllModel.records[0]!.songName
-                          .toString(),
-                      style: fontWeight500(size: 16.0)),
-                  Text(
-                    pro.collectionViewAllModel.records[0]!.musicDirectorName![0]
-                        .toString(),
-                    style:
-                        fontWeight400(size: 14.0, color: CustomColor.subTitle),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              return StreamBuilder<SequenceState?>(
+                  stream:
+                      context.read<PlayerProvider>().player.sequenceStateStream,
+                  builder: (context, snapshot) {
+                    final state = snapshot.data;
+                    if (state?.sequence.isEmpty ?? true) {
+                      return const SizedBox();
+                    }
+                    final metadata =
+                        state!.currentSource!.tag as PlayerSongListModel;
+                    return Column(
                       children: [
-                        InkWell(
-                            onTap: () async {
-                              // songController.shuffleSong();
-                            },
-                            child: const Icon(
-                              Icons.shuffle_rounded,
-                              color: Colors.white,
-                            )),
-                        InkWell(
-                            onTap: () {
-                              // print(playScreenModel[index].id);
-                              // songController.checkFav();
-                            },
-                            child: const Icon(
-                              Icons.favorite_rounded,
-                              color: Colors.white,
-                            )),
+                        Text(metadata.title, style: fontWeight500(size: 16.0)),
+                        Text(
+                          metadata.musicDirectorName,
+                          style: fontWeight400(
+                              size: 14.0, color: CustomColor.subTitle),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Consumer<PlayerProvider>(
+                              builder: (context, playerProvider, _) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                    onTap: () async {
+                                      playerProvider.shuffleSong();
+                                    },
+                                    child: Icon(
+                                      Icons.shuffle_rounded,
+                                      color: playerProvider.isShuffle
+                                          ? CustomColor.secondaryColor
+                                          : Colors.white,
+                                    )),
+                                InkWell(
+                                    onTap: () {
+                                      context
+                                          .read<PlayerProvider>()
+                                          .addFavourite(metadata.id);
+                                      // print(playScreenModel[index].id);
+                                      // songController.checkFav();
+                                    },
+                                    child: const Icon(
+                                      Icons.favorite_rounded,
+                                      color: Colors.white,
+                                    )),
+                              ],
+                            );
+                          }),
+                        ),
+                        const ProgressBarWidget(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            const InkWell(
+                                child:
+                                    Icon(Icons.playlist_add_rounded, size: 34)),
+                            PlayNextPrev(
+                              onTap: () {
+                                context.read<PlayerProvider>().playPrev();
+                              },
+                              iconData: Icons.skip_previous_rounded,
+                            ),
+                            const PlayPauseController(),
+                            PlayNextPrev(
+                              onTap: () {
+                                context.read<PlayerProvider>().playNext();
+                              },
+                              iconData: Icons.skip_next_rounded,
+                            ),
+                            InkWell(
+                                onTap: () async {},
+                                child: const Icon(
+                                  Icons.repeat_rounded,
+                                  size: 34,
+                                  color: Colors.white,
+                                ))
+                          ],
+                        )
                       ],
-                    ),
-                  ),
-                  const ProgressBarWidget(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      const InkWell(
-                          child: Icon(Icons.playlist_add_rounded, size: 34)),
-                      PlayNextPrev(
-                        onTap: () {
-                          context.read<PlayerProvider>().playPrev();
-                        },
-                        iconData: Icons.skip_previous_rounded,
-                      ),
-                      const PlayPauseController(),
-                      PlayNextPrev(
-                        onTap: () {
-                          context.read<PlayerProvider>().playNext();
-                        },
-                        iconData: Icons.skip_next_rounded,
-                      ),
-                      InkWell(
-                          onTap: () async {},
-                          child: const Icon(
-                            Icons.repeat_rounded,
-                            size: 34,
-                            color: Colors.white,
-                          ))
-                    ],
-                  )
-                ],
-              );
+                    );
+                  });
             },
           )
         ],
@@ -241,90 +258,94 @@ class PlayerBackground extends StatelessWidget {
     return Expanded(
         flex: 6,
         child: Consumer<ArtistViewAllProvider>(builder: (context, pro, _) {
-          return Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: NetworkImage(generateSongImageUrl(
-                      playerModel.collectionViewAllModel.records[0]!.albumName
-                          .toString(),
-                      playerModel.collectionViewAllModel.records[0]!.albumId
-                          .toString(),
-                    )
-                        // playScreenModel[index].
-                        // "https://mir-s3-cdn-cf.behance.net/project_modules/fs/fe529a64193929.5aca8500ba9ab.jpg",
-                        // "${APIConstants.SONG_BASE_URL}public/music/tamil/${ playScreenModel[index].albumName[0].toUpperCase()}/${ playScreenModel[index].albumName}/image/${ playScreenModel[index].albumId}.png"
-                        ),
-                    fit: BoxFit.cover)),
-            child: Stack(children: [
-              Container(
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        stops: [
-                      0.6,
-                      0.99
-                    ],
-                        colors: [
-                      Color.fromRGBO(22, 21, 28, 0),
-                      Color.fromRGBO(22, 21, 28, 1),
-                    ])),
-              ),
-              Container(
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                //     stops: [
-                                //   0.4,
-                                //   0.01,
-                                // ],
-                                colors: [
-                              Color.fromRGBO(22, 21, 28, 0.3),
-                              Color.fromRGBO(22, 21, 28, 0),
-                            ])),
+          return StreamBuilder<SequenceState?>(
+              stream: context.read<PlayerProvider>().player.sequenceStateStream,
+              builder: (context, snapshot) {
+                final state = snapshot.data;
+                if (state?.sequence.isEmpty ?? true) {
+                  return const ColoredBox(
+                    color: Colors.green,
+                  );
+                }
+                final metadata =
+                    state!.currentSource!.tag as PlayerSongListModel;
+                return Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: NetworkImage(metadata.imageUrl),
+                          fit: BoxFit.cover)),
+                  child: Stack(children: [
+                    Container(
+                      decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              stops: [
+                            0.6,
+                            0.99
+                          ],
+                              colors: [
+                            Color.fromRGBO(22, 21, 28, 0),
+                            Color.fromRGBO(22, 21, 28, 1),
+                          ])),
+                    ),
+                    Container(
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      //     stops: [
+                                      //   0.4,
+                                      //   0.01,
+                                      // ],
+                                      colors: [
+                                    Color.fromRGBO(22, 21, 28, 0.3),
+                                    Color.fromRGBO(22, 21, 28, 0),
+                                  ])),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 30),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                        onTap: () {
-                          // songController.player.stop();
-                          Navigator.of(context).pop();
-                        },
-                        child: const Icon(Icons.arrow_back_ios_new_rounded)),
-                    PopupMenuButton(
-                      shape: const RoundedRectangleBorder(),
-                      padding: const EdgeInsets.all(0.0),
-                      itemBuilder: (ctx) => [
-                        //   _buildPopupMenuItem(
-                        //       'Share', 'share'),
-                        //   _buildPopupMenuItem(
-                        //       'Song Info', "song_info"),
-                        //   _buildPopupMenuItem(
-                        //       songController
-                        //               .isLyricsHide.value
-                        //           ? 'Show Lyrics'
-                        //           : 'Hide Lyrics',
-                        //       "hide"),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ]),
-          );
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 30),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                              onTap: () {
+                                // songController.player.stop();
+                                Navigator.of(context).pop();
+                              },
+                              child:
+                                  const Icon(Icons.arrow_back_ios_new_rounded)),
+                          PopupMenuButton(
+                            shape: const RoundedRectangleBorder(),
+                            padding: const EdgeInsets.all(0.0),
+                            itemBuilder: (ctx) => [
+                              // _buildPopupMenuItem(
+                              //     'Share', 'share'),
+                              // _buildPopupMenuItem(
+                              //     'Song Info', "song_info"),
+                              // _buildPopupMenuItem(
+                              //     songController
+                              //             .isLyricsHide.value
+                              //         ? 'Show Lyrics'
+                              //         : 'Hide Lyrics',
+                              //     "hide"),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ]),
+                );
+              });
         }));
   }
 }
@@ -359,20 +380,23 @@ class ProgressBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: ProgressBar(
-        progress: const Duration(milliseconds: 5000),
-        buffered: const Duration(milliseconds: 20003),
-        total: const Duration(milliseconds: 125500),
-        progressBarColor: CustomColor.secondaryColor,
-        baseBarColor: Colors.white.withOpacity(0.24),
-        bufferedBarColor: Colors.white.withOpacity(0.24),
-        thumbColor: Colors.white,
-        barHeight: 6.0,
-        thumbRadius: 6.0,
-        onSeek: (duration) {
-          // songController.seekDuration(duration);
-        },
-      ),
+      child: Consumer<PlayerProvider>(builder: (context, pro, _) {
+        return ProgressBar(
+          progress: Duration(milliseconds: pro.progressDurationValue),
+          buffered: Duration(milliseconds: pro.bufferDurationValue),
+          total: Duration(milliseconds: pro.totalDurationValue),
+          progressBarColor: CustomColor.secondaryColor,
+          baseBarColor: Colors.white.withOpacity(0.24),
+          bufferedBarColor: Colors.white.withOpacity(0.24),
+          thumbColor: Colors.white,
+          barHeight: 6.0,
+          thumbRadius: 6.0,
+          onSeek: (duration) {
+            pro.seekDuration(duration);
+            // songController.seekDuration(duration);
+          },
+        );
+      }),
     );
   }
 }

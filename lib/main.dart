@@ -16,8 +16,17 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-void main() {
+// late ObjectBox objectBox;
+
+Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
+  WidgetsFlutterBinding.ensureInitialized();
+  // await JustAudioBackground.init(
+  //   androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+  //   androidNotificationChannelName: 'Audio playback',
+  //   androidNotificationOngoing: true,
+  // );
+  // objectBox = await ObjectBox.init();
   runApp(const MyApp());
 }
 
