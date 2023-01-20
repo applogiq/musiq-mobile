@@ -30,10 +30,19 @@ class _MainScreenState extends State<MainScreen> {
       child: Scaffold(
         body: Stack(
           children: [
-            Consumer<BottomNavigationBarProvider>(
-                builder: (context, provider, _) {
-              return provider.pages[provider.selectedBottomIndex];
-            }),
+            Column(
+              children: [
+                Expanded(
+                  child: Consumer<BottomNavigationBarProvider>(
+                      builder: (context, provider, _) {
+                    return provider.pages[provider.selectedBottomIndex];
+                  }),
+                ),
+                const SizedBox(
+                  height: 60,
+                ),
+              ],
+            ),
             Miniplayer(
                 minHeight: 60.0,
                 maxHeight: MediaQuery.of(context).size.height,

@@ -159,4 +159,27 @@ class NetworkApiService extends BaseApiServices {
 
     return responseJson;
   }
+
+  @override
+  Future getDeleteAuthWithDataApiResponse(String url, data) async {
+    dynamic responseJson;
+    try {
+      var token = await storage.read(key: "access_token");
+
+      header["Authorization"] = "Bearer $token";
+
+      // header.removeWhere((key, value) => key == "Content-type");
+      print(url);
+      print(data);
+      print(header);
+      Response response =
+          await delete(Uri.parse(url), headers: header, body: jsonEncode(data));
+
+      responseJson = returnResponse(response);
+    } on SocketException {
+      throw FetchDataException('No Internet Connection');
+    }
+
+    return responseJson;
+  }
 }

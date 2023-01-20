@@ -6,6 +6,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musiq/src/features/library/domain/library_repo.dart';
 import 'package:musiq/src/features/library/domain/models/favourite_model.dart';
 import 'package:musiq/src/features/library/domain/models/playlist_model.dart';
+import 'package:musiq/src/features/player/provider/player_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/string.dart';
 
@@ -24,12 +26,15 @@ class LibraryProvider extends ChangeNotifier {
       success: false, message: "No records", records: [], totalRecords: 0);
   FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
-  createPlayList(BuildContext context) async {
+  createPlayList(BuildContext context, {bool isAddPlaylist = false}) async {
     var id = await secureStorage.read(key: "id");
     Map params = {"user_id": id, "playlist_name": playListName};
     var response = await LibraryRepository().createPlaylist(params);
     if (response.statusCode == 200) {
       playListNameExistList.add(playListName);
+      if (isAddPlaylist) {
+        context.read<PlayerProvider>().getPlayListsList();
+      }
       playListModel = PlayListModel.fromMap(jsonDecode(response.body));
       // update();
       notifyListeners();

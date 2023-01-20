@@ -4,6 +4,8 @@ import 'package:musiq/src/features/auth/screens/forgot_screen/new_password.dart'
 import 'package:musiq/src/features/home/domain/model/artist_view_all_model.dart';
 import 'package:musiq/src/features/home/screens/artist_view_all/artist_view_all_screen.dart';
 import 'package:musiq/src/features/home/screens/artist_view_all/artist_view_all_song_list_screen.dart';
+import 'package:musiq/src/features/player/domain/model/player_song_list_model.dart';
+import 'package:musiq/src/features/player/screen/add_playlist_screen.dart';
 import 'package:musiq/src/features/player/screen/player_screen.dart';
 import 'package:musiq/src/features/profile/screens/artist_preference.dart';
 import 'package:musiq/src/features/profile/screens/image_crop_screen.dart';
@@ -23,6 +25,7 @@ import '../features/common/screen/main_screen.dart';
 import '../features/common/screen/onboarding_screen.dart';
 import '../features/common/screen/splash_screen.dart';
 import '../features/home/screens/home_screen.dart';
+import '../features/player/screen/song_info_screen.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -59,6 +62,16 @@ class Routes {
       case RouteName.preference:
         return MaterialPageRoute(
             builder: (BuildContext context) => const PreferenceScreen());
+      case RouteName.addPlaylist:
+        if (args is String) {
+          return MaterialPageRoute(
+              builder: (BuildContext context) => AddToPlaylistScreen(
+                    songId: int.parse(args),
+                  ));
+        }
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const ErrorScreen());
+
       case RouteName.forgotPasswordOTP:
         return MaterialPageRoute(
             builder: (BuildContext context) => const OTPScreen());
@@ -90,6 +103,17 @@ class Routes {
         }
         return MaterialPageRoute(
             builder: (BuildContext context) => const ErrorScreen());
+
+      case RouteName.songInfo:
+        if (args is PlayerSongListModel) {
+          return MaterialPageRoute(
+              builder: (BuildContext context) => SongInfoScreen(
+                    playerSongListModel: args,
+                  ));
+        }
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const ErrorScreen());
+
       case RouteName.artistViewAllSongListScreen:
         if (args is ArtistViewAllModel) {
           return MaterialPageRoute(
@@ -100,6 +124,7 @@ class Routes {
 
         return MaterialPageRoute(
             builder: (BuildContext context) => const ErrorScreen());
+
       default:
         return MaterialPageRoute(
             builder: (BuildContext context) => const ErrorScreen());

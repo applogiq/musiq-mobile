@@ -6,7 +6,10 @@ import 'package:musiq/src/features/player/provider/extension/player_controller_e
 import 'package:musiq/src/features/player/provider/player_provider.dart';
 import 'package:musiq/src/features/player/screen/reorder_list_tile.dart';
 import 'package:musiq/src/features/view_all/domain/model/player_model.dart';
+import 'package:musiq/src/routing/route_name.dart';
+import 'package:musiq/src/utils/navigation.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../common_widgets/container/empty_box.dart';
 import '../../../constants/color.dart';
@@ -113,7 +116,8 @@ class UpNextExpandable extends StatelessWidget {
           topRight: Radius.circular(30),
         ),
       ),
-      child: Column(
+      child: ListView(
+        shrinkWrap: true,
         children: [
           ListTile(
             title: const UpNext(),
@@ -195,9 +199,12 @@ class PlayerController extends StatelessWidget {
                                     )),
                                 InkWell(
                                     onTap: () {
+                                      // context
+                                      //     .read<PlayerProvider>()
+                                      //     .addFavourite(metadata.id);
                                       context
                                           .read<PlayerProvider>()
-                                          .addFavourite(metadata.id);
+                                          .deleteFavourite(metadata.id);
                                       // print(playScreenModel[index].id);
                                       // songController.checkFav();
                                     },
@@ -213,9 +220,14 @@ class PlayerController extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            const InkWell(
-                                child:
-                                    Icon(Icons.playlist_add_rounded, size: 34)),
+                            InkWell(
+                                onTap: () {
+                                  Navigation.navigateToScreen(
+                                      context, RouteName.addPlaylist,
+                                      args: metadata.id.toString());
+                                },
+                                child: const Icon(Icons.playlist_add_rounded,
+                                    size: 34)),
                             PlayNextPrev(
                               onTap: () {
                                 context.read<PlayerProvider>().playPrev();
@@ -229,13 +241,20 @@ class PlayerController extends StatelessWidget {
                               },
                               iconData: Icons.skip_next_rounded,
                             ),
-                            InkWell(
-                                onTap: () async {},
-                                child: const Icon(
-                                  Icons.repeat_rounded,
-                                  size: 34,
-                                  color: Colors.white,
-                                ))
+                            InkWell(onTap: () async {
+                              context.read<PlayerProvider>().loopSong();
+                            }, child: Consumer<PlayerProvider>(
+                                builder: (context, pro, _) {
+                              return Icon(
+                                pro.loopStatus == 2
+                                    ? Icons.repeat_one_rounded
+                                    : Icons.repeat_rounded,
+                                size: 34,
+                                color: pro.loopStatus == 0
+                                    ? Colors.white
+                                    : CustomColor.secondaryColor,
+                              );
+                            }))
                           ],
                         )
                       ],
@@ -252,6 +271,36 @@ class PlayerController extends StatelessWidget {
 class PlayerBackground extends StatelessWidget {
   const PlayerBackground({super.key, required this.playerModel});
   final PlayerModel playerModel;
+  PopupMenuItem _buildPopupMenuItem(String title, String routeName,
+      BuildContext context, PlayerSongListModel playerSongListModel) {
+    return PopupMenuItem(
+      // onTap: () async {
+      // await Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => const SongInfoScreen()),
+      // );
+      // },
+      child: InkWell(
+          onTap: () async {
+            if (routeName == RouteName.songInfo) {
+              Navigator.pop(context);
+              Navigation.navigateToScreen(context, routeName,
+                  args: playerSongListModel);
+              // await Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //       builder: (context) => SongInfoScreen(
+              //             playerSongListModel: playerSongListModel,
+              //           )),
+              // );
+            } else if (routeName == "share") {
+              Share.share(
+                  'check out MusiQ app\n https://play.google.com/store/apps/details?id=app.gotoz.parent');
+            }
+          },
+          child: Text(title)),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -325,19 +374,16 @@ class PlayerBackground extends StatelessWidget {
                               child:
                                   const Icon(Icons.arrow_back_ios_new_rounded)),
                           PopupMenuButton(
-                            shape: const RoundedRectangleBorder(),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
                             padding: const EdgeInsets.all(0.0),
                             itemBuilder: (ctx) => [
+                              _buildPopupMenuItem(
+                                  'Share', 'share', context, metadata),
+                              _buildPopupMenuItem('Song Info',
+                                  RouteName.songInfo, context, metadata),
                               // _buildPopupMenuItem(
-                              //     'Share', 'share'),
-                              // _buildPopupMenuItem(
-                              //     'Song Info', "song_info"),
-                              // _buildPopupMenuItem(
-                              //     songController
-                              //             .isLyricsHide.value
-                              //         ? 'Show Lyrics'
-                              //         : 'Hide Lyrics',
-                              //     "hide"),
+                              //     'Show Lyrics', "hide", context, metadata),
                             ],
                           )
                         ],
