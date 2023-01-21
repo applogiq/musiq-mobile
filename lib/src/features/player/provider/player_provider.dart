@@ -107,10 +107,53 @@ class PlayerProvider extends ChangeNotifier {
                           .collectionViewAllModel.records[index]!.albumId))),
         ),
       ),
-      initialIndex: selectedIndex,
+      initialIndex: playerModel.selectedSongIndex,
       initialPosition: Duration.zero,
     );
+    player.stop();
+    isPlay = false;
+    playOrPause();
     notifyListeners();
+  }
+
+  void playOrPause() {
+    if (!isPlay) {
+      play();
+      isPlay = true;
+    } else {
+      player.stop();
+      isPlay = false;
+    }
+    notifyListeners();
+  }
+
+  void play() {
+    print("----->${player.playing}");
+    if (player.playing) {
+      player.stop();
+      player.play();
+    } else {
+      player.play();
+    }
+    player.positionStream.listen((event) {
+      progressDurationValue = event.inMilliseconds;
+      notifyListeners();
+    });
+    player.durationStream.listen((event) {
+      try {
+        totalDurationValue = event!.inMilliseconds;
+      } catch (e) {
+        debugPrint(e.toString());
+      }
+      notifyListeners();
+    });
+    player.bufferedPositionStream.listen((event) {
+      bufferDurationValue = event.inMilliseconds;
+    });
+  }
+
+  seekDuration(value) {
+    player.seek(value);
   }
 
   void addFavourite(int songId) async {
@@ -121,6 +164,8 @@ class PlayerProvider extends ChangeNotifier {
     print(res.body);
     if (res.statusCode == 200) {
       toastMessage("Song added to favourite list", Colors.grey, Colors.white);
+    } else if (res.statusCode == 400) {
+      toastMessage("Song already in favourite list", Colors.grey, Colors.white);
     }
   }
 

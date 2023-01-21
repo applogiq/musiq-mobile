@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/player/screen/player_screen.dart';
 import 'package:musiq/src/features/profile/screens/profile_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/bottom_navigation_bar/bottom_navigation_bar.dart';
 import '../../../core/package/miniplayer/miniplayer.dart';
+import '../../player/screen/player_screen/player_controller.dart';
 import '../provider/bottom_navigation_bar_provider.dart';
 
 class MainScreen extends StatefulWidget {

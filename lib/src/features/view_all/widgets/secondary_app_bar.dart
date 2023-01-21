@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/color.dart';
-import '../../player/screen/player_screen.dart';
+import '../../../routing/route_name.dart';
+import '../../../utils/navigation.dart';
+import '../../home/provider/artist_view_all_provider.dart';
+import '../../player/screen/player_screen/player_controller.dart';
+import '../domain/model/player_model.dart';
 
 class FixedAppBar extends StatelessWidget {
   const FixedAppBar({
@@ -14,6 +19,20 @@ class FixedAppBar extends StatelessWidget {
   final double titleOpacity;
   final double size;
   final String title;
+  PopupMenuItem _buildPopupMenuItem(String title, String routeName) {
+    return PopupMenuItem(
+      onTap: () {
+        if (routeName == "hide") {
+          // setState(() {
+          //   hideLyrics;
+          // });
+        } else {
+          print(routeName);
+        }
+      },
+      child: Text(title),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,16 +98,47 @@ class FixedAppBar extends StatelessWidget {
                     ),
                   ),
                   // const Spacer(),
-                  PlayButtonWidget(
-                    bgColor: CustomColor.secondaryColor,
-                    iconColor: CustomColor.playIconBg,
-                  ),
+                  Consumer<ArtistViewAllProvider>(builder: (context, pro, _) {
+                    return InkWell(
+                      onTap: () {
+                        List songId = [];
+                        for (var record in pro.collectionViewAllModel.records) {
+                          songId.add(record!.id.toString());
+                        }
+
+                        print(songId.toString());
+                        Navigation.navigateToScreen(context, RouteName.player,
+                            args: PlayerModel(
+                                collectionViewAllModel:
+                                    pro.collectionViewAllModel,
+                                songList: songId,
+                                selectedSongIndex: 0));
+                      },
+                      child: PlayButtonWidget(
+                        bgColor: CustomColor.secondaryColor,
+                        iconColor: CustomColor.playIconBg,
+                      ),
+                    );
+                  }),
                   AnimatedOpacity(
                     opacity: titleOpacity.clamp(0, 1),
                     duration: const Duration(milliseconds: 100),
-                    child: const Padding(
-                        padding: EdgeInsets.only(bottom: 0.0),
-                        child: Icon(Icons.more_vert)),
+                    child: PopupMenuButton(
+                        color: CustomColor.appBarColor,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(8.0),
+                            bottomRight: Radius.circular(8.0),
+                            topLeft: Radius.circular(8.0),
+                            topRight: Radius.circular(8.0),
+                          ),
+                        ),
+                        padding: const EdgeInsets.all(0.0),
+                        itemBuilder: (ctx) => [
+                              _buildPopupMenuItem('Add to queue', 'share'),
+                              _buildPopupMenuItem(
+                                  'Add to playlist', "song_info"),
+                            ]),
                   ),
                 ],
               ),

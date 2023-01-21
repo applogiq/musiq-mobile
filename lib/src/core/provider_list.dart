@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/home/provider/artist_view_all_provider.dart';
+import 'package:musiq/src/features/home/provider/view_all_provider.dart';
 import 'package:musiq/src/features/library/provider/library_provider.dart';
 import 'package:musiq/src/features/player/provider/player_provider.dart';
 import 'package:provider/provider.dart';
@@ -51,5 +52,8 @@ List<SingleChildWidget> providersList = [
   ),
   ChangeNotifierProvider(
     create: (BuildContext context) => ArtistViewAllProvider(),
+  ),
+  ChangeNotifierProvider(
+    create: (BuildContext context) => ViewAllProvider(),
   ),
 ];

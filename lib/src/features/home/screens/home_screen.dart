@@ -3,9 +3,12 @@ import 'package:musiq/src/common_widgets/box/vertical_box.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
 import 'package:musiq/src/features/home/domain/model/song_list_model.dart';
 import 'package:musiq/src/features/home/provider/home_provider.dart';
+import 'package:musiq/src/features/home/view_all_status.dart';
 import 'package:musiq/src/features/home/widgets/current_mood.dart';
 import 'package:musiq/src/features/home/widgets/top_album_list.dart';
 import 'package:musiq/src/features/home/widgets/trending_hits.dart';
+import 'package:musiq/src/routing/route_name.dart';
+import 'package:musiq/src/utils/navigation.dart';
 import 'package:musiq/src/utils/size_config.dart';
 import 'package:provider/provider.dart';
 
@@ -99,6 +102,13 @@ class HomeScreenSongList extends StatelessWidget {
               !isViewAll
                   ? const SizedBox.shrink()
                   : InkWell(
+                      onTap: () {
+                        Navigation.navigateToScreen(
+                            context, RouteName.viewAllScreen,
+                            args: title == "New Releases"
+                                ? ViewAllStatus.newRelease
+                                : ViewAllStatus.recentlyPlayed);
+                      },
 //                                       onTap: () async {
 //                                         // print(recentlyPlayed.records[index].id);
 

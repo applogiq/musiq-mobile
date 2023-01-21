@@ -53,14 +53,16 @@ class AppBarOverlayContent extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    title,
-                    style: fontWeight600(
-                        size: size < 0.3
-                            ? 22.0
-                            : size > 0.48
-                                ? 0.0
-                                : 18.0),
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: fontWeight600(
+                          size: size < 0.3
+                              ? 22.0
+                              : size > 0.48
+                                  ? 0.0
+                                  : 18.0),
+                    ),
                   ),
                   count <= 0
                       ? const SizedBox.shrink()
