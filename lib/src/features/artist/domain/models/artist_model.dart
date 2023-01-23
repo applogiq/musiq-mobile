@@ -23,7 +23,7 @@ class ArtistModel {
         message: json["message"],
         records:
             List<Record>.from(json["records"].map((x) => Record.fromMap(x))),
-        totalRecords: json["total_records"],
+        totalRecords: json["total_records"] ?? json["totalrecords"],
       );
 
   Map<String, dynamic> toMap() => {

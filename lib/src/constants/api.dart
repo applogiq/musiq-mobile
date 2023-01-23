@@ -33,6 +33,7 @@ class APIConstants {
   static String kFavourite = "$baseUrl${versionUrl}favourite/";
   static String kSongs = "$baseUrl${versionUrl}songs/";
   static String kPlaylistSong = "$baseUrl${versionUrl}playlist-song/";
+  static String searchArtist = "$baseUrl${versionUrl}artist/list/search?data=";
 
   getRecentlyPlayedUrl(String userId, int limit) {
     var url = "$kRecentPlayedList$userId?limit=${limit.toString()}";

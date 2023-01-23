@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/constants/style.dart';
+import 'package:musiq/src/features/home/provider/search_provider.dart';
+import 'package:musiq/src/features/home/screens/artist_view_all/artist_view_all_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common_widgets/list/horizontal_list_view.dart';
 import '../../home/widgets/search_notifications.dart';
@@ -36,41 +39,57 @@ class SearchScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: SearchTextWidget(
-                      onTap: () {},
+                      onTap: () {
+                        context.read<SearchProvider>().searchFieldTap();
+                      },
                       hint: "Search Music and Podcasts",
                     ),
                   ),
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ListHeaderWidget(
-                title: "Recent Searches",
-                actionTitle: "Clear",
-                dataList: const [],
-              ),
-            ),
-            ListView.builder(
-                shrinkWrap: true,
-                itemCount: recentSearch.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
+            Consumer<SearchProvider>(builder: (context, pro, _) {
+              return pro.isRecentSearch
+                  ? Column(
                       children: [
-                        const Icon(Icons.restore),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                          child: Text(
-                            recentSearch[index],
-                            style: fontWeight400(size: 14.0),
+                          padding: const EdgeInsets.all(16.0),
+                          child: ListHeaderWidget(
+                            title: "Recent Searches",
+                            actionTitle: "Clear",
+                            dataList: const [],
                           ),
-                        )
+                        ),
+                        ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: recentSearch.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.restore),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12.0),
+                                      child: Text(
+                                        recentSearch[index],
+                                        style: fontWeight400(size: 14.0),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            })
                       ],
-                    ),
-                  );
-                })
+                    )
+                  : pro.artistModel.message == "No records"
+                      ? const Center(
+                          child: Text("No Search"),
+                        )
+                      : Expanded(
+                          child: ArtistGridView(artistModel: pro.artistModel));
+            }),
           ],
         ),
       ),

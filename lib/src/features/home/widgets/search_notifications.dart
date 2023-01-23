@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:musiq/src/constants/color.dart';
 import 'package:musiq/src/features/home/provider/home_provider.dart';
+import 'package:musiq/src/features/home/provider/search_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';
@@ -24,6 +27,7 @@ class SearchAndNotifications extends StatelessWidget {
                 isReadOnly: true,
                 onTap: () {
                   print("DATA");
+                  context.read<SearchProvider>().resetState();
                   context.read<HomeProvider>().goToSearch(context);
                   // Navigator.of(context).push(
                   //     MaterialPageRoute(builder: (context) => SearchScreen()));
@@ -63,7 +67,7 @@ class SearchAndNotifications extends StatelessWidget {
   }
 }
 
-class SearchTextWidget extends StatelessWidget {
+class SearchTextWidget extends StatefulWidget {
   SearchTextWidget({
     Key? key,
     required this.hint,
@@ -76,6 +80,41 @@ class SearchTextWidget extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
+  State<SearchTextWidget> createState() => _SearchTextWidgetState();
+}
+
+class _SearchTextWidgetState extends State<SearchTextWidget> {
+  late TextEditingController _controller;
+  Timer? _debounceTimer;
+  void debouncing({required Function() fn, int waitForMs = 500}) {
+    _debounceTimer?.cancel();
+
+    _debounceTimer = Timer(Duration(milliseconds: waitForMs), fn);
+  }
+
+  @override
+  void initState() {
+    _controller = TextEditingController();
+    _controller.addListener(_onSearchChange);
+    super.initState();
+  }
+
+  void _onSearchChange() {
+    debouncing(
+      fn: () {
+        context.read<SearchProvider>().artistSearch(_controller.text);
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _debounceTimer?.cancel();
+    _controller.removeListener(_onSearchChange);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return CustomColorContainer(
       left: 1,
@@ -85,8 +124,9 @@ class SearchTextWidget extends StatelessWidget {
         constraints:
             const BoxConstraints.expand(height: 40, width: double.maxFinite),
         child: TextField(
-          onTap: onTap,
-          readOnly: isReadOnly,
+          controller: _controller,
+          onTap: widget.onTap,
+          readOnly: widget.isReadOnly,
           onChanged: (val) {},
           cursorColor: Colors.white,
           decoration: InputDecoration(
@@ -101,7 +141,7 @@ class SearchTextWidget extends StatelessWidget {
               ),
               border: InputBorder.none,
               hintStyle: const TextStyle(fontSize: 14),
-              hintText: hint),
+              hintText: widget.hint),
         ),
       ),
     );

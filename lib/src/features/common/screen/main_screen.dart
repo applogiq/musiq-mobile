@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/profile/screens/profile_screen.dart';
+import 'package:musiq/src/features/view_all/widgets/sliver_app_bar/sliver_primary_app_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/bottom_navigation_bar/bottom_navigation_bar.dart';
@@ -67,7 +68,25 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                           IconButton(
                             padding: const EdgeInsets.all(0),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => AppBarSliver(
+                                        sliverList: SliverList(
+                                          delegate: SliverChildBuilderDelegate(
+                                            (BuildContext context, int index) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Center(
+                                                    child:
+                                                        Text("Item: $index")),
+                                              );
+                                            },
+                                            childCount: 50,
+                                          ),
+                                        ),
+                                      )));
+                            },
                             icon: const Icon(Icons.skip_previous_rounded),
                           ),
                           PlayButtonWidget(),
