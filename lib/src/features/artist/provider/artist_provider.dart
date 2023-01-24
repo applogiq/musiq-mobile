@@ -61,6 +61,8 @@ class ArtistPreferenceProvider extends ChangeNotifier {
     print(userFollowedArtist);
 
     var response = await AuthRepository().getArtists();
+    print(response.statusCode);
+    print(response.body);
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body.toString());
       artistModel = ArtistModel.fromMap(data);

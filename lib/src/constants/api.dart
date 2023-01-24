@@ -53,8 +53,8 @@ class APIConstants {
   }
 
   static getArtistUrl(int skipLength, int limit) {
-    var url =
-        "$kArtistList?skip=${skipLength.toString()}&limit=${limit.toString()}";
+    var url = "$kArtistList?skip=0&limit=${limit.toString()}";
+    print(url);
     return url;
   }
 }

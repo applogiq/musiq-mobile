@@ -1,7 +1,6 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:musiq/src/features/player/provider/extension/player_controller_extension.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/box/vertical_box.dart';
@@ -62,18 +61,23 @@ class PlayerController extends StatelessWidget {
                                     )),
                                 InkWell(
                                     onTap: () {
-                                      // context
-                                      //     .read<PlayerProvider>()
-                                      //     .addFavourite(metadata.id);
-                                      context
-                                          .read<PlayerProvider>()
-                                          .deleteFavourite(metadata.id);
+                                      playerProvider.favouritesList
+                                              .contains(metadata.id)
+                                          ? context
+                                              .read<PlayerProvider>()
+                                              .deleteFavourite(metadata.id)
+                                          : context
+                                              .read<PlayerProvider>()
+                                              .addFavourite(metadata.id);
                                       // print(playScreenModel[index].id);
                                       // songController.checkFav();
                                     },
-                                    child: const Icon(
+                                    child: Icon(
                                       Icons.favorite_rounded,
-                                      color: Colors.white,
+                                      color: playerProvider.favouritesList
+                                              .contains(metadata.id)
+                                          ? CustomColor.secondaryColor
+                                          : Colors.white,
                                     )),
                               ],
                             );

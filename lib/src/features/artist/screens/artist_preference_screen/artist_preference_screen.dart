@@ -17,9 +17,11 @@ class ArtistPreferenceScreen extends StatefulWidget {
 class _ArtistPreferenceScreenState extends State<ArtistPreferenceScreen> {
   @override
   void initState() {
-    var provider =
-        Provider.of<ArtistPreferenceProvider>(context, listen: false);
-    provider.loadData([]);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      var provider =
+          Provider.of<ArtistPreferenceProvider>(context, listen: false);
+      provider.loadData([]);
+    });
     super.initState();
   }
 

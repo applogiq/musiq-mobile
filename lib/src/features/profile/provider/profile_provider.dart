@@ -16,7 +16,7 @@ import 'package:musiq/src/utils/navigation.dart';
 import '../../../common_widgets/model/profile_model.dart';
 import '../../../constants/images.dart';
 import '../../../constants/string.dart';
-import '../../../local/user_model.dart';
+import '../../../local/model/user_model.dart';
 
 class ProfileProvider extends ChangeNotifier {
 //! Start

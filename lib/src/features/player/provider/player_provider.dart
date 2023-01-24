@@ -1,15 +1,20 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musiq/src/features/library/domain/models/favourite_model.dart';
 import 'package:musiq/src/features/player/domain/model/player_song_list_model.dart';
 import 'package:musiq/src/features/player/domain/model/song_info_model.dart';
 import 'package:musiq/src/features/player/domain/repo/player_repo.dart';
 import 'package:musiq/src/features/view_all/domain/model/player_model.dart';
+import 'package:musiq/src/local/model/favourite_model.dart';
 import 'package:musiq/src/utils/image_url_generate.dart';
 import 'package:musiq/src/utils/toast_message.dart';
+import 'package:path_provider/path_provider.dart';
 
+import '../../../../objectbox.g.dart';
 import '../../library/domain/library_repo.dart';
 import '../../library/domain/models/playlist_model.dart';
 
@@ -18,6 +23,9 @@ class PlayerProvider extends ChangeNotifier {
   bool isShuffle = false;
   bool issongInfoDetailsLoad = true;
   int loopStatus = 0;
+  late Box<FavouriteSong> _store;
+  late Store store;
+  List<int> favouritesList = [];
 
   AudioPlayer player = AudioPlayer();
   var selectedIndex = 0;
@@ -30,7 +38,7 @@ class PlayerProvider extends ChangeNotifier {
   FlutterSecureStorage secureStorage = const FlutterSecureStorage();
   PlayListModel playListModel = PlayListModel(
       success: false, message: "No records", records: [], totalRecords: 0);
-
+  fetchLocalFavourites() async {}
   getPlayListsList() async {
     isPlayListLoad = true;
     notifyListeners();
@@ -113,7 +121,24 @@ class PlayerProvider extends ChangeNotifier {
     player.stop();
     isPlay = false;
     playOrPause();
+    await clearFavouriteSong();
+    await loadFavourites();
     notifyListeners();
+  }
+
+  loadFavourites() async {
+    var id = await secureStorage.read(key: "id");
+    LibraryRepository libraryRepository = LibraryRepository();
+    var res = await libraryRepository.getFavouritesList(id!);
+    if (res.statusCode == 200) {
+      FavouriteModel favouriteModel =
+          FavouriteModel.fromMap(jsonDecode(res.body.toString()));
+      favouritesList.clear();
+      for (var element in favouriteModel.records) {
+        favouritesList.add(element.id);
+      }
+      notifyListeners();
+    }
   }
 
   void playOrPause() {
@@ -164,12 +189,18 @@ class PlayerProvider extends ChangeNotifier {
     print(res.body);
     if (res.statusCode == 200) {
       toastMessage("Song added to favourite list", Colors.grey, Colors.white);
+      addFavouriteSongToLocalDb(songId);
+      // await favouriteSongBox.add(song);
     } else if (res.statusCode == 400) {
+      loadFavourites();
+
       toastMessage("Song already in favourite list", Colors.grey, Colors.white);
     }
   }
 
-  void deleteFavourite(int songId) async {
+  void deleteFavourite(
+    int songId,
+  ) async {
     print(songId.toString());
     Map params = {"song_id": songId};
     print(params);
@@ -177,11 +208,67 @@ class PlayerProvider extends ChangeNotifier {
     print(res.statusCode);
     print(res.body);
     if (res.statusCode == 200) {
+      deleteFavouriteSongFormLocal(songId);
       toastMessage(
           "Song removed from favourite list", Colors.grey, Colors.white);
     } else if (res.statusCode == 404) {
+      loadFavourites();
       toastMessage("Favourites not found", Colors.grey, Colors.white);
     }
+  }
+
+  deleteFavouriteSongFormLocal(int uniqueId) async {
+    await getApplicationDocumentsDirectory().then((Directory dir) {
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/objectbox/3');
+    });
+    final box = store.box<FavouriteSong>();
+
+    var id = box.remove(uniqueId);
+    print("IIIII");
+    print(id);
+
+    store.close();
+    getSongList();
+  }
+
+  addFavouriteSongToLocalDb(int songId) async {
+    final song = FavouriteSong(songUniqueId: songId);
+    await getApplicationDocumentsDirectory().then((Directory dir) {
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/objectbox/3');
+    });
+    final box = store.box<FavouriteSong>();
+    int id = box.put(song);
+
+    store.close();
+    getSongList();
+  }
+
+  clearFavouriteSong() async {
+    await getApplicationDocumentsDirectory().then((Directory dir) {
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/objectbox/3');
+    });
+    final box = store.box<FavouriteSong>();
+    box.removeAll();
+
+    store.close();
+    getSongList();
+  }
+
+  getSongList() async {
+    await getApplicationDocumentsDirectory().then((Directory dir) {
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/objectbox/3');
+    });
+    final box = store.box<FavouriteSong>();
+
+    var res = box.getAll();
+    favouritesList.clear();
+    for (var e in res) {
+      favouritesList.add(e.songUniqueId);
+    }
+    print(favouritesList);
+    notifyListeners();
+
+    store.close();
   }
 
   void playNext() {

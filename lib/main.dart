@@ -17,6 +17,7 @@ class MyHttpOverrides extends HttpOverrides {
 }
 
 // late ObjectBox objectBox;
+// late FavouriteSongBox favouriteSongBox;
 
 Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
@@ -27,6 +28,7 @@ Future<void> main() async {
   //   androidNotificationOngoing: true,
   // );
   // objectBox = await ObjectBox.init();
+  // favouriteSongBox = await FavouriteSongBox.init();
   runApp(const MyApp());
 }
 
