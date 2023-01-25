@@ -29,8 +29,7 @@ class AuthRepository {
     var artistUrl = APIConstants.getArtistUrl(0, limit);
     print(artistUrl);
     try {
-      dynamic response = await apiServices.getGetAuthApiResponse(
-          APIConstants.baseUrl + APIConstants.versionUrl + artistUrl);
+      dynamic response = await apiServices.getGetAuthApiResponse(artistUrl);
       return response;
     } catch (e) {
       rethrow;

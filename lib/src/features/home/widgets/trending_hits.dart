@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/home/view_all_status.dart';
-import 'package:musiq/src/utils/navigation.dart';
 
 import '../../../constants/color.dart';
 import '../../../constants/string.dart';
-import '../../../routing/route_name.dart';
 import '../../../utils/image_url_generate.dart';
 import '../domain/model/trending_hits_model.dart';
+import '../screens/sliver_demo/view_all_screen.dart';
 
 class TrendingHitsWidget extends StatelessWidget {
   const TrendingHitsWidget({
@@ -31,8 +30,12 @@ class TrendingHitsWidget extends StatelessWidget {
               const Spacer(),
               InkWell(
                 onTap: () {
-                  Navigation.navigateToScreen(context, RouteName.viewAllScreen,
-                      args: ViewAllStatus.trendingHits);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const ViewAllScreen(
+                            status: ViewAllStatus.trendingHits,
+                          )));
+                  // Navigation.navigateToScreen(context, RouteName.viewAllScreen,
+                  //     args: ViewAllStatus.trendingHits);
                 },
 //                 onTap: () async {
 //                   trendingHitsModels = await apiRoute.getTrendingHits();

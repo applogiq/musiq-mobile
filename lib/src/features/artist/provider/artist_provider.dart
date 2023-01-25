@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musiq/src/features/artist/domain/repository/artist_repo.dart';
 import 'package:musiq/src/features/common/provider/bottom_navigation_bar_provider.dart';
+import 'package:musiq/src/utils/navigation.dart';
 import 'package:provider/provider.dart';
 
 import '../../auth/domain/models/user_model.dart';
@@ -114,7 +115,6 @@ class ArtistPreferenceProvider extends ChangeNotifier {
   navigateToHome(BuildContext context) {
     storage.write(key: "is_preference", value: "true");
     context.read<BottomNavigationBarProvider>().selectedBottomIndex = 0;
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const MainScreen()));
+    Navigation.removeAllScreenFromStack(context, const MainScreen());
   }
 }

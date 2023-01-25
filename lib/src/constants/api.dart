@@ -1,5 +1,3 @@
-// http://192.168.29.184:8000/users/login
-
 import '../config/api_config.dart';
 
 class APIConstants {
@@ -33,8 +31,10 @@ class APIConstants {
   static String kFavourite = "$baseUrl${versionUrl}favourite/";
   static String kSongs = "$baseUrl${versionUrl}songs/";
   static String kPlaylistSong = "$baseUrl${versionUrl}playlist-song/";
-  static String searchArtist = "$baseUrl${versionUrl}artist/list/search?data=";
+  static String kAlbumSongList = "$baseUrl${versionUrl}songs?album_id=";
+  static String kAuraSongList = "$baseUrl${versionUrl}aura-song/list/";
 
+  static String searchArtist = "$baseUrl${versionUrl}artist/list/search?data=";
   getRecentlyPlayedUrl(String userId, int limit) {
     var url = "$kRecentPlayedList$userId?limit=${limit.toString()}";
     return url;

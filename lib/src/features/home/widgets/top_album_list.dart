@@ -5,6 +5,8 @@ import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../constants/color.dart';
 import '../../../constants/style.dart';
 import '../../../utils/image_url_generate.dart';
+import '../screens/sliver_demo/view_all_screen.dart';
+import '../view_all_status.dart';
 
 class TopAlbum extends StatelessWidget {
   const TopAlbum({super.key, required this.album});
@@ -65,6 +67,20 @@ class TopAlbum extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             InkWell(
+                              onTap: () {
+                                print(album.records[index].id);
+                                print(album.records[index].albumName);
+                                print(
+                                  generateSongImageUrl(
+                                      album.records[index].albumName,
+                                      album.records[index].albumId),
+                                );
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ViewAllScreen(
+                                          status: ViewAllStatus.album,
+                                          id: album.records[index].id,
+                                        )));
+                              },
                               // onTap: () async {
                               //   print(album.records[index].id);
                               //   ViewAllBanner banner = ViewAllBanner(

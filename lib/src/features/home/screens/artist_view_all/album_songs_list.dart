@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/features/home/domain/model/new_release_model.dart';
+import 'package:musiq/src/features/home/domain/model/trending_hits_model.dart';
 import 'package:musiq/src/features/home/provider/artist_view_all_provider.dart';
+import 'package:musiq/src/features/home/view_all_status.dart';
 import 'package:musiq/src/features/player/domain/model/player_song_list_model.dart';
 import 'package:musiq/src/routing/route_name.dart';
 import 'package:musiq/src/utils/navigation.dart';
@@ -16,6 +19,7 @@ class AlbumSongsList extends StatelessWidget {
   const AlbumSongsList({
     Key? key,
   }) : super(key: key);
+
   PopupMenuItem _buildPopupMenuItem(String title,
       PlayerSongListModel playerSongListModel, BuildContext context,
       {int position = 0}) {

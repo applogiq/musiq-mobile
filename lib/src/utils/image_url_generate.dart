@@ -7,7 +7,7 @@ generateArtistImageUrl(artistId) {
 }
 
 generateAuraImageUrl(auraId) {
-  var url = "${"${APIConstants.baseUrl}public/aura/" + auraId}.png";
+  var url = "${"${APIConstants.baseUrl}public/aura/$auraId"}.png";
   return url;
 }
 //  /${viewAllController.recentlyPlayed.records[index].name}/image/${viewAllController.recentlyPlayed.records[index].albumId.toString()}.png",

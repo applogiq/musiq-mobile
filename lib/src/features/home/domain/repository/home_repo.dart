@@ -38,6 +38,16 @@ class HomeRepository {
     }
   }
 
+  Future<dynamic> getSpecificAura(int id) async {
+    try {
+      var endpoint = APIConstants.kAuraSongList + id.toString();
+      dynamic response = await apiServices.getGetAuthApiResponse(endpoint);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<dynamic> getArtist({int limit = 100}) async {
     try {
       var endpoint = APIConstants.getArtistUrl(0, limit);
@@ -51,6 +61,16 @@ class HomeRepository {
   Future<dynamic> getAlbum() async {
     try {
       var endpoint = APIConstants.kAlbumList;
+      dynamic response = await apiServices.getGetAuthApiResponse(endpoint);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<dynamic> getSpecificAlbum(int id) async {
+    try {
+      var endpoint = APIConstants.kAlbumSongList + id.toString();
       dynamic response = await apiServices.getGetAuthApiResponse(endpoint);
       return response;
     } catch (e) {

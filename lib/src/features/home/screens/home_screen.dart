@@ -3,18 +3,17 @@ import 'package:musiq/src/common_widgets/box/vertical_box.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
 import 'package:musiq/src/features/home/domain/model/song_list_model.dart';
 import 'package:musiq/src/features/home/provider/home_provider.dart';
-import 'package:musiq/src/features/home/view_all_status.dart';
+import 'package:musiq/src/features/home/screens/sliver_demo/view_all_screen.dart';
 import 'package:musiq/src/features/home/widgets/current_mood.dart';
 import 'package:musiq/src/features/home/widgets/top_album_list.dart';
 import 'package:musiq/src/features/home/widgets/trending_hits.dart';
-import 'package:musiq/src/routing/route_name.dart';
-import 'package:musiq/src/utils/navigation.dart';
 import 'package:musiq/src/utils/size_config.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../constants/api.dart';
 import '../../../constants/color.dart';
+import '../view_all_status.dart';
 import '../widgets/artist_list_view.dart';
 import '../widgets/search_notifications.dart';
 
@@ -103,11 +102,17 @@ class HomeScreenSongList extends StatelessWidget {
                   ? const SizedBox.shrink()
                   : InkWell(
                       onTap: () {
-                        Navigation.navigateToScreen(
-                            context, RouteName.viewAllScreen,
-                            args: title == "New Releases"
-                                ? ViewAllStatus.newRelease
-                                : ViewAllStatus.recentlyPlayed);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ViewAllScreen(
+                                  status: title == "New Releases"
+                                      ? ViewAllStatus.newRelease
+                                      : ViewAllStatus.recentlyPlayed,
+                                )));
+                        // Navigation.navigateToScreen(
+                        //     context, RouteName.viewAllScreen,
+                        // args: title == "New Releases"
+                        //     ? ViewAllStatus.newRelease
+                        //     : ViewAllStatus.recentlyPlayed);
                       },
 //                                       onTap: () async {
 //                                         // print(recentlyPlayed.records[index].id);

@@ -4,6 +4,8 @@ import 'package:musiq/src/features/home/domain/model/aura_model.dart';
 import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../common_widgets/list/horizontal_list_view.dart';
 import '../../../utils/image_url_generate.dart';
+import '../screens/sliver_demo/view_all_screen.dart';
+import '../view_all_status.dart';
 
 class CurrentMood extends StatelessWidget {
   const CurrentMood({super.key, required this.auraModel});
@@ -37,6 +39,20 @@ class CurrentMood extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           InkWell(
+                            onTap: () {
+                              print(auraModel.records[index].id);
+                              print(auraModel.records[index].auraName);
+                              print(generateAuraImageUrl(
+                                  auraModel.records[index].auraId));
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ViewAllScreen(
+                                        status: ViewAllStatus.aura,
+                                        id: auraModel.records[index].id,
+                                        auraId: auraModel.records[index].auraId,
+                                        auraName:
+                                            auraModel.records[index].auraName,
+                                      )));
+                            },
                             // onTap: () async {
                             //   ViewAllBanner banner = ViewAllBanner(
                             //       bannerId: auraModel.records[index].auraId,
