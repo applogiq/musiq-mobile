@@ -32,22 +32,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
-            toolbarHeight: 70,
+            toolbarHeight: getProportionateScreenHeight(70),
             title: const Text("Profile"),
           ),
           body: SingleChildScrollView(
             child: SizedBox(
               width: SizeConfig.screenWidth,
               height: SizeConfig.screenHeight - 150,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              child: ListView(
+                // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
                     padding:
                         EdgeInsets.only(top: getProportionateScreenHeight(24)),
                     child: Container(
-                      height: 120,
-                      width: 120,
+                      height: getProportionateScreenHeight(120),
+                      width: getProportionateScreenWidth(120),
                       decoration: const BoxDecoration(shape: BoxShape.circle),
                       child:
                           Consumer<ProfileProvider>(builder: (context, pro, _) {
@@ -55,18 +55,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ? Center(
                                 child: Image.asset(
                                 'assets/gifs/image_loader2.gif',
-                                height: 90,
+                                height: getProportionateScreenHeight(90),
                               ))
                             : pro.profileAPIModel.records == null
                                 ? Image.asset(Images.user_default)
                                 : (pro.profileAPIModel.records!.isImage == true
                                     ? CircleAvatar(
                                         backgroundColor: Colors.black,
-                                        radius: 65,
+                                        radius:
+                                            getProportionateScreenHeight(65),
                                         backgroundImage: const AssetImage(
                                             'assets/gifs/image_loader2.gif'),
                                         child: CircleAvatar(
-                                          radius: 65,
+                                          radius:
+                                              getProportionateScreenHeight(65),
                                           backgroundColor: Colors.transparent,
                                           backgroundImage: NetworkImage(
                                             generateProfileImageUrl(pro

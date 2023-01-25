@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:musiq/src/features/common/screen/offline_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants/style.dart';
@@ -15,34 +17,38 @@ class UpNextExpandable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height - 40,
-      padding: const EdgeInsets.all(16),
-      margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-      decoration: const BoxDecoration(
-        color: Color.fromRGBO(33, 33, 44, 1),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
-      ),
-      child: ListView(
-        shrinkWrap: true,
-        children: [
-          ListTile(
-            title: const UpNext(),
-            trailing: InkWell(
-                onTap: () {
-                  context.read<ArtistViewAllProvider>().toggleUpNext();
-                  // songController.isBottomSheetView.toggle();
-                },
-                child: const Icon(Icons.keyboard_arrow_down_rounded)),
-          ),
-          ReorderListUpNextSongTile(
-              playScreenModel: playerModel.collectionViewAllModel, index: 0)
-        ],
-      ),
-    );
+    return Provider.of<InternetConnectionStatus>(context) ==
+            InternetConnectionStatus.disconnected
+        ? const OfflineScreen()
+        : Container(
+            height: MediaQuery.of(context).size.height - 40,
+            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+            decoration: const BoxDecoration(
+              color: Color.fromRGBO(33, 33, 44, 1),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+              ),
+            ),
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                ListTile(
+                  title: const UpNext(),
+                  trailing: InkWell(
+                      onTap: () {
+                        context.read<ArtistViewAllProvider>().toggleUpNext();
+                        // songController.isBottomSheetView.toggle();
+                      },
+                      child: const Icon(Icons.keyboard_arrow_down_rounded)),
+                ),
+                ReorderListUpNextSongTile(
+                    playScreenModel: playerModel.collectionViewAllModel,
+                    index: 0)
+              ],
+            ),
+          );
   }
 }
 

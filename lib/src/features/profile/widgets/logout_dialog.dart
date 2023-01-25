@@ -37,8 +37,8 @@ showAlertDialog(BuildContext context) {
             onTap: () async {
               Auth auth = Auth();
               await auth.logOut();
-              Provider.of<BottomNavigationBarProvider>(context, listen: false)
-                  .indexes();
+              // Provider.of<BottomNavigationBarProvider>(context, listen: false)
+              //     .indexes();
               Provider.of<RegisterProvider>(context, listen: false)
                   .clearError();
               Provider.of<RegisterProvider>(context, listen: false)

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:musiq/src/features/common/screen/offline_screen.dart';
 import 'package:musiq/src/features/home/provider/artist_view_all_provider.dart';
 import 'package:musiq/src/features/player/provider/player_provider.dart';
 import 'package:musiq/src/features/player/screen/player_screen/player_background.dart';
@@ -29,55 +31,58 @@ class _PlayerScreenState extends State<PlayerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SingleChildScrollView(
-            child: Stack(
-      alignment: Alignment.bottomCenter,
-      children: [
-        SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Column(
+    return Provider.of<InternetConnectionStatus>(context) ==
+            InternetConnectionStatus.disconnected
+        ? const OfflineScreen()
+        : Scaffold(
+            body: SingleChildScrollView(
+                child: Stack(
+            alignment: Alignment.bottomCenter,
             children: [
-              PlayerBackground(playerModel: widget.playerModel),
-              const PlayerController(),
-              Consumer<ArtistViewAllProvider>(builder: (context, pro, _) {
-                return pro.isUpNextShow
-                    ? const SizedBox.shrink()
-                    : Container(
-                        decoration: const BoxDecoration(
-                            color: Color.fromRGBO(33, 33, 44, 1),
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(30),
-                                topRight: Radius.circular(30))),
-                        child: ListTile(
-                          onTap: () {
-                            context
-                                .read<ArtistViewAllProvider>()
-                                .toggleUpNext();
-                          },
-                          title: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const UpNext(),
-                              Text(
-                                widget.playerModel.collectionViewAllModel
-                                    .records[1]!.songName
-                                    .toString(),
-                                style: fontWeight400(size: 14.0),
-                              )
-                            ],
-                          ),
-                          trailing: const Icon(Icons.keyboard_arrow_up),
-                        ),
-                      );
-              }),
+              SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: Column(
+                  children: [
+                    PlayerBackground(playerModel: widget.playerModel),
+                    const PlayerController(),
+                    Consumer<ArtistViewAllProvider>(builder: (context, pro, _) {
+                      return pro.isUpNextShow
+                          ? const SizedBox.shrink()
+                          : Container(
+                              decoration: const BoxDecoration(
+                                  color: Color.fromRGBO(33, 33, 44, 1),
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(30),
+                                      topRight: Radius.circular(30))),
+                              child: ListTile(
+                                onTap: () {
+                                  context
+                                      .read<ArtistViewAllProvider>()
+                                      .toggleUpNext();
+                                },
+                                title: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const UpNext(),
+                                    Text(
+                                      widget.playerModel.collectionViewAllModel
+                                          .records[1]!.songName
+                                          .toString(),
+                                      style: fontWeight400(size: 14.0),
+                                    )
+                                  ],
+                                ),
+                                trailing: const Icon(Icons.keyboard_arrow_up),
+                              ),
+                            );
+                    }),
+                  ],
+                ),
+              ),
+              UpNextExpandableWidget(widget: widget)
             ],
-          ),
-        ),
-        UpNextExpandableWidget(widget: widget)
-      ],
-    )));
+          )));
   }
 }
 

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:musiq/src/features/common/screen/offline_screen.dart';
 import 'package:musiq/src/routing/route_name.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common_widgets/app_bar.dart';
 import '../../../constants/color.dart';
@@ -9,44 +12,47 @@ class PreferenceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size(double.maxFinite, 60),
-        child: CustomAppBarWidget(
-          title: "Preferences",
-        ),
-      ),
-      body: ListView(children: const [
-        Padding(
-          padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-          child: PreferenceMainHeaderWidget(
-            mainTitle: "Music Preference",
-            subTitle1: "Artist Preference",
-            navigationScreen1: RouteName.profileArtistPreference,
-            subTitle2: "Audio Quality",
-            navigationScreen2: "audioQuality",
-          ),
-        ),
-        // Padding(
-        //   padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
-        //   child: PreferenceMainHeaderWidget(
-        //     mainTitle: "Podcast Preference",
-        //     subTitle1: "Artist Preference",
-        //     navigationScreen1: "artistPreference",
-        //     subTitle2: "Audio Quality",
-        //     navigationScreen2: "audioQuality",
-        //   ),
-        // ),
-        // Padding(
-        //   padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
-        //   child: NotificationPreferenceHeaderWidget(
-        //     mainTitle: "Notification Preference",
-        //     subTitle1: "New Releases",
-        //     subTitle2: "Artist Updates",
-        //   ),
-        // ),
-      ]),
-    );
+    return Provider.of<InternetConnectionStatus>(context) ==
+            InternetConnectionStatus.disconnected
+        ? const OfflineScreen()
+        : Scaffold(
+            appBar: PreferredSize(
+              preferredSize: const Size(double.maxFinite, 60),
+              child: CustomAppBarWidget(
+                title: "Preferences",
+              ),
+            ),
+            body: ListView(children: const [
+              Padding(
+                padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+                child: PreferenceMainHeaderWidget(
+                  mainTitle: "Music Preference",
+                  subTitle1: "Artist Preference",
+                  navigationScreen1: RouteName.profileArtistPreference,
+                  subTitle2: "Audio Quality",
+                  navigationScreen2: "audioQuality",
+                ),
+              ),
+              // Padding(
+              //   padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
+              //   child: PreferenceMainHeaderWidget(
+              //     mainTitle: "Podcast Preference",
+              //     subTitle1: "Artist Preference",
+              //     navigationScreen1: "artistPreference",
+              //     subTitle2: "Audio Quality",
+              //     navigationScreen2: "audioQuality",
+              //   ),
+              // ),
+              // Padding(
+              //   padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
+              //   child: NotificationPreferenceHeaderWidget(
+              //     mainTitle: "Notification Preference",
+              //     subTitle1: "New Releases",
+              //     subTitle2: "Artist Updates",
+              //   ),
+              // ),
+            ]),
+          );
   }
 }
 

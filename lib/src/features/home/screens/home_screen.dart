@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/common_widgets/box/vertical_box.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
+import 'package:musiq/src/features/common/screen/offline_screen.dart';
 import 'package:musiq/src/features/home/domain/model/song_list_model.dart';
 import 'package:musiq/src/features/home/provider/home_provider.dart';
 import 'package:musiq/src/features/home/view_all_status.dart';
@@ -37,7 +39,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Consumer<HomeProvider>(builder: (context, pro, _) {
+    return
+        // Provider.of<InternetConnectionStatus>(context) ==
+        //         InternetConnectionStatus.disconnected
+        //     ? const OfflineScreen()
+        //:
+        Consumer<HomeProvider>(builder: (context, pro, _) {
       return SizedBox(
         child: pro.isLoad
             ? const LoaderScreen()

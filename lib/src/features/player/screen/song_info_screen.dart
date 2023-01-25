@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/common_widgets/box/vertical_box.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
 import 'package:musiq/src/constants/color.dart';
+import 'package:musiq/src/features/common/screen/offline_screen.dart';
 import 'package:musiq/src/features/player/domain/model/player_song_list_model.dart';
 import 'package:musiq/src/utils/image_url_generate.dart';
 import 'package:musiq/src/utils/size_config.dart';
@@ -35,241 +37,246 @@ class _SongInfoScreenState extends State<SongInfoScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return SafeArea(
-        child: Scaffold(
-            backgroundColor: CustomColor.bg,
-            body: Consumer<PlayerProvider>(builder: (context, pro, _) {
-              return pro.issongInfoDetailsLoad
-                  ? const LoaderScreen()
-                  : pro.songInfoModel == null
-                      ? const SizedBox.shrink()
-                      : SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: getProportionateScreenHeight(350),
-                                child: Stack(
-                                  children: [
-                                    Image.network(
-                                      generateSongImageUrl(
+    return Provider.of<InternetConnectionStatus>(context) ==
+            InternetConnectionStatus.disconnected
+        ? const OfflineScreen()
+        : SafeArea(
+            child: Scaffold(
+                backgroundColor: CustomColor.bg,
+                body: Consumer<PlayerProvider>(builder: (context, pro, _) {
+                  return pro.issongInfoDetailsLoad
+                      ? const LoaderScreen()
+                      : pro.songInfoModel == null
+                          ? const SizedBox.shrink()
+                          : SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: getProportionateScreenHeight(350),
+                                    child: Stack(
+                                      children: [
+                                        Image.network(
+                                          generateSongImageUrl(
+                                              pro.songInfoModel!.records
+                                                  .albumDetails.albumName,
+                                              pro.songInfoModel!.records
+                                                  .albumDetails.albumId),
+                                          fit: BoxFit.cover,
+                                          height:
+                                              getProportionateScreenHeight(350),
+                                          width: double.maxFinite,
+                                        ),
+                                        Container(
+                                          height:
+                                              getProportionateScreenHeight(350),
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              begin: Alignment.topCenter,
+                                              end: Alignment.bottomCenter,
+                                              colors: [
+                                                Colors.black.withOpacity(0.5),
+                                                Colors.transparent,
+                                                Colors.transparent,
+                                                Colors.transparent,
+                                                Colors.black.withOpacity(0.7)
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              pro.songInfoModel!.records
+                                                  .songName,
+                                              style: fontWeight600(size: 24.0),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: IconButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                icon: const Icon(
+                                                  Icons.arrow_back_ios,
+                                                  // color: color2,
+
+                                                  size: 18,
+                                                )),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Text(
                                           pro.songInfoModel!.records
                                               .albumDetails.albumName,
-                                          pro.songInfoModel!.records
-                                              .albumDetails.albumId),
-                                      fit: BoxFit.cover,
-                                      height: getProportionateScreenHeight(350),
-                                      width: double.maxFinite,
-                                    ),
-                                    Container(
-                                      height: getProportionateScreenHeight(350),
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          begin: Alignment.topCenter,
-                                          end: Alignment.bottomCenter,
-                                          colors: [
-                                            Colors.black.withOpacity(0.5),
-                                            Colors.transparent,
-                                            Colors.transparent,
-                                            Colors.transparent,
-                                            Colors.black.withOpacity(0.7)
+                                          style: fontWeight400(
+                                              size: 16.0,
+                                              color: Colors.white
+                                                  .withOpacity(0.6)),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Duration:",
+                                              style: fontWeight400(
+                                                  size: 16.0,
+                                                  color: Colors.white
+                                                      .withOpacity(0.6)),
+                                            ),
+                                            Text(
+                                              " ${detailedDuration(" ${pro.songInfoModel!.records.duration}")}",
+                                              style: fontWeight400(
+                                                  size: 16.0,
+                                                  color: Colors.white
+                                                      .withOpacity(0.6)),
+                                            ),
                                           ],
                                         ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.bottomLeft,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          pro.songInfoModel!.records.songName,
-                                          style: fontWeight600(size: 24.0),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Release:",
+                                              style: fontWeight400(
+                                                  size: 16.0,
+                                                  color: Colors.white
+                                                      .withOpacity(0.6)),
+                                            ),
+                                            Text(
+                                              " ${pro.songInfoModel!.records.albumDetails.releasedYear}",
+                                              style: fontWeight400(
+                                                  size: 16.0,
+                                                  color: Colors.white
+                                                      .withOpacity(0.6)),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: IconButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            icon: const Icon(
-                                              Icons.arrow_back_ios,
-                                              // color: color2,
-
-                                              size: 18,
-                                            )),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      pro.songInfoModel!.records.albumDetails
-                                          .albumName,
-                                      style: fontWeight400(
-                                          size: 16.0,
-                                          color: Colors.white.withOpacity(0.6)),
-                                    ),
-                                    Row(
-                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Label:",
+                                              style: fontWeight400(
+                                                  size: 16.0,
+                                                  color: Colors.white
+                                                      .withOpacity(0.6)),
+                                            ),
+                                            Text(
+                                              " ${pro.songInfoModel!.records.label}",
+                                              style: fontWeight400(
+                                                  size: 16.0,
+                                                  color: Colors.white
+                                                      .withOpacity(0.6)),
+                                            ),
+                                          ],
+                                        ),
+                                        const VerticalBox(height: 24),
                                         Text(
-                                          "Duration:",
-                                          style: fontWeight400(
-                                              size: 16.0,
-                                              color: Colors.white
-                                                  .withOpacity(0.6)),
+                                          "Artists",
+                                          style: fontWeight600(),
                                         ),
-                                        Text(
-                                          " ${detailedDuration(" ${pro.songInfoModel!.records.duration}")}",
-                                          style: fontWeight400(
-                                              size: 16.0,
-                                              color: Colors.white
-                                                  .withOpacity(0.6)),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "Release:",
-                                          style: fontWeight400(
-                                              size: 16.0,
-                                              color: Colors.white
-                                                  .withOpacity(0.6)),
-                                        ),
-                                        Text(
-                                          " ${pro.songInfoModel!.records.albumDetails.releasedYear}",
-                                          style: fontWeight400(
-                                              size: 16.0,
-                                              color: Colors.white
-                                                  .withOpacity(0.6)),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "Label:",
-                                          style: fontWeight400(
-                                              size: 16.0,
-                                              color: Colors.white
-                                                  .withOpacity(0.6)),
-                                        ),
-                                        Text(
-                                          " ${pro.songInfoModel!.records.label}",
-                                          style: fontWeight400(
-                                              size: 16.0,
-                                              color: Colors.white
-                                                  .withOpacity(0.6)),
-                                        ),
-                                      ],
-                                    ),
-                                    const VerticalBox(height: 24),
-                                    Text(
-                                      "Artists",
-                                      style: fontWeight600(),
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.only(top: 4),
-                                      height: 300,
-                                      child: ListView.builder(
-                                          scrollDirection: Axis.horizontal,
-                                          shrinkWrap: true,
-                                          physics:
-                                              const BouncingScrollPhysics(),
-                                          itemCount: pro.songInfoModel!.records
-                                              .artistDetails.length,
-                                          itemBuilder: (context, index) => Row(
-                                                children: [
-                                                  index == 0
-                                                      ? const SizedBox(
-                                                          width: 12,
-                                                        )
-                                                      : const SizedBox(),
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 12),
-                                                    child: InkWell(
-                                                      onTap: () {
-                                                        // Navigation.navigateToScreen(
-                                                        //     context, RouteName.artistViewAllSongListScreen,
-                                                        //     args: ArtistViewAllModel(
-                                                        //         id: artist.records[index].id.toString(),
-                                                        //         artistId: artist.records[index].artistId
-                                                        //             .toString(),
-                                                        //         artistName: artist.records[index].artistName
-                                                        //             .toString(),
-                                                        //         isImage: artist.records[index].isImage));
-                                                      },
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
+                                        Container(
+                                          padding:
+                                              const EdgeInsets.only(top: 4),
+                                          height: 300,
+                                          child: ListView.builder(
+                                              scrollDirection: Axis.horizontal,
+                                              shrinkWrap: true,
+                                              physics:
+                                                  const BouncingScrollPhysics(),
+                                              itemCount: pro.songInfoModel!
+                                                  .records.artistDetails.length,
+                                              itemBuilder:
+                                                  (context, index) => Row(
                                                         children: [
-                                                          pro
-                                                                      .songInfoModel!
-                                                                      .records
-                                                                      .artistDetails[
-                                                                          index]
-                                                                      .isImage ==
-                                                                  false
-                                                              ? NoArtist()
-                                                              : CustomColorContainer(
-                                                                  child: Image
-                                                                      .network(
-                                                                    generateArtistImageUrl(pro
+                                                          index == 0
+                                                              ? const SizedBox(
+                                                                  width: 12,
+                                                                )
+                                                              : const SizedBox(),
+                                                          Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    right: 12),
+                                                            child: InkWell(
+                                                              onTap: () {
+                                                                // Navigation.navigateToScreen(
+                                                                //     context, RouteName.artistViewAllSongListScreen,
+                                                                //     args: ArtistViewAllModel(
+                                                                //         id: artist.records[index].id.toString(),
+                                                                //         artistId: artist.records[index].artistId
+                                                                //             .toString(),
+                                                                //         artistName: artist.records[index].artistName
+                                                                //             .toString(),
+                                                                //         isImage: artist.records[index].isImage));
+                                                              },
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  pro.songInfoModel!.records.artistDetails[index]
+                                                                              .isImage ==
+                                                                          false
+                                                                      ? NoArtist()
+                                                                      : CustomColorContainer(
+                                                                          child:
+                                                                              Image.network(
+                                                                            generateArtistImageUrl(pro.songInfoModel!.records.artistDetails[index].artistId),
+                                                                            height:
+                                                                                240,
+                                                                            width:
+                                                                                200,
+                                                                            fit:
+                                                                                BoxFit.cover,
+                                                                          ),
+                                                                        ),
+                                                                  const SizedBox(
+                                                                    height: 6,
+                                                                  ),
+                                                                  Text(
+                                                                    pro
                                                                         .songInfoModel!
                                                                         .records
                                                                         .artistDetails[
                                                                             index]
-                                                                        .artistId),
-                                                                    height: 240,
-                                                                    width: 200,
-                                                                    fit: BoxFit
-                                                                        .cover,
+                                                                        .artistName,
+                                                                    style: fontWeight400(
+                                                                        size:
+                                                                            16.0),
                                                                   ),
-                                                                ),
-                                                          const SizedBox(
-                                                            height: 6,
-                                                          ),
-                                                          Text(
-                                                            pro
-                                                                .songInfoModel!
-                                                                .records
-                                                                .artistDetails[
-                                                                    index]
-                                                                .artistName,
-                                                            style:
-                                                                fontWeight400(
-                                                                    size: 16.0),
+                                                                ],
+                                                              ),
+                                                            ),
                                                           ),
                                                         ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              )),
-                                    )
-                                  ],
-                                ),
+                                                      )),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        );
-            })));
+                            );
+                })));
     // body: SingleChildScrollView(
     //   child: Column(
     //       crossAxisAlignment: CrossAxisAlignment.start,

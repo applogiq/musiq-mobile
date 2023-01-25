@@ -21,12 +21,13 @@ dependencies:
     sdk: flutter
   # flutter_otp_text_field: ^1.0.1
   flutter_secure_storage: ^5.0.2
+  internet_connection_checker: ^0.0.1+4
   image_picker: ^0.8.5+3
   google_fonts: ^3.0.1
   http: ^0.13.4
   just_audio: ^0.9.24
   just_audio_background: any
-  connectivity_plus: ^2.3.5
+  # connectivity_plus: ^2.3.5
   fluttertoast: ^8.0.9
   cached_network_image: ^3.2.3
   objectbox: ^1.7.1

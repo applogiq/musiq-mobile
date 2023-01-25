@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:musiq/src/features/common/screen/offline_screen.dart';
 import 'package:musiq/src/features/home/provider/view_all_provider.dart';
 import 'package:musiq/src/features/home/view_all_status.dart';
 import 'package:musiq/src/features/view_all/widgets/sliver_song/sliver_app_bar.dart';
@@ -42,49 +44,53 @@ class _ViewAllSongListScreenState extends State<ViewAllSongListScreen> {
         ? 80
         : (MediaQuery.of(context).size.width / 320) * 50;
     infoBoxHeight = 180;
-    return SafeArea(
-      child: Scaffold(
-        body: Consumer<ViewAllProvider>(builder: (context, pro, _) {
-          return pro.isLoad
-              ? const LoaderScreen()
-              : DecoratedBox(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.black,
-                          Colors.black,
-                        ],
-                        stops: [
-                          0,
-                          0.7
-                        ]),
-                  ),
-                  child: Stack(
-                    children: [
-                      CustomScrollView(
-                        controller: scrollController,
-                        slivers: [
-                          SliverCustomAppBarSong(
-                            title: widget.status == ViewAllStatus.recentlyPlayed
-                                ? "Recently Played"
-                                : "fdf",
-                            maxAppBarHeight: maxAppBarHeight,
-                            minAppBarHeight: minAppBarHeight,
-                            artistViewAllModel: pro.trendingHitsModel,
-                            songCount: int.parse(pro
-                                .trendingHitsModel.records.length
-                                .toString()),
-                          ),
-                          const AlbumSongsList(),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-        }),
-      ),
-    );
+    return Provider.of<InternetConnectionStatus>(context) ==
+            InternetConnectionStatus.disconnected
+        ? const OfflineScreen()
+        : SafeArea(
+            child: Scaffold(
+              body: Consumer<ViewAllProvider>(builder: (context, pro, _) {
+                return pro.isLoad
+                    ? const LoaderScreen()
+                    : DecoratedBox(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.black,
+                                Colors.black,
+                              ],
+                              stops: [
+                                0,
+                                0.7
+                              ]),
+                        ),
+                        child: Stack(
+                          children: [
+                            CustomScrollView(
+                              controller: scrollController,
+                              slivers: [
+                                SliverCustomAppBarSong(
+                                  title: widget.status ==
+                                          ViewAllStatus.recentlyPlayed
+                                      ? "Recently Played"
+                                      : "fdf",
+                                  maxAppBarHeight: maxAppBarHeight,
+                                  minAppBarHeight: minAppBarHeight,
+                                  artistViewAllModel: pro.trendingHitsModel,
+                                  songCount: int.parse(pro
+                                      .trendingHitsModel.records.length
+                                      .toString()),
+                                ),
+                                const AlbumSongsList(),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+              }),
+            ),
+          );
   }
 }

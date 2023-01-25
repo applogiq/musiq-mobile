@@ -10,7 +10,8 @@ class HomeRepository {
   Future<dynamic> getRecentPlayedList(int limit) async {
     try {
       var userId = await storage.read(key: "register_id");
-      var endpoint = APIConstants().getRecentlyPlayedUrl(userId!, limit);
+      var endpoint =
+          APIConstants().getRecentlyPlayedUrl(userId.toString(), limit);
       dynamic response = await apiServices.getGetAuthApiResponse(endpoint);
       return response;
     } catch (e) {

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:musiq/src/features/common/screen/offline_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common_widgets/buttons/custom_elevated_button.dart';
 import '../../../common_widgets/buttons/text_with_button.dart';
@@ -17,66 +20,69 @@ class OnboardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Stack(
-            children: [
-              const Background(),
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: Column(
+      body: Provider.of<InternetConnectionStatus>(context) ==
+              InternetConnectionStatus.disconnected
+          ? const OfflineScreen()
+          : SingleChildScrollView(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: Stack(
                   children: [
-                    const Expanded(
-                      flex: 2,
-                      child: SizedBox.expand(),
-                    ),
-                    Expanded(
-                      flex: 3,
+                    const Background(),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Hero(
-                            tag: Images.heroImage,
-                            child: const LogoWithImage(),
+                          const Expanded(
+                            flex: 2,
+                            child: SizedBox.expand(),
                           ),
-                          CenterTextWidget(
-                            label: ConstantText.slogan,
-                            topPadding: 24.0,
-                            textSize: 18,
-                            textColor: Colors.white,
-                          ),
-                          CenterTextWidget(
-                            label: ConstantText.subSlogan,
-                            topPadding: 12.0,
-                            textColor: CustomColor.subTitle2,
-                            textSize: 14,
-                          ),
-                          const Spacer(),
-                          CustomElevatedButton(
-                            onTap: () {
-                              Navigation.navigateToScreen(
-                                  context, RouteName.register);
-                            },
-                            label: ConstantText.register,
-                            radius: 8,
-                          ),
-                          TextWithButton(
-                            unClickableText: ConstantText.loginPrefix,
-                            clickableText: ConstantText.login,
-                            navigationString: RouteName.login,
+                          Expanded(
+                            flex: 3,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Hero(
+                                  tag: Images.heroImage,
+                                  child: const LogoWithImage(),
+                                ),
+                                CenterTextWidget(
+                                  label: ConstantText.slogan,
+                                  topPadding: 24.0,
+                                  textSize: 18,
+                                  textColor: Colors.white,
+                                ),
+                                CenterTextWidget(
+                                  label: ConstantText.subSlogan,
+                                  topPadding: 12.0,
+                                  textColor: CustomColor.subTitle2,
+                                  textSize: 14,
+                                ),
+                                const Spacer(),
+                                CustomElevatedButton(
+                                  onTap: () {
+                                    Navigation.navigateToScreen(
+                                        context, RouteName.register);
+                                  },
+                                  label: ConstantText.register,
+                                  radius: 8,
+                                ),
+                                TextWithButton(
+                                  unClickableText: ConstantText.loginPrefix,
+                                  clickableText: ConstantText.login,
+                                  navigationString: RouteName.login,
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
-                    ),
+                    )
                   ],
                 ),
-              )
-            ],
-          ),
-        ),
-      ),
+              ),
+            ),
     );
   }
 }
