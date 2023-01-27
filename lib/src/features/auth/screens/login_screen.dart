@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/utils/size_config.dart';
 import 'package:provider/provider.dart';
 
@@ -48,7 +49,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final networkProvider = Provider.of<InternetConnectivityProvider>(context);
-    return !networkProvider.isNetworkAvailable
+    return Provider.of<InternetConnectionStatus>(context) ==
+            InternetConnectionStatus.disconnected
         ? const OfflineScreen()
         : Scaffold(
             body: SingleChildScrollView(

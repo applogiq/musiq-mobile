@@ -35,131 +35,120 @@ class _ProfileScreenState extends State<ProfileScreen> {
             toolbarHeight: 70,
             title: const Text("Profile"),
           ),
-          body: SingleChildScrollView(
-            child: SizedBox(
-              width: SizeConfig.screenWidth,
-              height: SizeConfig.screenHeight - 150,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.only(top: getProportionateScreenHeight(24)),
-                    child: Container(
-                      height: 120,
-                      width: 120,
-                      decoration: const BoxDecoration(shape: BoxShape.circle),
-                      child:
-                          Consumer<ProfileProvider>(builder: (context, pro, _) {
-                        return pro.myProfileLoading
-                            ? Center(
-                                child: Image.asset(
-                                'assets/gifs/image_loader2.gif',
-                                height: 90,
-                              ))
-                            : pro.profileAPIModel.records == null
-                                ? Image.asset(Images.user_default)
-                                : (pro.profileAPIModel.records!.isImage == true
-                                    ? CircleAvatar(
-                                        backgroundColor: Colors.black,
-                                        radius: 65,
-                                        backgroundImage: const AssetImage(
-                                            'assets/gifs/image_loader2.gif'),
-                                        child: CircleAvatar(
-                                          radius: 65,
-                                          backgroundColor: Colors.transparent,
-                                          backgroundImage: NetworkImage(
-                                            generateProfileImageUrl(pro
-                                                .profileAPIModel
-                                                .records!
-                                                .registerId),
-                                          ),
-                                        ),
-                                      )
-                                    : Image.asset(Images.user_default));
-                      }),
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsets.only(top: getProportionateScreenHeight(48)),
-                    child: Column(
-                      children: List.generate(
-                          ProfileProvider().profileContent.length,
-                          (index) => ProfileListTile(
-                                index: index,
-                              )),
-                    ),
-                  ),
-                  Consumer<ProfileProvider>(builder: (context, provider, _) {
-                    return Column(
-                      children: [
-                        ListTile(
-                            onTap: () {
-                              provider.aboutToggle();
-                            },
-                            title: const Text(
-                              "About",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color:
-                                      //  profileController.profileContent[index].isHighLight
-                                      //     ? CustomColor.secondaryColor
-                                      //     :
-                                      Colors.white),
-                            ),
-                            trailing: provider.isAboutOpen
-                                ? const RotatedBox(
-                                    quarterTurns: 1,
-                                    child: Icon(
-                                      Icons.arrow_forward_ios_rounded,
-                                      size: 20,
+          body: ListView(
+            shrinkWrap: true,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: getProportionateScreenHeight(24)),
+                child: Container(
+                  height: 120,
+                  width: 120,
+                  decoration: const BoxDecoration(shape: BoxShape.circle),
+                  child: Consumer<ProfileProvider>(builder: (context, pro, _) {
+                    return pro.myProfileLoading
+                        ? Center(
+                            child: Image.asset(
+                            'assets/gifs/image_loader2.gif',
+                            height: 90,
+                          ))
+                        : pro.profileAPIModel.records == null
+                            ? Image.asset(Images.user_default)
+                            : (pro.profileAPIModel.records!.isImage == true
+                                ? CircleAvatar(
+                                    backgroundColor: Colors.black,
+                                    radius: 65,
+                                    backgroundImage: const AssetImage(
+                                        'assets/gifs/image_loader2.gif'),
+                                    child: CircleAvatar(
+                                      radius: 65,
+                                      backgroundColor: Colors.transparent,
+                                      backgroundImage: NetworkImage(
+                                        generateProfileImageUrl(pro
+                                            .profileAPIModel
+                                            .records!
+                                            .registerId),
+                                      ),
                                     ),
                                   )
-                                : const Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    size: 20,
-                                  )),
-                        provider.isAboutOpen
-                            ? Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 18),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const AboutUsTextWidget(
-                                      title: "Terms of use",
+                                : Image.asset(Images.user_default));
+                  }),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: getProportionateScreenHeight(48)),
+                child: Column(
+                  children: List.generate(
+                      ProfileProvider().profileContent.length,
+                      (index) => ProfileListTile(
+                            index: index,
+                          )),
+                ),
+              ),
+              Consumer<ProfileProvider>(builder: (context, provider, _) {
+                return Column(
+                  children: [
+                    ListTile(
+                        onTap: () {
+                          provider.aboutToggle();
+                        },
+                        title: const Text(
+                          "About",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color:
+                                  //  profileController.profileContent[index].isHighLight
+                                  //     ? CustomColor.secondaryColor
+                                  //     :
+                                  Colors.white),
+                        ),
+                        trailing: provider.isAboutOpen
+                            ? const RotatedBox(
+                                quarterTurns: 1,
+                                child: Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 20,
+                                ),
+                              )
+                            : const Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                size: 20,
+                              )),
+                    provider.isAboutOpen
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 18),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const AboutUsTextWidget(
+                                  title: "Terms of use",
+                                ),
+                                const AboutUsTextWidget(
+                                  title: "Privacy policy",
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: const [
+                                    AboutUsTextWidget(
+                                      title: "Version :",
                                     ),
-                                    const AboutUsTextWidget(
-                                      title: "Privacy policy",
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: const [
-                                        AboutUsTextWidget(
-                                          title: "Version :",
-                                        ),
-                                        AboutUsTextWidget(
-                                          title: "2.30.23",
-                                        ),
-                                      ],
+                                    AboutUsTextWidget(
+                                      title: "2.30.23",
                                     ),
                                   ],
                                 ),
-                              )
-                            : const SizedBox(),
-                      ],
-                    );
-                  }),
-                  Padding(
-                    padding:
-                        EdgeInsets.only(top: getProportionateScreenHeight(70)),
-                    child: const SignOutWidget(),
-                  )
-                ],
-              ),
-            ),
+                              ],
+                            ),
+                          )
+                        : const SizedBox(),
+                  ],
+                );
+              }),
+              Padding(
+                padding: EdgeInsets.only(top: getProportionateScreenHeight(70)),
+                child: const SignOutWidget(),
+              )
+            ],
           )),
     );
   }
@@ -228,6 +217,3 @@ class AboutUsTextWidget extends StatelessWidget {
     );
   }
 }
-
-
-// 33, 33, 44, 1

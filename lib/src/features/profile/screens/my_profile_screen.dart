@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
 import 'package:musiq/src/constants/string.dart';
 import 'package:musiq/src/features/profile/provider/profile_provider.dart';
@@ -9,6 +10,7 @@ import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../common_widgets/text_field/custom_text_field.dart';
 import '../../../constants/images.dart';
 import '../../../utils/size_config.dart';
+import '../../common/screen/offline_screen.dart';
 import '../widgets/image_picker_sheet.dart';
 
 class MyProfile extends StatefulWidget {
@@ -43,74 +45,80 @@ class _MyProfileState extends State<MyProfile> {
               },
               child: const Icon(Icons.arrow_back_ios)),
         ),
-        body: Consumer<ProfileProvider>(builder: (context, pro, _) {
-          return pro.myProfileLoading
-              ? const LoaderScreen()
-              : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: SingleChildScrollView(
-                    child: SizedBox(
-                      height: size.height - 100,
-                      width: size.width,
-                      child: Column(
-                        children: [
-                          ProfileImageEdit(size: size),
-                          Consumer<ProfileProvider>(
-                              builder: (context, provider, _) {
-                            return TextFieldWithError(
-                                initialValue:
-                                    provider.profileAPIModel.records != null
-                                        ? provider
-                                            .profileAPIModel.records!.fullname!
-                                        : "",
-                                onTap: () {},
-                                label: ConstantText.name,
-                                errorMessage: provider.nameErrorMessage,
-                                isValidatorEnable: true,
-                                onChange: (text) {
-                                  provider.profileNameChanged(text);
-                                });
-                          }),
-                          Consumer<ProfileProvider>(
-                              builder: (context, provider, _) {
-                            return TextFieldWithError(
-                                initialValue:
-                                    provider.profileAPIModel.records != null
-                                        ? provider
-                                            .profileAPIModel.records!.username!
-                                        : "",
-                                onTap: () {},
-                                label: ConstantText.userName,
-                                errorMessage: provider.userNameErrorMessage,
-                                isValidatorEnable: true,
-                                onChange: (text) {
-                                  provider.profileUserNameChanged(text);
-                                });
-                          }),
-                          const Spacer(),
-                          Consumer<ProfileProvider>(
-                              builder: (context, provider, _) {
-                            return GestureDetector(
-                              onTap: provider.isProfileSave
-                                  ? () {
-                                      FocusScope.of(context).unfocus();
-                                      provider.profileUpdate(context);
-                                    }
-                                  : () {},
-                              child: CustomButton(
-                                isValid: provider.isProfileSave,
-                                isLoading: provider.isProfileSaveLoading,
-                                label: ConstantText.save,
-                                horizontalMargin: 0,
-                              ),
-                            );
-                          }),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-        }));
+        body: Provider.of<InternetConnectionStatus>(context) ==
+                InternetConnectionStatus.disconnected
+            ? const OfflineScreen()
+            : Consumer<ProfileProvider>(builder: (context, pro, _) {
+                return pro.myProfileLoading
+                    ? const LoaderScreen()
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: SingleChildScrollView(
+                          child: SizedBox(
+                            height: size.height - 100,
+                            width: size.width,
+                            child: Column(
+                              children: [
+                                ProfileImageEdit(size: size),
+                                Consumer<ProfileProvider>(
+                                    builder: (context, provider, _) {
+                                  return TextFieldWithError(
+                                      initialValue:
+                                          provider.profileAPIModel.records !=
+                                                  null
+                                              ? provider.profileAPIModel
+                                                  .records!.fullname!
+                                              : "",
+                                      onTap: () {},
+                                      label: ConstantText.name,
+                                      errorMessage: provider.nameErrorMessage,
+                                      isValidatorEnable: true,
+                                      onChange: (text) {
+                                        provider.profileNameChanged(text);
+                                      });
+                                }),
+                                Consumer<ProfileProvider>(
+                                    builder: (context, provider, _) {
+                                  return TextFieldWithError(
+                                      initialValue:
+                                          provider.profileAPIModel.records !=
+                                                  null
+                                              ? provider.profileAPIModel
+                                                  .records!.username!
+                                              : "",
+                                      onTap: () {},
+                                      label: ConstantText.userName,
+                                      errorMessage:
+                                          provider.userNameErrorMessage,
+                                      isValidatorEnable: true,
+                                      onChange: (text) {
+                                        provider.profileUserNameChanged(text);
+                                      });
+                                }),
+                                const Spacer(),
+                                Consumer<ProfileProvider>(
+                                    builder: (context, provider, _) {
+                                  return GestureDetector(
+                                    onTap: provider.isProfileSave
+                                        ? () {
+                                            FocusScope.of(context).unfocus();
+                                            provider.profileUpdate(context);
+                                          }
+                                        : () {},
+                                    child: CustomButton(
+                                      isValid: provider.isProfileSave,
+                                      isLoading: provider.isProfileSaveLoading,
+                                      label: ConstantText.save,
+                                      horizontalMargin: 0,
+                                    ),
+                                  );
+                                }),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+              }));
   }
 }
 

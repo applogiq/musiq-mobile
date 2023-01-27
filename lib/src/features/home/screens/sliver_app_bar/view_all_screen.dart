@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
 import 'package:musiq/src/features/home/screens/sliver_app_bar/widgets/sliver_app_bar.dart';
 import 'package:musiq/src/features/home/view_all_status.dart';
 import 'package:musiq/src/utils/image_url_generate.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common/screen/offline_screen.dart';
 import '../../provider/view_all_provider.dart';
 import 'widgets/album_song_list.dart';
 
@@ -110,57 +112,60 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
         MediaQuery.of(context).size.height * 0.06;
 
     return SafeArea(
-      child: Scaffold(
-        body: Consumer<ViewAllProvider>(builder: (context, pro, _) {
-          return pro.isLoad
-              ? const LoaderScreen()
-              : DecoratedBox(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.black,
-                          Colors.black,
-                        ],
-                        stops: [
-                          0,
-                          0.7
-                        ]),
-                  ),
-                  child: Stack(
-                    children: [
-                      CustomScrollView(
-                        controller: scrollController,
-                        slivers: [
-                          SliverCustomAppBar(
-                              maxAppBarHeight: maxAppBarHeight,
-                              minAppBarHeight: minAppBarHeight,
-                              title: getTitle(widget.status),
-                              songCounts: getSongCount(widget.status),
-                              callback: () {
-                                context
-                                    .read<ViewAllProvider>()
-                                    .navigateToPlayerScreen(
-                                        context, widget.status);
-                              },
-                              imageUrl: getImageUrl(widget.status, pro)),
-                          // AlbumInfo(infoBoxHeight: infoBoxHeight),
-                          AlbumSongsList(
-                            status: widget.status,
-                            newReleaseModel: pro.newReleaseModel,
-                            recentlyPlayed: pro.recentlyPlayed,
-                            trendingHitsModel: pro.trendingHitsModel,
-                            albumSongListModel: pro.albumSongListModel,
-                            auraSongListModel: pro.auraSongListModel,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-        }),
-      ),
+      child: Provider.of<InternetConnectionStatus>(context) ==
+              InternetConnectionStatus.disconnected
+          ? const OfflineScreen()
+          : Scaffold(
+              body: Consumer<ViewAllProvider>(builder: (context, pro, _) {
+                return pro.isLoad
+                    ? const LoaderScreen()
+                    : DecoratedBox(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.black,
+                                Colors.black,
+                              ],
+                              stops: [
+                                0,
+                                0.7
+                              ]),
+                        ),
+                        child: Stack(
+                          children: [
+                            CustomScrollView(
+                              controller: scrollController,
+                              slivers: [
+                                SliverCustomAppBar(
+                                    maxAppBarHeight: maxAppBarHeight,
+                                    minAppBarHeight: minAppBarHeight,
+                                    title: getTitle(widget.status),
+                                    songCounts: getSongCount(widget.status),
+                                    callback: () {
+                                      context
+                                          .read<ViewAllProvider>()
+                                          .navigateToPlayerScreen(
+                                              context, widget.status);
+                                    },
+                                    imageUrl: getImageUrl(widget.status, pro)),
+                                // AlbumInfo(infoBoxHeight: infoBoxHeight),
+                                AlbumSongsList(
+                                  status: widget.status,
+                                  newReleaseModel: pro.newReleaseModel,
+                                  recentlyPlayed: pro.recentlyPlayed,
+                                  trendingHitsModel: pro.trendingHitsModel,
+                                  albumSongListModel: pro.albumSongListModel,
+                                  auraSongListModel: pro.auraSongListModel,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+              }),
+            ),
     );
   }
 }

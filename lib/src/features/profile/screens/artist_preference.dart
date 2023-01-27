@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
 import 'package:provider/provider.dart';
 
 import '../../artist/provider/artist_provider.dart';
 import '../../artist/screens/artist_preference_screen/artist_preference_body.dart';
+import '../../common/screen/offline_screen.dart';
 
 class ProfileArtistPreferenceScreen extends StatefulWidget {
   const ProfileArtistPreferenceScreen({super.key});
@@ -27,21 +29,25 @@ class _ProfileArtistPreferenceScreenState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-        title: const Text("Artist Preference"),
-      ),
-      body: Consumer<ArtistPreferenceProvider>(builder: (context, pro, _) {
-        return !pro.isLoaded
-            ? const LoaderScreen()
-            : ArtistPreferenceScreenBody(
-                artist_list: const [],
-              );
-      }),
-      // body: ArtistPreferenceScreenBody(
-      //   artist_list: const [],
-      // ),
-    );
+    return Provider.of<InternetConnectionStatus>(context) ==
+            InternetConnectionStatus.disconnected
+        ? const OfflineScreen()
+        : Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading: true,
+              title: const Text("Artist Preference"),
+            ),
+            body:
+                Consumer<ArtistPreferenceProvider>(builder: (context, pro, _) {
+              return !pro.isLoaded
+                  ? const LoaderScreen()
+                  : ArtistPreferenceScreenBody(
+                      artist_list: const [],
+                    );
+            }),
+            // body: ArtistPreferenceScreenBody(
+            //   artist_list: const [],
+            // ),
+          );
   }
 }

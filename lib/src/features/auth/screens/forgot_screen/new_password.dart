@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/common_widgets/box/vertical_box.dart';
 import 'package:provider/provider.dart';
 
@@ -6,6 +7,7 @@ import '../../../../common_widgets/buttons/custom_button.dart';
 import '../../../../common_widgets/text_field/custom_password_text_field.dart';
 import '../../../../constants/string.dart';
 import '../../../../constants/style.dart';
+import '../../../common/screen/offline_screen.dart';
 import '../../provider/new_password_provider.dart';
 
 class NewPasswordScreen extends StatefulWidget {
@@ -63,60 +65,69 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                 ),
               )),
         ),
-        body: SingleChildScrollView(
-            child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                ConstantText.resetPassswordTitle,
-                style: fontWeight400(size: 14.0),
-              ),
-              const VerticalBox(height: 24),
-              PasswordTextFieldWithError(
-                  isPassword: true,
-                  errorMessage: passwordProvider.newPasswordErrorMessage,
-                  label: ConstantText.resetPassswordNew,
-                  onTap: () {
-                    passwordProvider.passwordTapped();
-                  },
-                  isValidatorEnable: true,
-                  onChange: (value) {
-                    passwordProvider.passwordChanged(value);
-                  }),
-              const VerticalBox(height: 16),
-              PasswordTextFieldWithError(
-                  isPassword: true,
-                  errorMessage: passwordProvider.confirmPasswordErrorMessage,
-                  label: ConstantText.confirmPassword,
-                  onTap: () {
-                    passwordProvider.confirmPasswordTapped();
-                  },
-                  isValidatorEnable: true,
-                  onChange: (value) {
-                    passwordProvider.confirmPasswordChanged(value);
-                  }),
-              Consumer<ForgotPasswordProvider>(
-                builder: (context, value, child) {
-                  return GestureDetector(
-                    onTap: () {
-                      value.resetPassword(context);
-                      // value.navigateToNext(context);
-                      // value.emailVerfied(context);
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+                child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    ConstantText.resetPassswordTitle,
+                    style: fontWeight400(size: 14.0),
+                  ),
+                  const VerticalBox(height: 24),
+                  PasswordTextFieldWithError(
+                      isPassword: true,
+                      errorMessage: passwordProvider.newPasswordErrorMessage,
+                      label: ConstantText.resetPassswordNew,
+                      onTap: () {
+                        passwordProvider.passwordTapped();
+                      },
+                      isValidatorEnable: true,
+                      onChange: (value) {
+                        passwordProvider.passwordChanged(value);
+                      }),
+                  const VerticalBox(height: 16),
+                  PasswordTextFieldWithError(
+                      isPassword: true,
+                      errorMessage:
+                          passwordProvider.confirmPasswordErrorMessage,
+                      label: ConstantText.confirmPassword,
+                      onTap: () {
+                        passwordProvider.confirmPasswordTapped();
+                      },
+                      isValidatorEnable: true,
+                      onChange: (value) {
+                        passwordProvider.confirmPasswordChanged(value);
+                      }),
+                  Consumer<ForgotPasswordProvider>(
+                    builder: (context, value, child) {
+                      return GestureDetector(
+                        onTap: () {
+                          value.resetPassword(context);
+                          // value.navigateToNext(context);
+                          // value.emailVerfied(context);
+                        },
+                        child: CustomButton(
+                          label: ConstantText.resetPasssword,
+                          horizontalMargin: 0,
+                          isValid: value.isResetButtonEnable,
+                          isLoading: value.isResetLoading,
+                        ),
+                      );
                     },
-                    child: CustomButton(
-                      label: ConstantText.resetPasssword,
-                      horizontalMargin: 0,
-                      isValid: value.isResetButtonEnable,
-                      isLoading: value.isResetLoading,
-                    ),
-                  );
-                },
-              )
-            ],
-          ),
-        )),
+                  )
+                ],
+              ),
+            )),
+            Provider.of<InternetConnectionStatus>(context) ==
+                    InternetConnectionStatus.disconnected
+                ? const OfflineScreen()
+                : const SizedBox.shrink()
+          ],
+        ),
         // body: SingleChildScrollView(
         //   child: Padding(
         //     padding: const EdgeInsets.all(8.0),

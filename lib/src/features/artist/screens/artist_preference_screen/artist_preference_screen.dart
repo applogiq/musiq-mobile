@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/buttons/custom_button.dart';
 import '../../../../common_widgets/container/empty_box.dart';
 import '../../../../common_widgets/loader.dart';
+import '../../../common/screen/offline_screen.dart';
 import '../../provider/artist_provider.dart';
 import 'artist_preference_body.dart';
 
@@ -27,33 +29,37 @@ class _ArtistPreferenceScreenState extends State<ArtistPreferenceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child:
-          Consumer<ArtistPreferenceProvider>(builder: (context, provider, _) {
-        return !provider.isLoaded
-            ? const LoaderScreen()
-            : Scaffold(
-                appBar: PreferredSize(
-                  preferredSize: Size(MediaQuery.of(context).size.width, 80),
-                  child: const ArtistPreferenceAppBarWidget(),
-                ),
-                body: ArtistPreferenceScreenBody(
-                  artist_list: const [],
-                ),
-                bottomNavigationBar: Consumer<ArtistPreferenceProvider>(
-                    builder: (context, pro, _) {
-                  return SizedBox(
-                    child: pro.userFollowedArtist.length < 3
-                        ? const EmptyBox()
-                        : InkWell(
-                            onTap: () {
-                              pro.navigateToHome(context);
-                            },
-                            child: CustomButton(label: "Save")),
-                  );
-                }));
-      }),
-    );
+    return Provider.of<InternetConnectionStatus>(context) ==
+            InternetConnectionStatus.disconnected
+        ? const OfflineScreen()
+        : SafeArea(
+            child: Consumer<ArtistPreferenceProvider>(
+                builder: (context, provider, _) {
+              return !provider.isLoaded
+                  ? const LoaderScreen()
+                  : Scaffold(
+                      appBar: PreferredSize(
+                        preferredSize:
+                            Size(MediaQuery.of(context).size.width, 80),
+                        child: const ArtistPreferenceAppBarWidget(),
+                      ),
+                      body: ArtistPreferenceScreenBody(
+                        artist_list: const [],
+                      ),
+                      bottomNavigationBar: Consumer<ArtistPreferenceProvider>(
+                          builder: (context, pro, _) {
+                        return SizedBox(
+                          child: pro.userFollowedArtist.length < 3
+                              ? const EmptyBox()
+                              : InkWell(
+                                  onTap: () {
+                                    pro.navigateToHome(context);
+                                  },
+                                  child: CustomButton(label: "Save")),
+                        );
+                      }));
+            }),
+          );
   }
 }
 

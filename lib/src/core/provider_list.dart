@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/features/home/provider/artist_view_all_provider.dart';
 import 'package:musiq/src/features/home/provider/search_provider.dart';
 import 'package:musiq/src/features/home/provider/view_all_provider.dart';
@@ -18,6 +19,16 @@ import '../features/home/provider/home_provider.dart';
 import '../features/profile/provider/profile_provider.dart';
 
 List<SingleChildWidget> providersList = [
+  StreamProvider(
+    initialData: InternetConnectionStatus.connected,
+    create: (_) {
+      var iC = InternetConnectionChecker.createInstance(
+        checkTimeout: const Duration(seconds: 1), // Custom check timeout
+        checkInterval: const Duration(seconds: 1),
+      );
+      return iC.onStatusChange;
+    },
+  ),
   ChangeNotifierProvider(
     create: (BuildContext context) => SplashProvider(),
   ),

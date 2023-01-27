@@ -5,16 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musiq/src/features/library/domain/models/favourite_model.dart';
+import 'package:musiq/src/features/library/provider/library_provider.dart';
 import 'package:musiq/src/features/player/domain/model/player_song_list_model.dart';
 import 'package:musiq/src/features/player/domain/model/song_info_model.dart';
 import 'package:musiq/src/features/player/domain/repo/player_repo.dart';
 import 'package:musiq/src/features/view_all/domain/model/player_model.dart';
 import 'package:musiq/src/local/model/favourite_model.dart';
+import 'package:musiq/src/local/model/queue_model.dart';
 import 'package:musiq/src/routing/route_name.dart';
 import 'package:musiq/src/utils/image_url_generate.dart';
 import 'package:musiq/src/utils/navigation.dart';
 import 'package:musiq/src/utils/toast_message.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../objectbox.g.dart';
 import '../../../core/package/miniplayer/miniplayer.dart';
@@ -209,18 +212,18 @@ class PlayerProvider extends ChangeNotifier {
     }
   }
 
-  queueSong() {
+  queueSong(PlayerSongListModel playerSongListModel) {
     print(playlist.length);
 
     playlist.add(AudioSource.uri(
         Uri.parse(
-            "https://api-musiq.applogiq.org/api/v1/audio?song_id=${"1".toString()}"),
+            "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongListModel.id.toString()}"),
         tag: PlayerSongListModel(
-            id: 1,
-            albumName: "Ma",
-            title: "DFSd",
-            musicDirectorName: "SDSD",
-            imageUrl: generateAuraImageUrl(1))));
+            id: playerSongListModel.id,
+            albumName: playerSongListModel.albumName,
+            title: playerSongListModel.title,
+            musicDirectorName: playerSongListModel.musicDirectorName,
+            imageUrl: playerSongListModel.imageUrl)));
 
     print(playlist.length);
   }
@@ -271,9 +274,8 @@ class PlayerProvider extends ChangeNotifier {
     }
   }
 
-  void deleteFavourite(
-    int songId,
-  ) async {
+  void deleteFavourite(int songId,
+      {bool isFromFav = false, BuildContext? ctx}) async {
     print(songId.toString());
     Map params = {"song_id": songId};
     print(params);
@@ -282,6 +284,9 @@ class PlayerProvider extends ChangeNotifier {
     print(res.body);
     if (res.statusCode == 200) {
       deleteFavouriteSongFormLocal(songId);
+      if (isFromFav) {
+        ctx!.read<LibraryProvider>().getFavouritesList();
+      }
       toastMessage(
           "Song removed from favourite list", Colors.grey, Colors.white);
     } else if (res.statusCode == 404) {
@@ -302,6 +307,30 @@ class PlayerProvider extends ChangeNotifier {
 
     store.close();
     getSongList();
+  }
+
+  addQueueToLocalDb(
+      PlayerSongListModel playerSongListModel, String albumId) async {
+    await getApplicationDocumentsDirectory().then((Directory dir) {
+      store =
+          Store(getObjectBoxModel(), directory: '${dir.path}/objectbox/queue');
+      final QueueSongModel queueSongModel = QueueSongModel(
+          currentIndex: 0,
+          lastposition: 00,
+          songList: SongListModel(
+              songId: playerSongListModel.id,
+              albumName: playerSongListModel.albumName,
+              title: playerSongListModel.title,
+              musicDirectorName: playerSongListModel.musicDirectorName,
+              imageUrl:
+                  generateSongImageUrl(playerSongListModel.albumName, albumId),
+              songUrl:
+                  "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongListModel.id.toString()}"));
+      final box = store.box<QueueSongModel>();
+      int id = box.put(queueSongModel);
+
+      store.close();
+    });
   }
 
   addFavouriteSongToLocalDb(int songId) async {

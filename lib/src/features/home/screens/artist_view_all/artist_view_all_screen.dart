@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
 import 'package:musiq/src/features/artist/domain/models/artist_model.dart';
 import 'package:musiq/src/features/home/domain/model/artist_view_all_model.dart';
@@ -11,6 +12,7 @@ import 'package:provider/provider.dart';
 import '../../../../common_widgets/app_bar.dart';
 import '../../../../common_widgets/container/custom_color_container.dart';
 import '../../../../constants/color.dart';
+import '../../../common/screen/offline_screen.dart';
 import '../../widgets/search_notifications.dart';
 
 class ArtistViewAllScreen extends StatefulWidget {
@@ -34,27 +36,31 @@ class _ArtistViewAllScreenState extends State<ArtistViewAllScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size(double.maxFinite, 50),
-        child: CustomAppBarWidget(
-          title: "Artists",
-        ),
-      ),
-      body: Column(
-        children: [
-          const SearchSection(),
-          Expanded(
-            child: Consumer<ArtistViewAllProvider>(builder: (context, pro, _) {
-              return pro.isLoad
-                  ? const LoaderScreen()
-                  : ArtistGridView(artistModel: pro.artistModel);
-            }),
-          )
-        ],
-      ),
-    ));
+    return Provider.of<InternetConnectionStatus>(context) ==
+            InternetConnectionStatus.disconnected
+        ? const OfflineScreen()
+        : SafeArea(
+            child: Scaffold(
+            appBar: PreferredSize(
+              preferredSize: const Size(double.maxFinite, 50),
+              child: CustomAppBarWidget(
+                title: "Artists",
+              ),
+            ),
+            body: Column(
+              children: [
+                const SearchSection(),
+                Expanded(
+                  child: Consumer<ArtistViewAllProvider>(
+                      builder: (context, pro, _) {
+                    return pro.isLoad
+                        ? const LoaderScreen()
+                        : ArtistGridView(artistModel: pro.artistModel);
+                  }),
+                )
+              ],
+            ),
+          ));
   }
 }
 

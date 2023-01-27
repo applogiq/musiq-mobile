@@ -7,6 +7,10 @@ import 'package:provider/provider.dart';
 import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../constants/color.dart';
 import '../../../constants/style.dart';
+import '../../../routing/route_name.dart';
+import '../../../utils/navigation.dart';
+import '../../player/domain/model/player_song_list_model.dart';
+import '../../player/provider/player_provider.dart';
 
 class FavouritesScreen extends StatefulWidget {
   const FavouritesScreen({super.key});
@@ -77,25 +81,108 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: PopupMenuButton(
-                            color: CustomColor.appBarColor,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(8.0),
-                                bottomRight: Radius.circular(8.0),
-                                topLeft: Radius.circular(8.0),
-                                topRight: Radius.circular(8.0),
+                              color: CustomColor.appBarColor,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(8.0),
+                                  bottomRight: Radius.circular(8.0),
+                                  topLeft: Radius.circular(8.0),
+                                  topRight: Radius.circular(8.0),
+                                ),
                               ),
-                            ),
-                            // onSelected: (value) {
-                            //   _onMenuItemSelected(value as int);
-                            // },
-                            itemBuilder: (ctx) => [
-                              //   _buildPopupMenuItem('Play next'),
-                              //   _buildPopupMenuItem('Add to queue'),
-                              //   _buildPopupMenuItem('Remove'),
-                              //   _buildPopupMenuItem('Song info'),
-                            ],
-                          ),
+                              onSelected: (value) {
+                                PlayerSongListModel playerSongListModel =
+                                    PlayerSongListModel(
+                                        id: record[index].id,
+                                        albumName: record[index].albumName,
+                                        title: record[index].songName,
+                                        imageUrl: generateSongImageUrl(
+                                            record[index].albumName,
+                                            record[index].albumId),
+                                        musicDirectorName:
+                                            record[index].musicDirectorName[0]);
+                                switch (value) {
+                                  case 1:
+                                    context
+                                        .read<PlayerProvider>()
+                                        .queuePlayNext(playerSongListModel);
+                                    // context
+                                    //     .read<PlayerProvider>()
+                                    //     .addFavourite(songId);
+                                    break;
+                                  case 2:
+                                    context
+                                        .read<PlayerProvider>()
+                                        .queueSong(playerSongListModel);
+                                    // Navigation.navigateToScreen(
+                                    //     context, RouteName.addPlaylist,
+                                    //     args: songId.toString());
+                                    break;
+
+                                  case 3:
+                                    context
+                                        .read<PlayerProvider>()
+                                        .deleteFavourite(playerSongListModel.id,
+                                            isFromFav: true, ctx: context);
+                                    // PlayerSongListModel playerSongListModel =
+                                    //     PlayerSongListModel(
+                                    //         id: songId,
+                                    //         albumName: albumName,
+                                    //         title: songName,
+                                    //         imageUrl: imageUrl,
+                                    //         musicDirectorName: musicDirectorName);
+                                    // context
+                                    //     .read<PlayerProvider>()
+                                    //     .queuePlayNext(playerSongListModel);
+                                    break;
+                                  case 4:
+                                    // PlayerSongListModel playerSongListModel =
+                                    //     PlayerSongListModel(
+                                    //         id: songId,
+                                    //         albumName: albumName,
+                                    //         title: songName,
+                                    //         imageUrl: imageUrl,
+                                    //         musicDirectorName:
+                                    //             musicDirectorName);
+                                    Navigation.navigateToScreen(
+                                        context, RouteName.songInfo,
+                                        args: playerSongListModel);
+                                    break;
+                                }
+                              },
+                              itemBuilder: (ctx) {
+                                return [
+                                  PopupMenuItem(
+                                    value: 1,
+                                    enabled: context
+                                        .read<PlayerProvider>()
+                                        .isPlaying,
+                                    child: const Text('Play next'),
+                                  ),
+                                  PopupMenuItem(
+                                    value: 2,
+                                    enabled: context
+                                        .read<PlayerProvider>()
+                                        .isPlaying,
+                                    child: const Text('Add to queue'),
+                                  ),
+                                  const PopupMenuItem(
+                                    value: 3,
+                                    child: Text('Remove'),
+                                  ),
+                                  const PopupMenuItem(
+                                    value: 4,
+                                    child: Text('Song info'),
+                                  ),
+                                ];
+                              }
+                              // => [
+                              //   //   _buildPopupMenuItem('Play next'),
+                              //   //   _buildPopupMenuItem('Add to queue'),
+                              //   //   _buildPopupMenuItem('Remove'),
+                              //   //   _buildPopupMenuItem('Song info'),
+                              // ],
+                              ),
                         ),
                       ))
                     ],

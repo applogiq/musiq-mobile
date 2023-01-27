@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
 import 'package:musiq/src/features/home/domain/model/artist_view_all_model.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common/screen/offline_screen.dart';
 import '../../../view_all/widgets/sliver_app_bar.dart';
 import '../../provider/artist_view_all_provider.dart';
 import 'album_songs_list.dart';
@@ -45,46 +47,49 @@ class _ViewAllSongListScreenState extends State<ArtistViewAllSongListScreen> {
         : (MediaQuery.of(context).size.width / 320) * 50;
     infoBoxHeight = 180;
     return SafeArea(
-      child: Scaffold(
-        body: Consumer<ArtistViewAllProvider>(builder: (context, pro, _) {
-          return pro.isLoad
-              ? const LoaderScreen()
-              : DecoratedBox(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.black,
-                          Colors.black,
-                        ],
-                        stops: [
-                          0,
-                          0.7
-                        ]),
-                  ),
-                  child: Stack(
-                    children: [
-                      CustomScrollView(
-                        controller: scrollController,
-                        slivers: [
-                          SliverCustomeAppBar(
-                            title: widget.artistViewAllModel.artistName,
-                            maxAppBarHeight: maxAppBarHeight,
-                            minAppBarHeight: minAppBarHeight,
-                            artistViewAllModel: widget.artistViewAllModel,
-                            songCount: int.parse(pro
-                                .collectionViewAllModel.totalrecords
-                                .toString()),
-                          ),
-                          const AlbumSongsList(),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-        }),
-      ),
+      child: Provider.of<InternetConnectionStatus>(context) ==
+              InternetConnectionStatus.disconnected
+          ? const OfflineScreen()
+          : Scaffold(
+              body: Consumer<ArtistViewAllProvider>(builder: (context, pro, _) {
+                return pro.isLoad
+                    ? const LoaderScreen()
+                    : DecoratedBox(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.black,
+                                Colors.black,
+                              ],
+                              stops: [
+                                0,
+                                0.7
+                              ]),
+                        ),
+                        child: Stack(
+                          children: [
+                            CustomScrollView(
+                              controller: scrollController,
+                              slivers: [
+                                SliverCustomeAppBar(
+                                  title: widget.artistViewAllModel.artistName,
+                                  maxAppBarHeight: maxAppBarHeight,
+                                  minAppBarHeight: minAppBarHeight,
+                                  artistViewAllModel: widget.artistViewAllModel,
+                                  songCount: int.parse(pro
+                                      .collectionViewAllModel.totalrecords
+                                      .toString()),
+                                ),
+                                const AlbumSongsList(),
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+              }),
+            ),
     );
   }
 }
