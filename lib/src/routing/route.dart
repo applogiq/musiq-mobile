@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/auth/screens/forgot_screen/forgot_otp_screen.dart';
 import 'package:musiq/src/features/auth/screens/forgot_screen/new_password.dart';
+import 'package:musiq/src/features/common/screen/splash_screen.dart';
 import 'package:musiq/src/features/home/domain/model/artist_view_all_model.dart';
 import 'package:musiq/src/features/home/screens/artist_view_all/artist_view_all_screen.dart';
 import 'package:musiq/src/features/home/screens/artist_view_all/artist_view_all_song_list_screen.dart';
@@ -15,7 +16,6 @@ import 'package:musiq/src/features/profile/screens/my_profile_screen.dart';
 import 'package:musiq/src/features/profile/screens/preference_screen.dart';
 import 'package:musiq/src/features/profile/screens/profile_screen.dart';
 import 'package:musiq/src/features/search/screens/search_screen.dart';
-import 'package:musiq/src/features/view_all/domain/model/player_model.dart';
 import 'package:musiq/src/routing/route_name.dart';
 
 import '../features/artist/screens/artist_preference_screen/artist_preference_screen.dart';
@@ -25,7 +25,6 @@ import '../features/auth/screens/register_screen.dart';
 import '../features/common/screen/error_screen.dart';
 import '../features/common/screen/main_screen.dart';
 import '../features/common/screen/onboarding_screen.dart';
-import '../features/common/screen/splash_screen.dart';
 import '../features/home/screens/home_screen.dart';
 import '../features/player/screen/song_info_screen.dart';
 
@@ -97,14 +96,14 @@ class Routes {
         return MaterialPageRoute(
             builder: (BuildContext context) => const ArtistViewAllScreen());
       case RouteName.player:
-        if (args is PlayerModel) {
-          return MaterialPageRoute(
-              builder: (BuildContext context) => PlayerScreen(
-                    playerModel: args,
-                  ));
-        }
+        // if (args is PlayerModel) {
         return MaterialPageRoute(
-            builder: (BuildContext context) => const ErrorScreen());
+            builder: (BuildContext context) => const PlayerScreen(
+                // playerModel: args,
+                ));
+      // }
+      // return MaterialPageRoute(
+      //     builder: (BuildContext context) => const ErrorScreen());
 
       case RouteName.songInfo:
         if (args is PlayerSongListModel) {

@@ -10,22 +10,28 @@ import 'package:musiq/src/features/player/domain/model/song_info_model.dart';
 import 'package:musiq/src/features/player/domain/repo/player_repo.dart';
 import 'package:musiq/src/features/view_all/domain/model/player_model.dart';
 import 'package:musiq/src/local/model/favourite_model.dart';
+import 'package:musiq/src/routing/route_name.dart';
 import 'package:musiq/src/utils/image_url_generate.dart';
+import 'package:musiq/src/utils/navigation.dart';
 import 'package:musiq/src/utils/toast_message.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../../objectbox.g.dart';
+import '../../../core/package/miniplayer/miniplayer.dart';
 import '../../library/domain/library_repo.dart';
 import '../../library/domain/models/playlist_model.dart';
 
 class PlayerProvider extends ChangeNotifier {
+  final MiniplayerController controller = MiniplayerController();
   bool isPlay = false;
+  bool isPlaying = false;
   bool isShuffle = false;
   bool issongInfoDetailsLoad = true;
   int loopStatus = 0;
   late Box<FavouriteSong> _store;
   late Store store;
   List<int> favouritesList = [];
+  late ConcatenatingAudioSource playlist;
 
   AudioPlayer player = AudioPlayer();
   var selectedIndex = 0;
@@ -90,6 +96,40 @@ class PlayerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void goToPlayer(BuildContext context,
+      List<PlayerSongListModel> playerSongList, int index) async {
+    playlist = ConcatenatingAudioSource(
+      useLazyPreparation: true,
+      children: List.generate(
+        playerSongList.length,
+        (index) => AudioSource.uri(
+            Uri.parse(
+                "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongList[index].id.toString()}"),
+            tag: PlayerSongListModel(
+                id: playerSongList[index].id,
+                albumName: playerSongList[index].albumName,
+                title: playerSongList[index].title,
+                musicDirectorName:
+                    playerSongList[index].musicDirectorName.toString(),
+                imageUrl: playerSongList[index].imageUrl)),
+      ),
+    );
+    await player.setAudioSource(
+      playlist,
+      initialIndex: index,
+      initialPosition: Duration.zero,
+    );
+    player.stop();
+    isPlay = false;
+    isPlaying = true;
+    playOrPause();
+    await clearFavouriteSong();
+    await loadFavourites();
+    Navigation.navigateToScreen(context, RouteName.player);
+
+    notifyListeners();
+  }
+
   loadSong(PlayerModel playerModel) async {
     await player.setAudioSource(
       ConcatenatingAudioSource(
@@ -150,6 +190,39 @@ class PlayerProvider extends ChangeNotifier {
       isPlay = false;
     }
     notifyListeners();
+  }
+
+  queuePlayNext(PlayerSongListModel playerSongListModel) {
+    print(player.currentIndex);
+    if (player.currentIndex != null) {
+      playlist.insert(
+          player.currentIndex! + 1,
+          AudioSource.uri(
+              Uri.parse(
+                  "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongListModel.id.toString()}"),
+              tag: PlayerSongListModel(
+                  id: playerSongListModel.id,
+                  albumName: playerSongListModel.albumName,
+                  title: playerSongListModel.title,
+                  musicDirectorName: playerSongListModel.musicDirectorName,
+                  imageUrl: playerSongListModel.imageUrl)));
+    }
+  }
+
+  queueSong() {
+    print(playlist.length);
+
+    playlist.add(AudioSource.uri(
+        Uri.parse(
+            "https://api-musiq.applogiq.org/api/v1/audio?song_id=${"1".toString()}"),
+        tag: PlayerSongListModel(
+            id: 1,
+            albumName: "Ma",
+            title: "DFSd",
+            musicDirectorName: "SDSD",
+            imageUrl: generateAuraImageUrl(1))));
+
+    print(playlist.length);
   }
 
   void play() {

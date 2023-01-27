@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/home/screens/sliver_demo/widgets/collapse_app_bar.dart';
-import 'package:musiq/src/features/home/screens/sliver_demo/widgets/flexible_app_bar.dart';
+import 'package:musiq/src/features/home/screens/sliver_app_bar/widgets/collapse_app_bar.dart';
+import 'package:musiq/src/features/home/screens/sliver_app_bar/widgets/flexible_app_bar.dart';
 
 import '../../../../view_all/widgets/gradient_cover.dart';
 import '../../../../view_all/widgets/sliver_app_bar.dart';
@@ -54,7 +54,7 @@ class SliverCustomAppBar extends StatelessWidget {
                   : null;
               final albumImageSize = MediaQuery.of(context).size.height * 0.45 -
                   shrinkOffset / 1.5;
-              final showFixedAppBar = shrinkToMaxAppBarHeightRatio > 0.8;
+              final showFixedAppBar = shrinkToMaxAppBarHeightRatio > 0.5;
               final double titleOpacity = showFixedAppBar
                   ? 1 - (maxAppBarHeight - shrinkOffset) / minAppBarHeight
                   : 0;
@@ -101,6 +101,9 @@ class SliverCustomAppBar extends StatelessWidget {
                           titleOpacity: titleOpacity,
                           size: shrinkToMaxAppBarHeightRatio,
                           title: title,
+                          callBack: () {
+                            callback();
+                          },
                         ),
                       ),
                     ),

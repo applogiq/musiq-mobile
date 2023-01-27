@@ -76,44 +76,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           ),
                                         ),
                                       )
-                                    :
-                                    // ? CircleAvatar(
-                                    //     radius: 50,
-                                    //     child: Image.network(
-                                    // generateProfileImageUrl(pro
-                                    //     .profileAPIModel
-                                    //     .records!
-                                    //     .registerId),
-                                    //       fit: BoxFit.cover,
-                                    //       loadingBuilder: (BuildContext context,
-                                    //           Widget child,
-                                    //           ImageChunkEvent?
-                                    //               loadingProgress) {
-                                    //         if (loadingProgress == null) {
-                                    //           return child;
-                                    //         }
-                                    //         return Center(
-                                    //           child: CircularProgressIndicator(
-                                    //             value: loadingProgress
-                                    //                         .expectedTotalBytes !=
-                                    //                     null
-                                    //                 ? loadingProgress
-                                    //                         .cumulativeBytesLoaded /
-                                    //                     loadingProgress
-                                    //                         .expectedTotalBytes!
-                                    //                 : null,
-                                    //           ),
-                                    //         );
-                                    //       },
-                                    //     ),
-                                    //   )
-
-                                    Image.asset(Images.user_default));
+                                    : Image.asset(Images.user_default));
                       }),
-                      // radius: 50,
-                      // backgroundImage: AssetImage(
-                      //   Images.user_default,
-                      // ),
                     ),
                   ),
                   Padding(

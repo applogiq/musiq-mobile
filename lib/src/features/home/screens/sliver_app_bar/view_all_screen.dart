@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
-import 'package:musiq/src/features/home/screens/sliver_demo/widgets/sliver_app_bar.dart';
+import 'package:musiq/src/features/home/screens/sliver_app_bar/widgets/sliver_app_bar.dart';
 import 'package:musiq/src/features/home/view_all_status.dart';
 import 'package:musiq/src/utils/image_url_generate.dart';
 import 'package:provider/provider.dart';
@@ -107,11 +107,8 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
   Widget build(BuildContext context) {
     maxAppBarHeight = MediaQuery.of(context).size.height * 0.5;
     minAppBarHeight = MediaQuery.of(context).padding.top +
-        MediaQuery.of(context).size.height * 0.12;
-    playPauseButtonSize = (MediaQuery.of(context).size.width / 320) * 50 > 80
-        ? 80
-        : (MediaQuery.of(context).size.width / 320) * 50;
-    infoBoxHeight = 180;
+        MediaQuery.of(context).size.height * 0.06;
+
     return SafeArea(
       child: Scaffold(
         body: Consumer<ViewAllProvider>(builder: (context, pro, _) {
@@ -142,7 +139,10 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                               title: getTitle(widget.status),
                               songCounts: getSongCount(widget.status),
                               callback: () {
-                                print("Hi dude");
+                                context
+                                    .read<ViewAllProvider>()
+                                    .navigateToPlayerScreen(
+                                        context, widget.status);
                               },
                               imageUrl: getImageUrl(widget.status, pro)),
                           // AlbumInfo(infoBoxHeight: infoBoxHeight),
@@ -156,13 +156,6 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                           ),
                         ],
                       ),
-                      // PlayPauseButton(
-                      //   scrollController: _scrollController,
-                      //   maxAppBarHeight: maxAppBarHeight,
-                      //   minAppBarHeight: minAppBarHeight,
-                      //   playPauseButtonSize: playPauseButtonSize,
-                      //   infoBoxHeight: infoBoxHeight,
-                      // ),
                     ],
                   ),
                 );

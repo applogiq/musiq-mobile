@@ -1,10 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
-import 'package:musiq/src/constants/color.dart';
 import 'package:musiq/src/features/home/domain/model/artist_view_all_model.dart';
-import 'package:musiq/src/features/player/screen/player_screen/player_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../view_all/widgets/sliver_app_bar.dart';
@@ -43,7 +39,7 @@ class _ViewAllSongListScreenState extends State<ArtistViewAllSongListScreen> {
   Widget build(BuildContext context) {
     maxAppBarHeight = MediaQuery.of(context).size.height * 0.5;
     minAppBarHeight = MediaQuery.of(context).padding.top +
-        MediaQuery.of(context).size.height * 0.05;
+        MediaQuery.of(context).size.height * 0.12;
     playPauseButtonSize = (MediaQuery.of(context).size.width / 320) * 50 > 80
         ? 80
         : (MediaQuery.of(context).size.width / 320) * 50;

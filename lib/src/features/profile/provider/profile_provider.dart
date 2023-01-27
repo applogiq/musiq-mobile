@@ -8,10 +8,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart ' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:musiq/src/constants/color.dart';
+import 'package:musiq/src/features/common/screen/main_screen.dart';
 import 'package:musiq/src/features/profile/domain/api_models/profile_update_api_model..dart';
 import 'package:musiq/src/features/profile/domain/repository/profile_repo.dart';
 import 'package:musiq/src/routing/route_name.dart';
 import 'package:musiq/src/utils/navigation.dart';
+import 'package:musiq/src/utils/toast_message.dart';
 
 import '../../../common_widgets/model/profile_model.dart';
 import '../../../constants/images.dart';
@@ -127,7 +129,10 @@ class ProfileProvider extends ChangeNotifier {
           registerId: profileAPIModel.records!.registerId.toString(),
           userName: profileAPIModel.records!.username.toString());
       // objectBox.insertUser(user);
-      Navigation.navigateReplaceToScreen(context, RouteName.profile);
+      successToastMessage(
+        "Profile update successfully",
+      );
+      Navigation.removeAllScreenFromStack(context, const MainScreen());
     } else if (res.statusCode == 400) {
       var jsonData = json.decode(res.body);
       if (jsonData["detail"] == "Username already exist") {
@@ -168,6 +173,7 @@ class ProfileProvider extends ChangeNotifier {
     final imageTemp = File(pickedImage.path);
     fileImage = imageTemp;
     isCropSaveLoading = false;
+
     Navigation.navigateToScreen(context, RouteName.crop);
 
     // if (_pickedImage != null) {

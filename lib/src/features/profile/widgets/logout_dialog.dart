@@ -6,7 +6,6 @@ import '../../../utils/auth.dart';
 import '../../../utils/navigation.dart';
 import '../../../utils/size_config.dart';
 import '../../auth/provider/register_provider.dart';
-import '../../common/provider/bottom_navigation_bar_provider.dart';
 
 showAlertDialog(BuildContext context) {
   showDialog(
@@ -37,15 +36,13 @@ showAlertDialog(BuildContext context) {
             onTap: () async {
               Auth auth = Auth();
               await auth.logOut();
-              Provider.of<BottomNavigationBarProvider>(context, listen: false)
-                  .indexes();
+
               Provider.of<RegisterProvider>(context, listen: false)
                   .clearError();
               Provider.of<RegisterProvider>(context, listen: false)
                   .isButtonEnable = true;
               await Navigation.removeAllScreenFromStack(
                   context, const OnboardingScreen());
-              print("DDDD");
             },
             child: Container(
               height: getProportionateScreenHeight(44),

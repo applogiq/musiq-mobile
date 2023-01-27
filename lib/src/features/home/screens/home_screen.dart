@@ -3,7 +3,7 @@ import 'package:musiq/src/common_widgets/box/vertical_box.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
 import 'package:musiq/src/features/home/domain/model/song_list_model.dart';
 import 'package:musiq/src/features/home/provider/home_provider.dart';
-import 'package:musiq/src/features/home/screens/sliver_demo/view_all_screen.dart';
+import 'package:musiq/src/features/home/screens/sliver_app_bar/view_all_screen.dart';
 import 'package:musiq/src/features/home/widgets/current_mood.dart';
 import 'package:musiq/src/features/home/widgets/top_album_list.dart';
 import 'package:musiq/src/features/home/widgets/trending_hits.dart';
@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../constants/api.dart';
 import '../../../constants/color.dart';
+import '../provider/view_all_provider.dart';
 import '../view_all_status.dart';
 import '../widgets/artist_list_view.dart';
 import '../widgets/search_notifications.dart';
@@ -63,9 +64,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   CurrentMood(auraModel: pro.auraListModel),
                   TopAlbum(album: pro.albumListModel),
-                  const SizedBox(
-                    height: 60,
-                  )
                 ],
               ),
       );
@@ -108,66 +106,7 @@ class HomeScreenSongList extends StatelessWidget {
                                       ? ViewAllStatus.newRelease
                                       : ViewAllStatus.recentlyPlayed,
                                 )));
-                        // Navigation.navigateToScreen(
-                        //     context, RouteName.viewAllScreen,
-                        // args: title == "New Releases"
-                        //     ? ViewAllStatus.newRelease
-                        //     : ViewAllStatus.recentlyPlayed);
                       },
-//                                       onTap: () async {
-//                                         // print(recentlyPlayed.records[index].id);
-
-//                                         recentlyPlayed =
-//                                             await apiRoute.getRecentlyPlayed();
-//                                         // print(songList.records.length);
-//                                         List<ViewAllSongList>
-//                                             viewAllSongListModel = [];
-//                                         for (int i = 0;
-//                                             i < recentlyPlayed.records.length;
-//                                             i++) {
-//                                           viewAllSongListModel.add(
-//                                               ViewAllSongList(
-//                                                   recentlyPlayed
-//                                                       .records[i][0].id
-//                                                       .toString(),
-//                                                   generateSongImageUrl(
-//                                                       recentlyPlayed
-//                                                           .records[i][0]
-//                                                           .albumName,
-//                                                       recentlyPlayed
-//                                                           .records[i][0]
-//                                                           .albumId),
-//                                                   recentlyPlayed
-//                                                       .records[i][0].songName,
-//                                                   recentlyPlayed.records[i][0]
-//                                                       .musicDirectorName[0],
-//                                                   recentlyPlayed
-//                                                       .records[i][0].albumName,
-//                                                   recentlyPlayed
-//                                                       .records[i][0].albumId));
-//                                         }
-//                                         ViewAllBanner banner = ViewAllBanner(
-//                                           bannerId: recentlyPlayed
-//                                               .records[0][0].albumId,
-//                                           bannerImageUrl:
-//                                               "${APIConstants.SONG_BASE_URL}public/music/tamil/${recentlyPlayed.records[0][0].albumName[0].toUpperCase()}/${recentlyPlayed.records[0][0].albumName}/image/${recentlyPlayed.records[0][0].albumId.toString()}.png",
-//                                           bannerTitle: "Recently Played",
-//                                         );
-
-//                                         Navigator.of(context).push(MaterialPageRoute(
-//                                             builder: (context) =>
-//                                                 ViewAllScreenSongList(
-//                                                     banner: banner,
-//                                                     view_all_song_list_model:
-//                                                         viewAllSongListModel)));
-
-// //             Navigator.of(context).push(MaterialPageRoute(
-// //                 builder: (context) =>  RecentlyPlayedViewAll(songList: recentlyPlayed, title: 'Recently Played',
-// //                 imageURL:
-// //                   "${APIConstants.SONG_BASE_URL}public/music/tamil/${recentlyPlayed.records[recentlyPlayed.records.length-1].albumName[0].toUpperCase()}/${recentlyPlayed.records[recentlyPlayed.records.length-1].albumName}/image/${recentlyPlayed.records[recentlyPlayed.records.length-1].albumId.toString()}.png",
-// // )));
-//                                       },
-
                       child: Text(
                         "View All",
                         style: TextStyle(
@@ -200,49 +139,14 @@ class HomeScreenSongList extends StatelessWidget {
                           : const SizedBox(),
                       InkWell(
                         onTap: () {
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //     builder: (context) => const PlayerScreen()));
-                          print(
-                              "${APIConstants.baseUrl}public/music/tamil/${songList[index].albumName[0].toUpperCase()}/${songList[index].albumName}/image/${songList[index].albumId.toString()}.png");
+                          context.read<ViewAllProvider>().getViewAll(
+                              title == "New Releases"
+                                  ? ViewAllStatus.newRelease
+                                  : ViewAllStatus.recentlyPlayed,
+                              context: context,
+                              goToNextfunction: true,
+                              index: index);
                         },
-                        // onTap: () {
-                        //   List<PlayScreenModel>
-                        //       playScreenModel = [];
-                        //   print(recentlyPlayed
-                        //       .records[index][0].id);
-                        //   for (int i = 0;
-                        //       i <
-                        //           recentlyPlayed
-                        //               .records.length;
-                        //       i++) {
-                        //     playScreenModel.add(PlayScreenModel(
-                        //         id: recentlyPlayed
-                        //             .records[i][0].id,
-                        //         songName: recentlyPlayed
-                        //             .records[i][0]
-                        //             .songName,
-                        //         musicDirectorName:
-                        //             recentlyPlayed
-                        //                     .records[i][0]
-                        //                     .musicDirectorName[
-                        //                 0],
-                        //         albumId: recentlyPlayed
-                        //             .records[i][0]
-                        //             .albumId,
-                        //         albumName: recentlyPlayed
-                        //             .records[i][0]
-                        //             .albumName));
-                        //   }
-                        //   print(playScreenModel.length);
-                        //   Navigator.of(context).push(
-                        //       MaterialPageRoute(
-                        //           builder: (context) =>
-                        //               MainPlayScreen(
-                        //                   playScreenModel:
-                        //                       playScreenModel,
-                        //                   index: index)));
-                        // },
-
                         child: Container(
                           padding: const EdgeInsets.fromLTRB(6, 8, 6, 0),
                           width: 135,
@@ -271,14 +175,6 @@ class HomeScreenSongList extends StatelessWidget {
                               const SizedBox(
                                 height: 2,
                               ),
-                              // Text(
-                              //     "${songList[index][0].albumName}-${songList[index][0].musicDirectorName[0]}",
-                              //     maxLines: 1,
-                              //     overflow: TextOverflow.ellipsis,
-                              //     style: TextStyle(
-                              //         fontWeight: FontWeight.w400,
-                              //         fontSize: 12,
-                              //         color: CustomColor.subTitle))
                             ],
                           ),
                         ),

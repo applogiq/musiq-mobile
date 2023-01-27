@@ -5,7 +5,7 @@ import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../constants/color.dart';
 import '../../../constants/style.dart';
 import '../../../utils/image_url_generate.dart';
-import '../screens/sliver_demo/view_all_screen.dart';
+import '../screens/sliver_app_bar/view_all_screen.dart';
 import '../view_all_status.dart';
 
 class TopAlbum extends StatelessWidget {

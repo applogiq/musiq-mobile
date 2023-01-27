@@ -14,6 +14,7 @@ import '../../../../player/domain/model/player_song_list_model.dart';
 import '../../../domain/model/album_song_list_model.dart';
 import '../../../domain/model/new_release_model.dart';
 import '../../../domain/model/trending_hits_model.dart';
+import '../../../provider/view_all_provider.dart';
 import '../../../view_all_status.dart';
 
 class AlbumSongsList extends StatelessWidget {
@@ -153,12 +154,19 @@ class AlbumSongsList extends StatelessWidget {
     return SliverList(
       delegate: SliverChildBuilderDelegate(childCount: getListCount(status),
           (context, index) {
-        return SongListTile(
-          albumName: getAlbumName(status, index),
-          imageUrl: getImageUrl(status, index),
-          musicDirectorName: getMusicDirectorName(status, index),
-          songName: getSongName(status, index),
-          songId: getSongId(status, index),
+        return InkWell(
+          onTap: () {
+            context
+                .read<ViewAllProvider>()
+                .navigateToPlayerScreen(context, status, index: index);
+          },
+          child: SongListTile(
+            albumName: getAlbumName(status, index),
+            imageUrl: getImageUrl(status, index),
+            musicDirectorName: getMusicDirectorName(status, index),
+            songName: getSongName(status, index),
+            songId: getSongId(status, index),
+          ),
         );
       }),
     );
@@ -245,6 +253,16 @@ class SongListTile extends StatelessWidget {
                       break;
 
                     case 3:
+                      PlayerSongListModel playerSongListModel =
+                          PlayerSongListModel(
+                              id: songId,
+                              albumName: albumName,
+                              title: songName,
+                              imageUrl: imageUrl,
+                              musicDirectorName: musicDirectorName);
+                      context
+                          .read<PlayerProvider>()
+                          .queuePlayNext(playerSongListModel);
                       break;
                     case 4:
                       PlayerSongListModel playerSongListModel =

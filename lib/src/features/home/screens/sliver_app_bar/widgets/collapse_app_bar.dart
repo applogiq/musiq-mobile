@@ -11,36 +11,42 @@ class CollapsedAppBar extends StatelessWidget {
     required this.titleOpacity,
     required this.size,
     required this.title,
+    required this.callBack,
   }) : super(key: key);
 
   final double titleOpacity;
   final double size;
   final String title;
+  final Function callBack;
 
   @override
   Widget build(BuildContext context) {
-    return titleOpacity < 0.5
+    return size < 0.6
         ? Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 16.0),
+                padding: const EdgeInsets.only(top: 8.0),
                 child: InkWell(
                   onTap: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Icon(
-                    Icons.arrow_back_ios_rounded,
-                    color: Colors.white,
-                    size: 18,
+                  child: Container(
+                    padding: const EdgeInsets.all(24),
+                    // color: Colors.amber,
+                    child: const Icon(
+                      Icons.arrow_back_ios_rounded,
+                      color: Colors.white,
+                      size: 18,
+                    ),
                   ),
                 ),
               ),
             ],
           )
         : AnimatedOpacity(
-            opacity: size > 0.3 ? titleOpacity.clamp(size, 1) : 1,
+            opacity: 1,
             duration: const Duration(milliseconds: 100),
             child: ColoredBox(
               color: Colors.black,
@@ -83,20 +89,17 @@ class CollapsedAppBar extends StatelessWidget {
                   // const Spacer(),
                   Consumer<ViewAllProvider>(builder: (context, pro, _) {
                     return InkWell(
-                      // onTap: () {
-                      //   List songId = [];
-                      //   for (var record in pro.collectionViewAllModel.records) {
-                      //     songId.add(record!.id.toString());
-                      //   }
+                      onTap: () {
+                        callBack();
 
-                      //   print(songId.toString());
-                      //   Navigation.navigateToScreen(context, RouteName.player,
-                      //       args: PlayerModel(
-                      //           collectionViewAllModel:
-                      //               pro.collectionViewAllModel,
-                      //           songList: songId,
-                      //           selectedSongIndex: 0));
-                      // },
+                        // print(songId.toString());
+                        // Navigation.navigateToScreen(context, RouteName.player,
+                        //     args: PlayerModel(
+                        //         collectionViewAllModel:
+                        //             pro.collectionViewAllModel,
+                        //         songList: songId,
+                        //         selectedSongIndex: 0));
+                      },
                       child: PlayButtonWidget(
                         bgColor: CustomColor.secondaryColor,
                         iconColor: CustomColor.playIconBg,
@@ -104,7 +107,7 @@ class CollapsedAppBar extends StatelessWidget {
                     );
                   }),
                   AnimatedOpacity(
-                    opacity: titleOpacity.clamp(0, 1),
+                    opacity: 1,
                     duration: const Duration(milliseconds: 100),
                     child: PopupMenuButton(
                         color: CustomColor.appBarColor,

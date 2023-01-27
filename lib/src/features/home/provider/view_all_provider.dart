@@ -8,6 +8,11 @@ import 'package:musiq/src/features/home/domain/model/recent_song_model.dart';
 import 'package:musiq/src/features/home/domain/model/trending_hits_model.dart';
 import 'package:musiq/src/features/home/domain/repository/home_repo.dart';
 import 'package:musiq/src/features/home/view_all_status.dart';
+import 'package:provider/provider.dart';
+
+import '../../../utils/image_url_generate.dart';
+import '../../player/domain/model/player_song_list_model.dart';
+import '../../player/provider/player_provider.dart';
 
 class ViewAllProvider extends ChangeNotifier {
   bool isLoad = true;
@@ -26,7 +31,12 @@ class ViewAllProvider extends ChangeNotifier {
   AuraSongListModel auraSongListModel = AuraSongListModel(
       success: false, message: "No records", records: [], totalRecords: 0);
 
-  void getViewAll(ViewAllStatus status, {int? id}) async {
+  void getViewAll(ViewAllStatus status,
+      {int? id,
+      Function? function,
+      bool goToNextfunction = false,
+      BuildContext? context,
+      int? index}) async {
     isLoad = true;
     notifyListeners();
     if (status == ViewAllStatus.trendingHits) {
@@ -77,7 +87,78 @@ class ViewAllProvider extends ChangeNotifier {
         notifyListeners();
       }
     }
+    if (goToNextfunction) {
+      navigateToPlayerScreen(context!, status, index: index!);
+    }
     isLoad = false;
     notifyListeners();
+  }
+
+  navigateToPlayerScreen(BuildContext context, ViewAllStatus viewAllStatus,
+      {int index = 0}) async {
+    List<PlayerSongListModel> playerSongList = [];
+    switch (viewAllStatus) {
+      case ViewAllStatus.newRelease:
+        print(newReleaseModel.totalrecords);
+        for (var record in newReleaseModel.records) {
+          playerSongList.add(PlayerSongListModel(
+              id: record.id,
+              albumName: record.albumName.toString(),
+              title: record.songName.toString(),
+              imageUrl: generateSongImageUrl(record.albumName, record.albumId),
+              musicDirectorName: record.musicDirectorName[0].toString()));
+        }
+        break;
+      case ViewAllStatus.recentlyPlayed:
+        print(recentlyPlayed.records);
+        for (var record in recentlyPlayed.records) {
+          playerSongList.add(PlayerSongListModel(
+              id: record[0].id,
+              albumName: record[0].albumName.toString(),
+              title: record[0].songName.toString(),
+              imageUrl:
+                  generateSongImageUrl(record[0].albumName, record[0].albumId),
+              musicDirectorName: record[0].musicDirectorName[0].toString()));
+        }
+        break;
+      case ViewAllStatus.trendingHits:
+        for (var record in trendingHitsModel.records) {
+          playerSongList.add(PlayerSongListModel(
+              id: record.id,
+              albumName: record.albumName.toString(),
+              title: record.songName.toString(),
+              imageUrl: generateSongImageUrl(record.albumName, record.albumId),
+              musicDirectorName: record.musicDirectorName[0].toString()));
+        }
+        break;
+
+      case ViewAllStatus.album:
+        for (var record in albumSongListModel.records) {
+          playerSongList.add(PlayerSongListModel(
+              id: record.id,
+              albumName: record.albumName.toString(),
+              title: record.songName.toString(),
+              imageUrl: generateSongImageUrl(record.albumName, record.albumId),
+              musicDirectorName: record.musicDirectorName[0].toString()));
+        }
+        break;
+      case ViewAllStatus.aura:
+        for (var record in auraSongListModel.records) {
+          playerSongList.add(PlayerSongListModel(
+              id: record.auraSongs.songId,
+              albumName: record.albumName.toString(),
+              title: record.songName.toString(),
+              imageUrl: generateSongImageUrl(record.albumName, record.albumId),
+              musicDirectorName: record.musicDirectorName[0].toString()));
+        }
+        break;
+
+      default:
+        break;
+    }
+    notifyListeners();
+    print("SSSS");
+    print(playerSongList);
+    context.read<PlayerProvider>().goToPlayer(context, playerSongList, index);
   }
 }

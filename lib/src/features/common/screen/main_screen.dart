@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/profile/screens/profile_screen.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:musiq/src/common_widgets/box/horizontal_box.dart';
+import 'package:musiq/src/common_widgets/box/vertical_box.dart';
+import 'package:musiq/src/features/player/provider/player_provider.dart';
+import 'package:musiq/src/features/player/screen/player_screen/player_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/bottom_navigation_bar/bottom_navigation_bar.dart';
 import '../../../core/package/miniplayer/miniplayer.dart';
+import '../../player/domain/model/player_song_list_model.dart';
 import '../../player/screen/player_screen/player_controller.dart';
 import '../provider/bottom_navigation_bar_provider.dart';
 
@@ -38,49 +43,102 @@ class _MainScreenState extends State<MainScreen> {
                     return provider.pages[provider.selectedBottomIndex];
                   }),
                 ),
-                const SizedBox(
-                  height: 60,
-                ),
+                Consumer<PlayerProvider>(builder: (context, playProvider, _) {
+                  return playProvider.isPlaying
+                      ? const VerticalBox(height: 60)
+                      : const SizedBox.shrink();
+                })
               ],
             ),
-            Miniplayer(
-                minHeight: 60.0,
-                maxHeight: MediaQuery.of(context).size.height,
-                builder: (h, p) => h > 140
-                    ? const ProfileScreen()
-                    : Row(
-                        children: [
-                          Container(
-                            height: 60,
-                            width: 60,
-                            color: Colors.amber,
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Text("Song name"),
-                                Text("Album name"),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            padding: const EdgeInsets.all(0),
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const SliverAppBar()));
-                            },
-                            icon: const Icon(Icons.skip_previous_rounded),
-                          ),
-                          PlayButtonWidget(),
-                          IconButton(
-                            padding: const EdgeInsets.all(0),
-                            onPressed: () {},
-                            icon: const Icon(Icons.skip_next_rounded),
-                          ),
-                        ],
-                      )),
+            Consumer<PlayerProvider>(builder: (context, provider, _) {
+              return provider.isPlaying
+                  ? Miniplayer(
+                      controller: context.read<PlayerProvider>().controller,
+                      minHeight: 60.0,
+                      maxHeight: MediaQuery.of(context).size.height,
+                      builder: (h, p) => h > 120
+                          ? const PlayerScreen()
+                          : StreamBuilder<SequenceState?>(
+                              stream: context
+                                  .read<PlayerProvider>()
+                                  .player
+                                  .sequenceStateStream,
+                              builder: (context, snapshot) {
+                                final state = snapshot.data;
+                                if (state?.sequence.isEmpty ?? true) {
+                                  return const ColoredBox(
+                                    color: Colors.black,
+                                  );
+                                }
+                                final metadata = state!.currentSource!.tag
+                                    as PlayerSongListModel;
+                                return Row(
+                                  children: [
+                                    SizedBox(
+                                      height: 60,
+                                      width: 60,
+                                      child: Image.network(
+                                        metadata.imageUrl,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    const HorizontalBox(width: 10),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(metadata.title),
+                                          Text(metadata.albumName),
+                                        ],
+                                      ),
+                                    ),
+                                    IconButton(
+                                      padding: const EdgeInsets.all(0),
+                                      onPressed: () {
+                                        context
+                                            .read<PlayerProvider>()
+                                            .playPrev();
+                                      },
+                                      icon: const Icon(
+                                          Icons.skip_previous_rounded),
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        context
+                                            .read<PlayerProvider>()
+                                            .playOrPause();
+                                      },
+                                      child: PlayButtonWidget(
+                                        size: 24.0,
+                                        padding: 4.0,
+                                        iconColor: const Color.fromRGBO(
+                                            255, 255, 255, 0.8),
+                                        bgColor: const Color.fromRGBO(
+                                            254, 86, 49, 1),
+                                        icon: !context
+                                                .read<PlayerProvider>()
+                                                .isPlay
+                                            ? Icons.play_arrow
+                                            : Icons.pause_circle_filled_rounded,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      padding: const EdgeInsets.all(0),
+                                      onPressed: () {
+                                        context
+                                            .read<PlayerProvider>()
+                                            .playNext();
+                                      },
+                                      icon: const Icon(Icons.skip_next_rounded),
+                                    ),
+                                  ],
+                                );
+                              }))
+                  : const SizedBox.shrink();
+            }),
           ],
         ),
         bottomNavigationBar: BottomNavigationBarWidget(
