@@ -132,6 +132,7 @@ class ProfileProvider extends ChangeNotifier {
       successToastMessage(
         "Profile update successfully",
       );
+      // ignore: use_build_context_synchronously
       Navigation.removeAllScreenFromStack(context, const MainScreen());
     } else if (res.statusCode == 400) {
       var jsonData = json.decode(res.body);

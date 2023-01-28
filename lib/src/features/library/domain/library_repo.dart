@@ -36,4 +36,15 @@ class LibraryRepository {
       rethrow;
     }
   }
+
+  Future<dynamic> getPlayList(String id) async {
+    try {
+      dynamic response = await apiServices.getGetAuthApiResponse(
+        APIConstants.playListUrl + id,
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

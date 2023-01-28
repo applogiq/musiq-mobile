@@ -4,6 +4,7 @@ import 'package:musiq/src/features/home/provider/artist_view_all_provider.dart';
 import 'package:musiq/src/features/home/provider/search_provider.dart';
 import 'package:musiq/src/features/home/provider/view_all_provider.dart';
 import 'package:musiq/src/features/library/provider/library_provider.dart';
+import 'package:musiq/src/features/library/provider/play_list_provider.dart';
 import 'package:musiq/src/features/player/provider/player_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -28,6 +29,9 @@ List<SingleChildWidget> providersList = [
       );
       return iC.onStatusChange;
     },
+  ),
+  ChangeNotifierProvider(
+    create: (BuildContext context) => PlayListProvider(),
   ),
   ChangeNotifierProvider(
     create: (BuildContext context) => SplashProvider(),

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
+import 'package:musiq/src/features/home/screens/sliver_app_bar/view_all_screen.dart';
+import 'package:musiq/src/features/home/screens/view_all/view_all_song_list_screen.dart';
+import 'package:musiq/src/features/library/screens/playlist/no_favourite.dart';
+import 'package:musiq/src/features/library/screens/playlist/sliver_app_bar/view_all_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/dialog/custom_dialog_box.dart';
@@ -75,19 +79,23 @@ class _PlaylistsScreenState extends State<PlaylistsScreen> {
                   ),
                 );
               }),
-              body: ListView.builder(
-                  itemCount: pro.playListModel.records.length,
-                  itemBuilder: (context, index) {
-                    var record = pro.playListModel.records;
-                    return PlaylistTile(
-                      record: record,
-                      index: index,
-                      callBack: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const PlayListSongList()));
-                      },
-                    );
-                  }),
+              body: pro.playListModel.records.isEmpty
+                  ? NoSongScreen(
+                      mainTitle: "No Songs Here",
+                      subTitle: "Your favourite songs will appear here")
+                  : ListView.builder(
+                      itemCount: pro.playListModel.records.length,
+                      itemBuilder: (context, index) {
+                        var record = pro.playListModel.records;
+                        return PlaylistTile(
+                          record: record,
+                          index: index,
+                          callBack: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const ViewSongScreen()));
+                          },
+                        );
+                      }),
             );
     });
   }
