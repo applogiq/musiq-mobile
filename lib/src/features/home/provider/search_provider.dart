@@ -38,7 +38,7 @@ class SearchProvider extends ChangeNotifier {
           success: false, message: "No records", records: [], totalRecords: 0);
     }
     notifyListeners();
-    debugPrint(res.statusCode.toString());
+
     log(res.body.toString());
   }
 }

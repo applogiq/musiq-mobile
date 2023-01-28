@@ -24,14 +24,10 @@ class InternetConnectivityProvider extends ChangeNotifier {
   }
 
   void checkRealtimeConnection() {
-    debugPrint("network");
     streamSubscription = _connectivity.onConnectivityChanged.listen((event) {
-      debugPrint(event.toString());
       switch (event) {
         case ConnectivityResult.mobile:
           {
-            debugPrint("true");
-
             isNetworkAvailable = true;
             notifyListeners();
           }
@@ -39,7 +35,6 @@ class InternetConnectivityProvider extends ChangeNotifier {
         case ConnectivityResult.wifi:
           {
             isNetworkAvailable = true;
-            debugPrint("true");
 
             notifyListeners();
           }
@@ -47,13 +42,11 @@ class InternetConnectivityProvider extends ChangeNotifier {
         default:
           {
             isNetworkAvailable = false;
-            debugPrint("false");
 
             notifyListeners();
           }
           break;
       }
     });
-    debugPrint("MACHO");
   }
 }

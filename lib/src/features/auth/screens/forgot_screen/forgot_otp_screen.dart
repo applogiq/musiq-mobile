@@ -130,7 +130,6 @@ class _OTPScreenState extends State<OTPScreen> {
                                       hapticFeedbackType:
                                           HapticFeedbackType.lightImpact,
                                       onCompleted: (pin) {
-                                        debugPrint('onCompleted: $pin');
                                         if (pin.length == 6) {
                                           // context
                                           //     .read<SetUpProvider>()
@@ -138,9 +137,7 @@ class _OTPScreenState extends State<OTPScreen> {
 
                                           // pro.loginButtonEnabled(true);
                                           // pro.login(context, pin);
-                                        } else {
-                                          debugPrint("Invalid");
-                                        }
+                                        } else {}
                                       },
                                       onChanged: (value) {
                                         context
@@ -223,7 +220,7 @@ class _OTPScreenState extends State<OTPScreen> {
                                           pinController.clear();
 
                                           pro.resendOTPTapped();
-                                          // debugPrint(widget.email);
+                                          //
                                           // // _forgotpasswordCubit.resendOtp(context,
                                           //     email: widget.email);
                                         },

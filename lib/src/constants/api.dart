@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import '../config/api_config.dart';
 
 class APIConstants {
@@ -56,7 +54,7 @@ class APIConstants {
 
   static getArtistUrl(int skipLength, int limit) {
     var url = "$kArtistList?skip=0&limit=${limit.toString()}";
-    debugPrint(url);
+
     return url;
   }
 }

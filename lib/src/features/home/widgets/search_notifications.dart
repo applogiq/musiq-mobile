@@ -26,7 +26,6 @@ class SearchAndNotifications extends StatelessWidget {
               child: SearchTextWidget(
                 isReadOnly: true,
                 onTap: () {
-                  debugPrint("DATA");
                   context.read<SearchProvider>().resetState();
                   context.read<HomeProvider>().goToSearch(context);
                   // Navigator.of(context).push(

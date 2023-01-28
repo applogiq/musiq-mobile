@@ -94,9 +94,38 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "5:2689595360361504866",
+      "lastPropertyId": "4:487749968686667708",
+      "name": "ProfileImage",
+      "properties": [
+        {
+          "id": "1:4814826554200792973",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7328121718118522447",
+          "name": "registerId",
+          "type": 9
+        },
+        {
+          "id": "3:6874265334312145686",
+          "name": "profileImageString",
+          "type": 9
+        },
+        {
+          "id": "4:487749968686667708",
+          "name": "isImage",
+          "type": 1
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "4:7421630934153589295",
+  "lastEntityId": "5:2689595360361504866",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",

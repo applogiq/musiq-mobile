@@ -1,11 +1,16 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:musiq/src/config/theme.dart';
 import 'package:musiq/src/core/provider_list.dart';
+import 'package:musiq/src/local/model/user_model.dart';
 import 'package:musiq/src/routing/route.dart';
 import 'package:musiq/src/routing/route_name.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+
+import 'objectbox.g.dart';
 
 class MyHttpOverrides extends HttpOverrides {
   @override
@@ -39,5 +44,79 @@ class MyApp extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+class ImageScreen extends StatefulWidget {
+  const ImageScreen({super.key});
+
+  @override
+  State<ImageScreen> createState() => _ImageScreenState();
+}
+
+class _ImageScreenState extends State<ImageScreen> {
+  late Store store;
+  String? image;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadData();
+  }
+
+  loadData() async {
+    await getApplicationDocumentsDirectory().then((Directory dir) {
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq');
+
+      // final SongListModel queueSongModel = SongListModel(
+      //     songId: playerSongListModel.id,
+      //     albumName: playerSongListModel.albumName,
+      //     title: playerSongListModel.title,
+      //     musicDirectorName: playerSongListModel.musicDirectorName,
+      //     imageUrl: playerSongListModel.imageUrl,
+      //     songUrl:
+      //         "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongListModel.id.toString()}");
+      final box = store.box<ProfileImage>();
+
+      var res = box.getAll();
+      print("res.length");
+      print(res.length);
+
+      final myObject = box.getAll();
+      for (var element in res) {
+        print(element.registerId);
+        print(element.profileImageString);
+        if (element.registerId == 2.toString()) {
+          print(element.profileImageString);
+          image = element.profileImageString;
+          setState(() {});
+        }
+      }
+      // queueIdList.clear();
+      // for (var e in res) {
+      //   queueIdList.add(e.songId);
+      // }
+      // if (queueIdList.contains(playerSongListModel.id)) {
+      //   normalToastMessage("Song already in queue ");
+      // } else {
+      //   box.put(queueSongModel);
+      //   normalToastMessage("Song added to queue ");
+      // }
+
+      store.close();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Center(
+      child: image == null
+          ? const CircularProgressIndicator()
+          : Image.memory(
+              base64Decode(image!),
+            ),
+    ));
   }
 }

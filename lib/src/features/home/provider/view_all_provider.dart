@@ -43,7 +43,6 @@ class ViewAllProvider extends ChangeNotifier {
       var res = await homeRepository.getTrendingSongList(100);
       if (res.statusCode == 200) {
         var data = jsonDecode(res.body);
-        debugPrint(data);
 
         trendingHitsModel = TrendingHitsModel.fromMap(data);
       }
@@ -51,7 +50,6 @@ class ViewAllProvider extends ChangeNotifier {
       var res = await homeRepository.getNewRelease();
       if (res.statusCode == 200) {
         var data = jsonDecode(res.body);
-        debugPrint(data);
 
         newReleaseModel = NewReleaseModel.fromMap(data);
       }
@@ -59,29 +57,23 @@ class ViewAllProvider extends ChangeNotifier {
       var res = await homeRepository.getRecentPlayedList(100);
       if (res.statusCode == 200) {
         var data = jsonDecode(res.body);
-        debugPrint(data);
 
         recentlyPlayed = RecentlyPlayed.fromMap(data);
       }
     } else if (status == ViewAllStatus.album) {
-      debugPrint(id.toString());
       var res = await homeRepository.getSpecificAlbum(id!);
-      debugPrint(res.statusCode);
-      debugPrint(res.body);
+
       if (res.statusCode == 200) {
         var data = jsonDecode(res.body);
-        debugPrint(data);
 
         albumSongListModel = AlbumSongListModel.fromMap(data);
         notifyListeners();
       }
     } else if (status == ViewAllStatus.aura) {
       var res = await homeRepository.getSpecificAura(id!);
-      debugPrint(res.statusCode);
-      debugPrint(res.body);
+
       if (res.statusCode == 200) {
         var data = jsonDecode(res.body);
-        debugPrint(data);
 
         auraSongListModel = AuraSongListModel.fromMap(data);
         notifyListeners();
@@ -99,7 +91,6 @@ class ViewAllProvider extends ChangeNotifier {
     List<PlayerSongListModel> playerSongList = [];
     switch (viewAllStatus) {
       case ViewAllStatus.newRelease:
-        debugPrint(newReleaseModel.totalrecords.toString());
         for (var record in newReleaseModel.records) {
           playerSongList.add(PlayerSongListModel(
               id: record.id,
@@ -110,7 +101,6 @@ class ViewAllProvider extends ChangeNotifier {
         }
         break;
       case ViewAllStatus.recentlyPlayed:
-        debugPrint(recentlyPlayed.records.toString());
         for (var record in recentlyPlayed.records) {
           playerSongList.add(PlayerSongListModel(
               id: record[0].id,
@@ -157,8 +147,7 @@ class ViewAllProvider extends ChangeNotifier {
         break;
     }
     notifyListeners();
-    debugPrint("SSSS");
-    debugPrint(playerSongList.toString());
+
     context.read<PlayerProvider>().goToPlayer(context, playerSongList, index);
   }
 
@@ -169,7 +158,6 @@ class ViewAllProvider extends ChangeNotifier {
     List<PlayerSongListModel> playerSongList = [];
     switch (status) {
       case ViewAllStatus.newRelease:
-        debugPrint(newReleaseModel.totalrecords.toString());
         for (var record in newReleaseModel.records) {
           playerSongList.add(PlayerSongListModel(
               id: record.id,
@@ -180,7 +168,6 @@ class ViewAllProvider extends ChangeNotifier {
         }
         break;
       case ViewAllStatus.recentlyPlayed:
-        debugPrint(recentlyPlayed.records.toString());
         for (var record in recentlyPlayed.records) {
           playerSongList.add(PlayerSongListModel(
               id: record[0].id,

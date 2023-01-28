@@ -9,20 +9,23 @@ import 'package:http/http.dart ' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:musiq/src/constants/color.dart';
 import 'package:musiq/src/features/common/screen/main_screen.dart';
-import 'package:musiq/src/features/profile/domain/api_models/profile_update_api_model.dart';
 import 'package:musiq/src/features/profile/domain/repository/profile_repo.dart';
 import 'package:musiq/src/routing/route_name.dart';
 import 'package:musiq/src/utils/navigation.dart';
 import 'package:musiq/src/utils/toast_message.dart';
+import 'package:path_provider/path_provider.dart';
 
+import '../../../../objectbox.g.dart';
 import '../../../common_widgets/model/profile_model.dart';
 import '../../../constants/images.dart';
 import '../../../constants/string.dart';
 import '../../../local/model/user_model.dart';
+import '../domain/api_models/profile_update_api_model..dart';
 
 class ProfileProvider extends ChangeNotifier {
 //! Start
   File? fileImage;
+  late Store store;
 
   String name = "";
   String nameErrorMessage = "";
@@ -110,19 +113,70 @@ class ProfileProvider extends ChangeNotifier {
       "username": userName == profileAPIModel.records!.username ? "" : userName,
       "fullname": name.isEmpty ? profileAPIModel.records!.fullname : name,
     };
-    log(params.toString());
+
     var id = await secureStorage.read(
       key: "id",
     );
     // try {
     var res = await ProfileRepository().updateProfile(id!, params);
     debugPrint(res.body);
-    debugPrint(res.statusCode);
+    debugPrint(res.statusCode.toString());
     if (res.statusCode == 200) {
+      if (fileImage != null && fileImage != "") {
+        await getApplicationDocumentsDirectory().then((Directory dir) {
+          store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq');
+          final ProfileImage profileImage = ProfileImage(
+              isImage: true,
+              registerId: id,
+              profileImageString: uint8ListTob64(memoryImage!));
+          // final SongListModel queueSongModel = SongListModel(
+          //     songId: playerSongListModel.id,
+          //     albumName: playerSongListModel.albumName,
+          //     title: playerSongListModel.title,
+          //     musicDirectorName: playerSongListModel.musicDirectorName,
+          //     imageUrl: playerSongListModel.imageUrl,
+          //     songUrl:
+          //         "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongListModel.id.toString()}");
+          final box = store.box<ProfileImage>();
+
+          var res = box.getAll();
+          print("res.length");
+          print(res.length);
+          if (res.isEmpty) {
+            box.put(profileImage);
+            var res = box.getAll();
+            for (var element in res) {
+              log(element.profileImageString);
+              log(element.registerId);
+              log(element.id.toString());
+            }
+          } else {
+            final myObject = box.getAll();
+            for (var element in res) {
+              if (element.registerId == id) {
+                element.profileImageString = uint8ListTob64(memoryImage!);
+                box.put(element);
+              }
+            }
+          }
+          // queueIdList.clear();
+          // for (var e in res) {
+          //   queueIdList.add(e.songId);
+          // }
+          // if (queueIdList.contains(playerSongListModel.id)) {
+          //   normalToastMessage("Song already in queue ");
+          // } else {
+          //   box.put(queueSongModel);
+          //   normalToastMessage("Song added to queue ");
+          // }
+
+          store.close();
+        });
+      }
       userNameErrorMessage = "";
       ProfileAPIModel profileAPIModel =
           ProfileAPIModel.fromJson(jsonDecode(res.body.toString()));
-      debugPrint(profileAPIModel.records!.fullname);
+
       User(
           fullName: profileAPIModel.records!.fullname.toString(),
           email: profileAPIModel.records!.email.toString(),

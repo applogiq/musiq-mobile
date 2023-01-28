@@ -12,12 +12,14 @@ class AppBarOverlayContent extends StatelessWidget {
       required this.title,
       required this.count,
       required this.callback,
-      required this.size})
+      required this.size,
+      required this.addQueue})
       : super(key: key);
 
   final String title;
   final int count;
   final VoidCallback callback;
+  final VoidCallback addQueue;
   final double size;
   PopupMenuItem _buildPopupMenuItem(String title, String routeName) {
     return PopupMenuItem(
@@ -26,9 +28,8 @@ class AppBarOverlayContent extends StatelessWidget {
           // setState(() {
           //   hideLyrics;
           // });
-        } else {
-          debugPrint(routeName);
-        }
+        } else if (title == "") {
+        } else {}
       },
       child: Text(title),
     );
@@ -75,12 +76,18 @@ class AppBarOverlayContent extends StatelessWidget {
                                 ),
                               ),
                               padding: const EdgeInsets.all(0.0),
+                              onSelected: (value) {
+                                if (value == 1) {
+                                  addQueue();
+                                }
+                              },
                               itemBuilder: (ctx) => [
-                                    _buildPopupMenuItem(
-                                        'Add to queue', 'share'),
-                                    _buildPopupMenuItem(
-                                        'Add to playlist', "song_info"),
-                                  ])
+                                const PopupMenuItem(
+                                  value: 1,
+                                  child: Text('Add to Queue'),
+                                ),
+                              ],
+                            )
                           : const SizedBox.shrink()
                 ],
               ),
@@ -117,7 +124,7 @@ class AppBarOverlayContent extends StatelessWidget {
                           //     songId.add(record!.id.toString());
                           //   }
 
-                          //   debugPrint(songId.toString());
+                          //
                           //   Navigation.navigateToScreen(
                           //       context, RouteName.player,
                           //       args: PlayerModel(

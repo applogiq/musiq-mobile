@@ -113,7 +113,7 @@ class PlayerBackground extends StatelessWidget {
                             InkWell(
                                 onTap: () {
                                   bool canPop = Navigator.of(context).canPop();
-                                  debugPrint(canPop.toString());
+
                                   if (!canPop) {
                                     if (context
                                         .read<PlayerProvider>()

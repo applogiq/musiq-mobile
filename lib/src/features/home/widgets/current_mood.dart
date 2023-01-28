@@ -40,11 +40,6 @@ class CurrentMood extends StatelessWidget {
                         children: [
                           InkWell(
                             onTap: () {
-                              debugPrint(
-                                  auraModel.records[index].id.toString());
-                              debugPrint(auraModel.records[index].auraName);
-                              debugPrint(generateAuraImageUrl(
-                                  auraModel.records[index].auraId));
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => ViewAllScreen(
                                         status: ViewAllStatus.aura,

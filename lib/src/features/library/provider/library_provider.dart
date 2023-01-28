@@ -109,8 +109,6 @@ class LibraryProvider extends ChangeNotifier {
   }
 
   checkPlayListName(String name) {
-    debugPrint(name);
-    debugPrint(playListNameExistList.toString());
     if (name.trim() == "") {
       isPlayListError = true;
       playListError = ConstantText.fieldRequired;

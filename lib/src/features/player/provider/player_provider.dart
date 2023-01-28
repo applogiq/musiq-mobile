@@ -115,8 +115,7 @@ class PlayerProvider extends ChangeNotifier {
       final box = store.box<SongListModel>();
 
       var res = box.getAll();
-      debugPrint("sdfdgdf");
-      debugPrint(res.length.toString());
+
       if (res.isNotEmpty) {
         queueIdList.clear();
         List<PlayerSongListModel> playerSongList = [];
@@ -162,7 +161,6 @@ class PlayerProvider extends ChangeNotifier {
       await clearFavouriteSong();
       await loadFavourites();
     } catch (e) {
-      debugPrint(e.toString());
       store.close();
     }
     notifyListeners();
@@ -251,9 +249,7 @@ class PlayerProvider extends ChangeNotifier {
     try {
       await clearFavouriteSong();
       await loadFavourites();
-    } catch (e) {
-      debugPrint(e.toString());
-    }
+    } catch (e) {}
 
     Navigation.navigateToScreen(context, RouteName.player);
 
@@ -323,7 +319,6 @@ class PlayerProvider extends ChangeNotifier {
   }
 
   queuePlayNext(PlayerSongListModel playerSongListModel) {
-    debugPrint(player.currentIndex.toString());
     if (player.currentIndex != null) {
       playlist.insert(
           player.currentIndex! + 1,
@@ -340,8 +335,6 @@ class PlayerProvider extends ChangeNotifier {
   }
 
   queueSong(PlayerSongListModel playerSongListModel) {
-    debugPrint(playlist.length.toString());
-
     playlist.add(AudioSource.uri(
         Uri.parse(
             "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongListModel.id.toString()}"),
@@ -351,12 +344,9 @@ class PlayerProvider extends ChangeNotifier {
             title: playerSongListModel.title,
             musicDirectorName: playerSongListModel.musicDirectorName,
             imageUrl: playerSongListModel.imageUrl)));
-
-    debugPrint(playlist.length.toString());
   }
 
   void play() {
-    debugPrint("----->${player.playing}");
     if (player.playing) {
       player.stop();
       player.play();
@@ -370,9 +360,7 @@ class PlayerProvider extends ChangeNotifier {
     player.durationStream.listen((event) {
       try {
         totalDurationValue = event!.inMilliseconds;
-      } catch (e) {
-        debugPrint(e.toString());
-      }
+      } catch (e) {}
       notifyListeners();
     });
     player.bufferedPositionStream.listen((event) {
@@ -385,11 +373,9 @@ class PlayerProvider extends ChangeNotifier {
   }
 
   void addFavourite(int songId) async {
-    debugPrint(songId.toString());
     Map params = {"song_id": songId};
     var res = await playerRepo.addToFavourite(params);
-    debugPrint(res.statusCode);
-    debugPrint(res.body);
+
     if (res.statusCode == 200) {
       toastMessage("Song added to favourite list", Colors.grey, Colors.white);
       addFavouriteSongToLocalDb(songId);
@@ -403,12 +389,10 @@ class PlayerProvider extends ChangeNotifier {
 
   void deleteFavourite(int songId,
       {bool isFromFav = false, BuildContext? ctx}) async {
-    debugPrint(songId.toString());
     Map params = {"song_id": songId};
-    debugPrint(params.toString());
+
     var res = await playerRepo.deleteFavourite(params);
-    debugPrint(res.statusCode);
-    debugPrint(res.body);
+
     if (res.statusCode == 200) {
       deleteFavouriteSongFormLocal(songId);
       if (isFromFav) {
@@ -429,8 +413,6 @@ class PlayerProvider extends ChangeNotifier {
     final box = store.box<FavouriteSong>();
 
     var id = box.remove(uniqueId);
-    debugPrint("IIIII");
-    debugPrint(id.toString());
 
     store.close();
     getSongList();
@@ -518,7 +500,7 @@ class PlayerProvider extends ChangeNotifier {
     for (var e in res) {
       favouritesList.add(e.songUniqueId);
     }
-    debugPrint(favouritesList.toString());
+
     notifyListeners();
 
     store.close();
@@ -547,8 +529,7 @@ class PlayerProvider extends ChangeNotifier {
     notifyListeners();
     songInfoModel = null;
     var res = await playerRepo.songInfo(songId);
-    debugPrint(res.statusCode);
-    debugPrint(res.body);
+
     if (res.statusCode == 200) {
       songInfoModel = SongInfoModel.fromMap(jsonDecode(res.body));
     }
@@ -558,8 +539,7 @@ class PlayerProvider extends ChangeNotifier {
 
   addToPlaylist(Map params, BuildContext context, String playListName) async {
     var res = await playerRepo.addToPlaylist(params);
-    debugPrint(res.statusCode);
-    debugPrint(res.body);
+
     Navigator.pop(context);
 
     if (res.statusCode == 200) {

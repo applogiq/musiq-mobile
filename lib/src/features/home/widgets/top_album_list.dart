@@ -68,13 +68,6 @@ class TopAlbum extends StatelessWidget {
                           children: [
                             InkWell(
                               onTap: () {
-                                debugPrint(album.records[index].id.toString());
-                                debugPrint(album.records[index].albumName);
-                                debugPrint(
-                                  generateSongImageUrl(
-                                      album.records[index].albumName,
-                                      album.records[index].albumId),
-                                );
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => ViewAllScreen(
                                           status: ViewAllStatus.album,

@@ -26,9 +26,7 @@ class FixedAppBar extends StatelessWidget {
           // setState(() {
           //   hideLyrics;
           // });
-        } else {
-          debugPrint(routeName);
-        }
+        } else {}
       },
       child: Text(title),
     );

@@ -50,7 +50,7 @@ class SplashProvider extends ChangeNotifier {
   //     var userData = user.records.toMap();
   //     for (final name in userData.keys) {
   //       final value = userData[name];
-  //       debugPrint('$name,$value');
+  //
   //       await storage.write(
   //         key: name,
   //         value: value.toString(),

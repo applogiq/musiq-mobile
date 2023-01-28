@@ -73,13 +73,10 @@ class _OTPFieldState extends State<OTPField> {
     } else if (value.length == 1) {
       FocusScope.of(context).nextFocus();
     } else if (value.length == 0) {
-      debugPrint("DDD");
       FocusScope.of(context).previousFocus();
       // FocusScope.of(context).nearestScope.requestFocus();
 
-    } else {
-      debugPrint("SSSS");
-    }
+    } else {}
     if (otpTextEditingController1.text.isNotEmpty &&
         otpTextEditingController2.text.isNotEmpty &&
         otpTextEditingController3.text.isNotEmpty &&

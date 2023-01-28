@@ -143,7 +143,6 @@ class ForgotPasswordProvider extends ChangeNotifier with InputValidationMixin {
     startTimer();
     Map params = {"email": emailAddress};
     var res = await AuthRepository().emailVerfication(params);
-    debugPrint(res.statusCode);
   }
 
   passwordTapped() {
@@ -201,7 +200,6 @@ class ForgotPasswordProvider extends ChangeNotifier with InputValidationMixin {
     confirmPassword = value;
     if (value.isEmpty) {
       confirmPasswordErrorMessage = ConstantText.fieldRequired;
-      debugPrint("1");
     } else if (newPassword != confirmPassword) {
       confirmPasswordErrorMessage = "Password doesn't match";
     } else {
@@ -230,7 +228,7 @@ class ForgotPasswordProvider extends ChangeNotifier with InputValidationMixin {
     notifyListeners();
     Map params = {"email": emailAddress, "password": newPassword};
     var response = await AuthRepository().passwordChanged(params);
-    debugPrint(response.statusCode);
+
     if (response.statusCode == 200) {
       isResetButtonEnable = false;
       context.read<LoginProvider>().isPasswordReset = true;

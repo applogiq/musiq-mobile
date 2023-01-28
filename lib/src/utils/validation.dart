@@ -1,14 +1,10 @@
-import 'package:flutter/material.dart';
-
 mixin InputValidationMixin {
   bool isPasswordValid(String password) => password.length >= 8;
 
   bool isEmailValid(String email) {
-    debugPrint("email");
-    debugPrint(email);
     bool emailValid = RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
         .hasMatch(email);
-    // debugPrint(emailValid);
+    //
     return emailValid;
   }
 
@@ -23,13 +19,13 @@ mixin InputValidationMixin {
   bool isPhoneNumberValid(String email) {
     bool phoneNumberValid =
         RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)').hasMatch(email);
-    // debugPrint(phoneNumberValid);
+    //
     return phoneNumberValid;
   }
 
   bool isFirstNameValid(String email) {
     bool firstNameValid = RegExp('[a-zA-Z]').hasMatch(email);
-    // debugPrint(firstNameValid);
+    //
     return firstNameValid;
   }
 

@@ -9,7 +9,6 @@
 
 import 'dart:typed_data';
 
-// ignore: depend_on_referenced_packages
 import 'package:flat_buffers/flat_buffers.dart' as fb;
 import 'package:objectbox/internal.dart'; // generated code can access "internal" functionality
 import 'package:objectbox/objectbox.dart';
@@ -113,6 +112,35 @@ final _entities = <ModelEntity>[
             flags: 0)
       ],
       relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(5, 2689595360361504866),
+      name: 'ProfileImage',
+      lastPropertyId: const IdUid(4, 487749968686667708),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 4814826554200792973),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 7328121718118522447),
+            name: 'registerId',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 6874265334312145686),
+            name: 'profileImageString',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 487749968686667708),
+            name: 'isImage',
+            type: 1,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
 ];
 
@@ -136,7 +164,7 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(4, 7421630934153589295),
+      lastEntityId: const IdUid(5, 2689595360361504866),
       lastIndexId: const IdUid(0, 0),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
@@ -262,6 +290,41 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGet(buffer, rootOffset, 16, ''));
 
           return object;
+        }),
+    ProfileImage: EntityDefinition<ProfileImage>(
+        model: _entities[3],
+        toOneRelations: (ProfileImage object) => [],
+        toManyRelations: (ProfileImage object) => {},
+        getId: (ProfileImage object) => object.id,
+        setId: (ProfileImage object, int id) {
+          object.id = id;
+        },
+        objectToFB: (ProfileImage object, fb.Builder fbb) {
+          final registerIdOffset = fbb.writeString(object.registerId);
+          final profileImageStringOffset =
+              fbb.writeString(object.profileImageString);
+          fbb.startTable(5);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, registerIdOffset);
+          fbb.addOffset(2, profileImageStringOffset);
+          fbb.addBool(3, object.isImage);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = ProfileImage(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              isImage: const fb.BoolReader()
+                  .vTableGet(buffer, rootOffset, 10, false),
+              registerId: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              profileImageString: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''));
+
+          return object;
         })
   };
 
@@ -323,4 +386,23 @@ class SongListModel_ {
   /// see [SongListModel.songUrl]
   static final songUrl =
       QueryStringProperty<SongListModel>(_entities[2].properties[6]);
+}
+
+/// [ProfileImage] entity fields to define ObjectBox queries.
+class ProfileImage_ {
+  /// see [ProfileImage.id]
+  static final id =
+      QueryIntegerProperty<ProfileImage>(_entities[3].properties[0]);
+
+  /// see [ProfileImage.registerId]
+  static final registerId =
+      QueryStringProperty<ProfileImage>(_entities[3].properties[1]);
+
+  /// see [ProfileImage.profileImageString]
+  static final profileImageString =
+      QueryStringProperty<ProfileImage>(_entities[3].properties[2]);
+
+  /// see [ProfileImage.isImage]
+  static final isImage =
+      QueryBooleanProperty<ProfileImage>(_entities[3].properties[3]);
 }

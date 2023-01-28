@@ -163,8 +163,6 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
       isButtonLoading = true;
       notifyListeners();
       var response = await AuthRepository().register(params);
-      debugPrint(response.statusCode);
-      debugPrint(response.body);
 
       isButtonLoading = false;
       notifyListeners();
@@ -191,9 +189,7 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
         }
         notifyListeners();
       }
-    } else {
-      debugPrint("InValid");
-    }
+    } else {}
   }
 
   clearError() {
@@ -216,7 +212,7 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
     var userData = userModel.records.toMap();
     for (final name in userData.keys) {
       final value = userData[name];
-      debugPrint('$name,$value');
+
       await storage.write(
         key: name,
         value: value.toString(),

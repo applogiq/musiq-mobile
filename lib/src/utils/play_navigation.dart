@@ -3,7 +3,7 @@
 
 // //   songPlayList.add(songList.records[i].id);
 // // }
-// // debugPrint(index);
+// // 
 // // Navigator.of(context).push(MaterialPageRoute(
 // //     builder: (context) => PlayScreen(
 // //       songList: songList,
@@ -21,9 +21,9 @@
 // recentlyPlayedToPlayScreen(
 //     RecentlyPlayed songList, BuildContext context, int index) {
 //   var songPlayList = [];
-//   debugPrint(songList.records.length);
+//   
 //   for (int i = 0; i < songList.records.length; i++) {
-//     debugPrint(songList.records[i][0].id);
+//     
 //   }
 //   // Navigator.of(context).push(MaterialPageRoute(
 

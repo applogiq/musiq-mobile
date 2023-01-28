@@ -37,7 +37,7 @@ class ArtistPreferenceProvider extends ChangeNotifier {
       var userData = user.records.toMap();
       for (final name in userData.keys) {
         final value = userData[name];
-        // debugPrint('$name,$value');
+        //
         await storage.write(
           key: name,
           value: value.toString(),
@@ -59,15 +59,13 @@ class ArtistPreferenceProvider extends ChangeNotifier {
     if (datas.isEmpty) {
       await getUserFollowDatas();
     }
-    debugPrint(userFollowedArtist.toString());
 
     var response = await AuthRepository().getArtists();
-    debugPrint(response.statusCode);
-    debugPrint(response.body);
+
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body.toString());
       artistModel = ArtistModel.fromMap(data);
-      debugPrint(artistModel!.records.length.toString());
+
       isLoaded = true;
     }
     notifyListeners();
@@ -75,12 +73,9 @@ class ArtistPreferenceProvider extends ChangeNotifier {
 
   void followAndUnfollow(Map params) async {
     var res = await ArtistRepo().followAndUnfollow(params);
-    debugPrint(res.statusCode);
-    debugPrint(res.body);
   }
 
   void checkFollow(Record record, int index) async {
-    debugPrint(record.artistId);
     var userId = await storage.read(key: "register_id");
     if (userFollowedArtist.contains(record.artistId)) {
       artistModel!.records[index].followers = (record.followers! - 1);

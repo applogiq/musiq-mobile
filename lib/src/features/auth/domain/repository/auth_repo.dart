@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:musiq/src/constants/api.dart';
 
 import '../../../../base_service/network/base_api_services.dart';
@@ -28,7 +27,7 @@ class AuthRepository {
 
   Future<dynamic> getArtists({limit = 100}) async {
     var artistUrl = APIConstants.getArtistUrl(0, limit);
-    debugPrint(artistUrl);
+
     try {
       dynamic response = await apiServices.getGetAuthApiResponse(artistUrl);
       return response;
@@ -74,7 +73,7 @@ class AuthRepository {
   //     APIConstants.BASE_URL + artistUrl,
   //   );
   //   var data = jsonDecode(res.body);
-  //   debugPrint(data.toString());
+  //
   //   ArtistModel artistModel = ArtistModel.fromMap(data);
 
   //   return artistModel;

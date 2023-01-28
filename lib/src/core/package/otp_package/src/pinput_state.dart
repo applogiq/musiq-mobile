@@ -100,7 +100,7 @@ class _PinputState extends State<Pinput>
   //   if (widget.androidSmsAutofillMethod ==
   //       AndroidSmsAutofillMethod.smsRetrieverApi) {
   //     // final res = await _smartAuth!.getAppSignature();
-  //     debugPrint('Pinput: App Signature for SMS Retriever API Is: $res');
+  //
   //   }
   // }
 

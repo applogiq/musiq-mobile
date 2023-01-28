@@ -16,3 +16,18 @@ class User {
       required this.registerId,
       required this.userName});
 }
+
+@Entity()
+class ProfileImage {
+  @Id()
+  int id;
+  String registerId;
+  bool isImage;
+  String profileImageString;
+
+  ProfileImage(
+      {this.id = 0,
+      required this.isImage,
+      required this.registerId,
+      required this.profileImageString});
+}
