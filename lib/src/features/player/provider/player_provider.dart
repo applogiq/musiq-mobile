@@ -34,6 +34,7 @@ class PlayerProvider extends ChangeNotifier {
   late Box<FavouriteSong> _store;
   late Store store;
   List<int> favouritesList = [];
+  List<int> queueIdList = [];
   late ConcatenatingAudioSource playlist;
 
   AudioPlayer player = AudioPlayer();
@@ -47,6 +48,72 @@ class PlayerProvider extends ChangeNotifier {
   FlutterSecureStorage secureStorage = const FlutterSecureStorage();
   PlayListModel playListModel = PlayListModel(
       success: false, message: "No records", records: [], totalRecords: 0);
+
+  removeAllData() async {
+    await getApplicationDocumentsDirectory().then((Directory dir) {
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq');
+      final favouriteBox = store.box<FavouriteSong>();
+      final queueBox = store.box<SongListModel>();
+      favouriteBox.removeAll();
+      queueBox.removeAll();
+      store.close();
+    });
+  }
+
+  loadQueueSong() async {
+    await getApplicationDocumentsDirectory().then((Directory dir) async {
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq');
+      final box = store.box<SongListModel>();
+
+      var res = box.getAll();
+      queueIdList.clear();
+      List<PlayerSongListModel> playerSongList = [];
+      for (var e in res) {
+        playerSongList.add(PlayerSongListModel(
+            id: e.songId,
+            albumName: e.albumName,
+            title: e.title,
+            imageUrl: e.imageUrl,
+            musicDirectorName: e.musicDirectorName));
+      }
+      playlist = ConcatenatingAudioSource(
+        useLazyPreparation: true,
+        children: List.generate(
+          playerSongList.length,
+          (index) => AudioSource.uri(
+              Uri.parse(
+                  "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongList[index].id.toString()}"),
+              tag: PlayerSongListModel(
+                  id: playerSongList[index].id,
+                  albumName: playerSongList[index].albumName,
+                  title: playerSongList[index].title,
+                  musicDirectorName:
+                      playerSongList[index].musicDirectorName.toString(),
+                  imageUrl: playerSongList[index].imageUrl)),
+        ),
+      );
+      await player.setAudioSource(
+        playlist,
+        initialIndex: 0,
+        initialPosition: Duration.zero,
+      );
+      player.stop();
+      isPlay = false;
+      isPlaying = true;
+      playOrPause();
+      store.close();
+    });
+
+    try {
+      await clearFavouriteSong();
+      await loadFavourites();
+    } catch (e) {
+      print(e.toString());
+      store.close();
+    }
+    notifyListeners();
+  }
+
   fetchLocalFavourites() async {}
   getPlayListsList() async {
     isPlayListLoad = true;
@@ -126,8 +193,12 @@ class PlayerProvider extends ChangeNotifier {
     isPlay = false;
     isPlaying = true;
     playOrPause();
-    await clearFavouriteSong();
-    await loadFavourites();
+    try {
+      await clearFavouriteSong();
+      await loadFavourites();
+    } catch (e) {
+      print(e.toString());
+    }
     Navigation.navigateToScreen(context, RouteName.player);
 
     notifyListeners();
@@ -297,7 +368,7 @@ class PlayerProvider extends ChangeNotifier {
 
   deleteFavouriteSongFormLocal(int uniqueId) async {
     await getApplicationDocumentsDirectory().then((Directory dir) {
-      store = Store(getObjectBoxModel(), directory: '${dir.path}/objectbox/3');
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq');
     });
     final box = store.box<FavouriteSong>();
 
@@ -310,33 +381,57 @@ class PlayerProvider extends ChangeNotifier {
   }
 
   addQueueToLocalDb(
-      PlayerSongListModel playerSongListModel, String albumId) async {
+    PlayerSongListModel playerSongListModel,
+  ) async {
     await getApplicationDocumentsDirectory().then((Directory dir) {
-      store =
-          Store(getObjectBoxModel(), directory: '${dir.path}/objectbox/queue');
-      final QueueSongModel queueSongModel = QueueSongModel(
-          currentIndex: 0,
-          lastposition: 00,
-          songList: SongListModel(
-              songId: playerSongListModel.id,
-              albumName: playerSongListModel.albumName,
-              title: playerSongListModel.title,
-              musicDirectorName: playerSongListModel.musicDirectorName,
-              imageUrl:
-                  generateSongImageUrl(playerSongListModel.albumName, albumId),
-              songUrl:
-                  "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongListModel.id.toString()}"));
-      final box = store.box<QueueSongModel>();
-      int id = box.put(queueSongModel);
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq');
+      final SongListModel queueSongModel = SongListModel(
+          songId: playerSongListModel.id,
+          albumName: playerSongListModel.albumName,
+          title: playerSongListModel.title,
+          musicDirectorName: playerSongListModel.musicDirectorName,
+          imageUrl: playerSongListModel.imageUrl,
+          songUrl:
+              "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongListModel.id.toString()}");
+      final box = store.box<SongListModel>();
+
+      var res = box.getAll();
+      queueIdList.clear();
+      for (var e in res) {
+        queueIdList.add(e.songId);
+      }
+      if (queueIdList.contains(playerSongListModel.id)) {
+        normalToastMessage("Song already in queue ");
+      } else {
+        int id = box.put(queueSongModel);
+        normalToastMessage("Song added to queue ");
+      }
 
       store.close();
+      getQueueSongList();
     });
+  }
+
+  getQueueSongList() async {
+    await getApplicationDocumentsDirectory().then((Directory dir) {
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq');
+    });
+    final box = store.box<SongListModel>();
+
+    var res = box.getAll();
+    queueIdList.clear();
+    for (var e in res) {
+      queueIdList.add(e.songId);
+    }
+    notifyListeners();
+
+    store.close();
   }
 
   addFavouriteSongToLocalDb(int songId) async {
     final song = FavouriteSong(songUniqueId: songId);
     await getApplicationDocumentsDirectory().then((Directory dir) {
-      store = Store(getObjectBoxModel(), directory: '${dir.path}/objectbox/3');
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq');
     });
     final box = store.box<FavouriteSong>();
     int id = box.put(song);
@@ -347,7 +442,7 @@ class PlayerProvider extends ChangeNotifier {
 
   clearFavouriteSong() async {
     await getApplicationDocumentsDirectory().then((Directory dir) {
-      store = Store(getObjectBoxModel(), directory: '${dir.path}/objectbox/3');
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq');
     });
     final box = store.box<FavouriteSong>();
     box.removeAll();
@@ -358,7 +453,7 @@ class PlayerProvider extends ChangeNotifier {
 
   getSongList() async {
     await getApplicationDocumentsDirectory().then((Directory dir) {
-      store = Store(getObjectBoxModel(), directory: '${dir.path}/objectbox/3');
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq');
     });
     final box = store.box<FavouriteSong>();
 

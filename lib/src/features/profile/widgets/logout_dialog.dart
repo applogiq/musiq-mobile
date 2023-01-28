@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/common/screen/onboarding_screen.dart';
+import 'package:musiq/src/features/player/provider/player_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/auth.dart';
@@ -36,6 +37,7 @@ showAlertDialog(BuildContext context) {
             onTap: () async {
               Auth auth = Auth();
               await auth.logOut();
+              context.read<PlayerProvider>().removeAllData();
 
               Provider.of<RegisterProvider>(context, listen: false)
                   .clearError();

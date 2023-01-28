@@ -23,6 +23,13 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<PlayerProvider>().loadQueueSong();
+  }
+
+  @override
   void dispose() {
     BottomNavigationBarProvider()
         .pages[BottomNavigationBarProvider().selectedBottomIndex];

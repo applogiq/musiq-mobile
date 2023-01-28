@@ -39,3 +39,16 @@ successToastMessage(
       textColor: Colors.white,
       fontSize: 16.0);
 }
+
+normalToastMessage(
+  String messageContent,
+) {
+  Fluttertoast.showToast(
+      msg: messageContent,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 5,
+      backgroundColor: Colors.grey,
+      textColor: Colors.black,
+      fontSize: 16.0);
+}

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/home/provider/artist_view_all_provider.dart';
-import 'package:musiq/src/features/view_all/domain/model/player_model.dart';
+import 'package:musiq/src/features/player/domain/model/player_song_list_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../constants/color.dart';
 import '../../../constants/style.dart';
-import '../../../routing/route_name.dart';
-import '../../../utils/navigation.dart';
+import '../../../utils/image_url_generate.dart';
+import '../../player/provider/player_provider.dart';
 
 class AppBarOverlayContent extends StatelessWidget {
   const AppBarOverlayContent(
@@ -111,20 +111,22 @@ class AppBarOverlayContent extends StatelessWidget {
                           builder: (context, pro, _) {
                         return InkWell(
                           onTap: () {
-                            List songId = [];
+                            List<PlayerSongListModel> playerSongList = [];
+
                             for (var record
                                 in pro.collectionViewAllModel.records) {
-                              songId.add(record!.id.toString());
+                              playerSongList.add(PlayerSongListModel(
+                                  id: record!.id,
+                                  albumName: record.albumName.toString(),
+                                  title: record.songName.toString(),
+                                  imageUrl: generateSongImageUrl(
+                                      record.albumName, record.albumId),
+                                  musicDirectorName:
+                                      record.musicDirectorName![0].toString()));
                             }
-
-                            print(songId.toString());
-                            Navigation.navigateToScreen(
-                                context, RouteName.player,
-                                args: PlayerModel(
-                                    collectionViewAllModel:
-                                        pro.collectionViewAllModel,
-                                    songList: songId,
-                                    selectedSongIndex: 0));
+                            context
+                                .read<PlayerProvider>()
+                                .goToPlayer(context, playerSongList, 0);
                           },
                           child: CustomButton(
                               isIcon: true,

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/color.dart';
-import '../../../routing/route_name.dart';
-import '../../../utils/navigation.dart';
+import '../../../utils/image_url_generate.dart';
 import '../../home/provider/artist_view_all_provider.dart';
+import '../../player/domain/model/player_song_list_model.dart';
+import '../../player/provider/player_provider.dart';
 import '../../player/screen/player_screen/player_controller.dart';
-import '../domain/model/player_model.dart';
 
 class FixedAppBar extends StatelessWidget {
   const FixedAppBar({
@@ -101,18 +101,21 @@ class FixedAppBar extends StatelessWidget {
                   Consumer<ArtistViewAllProvider>(builder: (context, pro, _) {
                     return InkWell(
                       onTap: () {
-                        List songId = [];
-                        for (var record in pro.collectionViewAllModel.records) {
-                          songId.add(record!.id.toString());
-                        }
+                        List<PlayerSongListModel> playerSongList = [];
 
-                        print(songId.toString());
-                        Navigation.navigateToScreen(context, RouteName.player,
-                            args: PlayerModel(
-                                collectionViewAllModel:
-                                    pro.collectionViewAllModel,
-                                songList: songId,
-                                selectedSongIndex: 0));
+                        for (var record in pro.collectionViewAllModel.records) {
+                          playerSongList.add(PlayerSongListModel(
+                              id: record!.id,
+                              albumName: record.albumName.toString(),
+                              title: record.songName.toString(),
+                              imageUrl: generateSongImageUrl(
+                                  record.albumName, record.albumId),
+                              musicDirectorName:
+                                  record.musicDirectorName![0].toString()));
+                        }
+                        context
+                            .read<PlayerProvider>()
+                            .goToPlayer(context, playerSongList, 0);
                       },
                       child: PlayButtonWidget(
                         bgColor: CustomColor.secondaryColor,

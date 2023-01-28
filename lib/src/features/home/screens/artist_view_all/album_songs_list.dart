@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/home/domain/model/new_release_model.dart';
-import 'package:musiq/src/features/home/domain/model/trending_hits_model.dart';
 import 'package:musiq/src/features/home/provider/artist_view_all_provider.dart';
-import 'package:musiq/src/features/home/view_all_status.dart';
 import 'package:musiq/src/features/player/domain/model/player_song_list_model.dart';
 import 'package:musiq/src/routing/route_name.dart';
 import 'package:musiq/src/utils/navigation.dart';
@@ -13,7 +10,6 @@ import '../../../../constants/color.dart';
 import '../../../../constants/style.dart';
 import '../../../../utils/image_url_generate.dart';
 import '../../../player/provider/player_provider.dart';
-import '../../../view_all/domain/model/player_model.dart';
 
 class AlbumSongsList extends StatelessWidget {
   const AlbumSongsList({
@@ -56,17 +52,21 @@ class AlbumSongsList extends StatelessWidget {
           var record = pro.collectionViewAllModel.records;
           return InkWell(
             onTap: () {
-              List songId = [];
-              for (var record in pro.collectionViewAllModel.records) {
-                songId.add(record!.id.toString());
-              }
+              List<PlayerSongListModel> playerSongList = [];
 
-              print(songId.toString());
-              Navigation.navigateToScreen(context, RouteName.player,
-                  args: PlayerModel(
-                      collectionViewAllModel: pro.collectionViewAllModel,
-                      songList: songId,
-                      selectedSongIndex: index));
+              for (var record in pro.collectionViewAllModel.records) {
+                playerSongList.add(PlayerSongListModel(
+                    id: record!.id,
+                    albumName: record.albumName.toString(),
+                    title: record.songName.toString(),
+                    imageUrl:
+                        generateSongImageUrl(record.albumName, record.albumId),
+                    musicDirectorName:
+                        record.musicDirectorName![0].toString()));
+              }
+              context
+                  .read<PlayerProvider>()
+                  .goToPlayer(context, playerSongList, index);
             },
             child: DecoratedBox(
                 decoration: const BoxDecoration(

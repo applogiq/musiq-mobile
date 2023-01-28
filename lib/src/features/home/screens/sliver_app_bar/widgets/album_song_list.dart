@@ -174,13 +174,14 @@ class AlbumSongsList extends StatelessWidget {
 }
 
 class SongListTile extends StatelessWidget {
-  const SongListTile(
-      {super.key,
-      required this.imageUrl,
-      required this.songName,
-      required this.musicDirectorName,
-      required this.songId,
-      required this.albumName});
+  const SongListTile({
+    super.key,
+    required this.imageUrl,
+    required this.songName,
+    required this.musicDirectorName,
+    required this.songId,
+    required this.albumName,
+  });
   final String imageUrl;
   final String songName;
   final String albumName;
@@ -275,6 +276,20 @@ class SongListTile extends StatelessWidget {
                       Navigation.navigateToScreen(context, RouteName.songInfo,
                           args: playerSongListModel);
                       break;
+                    case 5:
+                      PlayerSongListModel playerSongListModel =
+                          PlayerSongListModel(
+                              id: songId,
+                              albumName: albumName,
+                              title: songName,
+                              imageUrl: imageUrl,
+                              musicDirectorName: musicDirectorName);
+                      // Navigation.navigateToScreen(context, RouteName.songInfo,
+                      //     args: playerSongListModel);
+                      context.read<PlayerProvider>().addQueueToLocalDb(
+                            playerSongListModel,
+                          );
+                      break;
                   }
                 },
                 itemBuilder: (BuildContext context) {
@@ -286,6 +301,10 @@ class SongListTile extends StatelessWidget {
                     const PopupMenuItem(
                       value: 2,
                       child: Text('Add to Playlist'),
+                    ),
+                    const PopupMenuItem(
+                      value: 5,
+                      child: Text('Add to Queue'),
                     ),
                     const PopupMenuItem(
                       value: 3,

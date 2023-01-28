@@ -15,6 +15,7 @@ import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
 import 'src/local/model/favourite_model.dart';
+import 'src/local/model/queue_model.dart';
 import 'src/local/model/user_model.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
@@ -67,6 +68,50 @@ final _entities = <ModelEntity>[
             flags: 0)
       ],
       relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(4, 7421630934153589295),
+      name: 'SongListModel',
+      lastPropertyId: const IdUid(7, 8594866812913580663),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 4223109003860018452),
+            name: 'id',
+            type: 6,
+            flags: 129),
+        ModelProperty(
+            id: const IdUid(2, 1017429475013175871),
+            name: 'songId',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 2700674607898705447),
+            name: 'albumName',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 639377665876451818),
+            name: 'title',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 3476718909214648657),
+            name: 'musicDirectorName',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 1648485750690727241),
+            name: 'imageUrl',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 8594866812913580663),
+            name: 'songUrl',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
 ];
 
@@ -90,13 +135,17 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(2, 1525537422210265183),
+      lastEntityId: const IdUid(4, 7421630934153589295),
       lastIndexId: const IdUid(0, 0),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
-      retiredEntityUids: const [],
+      retiredEntityUids: const [6733950382070542724],
       retiredIndexUids: const [],
-      retiredPropertyUids: const [],
+      retiredPropertyUids: const [
+        9005881871418114450,
+        2526815259030730135,
+        893678535750748607
+      ],
       retiredRelationUids: const [],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
@@ -165,6 +214,53 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGet(buffer, rootOffset, 10, ''));
 
           return object;
+        }),
+    SongListModel: EntityDefinition<SongListModel>(
+        model: _entities[2],
+        toOneRelations: (SongListModel object) => [],
+        toManyRelations: (SongListModel object) => {},
+        getId: (SongListModel object) => object.id,
+        setId: (SongListModel object, int id) {
+          object.id = id;
+        },
+        objectToFB: (SongListModel object, fb.Builder fbb) {
+          final albumNameOffset = fbb.writeString(object.albumName);
+          final titleOffset = fbb.writeString(object.title);
+          final musicDirectorNameOffset =
+              fbb.writeString(object.musicDirectorName);
+          final imageUrlOffset = fbb.writeString(object.imageUrl);
+          final songUrlOffset = fbb.writeString(object.songUrl);
+          fbb.startTable(8);
+          fbb.addInt64(0, object.id);
+          fbb.addInt64(1, object.songId);
+          fbb.addOffset(2, albumNameOffset);
+          fbb.addOffset(3, titleOffset);
+          fbb.addOffset(4, musicDirectorNameOffset);
+          fbb.addOffset(5, imageUrlOffset);
+          fbb.addOffset(6, songUrlOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = SongListModel(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              songId:
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0),
+              albumName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''),
+              title: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''),
+              musicDirectorName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 12, ''),
+              imageUrl: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 14, ''),
+              songUrl: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 16, ''));
+
+          return object;
         })
   };
 
@@ -195,4 +291,35 @@ class User_ {
   /// see [User.registerId]
   static final registerId =
       QueryStringProperty<User>(_entities[1].properties[4]);
+}
+
+/// [SongListModel] entity fields to define ObjectBox queries.
+class SongListModel_ {
+  /// see [SongListModel.id]
+  static final id =
+      QueryIntegerProperty<SongListModel>(_entities[2].properties[0]);
+
+  /// see [SongListModel.songId]
+  static final songId =
+      QueryIntegerProperty<SongListModel>(_entities[2].properties[1]);
+
+  /// see [SongListModel.albumName]
+  static final albumName =
+      QueryStringProperty<SongListModel>(_entities[2].properties[2]);
+
+  /// see [SongListModel.title]
+  static final title =
+      QueryStringProperty<SongListModel>(_entities[2].properties[3]);
+
+  /// see [SongListModel.musicDirectorName]
+  static final musicDirectorName =
+      QueryStringProperty<SongListModel>(_entities[2].properties[4]);
+
+  /// see [SongListModel.imageUrl]
+  static final imageUrl =
+      QueryStringProperty<SongListModel>(_entities[2].properties[5]);
+
+  /// see [SongListModel.songUrl]
+  static final songUrl =
+      QueryStringProperty<SongListModel>(_entities[2].properties[6]);
 }

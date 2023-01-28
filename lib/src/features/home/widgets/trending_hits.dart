@@ -98,7 +98,15 @@ class TrendingHitsWidget extends StatelessWidget {
                         ),
                         child: Align(
                           alignment: Alignment.bottomRight,
-                          child: PlayButtonWidget(),
+                          child: InkWell(
+                              onTap: () {
+                                context.read<ViewAllProvider>().getViewAll(
+                                    ViewAllStatus.trendingHits,
+                                    context: context,
+                                    goToNextfunction: true,
+                                    index: 0);
+                              },
+                              child: PlayButtonWidget()),
                         ),
                       ),
                     ),
@@ -147,30 +155,6 @@ class TrendingHitsHomeContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: InkWell(
-        // onTap: () {
-        //   List<PlayScreenModel> playScreenModel = [];
-        //   print(trendingHitsModel.records[0].id);
-        //   for (int i = 0;
-        //       i < trendingHitsModel.records.length;
-        //       i++) {
-        //     playScreenModel.add(PlayScreenModel(
-        //         id: trendingHitsModel.records[i].id,
-        //         songName:
-        //             trendingHitsModel.records[i].songName,
-        //         musicDirectorName: trendingHitsModel
-        //             .records[i].musicDirectorName[0],
-        //         albumId:
-        //             trendingHitsModel.records[i].albumId,
-        //         albumName: trendingHitsModel
-        //             .records[i].albumName));
-        //   }
-        //   print(playScreenModel.length);
-        //   Navigator.of(context).push(MaterialPageRoute(
-        //       builder: (context) => MainPlayScreen(
-        //           playScreenModel: playScreenModel,
-        //           index: 1)));
-        // },
-
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
@@ -186,7 +170,8 @@ class TrendingHitsHomeContainer extends StatelessWidget {
               context.read<ViewAllProvider>().getViewAll(
                   ViewAllStatus.trendingHits,
                   context: context,
-                  goToNextfunction: true);
+                  goToNextfunction: true,
+                  index: index);
             },
             child: Align(
               alignment: Alignment.bottomRight,

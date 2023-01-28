@@ -23,8 +23,8 @@ List<SingleChildWidget> providersList = [
     initialData: InternetConnectionStatus.connected,
     create: (_) {
       var iC = InternetConnectionChecker.createInstance(
-        checkTimeout: const Duration(seconds: 1), // Custom check timeout
-        checkInterval: const Duration(seconds: 1),
+        checkTimeout: const Duration(seconds: 3),
+        checkInterval: const Duration(seconds: 3),
       );
       return iC.onStatusChange;
     },

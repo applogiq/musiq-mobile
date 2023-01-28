@@ -50,17 +50,67 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "4:7421630934153589295",
+      "lastPropertyId": "7:8594866812913580663",
+      "name": "SongListModel",
+      "properties": [
+        {
+          "id": "1:4223109003860018452",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "2:1017429475013175871",
+          "name": "songId",
+          "type": 6
+        },
+        {
+          "id": "3:2700674607898705447",
+          "name": "albumName",
+          "type": 9
+        },
+        {
+          "id": "4:639377665876451818",
+          "name": "title",
+          "type": 9
+        },
+        {
+          "id": "5:3476718909214648657",
+          "name": "musicDirectorName",
+          "type": 9
+        },
+        {
+          "id": "6:1648485750690727241",
+          "name": "imageUrl",
+          "type": 9
+        },
+        {
+          "id": "7:8594866812913580663",
+          "name": "songUrl",
+          "type": 9
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "2:1525537422210265183",
+  "lastEntityId": "4:7421630934153589295",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
-  "retiredEntityUids": [],
+  "retiredEntityUids": [
+    6733950382070542724
+  ],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredPropertyUids": [
+    9005881871418114450,
+    2526815259030730135,
+    893678535750748607
+  ],
   "retiredRelationUids": [],
   "version": 1
 }
