@@ -15,6 +15,7 @@ class SliverCustomAppBar extends StatelessWidget {
     required this.songCounts,
     required this.callback,
     required this.imageUrl,
+    required this.addToQueue,
   }) : super(key: key);
 
   final double maxAppBarHeight;
@@ -23,6 +24,7 @@ class SliverCustomAppBar extends StatelessWidget {
   final String imageUrl;
   final int songCounts;
   final Function callback;
+  final Function addToQueue;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class SliverCustomAppBar extends StatelessWidget {
             builder: (context, shrinkOffset) {
               final appBarVisible =
                   shrinkOffset >= (maxAppBarHeight - minAppBarHeight);
-              print(appBarVisible);
+              debugPrint(appBarVisible.toString());
               final double shrinkToMaxAppBarHeightRatio =
                   shrinkOffset / maxAppBarHeight;
               const double animatAlbumImageFromPoint = 0.2;

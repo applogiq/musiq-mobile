@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 library miniplayer;
 
 import 'dart:async';
@@ -203,7 +205,6 @@ class _MiniplayerState extends State<Miniplayer> with TickerProviderStateMixin {
                       child: Material(
                         child: Container(
                           constraints: const BoxConstraints.expand(),
-                          child: widget.builder(height, percentage),
                           decoration: BoxDecoration(
                             boxShadow: <BoxShadow>[
                               BoxShadow(
@@ -213,6 +214,7 @@ class _MiniplayerState extends State<Miniplayer> with TickerProviderStateMixin {
                             ],
                             color: Theme.of(context).canvasColor,
                           ),
+                          child: widget.builder(height, percentage),
                         ),
                       ),
                     ),
@@ -411,6 +413,7 @@ class _MiniplayerState extends State<Miniplayer> with TickerProviderStateMixin {
 }
 
 ///-1 Min, -2 Max, -3 Dismiss
+// ignore: constant_identifier_names
 enum PanelState { MAX, MIN, DISMISS }
 
 //ControllerData class. Used for the controller

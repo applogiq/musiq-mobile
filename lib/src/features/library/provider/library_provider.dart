@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'dart:developer';
 
@@ -32,6 +34,7 @@ class LibraryProvider extends ChangeNotifier {
     var response = await LibraryRepository().createPlaylist(params);
     if (response.statusCode == 200) {
       playListNameExistList.add(playListName);
+
       if (isAddPlaylist) {
         context.read<PlayerProvider>().getPlayListsList();
       }
@@ -106,8 +109,8 @@ class LibraryProvider extends ChangeNotifier {
   }
 
   checkPlayListName(String name) {
-    print(name);
-    print(playListNameExistList);
+    debugPrint(name);
+    debugPrint(playListNameExistList.toString());
     if (name.trim() == "") {
       isPlayListError = true;
       playListError = ConstantText.fieldRequired;

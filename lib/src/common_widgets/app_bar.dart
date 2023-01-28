@@ -3,7 +3,7 @@ import 'package:musiq/src/features/auth/provider/register_provider.dart';
 import 'package:provider/provider.dart';
 
 class CustomAppBarWidget extends StatelessWidget {
-  CustomAppBarWidget(
+  const CustomAppBarWidget(
       {Key? key,
       required this.title,
       this.actions,
@@ -11,9 +11,9 @@ class CustomAppBarWidget extends StatelessWidget {
       this.onBack})
       : super(key: key);
   final String title;
-  var actions;
-  var height;
-  Function? onBack;
+  final dynamic actions;
+  final double height;
+  final Function? onBack;
   @override
   Widget build(BuildContext context) {
     var pro = Provider.of<RegisterProvider>(context);

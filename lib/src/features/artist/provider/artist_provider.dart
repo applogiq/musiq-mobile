@@ -47,7 +47,7 @@ class ArtistPreferenceProvider extends ChangeNotifier {
           key: "artist_list",
           value: jsonEncode(user.records.preference.artist));
       await storage.write(key: "password_cred", value: params["password"]);
-      var list1 = await storage.read(key: "artist_list");
+
       userFollowedArtist = user.records.preference.artist;
     }
   }
@@ -59,15 +59,15 @@ class ArtistPreferenceProvider extends ChangeNotifier {
     if (datas.isEmpty) {
       await getUserFollowDatas();
     }
-    print(userFollowedArtist);
+    debugPrint(userFollowedArtist.toString());
 
     var response = await AuthRepository().getArtists();
-    print(response.statusCode);
-    print(response.body);
+    debugPrint(response.statusCode);
+    debugPrint(response.body);
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body.toString());
       artistModel = ArtistModel.fromMap(data);
-      print(artistModel!.records.length);
+      debugPrint(artistModel!.records.length.toString());
       isLoaded = true;
     }
     notifyListeners();
@@ -75,12 +75,12 @@ class ArtistPreferenceProvider extends ChangeNotifier {
 
   void followAndUnfollow(Map params) async {
     var res = await ArtistRepo().followAndUnfollow(params);
-    print(res.statusCode);
-    print(res.body);
+    debugPrint(res.statusCode);
+    debugPrint(res.body);
   }
 
   void checkFollow(Record record, int index) async {
-    print(record.artistId);
+    debugPrint(record.artistId);
     var userId = await storage.read(key: "register_id");
     if (userFollowedArtist.contains(record.artistId)) {
       artistModel!.records[index].followers = (record.followers! - 1);

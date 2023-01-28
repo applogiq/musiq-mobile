@@ -31,7 +31,7 @@ class Images {
   static String noArtist = "assets/images/default/no_artist.png";
   static String noSong = "assets/images/default/no_song.png";
   static String noFav = "assets/images/un_happy.png";
-  static String user_default = "assets/images/no_user.png";
+  static String userDefault = "assets/images/no_user.png";
   // un_happy.png
 
   List<ArtistImageModel> artistPrefList = [

@@ -188,37 +188,7 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                     ],
                   ),
                 );
-              }
-              // Column(
-              //   children: [
-              //     Container(
-
-              //         alignment: Alignment.centerLeft,
-              //         padding: const EdgeInsets.all(8),
-              //         child: InkWell(
-              //             onTap: () {
-              //               // var songPlayList=[];
-              //               // for(int i=0;i<songList.length;i++){
-
-              //               //   songPlayList.add(songList.records[i].id);
-              //               // }
-              //               // print(index);
-              //               // Navigator.of(context).push(MaterialPageRoute(
-              //               //     builder: (context) => PlayScreen(
-              //               //       songList: songList,
-              //               //       index: index,
-              //               //       id:songList.records[index].id.toString(),
-              //               //           imageURL:  "${APIConstants.SONG_BASE_URL}public/music/tamil/${songList.records[index].albumName[0].toUpperCase()}/${songList.records[index].albumName}/image/${songList.records[index].albumId}.png",
-              //               //           songName: songList.records[index].songName,
-              //               //           artistName: songList.records[index].musicDirectorName[0].toString(),
-              //               //           songplayList: songPlayList,
-              //               //         )));
-              //             },
-              //             child: const Text("Favourites")),
-              //       ),
-              //   ],
-              // );
-              );
+              });
     });
   }
 }

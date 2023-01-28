@@ -27,7 +27,7 @@ class AppBarOverlayContent extends StatelessWidget {
           //   hideLyrics;
           // });
         } else {
-          print(routeName);
+          debugPrint(routeName);
         }
       },
       child: Text(title),
@@ -117,7 +117,7 @@ class AppBarOverlayContent extends StatelessWidget {
                           //     songId.add(record!.id.toString());
                           //   }
 
-                          //   print(songId.toString());
+                          //   debugPrint(songId.toString());
                           //   Navigation.navigateToScreen(
                           //       context, RouteName.player,
                           //       args: PlayerModel(

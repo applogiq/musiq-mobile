@@ -58,12 +58,12 @@ class SearchScreen extends StatelessWidget {
                     return pro.isRecentSearch
                         ? Column(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
+                              const Padding(
+                                padding: EdgeInsets.all(16.0),
                                 child: ListHeaderWidget(
                                   title: "Recent Searches",
                                   actionTitle: "Clear",
-                                  dataList: const [],
+                                  dataList: [],
                                 ),
                               ),
                               ListView.builder(

@@ -4,9 +4,10 @@ import '../../constants/color.dart';
 import '../../constants/images.dart';
 
 class NoArtist extends StatelessWidget {
-  NoArtist({Key? key, this.height = 240, this.width = 200}) : super(key: key);
-  double height;
-  double width;
+  const NoArtist({Key? key, this.height = 240, this.width = 200})
+      : super(key: key);
+  final double height;
+  final double width;
 
   @override
   Widget build(BuildContext context) {

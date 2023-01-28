@@ -93,13 +93,13 @@ class _AddToPlaylistScreenState extends State<AddToPlaylistScreen> {
                     index: index,
                     isMore: false,
                     callBack: () {
-                      print("add to playlist");
+                      debugPrint("add to playlist");
                       Map params = {};
 
                       params["playlist_id"] = record[index].id;
                       params["song_id"] = widget.songId;
 
-                      print(params);
+                      debugPrint(params.toString());
 
                       context.read<PlayerProvider>().addToPlaylist(
                           params, context, record[index].playlistName);

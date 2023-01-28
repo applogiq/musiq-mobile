@@ -3,7 +3,7 @@ import 'package:musiq/src/constants/color.dart';
 import 'package:musiq/src/constants/style.dart';
 
 class CustomButton extends StatelessWidget {
-  CustomButton(
+  const CustomButton(
       {Key? key,
       required this.label,
       this.verticalMargin = 16,
@@ -15,12 +15,12 @@ class CustomButton extends StatelessWidget {
       this.height = 52})
       : super(key: key);
   final String label;
-  double verticalMargin;
-  double horizontalMargin;
-  double radius;
-  bool isIcon;
-  bool isValid;
-  bool isLoading;
+  final double verticalMargin;
+  final double horizontalMargin;
+  final double radius;
+  final bool isIcon;
+  final bool isValid;
+  final bool isLoading;
   final double height;
   @override
   Widget build(BuildContext context) {

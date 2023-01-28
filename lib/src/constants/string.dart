@@ -1,5 +1,5 @@
 class ConstantText {
-  static String app_name = "MusiQ";
+  static String appName = "MusiQ";
   static String slogan = "Queue your favourite music";
   static String welcomeBack = "Welcome Back";
   static String name = "Name";

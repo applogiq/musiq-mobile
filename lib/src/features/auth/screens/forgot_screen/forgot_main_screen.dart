@@ -149,7 +149,7 @@ class _ForgotPasswordMainScreenState extends State<ForgotPasswordMainScreen> {
               Provider.of<InternetConnectionStatus>(context) ==
                       InternetConnectionStatus.disconnected
                   ? const OfflineScreen()
-                  : SizedBox.shrink()
+                  : const SizedBox.shrink()
             ],
           )),
     );

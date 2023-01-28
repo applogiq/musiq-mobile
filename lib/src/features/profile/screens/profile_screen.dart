@@ -52,7 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             height: 90,
                           ))
                         : pro.profileAPIModel.records == null
-                            ? Image.asset(Images.user_default)
+                            ? Image.asset(Images.userDefault)
                             : (pro.profileAPIModel.records!.isImage == true
                                 ? CircleAvatar(
                                     backgroundColor: Colors.black,
@@ -70,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
                                     ),
                                   )
-                                : Image.asset(Images.user_default));
+                                : Image.asset(Images.userDefault));
                   }),
                 ),
               ),
@@ -165,7 +165,7 @@ class SignOutWidget extends StatelessWidget {
       onTap: () async {
         showAlertDialog(context);
       },
-      child: CustomButton(
+      child: const CustomButton(
         label: "Sign Out",
       ),
     );
@@ -182,9 +182,6 @@ class ProfileListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () async {
-        // await objectBox.clearUser();
-        // var usersList = await objectBox.getAll();
-        // print(usersList.map((e) => e.id));
         context.read<ProfileProvider>().removeMyProfileState();
         Navigator.of(context)
             .pushNamed(ProfileProvider().profileContent[index].navigateScreen);

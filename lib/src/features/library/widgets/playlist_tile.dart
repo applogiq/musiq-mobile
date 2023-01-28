@@ -33,7 +33,7 @@ class PlaylistTile extends StatelessWidget {
                 ? Container(
                     height: 70,
                     width: 70,
-                    decoration: PlayListNoImageDecoration(),
+                    decoration: playListNoImageDecoration(),
                     child: Center(
                       child: Text(
                         record[index].playlistName[0].toString().toUpperCase(),
@@ -99,7 +99,7 @@ class PlaylistTile extends StatelessWidget {
                           ),
                         ),
                         onSelected: (value) {
-                          print(value);
+                          debugPrint(value.toString());
                           // _onMenuItemSelected(value as int);
                           // _onMenuItemSelected(value as int);
                         },

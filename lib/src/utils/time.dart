@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
+
 String detailedDuration(String duration) {
   List durationList = duration.split(":");
-  print(durationList);
+  debugPrint(durationList.toString());
   if (durationList.length == 3) {
     return durationList[0].toString().trim() == "00"
         ? "${durationList[1]} mins ${durationList[2]} sec"

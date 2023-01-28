@@ -156,12 +156,12 @@ class ProfileImageEdit extends StatelessWidget {
                             fit: BoxFit.cover)
                         : DecorationImage(
                             image: AssetImage(
-                              Images.user_default,
+                              Images.userDefault,
                             ),
                             fit: BoxFit.cover)
                     : DecorationImage(
                         image: AssetImage(
-                          Images.user_default,
+                          Images.userDefault,
                         ),
                         fit: BoxFit.cover)
             // // profileController.isImagePicked == false
@@ -175,7 +175,7 @@ class ProfileImageEdit extends StatelessWidget {
             //             fit: BoxFit.cover)
             //         : DecorationImage(
             //             image: AssetImage(
-            //               Images.user_default,
+            //               Images.userDefault,
             //             ),
             //             fit: BoxFit.cover)
             // : DecorationImage(

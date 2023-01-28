@@ -16,8 +16,8 @@ class PreferenceScreen extends StatelessWidget {
             InternetConnectionStatus.disconnected
         ? const OfflineScreen()
         : Scaffold(
-            appBar: PreferredSize(
-              preferredSize: const Size(double.maxFinite, 60),
+            appBar: const PreferredSize(
+              preferredSize: Size(double.maxFinite, 60),
               child: CustomAppBarWidget(
                 title: "Preferences",
               ),

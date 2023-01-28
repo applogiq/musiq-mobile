@@ -82,7 +82,7 @@ class ArtistListView extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               artist.records[index].isImage == false
-                                  ? NoArtist()
+                                  ? const NoArtist()
                                   : CustomColorContainer(
                                       child: Image.network(
                                         generateArtistImageUrl(
@@ -112,9 +112,10 @@ class ArtistListView extends StatelessWidget {
 }
 
 class NoArtist extends StatelessWidget {
-  NoArtist({Key? key, this.height = 240, this.width = 200}) : super(key: key);
-  double height;
-  double width;
+  const NoArtist({Key? key, this.height = 240, this.width = 200})
+      : super(key: key);
+  final double height;
+  final double width;
 
   @override
   Widget build(BuildContext context) {

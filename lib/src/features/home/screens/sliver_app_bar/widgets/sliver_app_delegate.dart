@@ -1,9 +1,8 @@
-import 'dart:developer';
-
-import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-typedef _SliverAppBarDelegateBuilder = Widget Function(
+import 'package:flutter/material.dart';
+
+typedef SliverAppBarDelegateBuilder = Widget Function(
   BuildContext context,
   double shrinkOffset,
 );
@@ -16,7 +15,7 @@ class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   });
   final double minHeight;
   final double maxHeight;
-  final _SliverAppBarDelegateBuilder builder;
+  final SliverAppBarDelegateBuilder builder;
   @override
   double get minExtent => minHeight;
   @override

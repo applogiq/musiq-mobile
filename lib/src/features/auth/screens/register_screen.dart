@@ -26,7 +26,7 @@ class RegisterScreen extends StatelessWidget {
                   Size(double.maxFinite, getProportionateScreenHeight(80)),
               child: Padding(
                 padding: EdgeInsets.only(top: getProportionateScreenHeight(8)),
-                child: CustomAppBarWidget(
+                child: const CustomAppBarWidget(
                   title: "New Account",
                 ),
               ),

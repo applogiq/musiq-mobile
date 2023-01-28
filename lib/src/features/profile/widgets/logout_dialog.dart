@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/common/screen/onboarding_screen.dart';
 import 'package:musiq/src/features/player/provider/player_provider.dart';

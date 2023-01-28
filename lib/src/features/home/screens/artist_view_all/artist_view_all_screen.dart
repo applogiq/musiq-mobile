@@ -41,8 +41,8 @@ class _ArtistViewAllScreenState extends State<ArtistViewAllScreen> {
         ? const OfflineScreen()
         : SafeArea(
             child: Scaffold(
-            appBar: PreferredSize(
-              preferredSize: const Size(double.maxFinite, 50),
+            appBar: const PreferredSize(
+              preferredSize: Size(double.maxFinite, 50),
               child: CustomAppBarWidget(
                 title: "Artists",
               ),

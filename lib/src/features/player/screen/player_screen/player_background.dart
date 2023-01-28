@@ -84,27 +84,25 @@ class PlayerBackground extends StatelessWidget {
                               Color.fromRGBO(22, 21, 28, 1),
                             ])),
                       ),
-                      Container(
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                    gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        //     stops: [
-                                        //   0.4,
-                                        //   0.01,
-                                        // ],
-                                        colors: [
-                                      Color.fromRGBO(22, 21, 28, 0.3),
-                                      Color.fromRGBO(22, 21, 28, 0),
-                                    ])),
-                              ),
+                      Column(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                  gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      //     stops: [
+                                      //   0.4,
+                                      //   0.01,
+                                      // ],
+                                      colors: [
+                                    Color.fromRGBO(22, 21, 28, 0.3),
+                                    Color.fromRGBO(22, 21, 28, 0),
+                                  ])),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -115,7 +113,7 @@ class PlayerBackground extends StatelessWidget {
                             InkWell(
                                 onTap: () {
                                   bool canPop = Navigator.of(context).canPop();
-                                  print(canPop);
+                                  debugPrint(canPop.toString());
                                   if (!canPop) {
                                     if (context
                                         .read<PlayerProvider>()

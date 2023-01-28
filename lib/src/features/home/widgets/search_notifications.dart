@@ -26,7 +26,7 @@ class SearchAndNotifications extends StatelessWidget {
               child: SearchTextWidget(
                 isReadOnly: true,
                 onTap: () {
-                  print("DATA");
+                  debugPrint("DATA");
                   context.read<SearchProvider>().resetState();
                   context.read<HomeProvider>().goToSearch(context);
                   // Navigator.of(context).push(
@@ -68,14 +68,14 @@ class SearchAndNotifications extends StatelessWidget {
 }
 
 class SearchTextWidget extends StatefulWidget {
-  SearchTextWidget({
+  const SearchTextWidget({
     Key? key,
     required this.hint,
     this.isReadOnly = false,
     required this.onTap,
   }) : super(key: key);
   final String hint;
-  bool isReadOnly;
+  final bool isReadOnly;
 
   final VoidCallback onTap;
 

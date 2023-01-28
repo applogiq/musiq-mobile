@@ -10,9 +10,9 @@ import '../../../../utils/image_url_generate.dart';
 import '../../provider/artist_provider.dart';
 
 class ArtistPreferenceScreenBody extends StatelessWidget {
-  ArtistPreferenceScreenBody({Key? key, required this.artist_list})
+  const ArtistPreferenceScreenBody({Key? key, required this.artistList})
       : super(key: key);
-  List? artist_list = [];
+  final List? artistList;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class ArtistPreferenceScreenBody extends StatelessWidget {
                     child: CustomColorContainer(
                       child:
                           provider.artistModel!.records[index].isImage == false
-                              ? NoArtist(
+                              ? const NoArtist(
                                   height: 80,
                                   width: 80,
                                 )
@@ -136,11 +136,6 @@ class ArtistPreferenceScreenBody extends StatelessWidget {
                           onTap: () async {
                             provider.checkFollow(
                                 provider.artistModel!.records[index], index);
-                            // artistPreferenceController.followAndUnfollow(artistPreferenceController.artistModel!.records[index].id);
-                            // print();
-                            // followAndUnfollow(
-                            //     artistPreferenceController.artistModel!.records,
-                            //     index);
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(
@@ -176,28 +171,6 @@ class ArtistPreferenceScreenBody extends StatelessWidget {
           });
     });
   }
-
-//   void followAndUnfollow(List<Record> records, int index) {
-//     if (artist_list!.contains(records[index].artistId)) {
-//       Map<String, dynamic> params = {
-//         "artist_id": records[index].artistId,
-//         "follow": false
-//       };
-//       artistPreferenceController.followAndUnfollow(params);
-
-// // print("object");
-//     } else {
-//       // records[index].followers=(records[index].followers! +1);
-//       artist_list!.add(records[index].artistId);
-// //
-//       Map<String, dynamic> params = {
-//         "artist_id": records[index].artistId,
-//         "follow": true
-//       };
-//       artistPreferenceController.followAndUnfollow(params);
-//       // print("data");
-//     }
-//   }
 }
 
 class ArtistImagesWidget extends StatelessWidget {

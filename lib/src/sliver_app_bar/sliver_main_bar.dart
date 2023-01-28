@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../features/view_all/widgets/gradient_cover.dart';
 
-typedef _SliverAppBarDelegateBuilder = Widget Function(
+typedef SliverAppBarDelegateBuilder = Widget Function(
   BuildContext context,
   double shrinkOffset,
 );
@@ -21,12 +21,12 @@ class SliverMainBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final extraTopPadding = MediaQuery.of(context).size.height * 0.03;
+    // final extraTopPadding = MediaQuery.of(context).size.height * 0.03;
     //app bar content padding
-    final padding = EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top + extraTopPadding,
-        right: 10,
-        left: 10);
+    // final padding = EdgeInsets.only(
+    //     top: MediaQuery.of(context).padding.top + extraTopPadding,
+    //     right: 10,
+    //     left: 10);
 
     return SliverPersistentHeader(
         pinned: true,
@@ -34,25 +34,25 @@ class SliverMainBar extends StatelessWidget {
             maxHeight: maxAppBarHeight,
             minHeight: minAppBarHeight,
             builder: (context, shrinkOffset) {
-              final appBarVisible =
-                  shrinkOffset >= (maxAppBarHeight - minAppBarHeight);
+              // final appBarVisible =
+              //     shrinkOffset >= (maxAppBarHeight - minAppBarHeight);
 
               final double shrinkToMaxAppBarHeightRatio =
                   shrinkOffset / maxAppBarHeight;
               const double animatAlbumImageFromPoint = 0.2;
               final animateAlbumImage =
                   shrinkToMaxAppBarHeightRatio >= animatAlbumImageFromPoint;
-              final animateOpacityToZero = shrinkToMaxAppBarHeightRatio > 0.7;
+              // final animateOpacityToZero = shrinkToMaxAppBarHeightRatio > 0.7;
               final albumPositionFromTop = animateAlbumImage
                   ? (animatAlbumImageFromPoint - shrinkToMaxAppBarHeightRatio) *
                       maxAppBarHeight
                   : null;
-              final albumImageSize = MediaQuery.of(context).size.height * 0.45 -
-                  shrinkOffset / 1.5;
-              final showFixedAppBar = shrinkToMaxAppBarHeightRatio > 0.8;
-              final double titleOpacity = showFixedAppBar
-                  ? 1 - (maxAppBarHeight - shrinkOffset) / minAppBarHeight
-                  : 0;
+              // final albumImageSize = MediaQuery.of(context).size.height * 0.45 -
+              //     shrinkOffset / 1.5;
+              // final showFixedAppBar = shrinkToMaxAppBarHeightRatio > 0.8;
+              // final double titleOpacity = showFixedAppBar
+              //     ? 1 - (maxAppBarHeight - shrinkOffset) / minAppBarHeight
+              //     : 0;
 
               return Stack(
                 alignment: Alignment.topCenter,
@@ -111,7 +111,7 @@ class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   });
   final double minHeight;
   final double maxHeight;
-  final _SliverAppBarDelegateBuilder builder;
+  final SliverAppBarDelegateBuilder builder;
   @override
   double get minExtent => minHeight;
   @override

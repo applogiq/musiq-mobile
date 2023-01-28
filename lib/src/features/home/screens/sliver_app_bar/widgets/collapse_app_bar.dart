@@ -91,14 +91,6 @@ class CollapsedAppBar extends StatelessWidget {
                     return InkWell(
                       onTap: () {
                         callBack();
-
-                        // print(songId.toString());
-                        // Navigation.navigateToScreen(context, RouteName.player,
-                        //     args: PlayerModel(
-                        //         collectionViewAllModel:
-                        //             pro.collectionViewAllModel,
-                        //         songList: songId,
-                        //         selectedSongIndex: 0));
                       },
                       child: PlayButtonWidget(
                         bgColor: CustomColor.secondaryColor,

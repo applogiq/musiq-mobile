@@ -24,7 +24,6 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     context.read<PlayerProvider>().loadQueueSong();
   }
@@ -33,7 +32,7 @@ class _MainScreenState extends State<MainScreen> {
   void dispose() {
     BottomNavigationBarProvider()
         .pages[BottomNavigationBarProvider().selectedBottomIndex];
-    // TODO: implement dispose
+
     super.dispose();
   }
 

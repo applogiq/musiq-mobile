@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -82,7 +83,7 @@ class NetworkApiService extends BaseApiServices {
       var token = await storage.read(key: "access_token");
 
       header["Authorization"] = "Bearer $token";
-      print(header["Authorization"]);
+      debugPrint(header["Authorization"]);
 
       Response response =
           await post(Uri.parse(url), headers: header, body: jsonEncode(data))
@@ -103,7 +104,7 @@ class NetworkApiService extends BaseApiServices {
       var token = await storage.read(key: "access_token");
 
       header["Authorization"] = "Bearer $token";
-      print(header["Authorization"]);
+      debugPrint(header["Authorization"]);
 
       Response response = await get(
         Uri.parse(url),
@@ -125,7 +126,7 @@ class NetworkApiService extends BaseApiServices {
       var token = await storage.read(key: "access_token");
 
       header["Authorization"] = "Bearer $token";
-      print(header["Authorization"]);
+      debugPrint(header["Authorization"]);
 
       Response response =
           await put(Uri.parse(url), headers: header, body: jsonEncode(data))
@@ -146,7 +147,7 @@ class NetworkApiService extends BaseApiServices {
       var token = await storage.read(key: "access_token");
 
       header["Authorization"] = "Bearer $token";
-      print(url);
+      debugPrint(url);
       Response response = await delete(
         Uri.parse(url),
         headers: header,
@@ -169,9 +170,9 @@ class NetworkApiService extends BaseApiServices {
       header["Authorization"] = "Bearer $token";
 
       // header.removeWhere((key, value) => key == "Content-type");
-      print(url);
-      print(data);
-      print(header);
+      debugPrint(url);
+      debugPrint(data);
+      debugPrint(header.toString());
       Response response =
           await delete(Uri.parse(url), headers: header, body: jsonEncode(data));
 

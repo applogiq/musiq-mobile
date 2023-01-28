@@ -88,7 +88,7 @@ class ImagePickerSheet extends StatelessWidget {
                         true)
                 ? ListTile(
                     onTap: () async {
-                      var res = await context
+                      await context
                           .read<ProfileProvider>()
                           .deleteImage(context, mainContext);
                       // Navigator.of(context).pop();

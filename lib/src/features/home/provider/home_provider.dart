@@ -113,7 +113,7 @@ class HomeProvider extends ChangeNotifier {
             musicDirectorName:
                 trendingHitsModel.records[i].musicDirectorName[0].toString()));
       }
-      print(trendingSongListModel);
+      debugPrint(trendingSongListModel.toString());
     } else {
       trendingSongListModel.clear();
       trendingHitsModel = TrendingHitsModel(

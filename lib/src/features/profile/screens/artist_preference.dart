@@ -41,8 +41,8 @@ class _ProfileArtistPreferenceScreenState
                 Consumer<ArtistPreferenceProvider>(builder: (context, pro, _) {
               return !pro.isLoaded
                   ? const LoaderScreen()
-                  : ArtistPreferenceScreenBody(
-                      artist_list: const [],
+                  : const ArtistPreferenceScreenBody(
+                      artistList: [],
                     );
             }),
             // body: ArtistPreferenceScreenBody(

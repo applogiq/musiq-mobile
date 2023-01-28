@@ -68,9 +68,9 @@ class TopAlbum extends StatelessWidget {
                           children: [
                             InkWell(
                               onTap: () {
-                                print(album.records[index].id);
-                                print(album.records[index].albumName);
-                                print(
+                                debugPrint(album.records[index].id.toString());
+                                debugPrint(album.records[index].albumName);
+                                debugPrint(
                                   generateSongImageUrl(
                                       album.records[index].albumName,
                                       album.records[index].albumId),
@@ -82,7 +82,7 @@ class TopAlbum extends StatelessWidget {
                                         )));
                               },
                               // onTap: () async {
-                              //   print(album.records[index].id);
+                              //   debugPrint(album.records[index].id);
                               //   ViewAllBanner banner = ViewAllBanner(
                               //     bannerId:
                               //         album.records[index].id.toString(),
@@ -91,11 +91,11 @@ class TopAlbum extends StatelessWidget {
                               //     bannerTitle: album.records[index].albumName
                               //         .toString(),
                               //   );
-                              //   print(banner.bannerImageUrl.toString());
+                              //   debugPrint(banner.bannerImageUrl.toString());
                               //   songList =
                               //       await apiRoute.getSpecificAlbumSong(
                               //           id: album.records[index].id);
-                              //   print(songList.records.length);
+                              //   debugPrint(songList.records.length);
                               //   List<ViewAllSongList> viewAllSongListModel =
                               //       [];
                               //   for (int i = 0;

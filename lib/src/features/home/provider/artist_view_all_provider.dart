@@ -24,7 +24,7 @@ class ArtistViewAllProvider extends ChangeNotifier {
     artistModel.records.clear();
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);
-      print(data);
+      debugPrint(data);
       artistModel = ArtistModel.fromMap(data);
     }
 
@@ -40,7 +40,7 @@ class ArtistViewAllProvider extends ChangeNotifier {
         success: false, message: "No records", records: [], totalrecords: 0);
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);
-      print(data);
+      debugPrint(data);
       collectionViewAllModel = CollectionViewAllModel.fromMap(data);
       // artistModel = ArtistModel.fromMap(data);
     }

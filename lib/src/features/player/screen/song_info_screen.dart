@@ -226,7 +226,7 @@ class _SongInfoScreenState extends State<SongInfoScreen> {
                                                                           index]
                                                                       .isImage ==
                                                                   false
-                                                              ? NoArtist()
+                                                              ? const NoArtist()
                                                               : CustomColorContainer(
                                                                   child: Image
                                                                       .network(

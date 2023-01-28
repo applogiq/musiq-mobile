@@ -43,7 +43,7 @@ class ViewAllProvider extends ChangeNotifier {
       var res = await homeRepository.getTrendingSongList(100);
       if (res.statusCode == 200) {
         var data = jsonDecode(res.body);
-        print(data);
+        debugPrint(data);
 
         trendingHitsModel = TrendingHitsModel.fromMap(data);
       }
@@ -51,7 +51,7 @@ class ViewAllProvider extends ChangeNotifier {
       var res = await homeRepository.getNewRelease();
       if (res.statusCode == 200) {
         var data = jsonDecode(res.body);
-        print(data);
+        debugPrint(data);
 
         newReleaseModel = NewReleaseModel.fromMap(data);
       }
@@ -59,29 +59,29 @@ class ViewAllProvider extends ChangeNotifier {
       var res = await homeRepository.getRecentPlayedList(100);
       if (res.statusCode == 200) {
         var data = jsonDecode(res.body);
-        print(data);
+        debugPrint(data);
 
         recentlyPlayed = RecentlyPlayed.fromMap(data);
       }
     } else if (status == ViewAllStatus.album) {
-      print(id);
+      debugPrint(id.toString());
       var res = await homeRepository.getSpecificAlbum(id!);
-      print(res.statusCode);
-      print(res.body);
+      debugPrint(res.statusCode);
+      debugPrint(res.body);
       if (res.statusCode == 200) {
         var data = jsonDecode(res.body);
-        print(data);
+        debugPrint(data);
 
         albumSongListModel = AlbumSongListModel.fromMap(data);
         notifyListeners();
       }
     } else if (status == ViewAllStatus.aura) {
       var res = await homeRepository.getSpecificAura(id!);
-      print(res.statusCode);
-      print(res.body);
+      debugPrint(res.statusCode);
+      debugPrint(res.body);
       if (res.statusCode == 200) {
         var data = jsonDecode(res.body);
-        print(data);
+        debugPrint(data);
 
         auraSongListModel = AuraSongListModel.fromMap(data);
         notifyListeners();
@@ -99,7 +99,7 @@ class ViewAllProvider extends ChangeNotifier {
     List<PlayerSongListModel> playerSongList = [];
     switch (viewAllStatus) {
       case ViewAllStatus.newRelease:
-        print(newReleaseModel.totalrecords);
+        debugPrint(newReleaseModel.totalrecords.toString());
         for (var record in newReleaseModel.records) {
           playerSongList.add(PlayerSongListModel(
               id: record.id,
@@ -110,7 +110,7 @@ class ViewAllProvider extends ChangeNotifier {
         }
         break;
       case ViewAllStatus.recentlyPlayed:
-        print(recentlyPlayed.records);
+        debugPrint(recentlyPlayed.records.toString());
         for (var record in recentlyPlayed.records) {
           playerSongList.add(PlayerSongListModel(
               id: record[0].id,
@@ -157,8 +157,75 @@ class ViewAllProvider extends ChangeNotifier {
         break;
     }
     notifyListeners();
-    print("SSSS");
-    print(playerSongList);
+    debugPrint("SSSS");
+    debugPrint(playerSongList.toString());
     context.read<PlayerProvider>().goToPlayer(context, playerSongList, index);
+  }
+
+  addQueue(
+    ViewAllStatus status,
+    BuildContext context,
+  ) {
+    List<PlayerSongListModel> playerSongList = [];
+    switch (status) {
+      case ViewAllStatus.newRelease:
+        debugPrint(newReleaseModel.totalrecords.toString());
+        for (var record in newReleaseModel.records) {
+          playerSongList.add(PlayerSongListModel(
+              id: record.id,
+              albumName: record.albumName.toString(),
+              title: record.songName.toString(),
+              imageUrl: generateSongImageUrl(record.albumName, record.albumId),
+              musicDirectorName: record.musicDirectorName[0].toString()));
+        }
+        break;
+      case ViewAllStatus.recentlyPlayed:
+        debugPrint(recentlyPlayed.records.toString());
+        for (var record in recentlyPlayed.records) {
+          playerSongList.add(PlayerSongListModel(
+              id: record[0].id,
+              albumName: record[0].albumName.toString(),
+              title: record[0].songName.toString(),
+              imageUrl:
+                  generateSongImageUrl(record[0].albumName, record[0].albumId),
+              musicDirectorName: record[0].musicDirectorName[0].toString()));
+        }
+        break;
+      case ViewAllStatus.trendingHits:
+        for (var record in trendingHitsModel.records) {
+          playerSongList.add(PlayerSongListModel(
+              id: record.id,
+              albumName: record.albumName.toString(),
+              title: record.songName.toString(),
+              imageUrl: generateSongImageUrl(record.albumName, record.albumId),
+              musicDirectorName: record.musicDirectorName[0].toString()));
+        }
+        break;
+
+      case ViewAllStatus.album:
+        for (var record in albumSongListModel.records) {
+          playerSongList.add(PlayerSongListModel(
+              id: record.id,
+              albumName: record.albumName.toString(),
+              title: record.songName.toString(),
+              imageUrl: generateSongImageUrl(record.albumName, record.albumId),
+              musicDirectorName: record.musicDirectorName[0].toString()));
+        }
+        break;
+      case ViewAllStatus.aura:
+        for (var record in auraSongListModel.records) {
+          playerSongList.add(PlayerSongListModel(
+              id: record.auraSongs.songId,
+              albumName: record.albumName.toString(),
+              title: record.songName.toString(),
+              imageUrl: generateSongImageUrl(record.albumName, record.albumId),
+              musicDirectorName: record.musicDirectorName[0].toString()));
+        }
+        break;
+
+      default:
+        break;
+    }
+    context.read<PlayerProvider>().addSongToQueueSongList(playerSongList);
   }
 }

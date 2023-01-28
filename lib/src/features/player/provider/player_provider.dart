@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -31,7 +33,7 @@ class PlayerProvider extends ChangeNotifier {
   bool isShuffle = false;
   bool issongInfoDetailsLoad = true;
   int loopStatus = 0;
-  late Box<FavouriteSong> _store;
+
   late Store store;
   List<int> favouritesList = [];
   List<int> queueIdList = [];
@@ -60,55 +62,107 @@ class PlayerProvider extends ChangeNotifier {
     });
   }
 
+  addNewQueueSongList(List<PlayerSongListModel> playerSongListModel) async {
+    await getApplicationDocumentsDirectory().then((Directory dir) {
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq');
+      final queueBox = store.box<SongListModel>();
+
+      queueBox.removeAll();
+      List<SongListModel> songlist = [];
+      for (var e in playerSongListModel) {
+        songlist.add(SongListModel(
+            songId: e.id,
+            albumName: e.albumName,
+            title: e.title,
+            musicDirectorName: e.musicDirectorName,
+            imageUrl: e.imageUrl,
+            songUrl:
+                "https://api-musiq.applogiq.org/api/v1/audio?song_id=${e.id.toString()}"));
+      }
+      queueBox.putMany(songlist);
+
+      store.close();
+      getQueueSongList();
+    });
+  }
+
+  addSongToQueueSongList(List<PlayerSongListModel> playerSongListModel) async {
+    await getApplicationDocumentsDirectory().then((Directory dir) {
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq');
+      final queueBox = store.box<SongListModel>();
+
+      List<SongListModel> songlist = [];
+      for (var e in playerSongListModel) {
+        songlist.add(SongListModel(
+            songId: e.id,
+            albumName: e.albumName,
+            title: e.title,
+            musicDirectorName: e.musicDirectorName,
+            imageUrl: e.imageUrl,
+            songUrl:
+                "https://api-musiq.applogiq.org/api/v1/audio?song_id=${e.id.toString()}"));
+      }
+      queueBox.putMany(songlist);
+
+      store.close();
+      getQueueSongList();
+    });
+  }
+
   loadQueueSong() async {
     await getApplicationDocumentsDirectory().then((Directory dir) async {
       store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq');
       final box = store.box<SongListModel>();
 
       var res = box.getAll();
-      queueIdList.clear();
-      List<PlayerSongListModel> playerSongList = [];
-      for (var e in res) {
-        playerSongList.add(PlayerSongListModel(
-            id: e.songId,
-            albumName: e.albumName,
-            title: e.title,
-            imageUrl: e.imageUrl,
-            musicDirectorName: e.musicDirectorName));
+      debugPrint("sdfdgdf");
+      debugPrint(res.length.toString());
+      if (res.isNotEmpty) {
+        queueIdList.clear();
+        List<PlayerSongListModel> playerSongList = [];
+        for (var e in res) {
+          playerSongList.add(PlayerSongListModel(
+              id: e.songId,
+              albumName: e.albumName,
+              title: e.title,
+              imageUrl: e.imageUrl,
+              musicDirectorName: e.musicDirectorName));
+        }
+        playlist = ConcatenatingAudioSource(
+          useLazyPreparation: true,
+          children: List.generate(
+            playerSongList.length,
+            (index) => AudioSource.uri(
+                Uri.parse(
+                    "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongList[index].id.toString()}"),
+                tag: PlayerSongListModel(
+                    id: playerSongList[index].id,
+                    albumName: playerSongList[index].albumName,
+                    title: playerSongList[index].title,
+                    musicDirectorName:
+                        playerSongList[index].musicDirectorName.toString(),
+                    imageUrl: playerSongList[index].imageUrl)),
+          ),
+        );
+        await player.setAudioSource(
+          playlist,
+          initialIndex: 0,
+          initialPosition: Duration.zero,
+        );
+        player.stop();
+        isPlay = true;
+        isPlaying = true;
+
+        playOrPause();
+        store.close();
       }
-      playlist = ConcatenatingAudioSource(
-        useLazyPreparation: true,
-        children: List.generate(
-          playerSongList.length,
-          (index) => AudioSource.uri(
-              Uri.parse(
-                  "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongList[index].id.toString()}"),
-              tag: PlayerSongListModel(
-                  id: playerSongList[index].id,
-                  albumName: playerSongList[index].albumName,
-                  title: playerSongList[index].title,
-                  musicDirectorName:
-                      playerSongList[index].musicDirectorName.toString(),
-                  imageUrl: playerSongList[index].imageUrl)),
-        ),
-      );
-      await player.setAudioSource(
-        playlist,
-        initialIndex: 0,
-        initialPosition: Duration.zero,
-      );
-      player.stop();
-      isPlay = false;
-      isPlaying = true;
-      playOrPause();
-      store.close();
     });
 
     try {
       await clearFavouriteSong();
       await loadFavourites();
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
       store.close();
     }
     notifyListeners();
@@ -168,6 +222,7 @@ class PlayerProvider extends ChangeNotifier {
 
   void goToPlayer(BuildContext context,
       List<PlayerSongListModel> playerSongList, int index) async {
+    await addNewQueueSongList(playerSongList);
     playlist = ConcatenatingAudioSource(
       useLazyPreparation: true,
       children: List.generate(
@@ -197,8 +252,9 @@ class PlayerProvider extends ChangeNotifier {
       await clearFavouriteSong();
       await loadFavourites();
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
+
     Navigation.navigateToScreen(context, RouteName.player);
 
     notifyListeners();
@@ -267,7 +323,7 @@ class PlayerProvider extends ChangeNotifier {
   }
 
   queuePlayNext(PlayerSongListModel playerSongListModel) {
-    print(player.currentIndex);
+    debugPrint(player.currentIndex.toString());
     if (player.currentIndex != null) {
       playlist.insert(
           player.currentIndex! + 1,
@@ -284,7 +340,7 @@ class PlayerProvider extends ChangeNotifier {
   }
 
   queueSong(PlayerSongListModel playerSongListModel) {
-    print(playlist.length);
+    debugPrint(playlist.length.toString());
 
     playlist.add(AudioSource.uri(
         Uri.parse(
@@ -296,11 +352,11 @@ class PlayerProvider extends ChangeNotifier {
             musicDirectorName: playerSongListModel.musicDirectorName,
             imageUrl: playerSongListModel.imageUrl)));
 
-    print(playlist.length);
+    debugPrint(playlist.length.toString());
   }
 
   void play() {
-    print("----->${player.playing}");
+    debugPrint("----->${player.playing}");
     if (player.playing) {
       player.stop();
       player.play();
@@ -329,11 +385,11 @@ class PlayerProvider extends ChangeNotifier {
   }
 
   void addFavourite(int songId) async {
-    print(songId.toString());
+    debugPrint(songId.toString());
     Map params = {"song_id": songId};
     var res = await playerRepo.addToFavourite(params);
-    print(res.statusCode);
-    print(res.body);
+    debugPrint(res.statusCode);
+    debugPrint(res.body);
     if (res.statusCode == 200) {
       toastMessage("Song added to favourite list", Colors.grey, Colors.white);
       addFavouriteSongToLocalDb(songId);
@@ -347,12 +403,12 @@ class PlayerProvider extends ChangeNotifier {
 
   void deleteFavourite(int songId,
       {bool isFromFav = false, BuildContext? ctx}) async {
-    print(songId.toString());
+    debugPrint(songId.toString());
     Map params = {"song_id": songId};
-    print(params);
+    debugPrint(params.toString());
     var res = await playerRepo.deleteFavourite(params);
-    print(res.statusCode);
-    print(res.body);
+    debugPrint(res.statusCode);
+    debugPrint(res.body);
     if (res.statusCode == 200) {
       deleteFavouriteSongFormLocal(songId);
       if (isFromFav) {
@@ -373,8 +429,8 @@ class PlayerProvider extends ChangeNotifier {
     final box = store.box<FavouriteSong>();
 
     var id = box.remove(uniqueId);
-    print("IIIII");
-    print(id);
+    debugPrint("IIIII");
+    debugPrint(id.toString());
 
     store.close();
     getSongList();
@@ -403,7 +459,7 @@ class PlayerProvider extends ChangeNotifier {
       if (queueIdList.contains(playerSongListModel.id)) {
         normalToastMessage("Song already in queue ");
       } else {
-        int id = box.put(queueSongModel);
+        box.put(queueSongModel);
         normalToastMessage("Song added to queue ");
       }
 
@@ -434,7 +490,7 @@ class PlayerProvider extends ChangeNotifier {
       store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq');
     });
     final box = store.box<FavouriteSong>();
-    int id = box.put(song);
+    box.put(song);
 
     store.close();
     getSongList();
@@ -462,7 +518,7 @@ class PlayerProvider extends ChangeNotifier {
     for (var e in res) {
       favouritesList.add(e.songUniqueId);
     }
-    print(favouritesList);
+    debugPrint(favouritesList.toString());
     notifyListeners();
 
     store.close();
@@ -491,8 +547,8 @@ class PlayerProvider extends ChangeNotifier {
     notifyListeners();
     songInfoModel = null;
     var res = await playerRepo.songInfo(songId);
-    print(res.statusCode);
-    print(res.body);
+    debugPrint(res.statusCode);
+    debugPrint(res.body);
     if (res.statusCode == 200) {
       songInfoModel = SongInfoModel.fromMap(jsonDecode(res.body));
     }
@@ -502,8 +558,8 @@ class PlayerProvider extends ChangeNotifier {
 
   addToPlaylist(Map params, BuildContext context, String playListName) async {
     var res = await playerRepo.addToPlaylist(params);
-    print(res.statusCode);
-    print(res.body);
+    debugPrint(res.statusCode);
+    debugPrint(res.body);
     Navigator.pop(context);
 
     if (res.statusCode == 200) {

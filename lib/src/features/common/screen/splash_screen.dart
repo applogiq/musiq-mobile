@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
               context, RouteName.artistPreference);
         }
       } else {
-        print("object");
+        debugPrint("object");
         Navigation.navigateReplaceToScreen(context, RouteName.onboarding);
       }
     });

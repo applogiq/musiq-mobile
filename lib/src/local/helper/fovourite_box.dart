@@ -18,7 +18,7 @@
 
 //       return FavouriteSongBox._init(store);
 //     } catch (e) {
-//       print(e.toString());
+//       debugPrint(e.toString());
 
 //       FavouriteSongBox._closeStore();
 //       return FavouriteSongBox.init();

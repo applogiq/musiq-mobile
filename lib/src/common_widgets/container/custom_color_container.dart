@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+
 class CustomColorContainer extends StatelessWidget {
-  CustomColorContainer({
+  const CustomColorContainer({
     Key? key,
     required this.child,
     this.bgColor,
@@ -10,16 +11,19 @@ class CustomColorContainer extends StatelessWidget {
     this.verticalPadding = 0.0,
   }) : super(key: key);
   final Widget child;
-  double left;
-  double right;
-  double verticalPadding;
-  var shape;
-  var bgColor;
+  final double left;
+  final double right;
+  final double verticalPadding;
+  final BoxShape shape;
+  final dynamic bgColor;
   @override
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.only(
-            top: verticalPadding,bottom: verticalPadding,left: left,right: right),
+            top: verticalPadding,
+            bottom: verticalPadding,
+            left: left,
+            right: right),
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
             borderRadius:

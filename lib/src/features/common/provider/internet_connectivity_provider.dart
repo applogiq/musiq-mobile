@@ -9,7 +9,7 @@ class InternetConnectivityProvider extends ChangeNotifier {
   }
   bool isNetworkAvailable = true;
   final Connectivity _connectivity = Connectivity();
-  late StreamSubscription _streamSubscription;
+  late StreamSubscription streamSubscription;
 
   void checkConnectivity() async {
     var connectionResult = await _connectivity.checkConnectivity();
@@ -24,13 +24,13 @@ class InternetConnectivityProvider extends ChangeNotifier {
   }
 
   void checkRealtimeConnection() {
-    print("network");
-    _streamSubscription = _connectivity.onConnectivityChanged.listen((event) {
-      print(event);
+    debugPrint("network");
+    streamSubscription = _connectivity.onConnectivityChanged.listen((event) {
+      debugPrint(event.toString());
       switch (event) {
         case ConnectivityResult.mobile:
           {
-            print("true");
+            debugPrint("true");
 
             isNetworkAvailable = true;
             notifyListeners();
@@ -39,7 +39,7 @@ class InternetConnectivityProvider extends ChangeNotifier {
         case ConnectivityResult.wifi:
           {
             isNetworkAvailable = true;
-            print("true");
+            debugPrint("true");
 
             notifyListeners();
           }
@@ -47,13 +47,13 @@ class InternetConnectivityProvider extends ChangeNotifier {
         default:
           {
             isNetworkAvailable = false;
-            print("false");
+            debugPrint("false");
 
             notifyListeners();
           }
           break;
       }
     });
-    print("MACHO");
+    debugPrint("MACHO");
   }
 }

@@ -58,34 +58,6 @@ class TrendingHitsWidget extends StatelessWidget {
                 children: [
                   Expanded(
                     child: InkWell(
-                      // onTap: () {
-                      //   List<PlayScreenModel> playScreenModel = [];
-                      //   print(trendingHitsModel.records[0].id);
-                      //   for (int i = 0;
-                      //       i < trendingHitsModel.records.length;
-                      //       i++) {
-                      //     playScreenModel.add(PlayScreenModel(
-                      //         id: trendingHitsModel.records[i].id,
-                      //         songName: trendingHitsModel.records[i].songName,
-                      //         musicDirectorName: trendingHitsModel
-                      //             .records[i].musicDirectorName[0],
-                      //         albumId: trendingHitsModel.records[i].albumId,
-                      //         albumName:
-                      //             trendingHitsModel.records[i].albumName));
-                      //   }
-                      //   print(playScreenModel.length);
-                      //   Navigator.of(context).push(MaterialPageRoute(
-                      //       builder: (context) => MainPlayScreen(
-                      //           playScreenModel: playScreenModel, index: 0)));
-                      //   //  playScreenModel.add(PlayScreenModel(id: t, songName: songName, musicDirectorName: musicDirectorName, albumId: albumId, albumName: albumName))
-                      //   // print(recentlyPlayed.records[index].id);
-                      //   // for(int i=0;i<recentlyPlayed.records.length;i++){
-                      //   //   playScreenModel.add(PlayScreenModel(id: recentlyPlayed.records[i].id, songName: recentlyPlayed.records[i].songName, musicDirectorName: recentlyPlayed.records[i].musicDirectorName[0], albumId: recentlyPlayed.records[i].albumId,albumName:recentlyPlayed.records[i].albumName));
-                      //   // }
-                      //   // print(playScreenModel.length);
-                      //   // Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MainPlayScreen(playScreenModel: playScreenModel, index: index)));
-                      // },
-
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
@@ -106,7 +78,7 @@ class TrendingHitsWidget extends StatelessWidget {
                                     goToNextfunction: true,
                                     index: 0);
                               },
-                              child: PlayButtonWidget()),
+                              child: const PlayButtonWidget()),
                         ),
                       ),
                     ),
@@ -173,7 +145,7 @@ class TrendingHitsHomeContainer extends StatelessWidget {
                   goToNextfunction: true,
                   index: index);
             },
-            child: Align(
+            child: const Align(
               alignment: Alignment.bottomRight,
               child: PlayButtonWidget(),
             ),

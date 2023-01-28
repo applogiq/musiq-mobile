@@ -5,7 +5,7 @@ import '../container/custom_color_container.dart';
 import '../loader.dart';
 
 class CustomHorizontalListview extends StatelessWidget {
-  CustomHorizontalListview(
+  const CustomHorizontalListview(
       {Key? key,
       required this.images,
       this.shape = BoxShape.rectangle,
@@ -13,8 +13,8 @@ class CustomHorizontalListview extends StatelessWidget {
       : super(key: key);
 
   final List images;
-  var shape;
-  var alignText;
+  final BoxShape shape;
+  final TextAlign alignText;
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +109,7 @@ class HorizonalListViewWidget extends StatelessWidget {
 }
 
 class ListHeaderWidget extends StatelessWidget {
-  ListHeaderWidget(
+  const ListHeaderWidget(
       {Key? key,
       required this.title,
       required this.actionTitle,
@@ -118,7 +118,7 @@ class ListHeaderWidget extends StatelessWidget {
 
   final String title;
   final String actionTitle;
-  var dataList;
+  final List dataList;
   @override
   Widget build(BuildContext context) {
     return Row(

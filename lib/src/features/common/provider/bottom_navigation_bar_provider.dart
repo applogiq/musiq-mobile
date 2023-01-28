@@ -12,7 +12,11 @@ class BottomNavigationBarProvider extends ChangeNotifier {
     BottomNavBarModel(iconData: Icons.music_note_rounded, labelData: "Library"),
     BottomNavBarModel(iconData: Icons.person_rounded, labelData: "Profile"),
   ];
-  List pages = [const HomeScreen(), LibraryScreen(), const ProfileScreen()];
+  List pages = [
+    const HomeScreen(),
+    const LibraryScreen(),
+    const ProfileScreen()
+  ];
   var selectedBottomIndex = 0;
   int index = 0;
   // var initialIndex = 0;

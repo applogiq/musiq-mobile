@@ -149,7 +149,12 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                                           .navigateToPlayerScreen(
                                               context, widget.status);
                                     },
-                                    imageUrl: getImageUrl(widget.status, pro)),
+                                    imageUrl: getImageUrl(widget.status, pro),
+                                    addToQueue: () {
+                                      context
+                                          .read<ViewAllProvider>()
+                                          .addQueue(widget.status, context);
+                                    }),
                                 // AlbumInfo(infoBoxHeight: infoBoxHeight),
                                 AlbumSongsList(
                                   status: widget.status,

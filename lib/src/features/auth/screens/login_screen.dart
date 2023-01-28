@@ -16,7 +16,6 @@ import '../../../constants/string.dart';
 import '../../../constants/style.dart';
 import '../../../routing/route_name.dart';
 import '../../../utils/navigation.dart';
-import '../../common/provider/internet_connectivity_provider.dart';
 import '../../common/screen/offline_screen.dart';
 import '../provider/login_provider.dart';
 
@@ -48,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    final networkProvider = Provider.of<InternetConnectivityProvider>(context);
+
     return Provider.of<InternetConnectionStatus>(context) ==
             InternetConnectionStatus.disconnected
         ? const OfflineScreen()

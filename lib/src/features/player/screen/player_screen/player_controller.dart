@@ -69,8 +69,6 @@ class PlayerController extends StatelessWidget {
                                           : context
                                               .read<PlayerProvider>()
                                               .addFavourite(metadata.id);
-                                      // print(playScreenModel[index].id);
-                                      // songController.checkFav();
                                     },
                                     child: Icon(
                                       Icons.favorite_rounded,
@@ -220,7 +218,7 @@ class PlayPauseController extends StatelessWidget {
 }
 
 class PlayButtonWidget extends StatelessWidget {
-  PlayButtonWidget(
+  const PlayButtonWidget(
       {Key? key,
       this.bgColor = const Color.fromRGBO(255, 255, 255, 0.8),
       this.iconColor = const Color.fromRGBO(254, 86, 49, 1),
@@ -228,11 +226,11 @@ class PlayButtonWidget extends StatelessWidget {
       this.padding = 6.0,
       this.icon = Icons.play_arrow})
       : super(key: key);
-  var bgColor;
-  var iconColor;
-  var size;
-  var padding;
-  var icon;
+  final Color bgColor;
+  final Color iconColor;
+  final double size;
+  final double padding;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {

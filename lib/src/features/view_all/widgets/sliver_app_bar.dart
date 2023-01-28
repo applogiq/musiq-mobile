@@ -8,7 +8,7 @@ import 'album_image.dart';
 import 'app_bar_overlay.dart';
 import 'gradient_cover.dart';
 
-typedef _SliverAppBarDelegateBuilder = Widget Function(
+typedef SliverAppBarDelegateBuilder = Widget Function(
   BuildContext context,
   double shrinkOffset,
 );
@@ -44,8 +44,8 @@ class SliverCustomeAppBar extends StatelessWidget {
             maxHeight: maxAppBarHeight,
             minHeight: minAppBarHeight,
             builder: (context, shrinkOffset) {
-              final appBarVisible =
-                  shrinkOffset >= (maxAppBarHeight - minAppBarHeight);
+              // final appBarVisible =
+              //     shrinkOffset >= (maxAppBarHeight - minAppBarHeight);
 
               final double shrinkToMaxAppBarHeightRatio =
                   shrinkOffset / maxAppBarHeight;
@@ -133,7 +133,7 @@ class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   });
   final double minHeight;
   final double maxHeight;
-  final _SliverAppBarDelegateBuilder builder;
+  final SliverAppBarDelegateBuilder builder;
   @override
   double get minExtent => minHeight;
   @override

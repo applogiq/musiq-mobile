@@ -33,9 +33,7 @@ class CollectionViewAllModel {
   Map<String, dynamic> toMap() => {
         "success": success,
         "message": message,
-        "records": records == null
-            ? []
-            : List<dynamic>.from(records.map((x) => x!.toMap())),
+        "records": List<dynamic>.from(records.map((x) => x!.toMap())),
         "totalrecords": totalrecords,
       };
 }
@@ -83,8 +81,7 @@ class Record {
         "song_name": songName,
         "lyrics": lyrics,
         "is_music": isMusic,
-        "artist_id":
-            artistId == null ? [] : List<dynamic>.from(artistId.map((x) => x)),
+        "artist_id": List<dynamic>.from(artistId.map((x) => x)),
         "album_id": albumId,
         "album_name": albumName,
         "music_director_name": musicDirectorName == null

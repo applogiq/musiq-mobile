@@ -4,12 +4,12 @@ class Navigation {
   static Future<dynamic> navigateToScreen(BuildContext context, String screen,
       {Object? args}) async {
     if (args == null) {
-      print("null");
+      debugPrint("null");
       var value = await Navigator.pushNamed(context, screen);
       return value;
     } else {
-      print("unnull");
-      print(args);
+      debugPrint("unnull");
+      debugPrint(args.toString());
       var value = await Navigator.pushNamed(context, screen, arguments: args);
       return value;
     }

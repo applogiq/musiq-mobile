@@ -163,8 +163,8 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
       isButtonLoading = true;
       notifyListeners();
       var response = await AuthRepository().register(params);
-      print(response.statusCode);
-      print(response.body);
+      debugPrint(response.statusCode);
+      debugPrint(response.body);
 
       isButtonLoading = false;
       notifyListeners();
@@ -192,7 +192,7 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
         notifyListeners();
       }
     } else {
-      print("InValid");
+      debugPrint("InValid");
     }
   }
 
@@ -227,7 +227,6 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
         value: jsonEncode(userModel.records.preference.artist));
     await storage.write(key: "password_cred", value: password);
     await storage.write(key: "isLogged", value: "true");
-    var list1 = await storage.read(key: "artist_list");
   }
 
   confirmPasswordTapped() {

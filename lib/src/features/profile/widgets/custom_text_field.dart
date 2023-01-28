@@ -4,17 +4,16 @@ import 'package:musiq/src/common_widgets/text_field/text_style.dart';
 import 'package:musiq/src/constants/color.dart';
 import 'package:musiq/src/utils/size_config.dart';
 
-
-
 class CustomTextField extends StatelessWidget {
-   CustomTextField(
+  const CustomTextField(
       {Key? key,
       required this.onChange,
       required this.keyboardType,
       required this.errorMessage,
       required this.fieldLabel,
       this.readOnly = false,
-      required this.initialValue,  required this.inputFormatter})
+      required this.initialValue,
+      required this.inputFormatter})
       : super(key: key);
   final ValueSetter<String>? onChange;
   final TextInputType keyboardType;
@@ -31,7 +30,9 @@ class CustomTextField extends StatelessWidget {
       children: [
         Text(
           fieldLabel,
-          style: subTitleStyle().copyWith(fontSize: getProportionateScreenWidth(16),color: CustomColor.activeColor),
+          style: subTitleStyle().copyWith(
+              fontSize: getProportionateScreenWidth(16),
+              color: CustomColor.activeColor),
         ),
         SizedBox(
           height: getProportionateScreenHeight(7),
@@ -40,18 +41,16 @@ class CustomTextField extends StatelessWidget {
           height: 50,
           child: TextFormField(
             initialValue: initialValue,
-            inputFormatters:inputFormatter,
+            inputFormatters: inputFormatter,
             readOnly: readOnly,
             decoration: InputDecoration(
                 isDense: true,
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide:
-                        BorderSide(color: CustomColor.textfieldBg)),
-                
+                    borderSide: BorderSide(color: CustomColor.textfieldBg)),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide:  BorderSide(color:CustomColor.textfieldBg)),
+                    borderSide: BorderSide(color: CustomColor.textfieldBg)),
                 fillColor: CustomColor.textfieldBg,
                 filled: true),
             cursorWidth: 1.2,
@@ -59,14 +58,15 @@ class CustomTextField extends StatelessWidget {
             keyboardType: keyboardType,
             onChanged: onChange,
             style: readOnly
-                ? headingTextStyle()
-                    .copyWith(fontSize: 18,fontWeight: FontWeight.w500, color: CustomColor.subTitle)
-                : headingTextStyle().copyWith(
-                    fontSize: 18,fontWeight: FontWeight.w500
-                  ),
+                ? headingTextStyle().copyWith(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    color: CustomColor.subTitle)
+                : headingTextStyle()
+                    .copyWith(fontSize: 18, fontWeight: FontWeight.w500),
           ),
         ),
-        errorMessage!=""
+        errorMessage != ""
             ? Padding(
                 padding: const EdgeInsets.only(top: 8.0, right: 4.0),
                 child: Text(

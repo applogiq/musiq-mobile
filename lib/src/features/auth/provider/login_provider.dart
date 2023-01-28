@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -85,13 +87,13 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
     var response = await AuthRepository().login(params);
     isLoading = false;
     notifyListeners();
-    print(response.statusCode);
+    debugPrint(response.statusCode);
     if (response.statusCode == 200) {
       context.read<BottomNavigationBarProvider>().selectedBottomIndex = 0;
       isShowStatus = true;
       isErrorStatus = false;
 
-      print(response.body);
+      debugPrint(response.body);
       var data = jsonDecode(response.body.toString());
       UserModel user = UserModel.fromMap(data);
       await storeResponseData(user);
@@ -152,7 +154,6 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
     // value: jsonEncode(userModel.records.id.toString()));
     await storage.write(key: "password_cred", value: password);
     await storage.write(key: "isLogged", value: "true");
-    var list1 = await storage.read(key: "artist_list");
   }
 
   navigateToNextPage(UserModel userModel, context) {

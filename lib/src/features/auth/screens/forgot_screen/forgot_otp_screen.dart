@@ -36,9 +36,6 @@ class _OTPScreenState extends State<OTPScreen> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     SizeConfig().init(context);
-    const focusedBorderColor = Color.fromRGBO(23, 171, 144, 1);
-    const fillColor = Color.fromRGBO(243, 246, 249, 0);
-    const borderColor = Color.fromRGBO(23, 171, 144, 0.4);
 
     final defaultPinTheme = PinTheme(
       width: size.width < 400
@@ -142,7 +139,7 @@ class _OTPScreenState extends State<OTPScreen> {
                                           // pro.loginButtonEnabled(true);
                                           // pro.login(context, pin);
                                         } else {
-                                          print("Invalid");
+                                          debugPrint("Invalid");
                                         }
                                       },
                                       onChanged: (value) {
@@ -226,7 +223,7 @@ class _OTPScreenState extends State<OTPScreen> {
                                           pinController.clear();
 
                                           pro.resendOTPTapped();
-                                          // print(widget.email);
+                                          // debugPrint(widget.email);
                                           // // _forgotpasswordCubit.resendOtp(context,
                                           //     email: widget.email);
                                         },

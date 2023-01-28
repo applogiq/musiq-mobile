@@ -9,7 +9,7 @@ import 'package:http/http.dart ' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:musiq/src/constants/color.dart';
 import 'package:musiq/src/features/common/screen/main_screen.dart';
-import 'package:musiq/src/features/profile/domain/api_models/profile_update_api_model..dart';
+import 'package:musiq/src/features/profile/domain/api_models/profile_update_api_model.dart';
 import 'package:musiq/src/features/profile/domain/repository/profile_repo.dart';
 import 'package:musiq/src/routing/route_name.dart';
 import 'package:musiq/src/utils/navigation.dart';
@@ -62,7 +62,7 @@ class ProfileProvider extends ChangeNotifier {
     );
     try {
       var res = await ProfileRepository().getProfile(id!);
-      print(res.body);
+      debugPrint(res.body);
       if (res.statusCode == 200) {
         var jsonData = jsonDecode(res.body);
         log(jsonData.toString());
@@ -116,14 +116,14 @@ class ProfileProvider extends ChangeNotifier {
     );
     // try {
     var res = await ProfileRepository().updateProfile(id!, params);
-    print(res.body);
-    print(res.statusCode);
+    debugPrint(res.body);
+    debugPrint(res.statusCode);
     if (res.statusCode == 200) {
       userNameErrorMessage = "";
       ProfileAPIModel profileAPIModel =
           ProfileAPIModel.fromJson(jsonDecode(res.body.toString()));
-      print(profileAPIModel.records!.fullname);
-      User user = User(
+      debugPrint(profileAPIModel.records!.fullname);
+      User(
           fullName: profileAPIModel.records!.fullname.toString(),
           email: profileAPIModel.records!.email.toString(),
           registerId: profileAPIModel.records!.registerId.toString(),
@@ -141,20 +141,20 @@ class ProfileProvider extends ChangeNotifier {
     } else {}
 
     // if (res.statusCode == 200) {
-    //   print("IF");
+    //   debugPrint("IF");
 
     //   var jsonData = jsonDecode(res.body);
     //   log(jsonData.toString());
     //   // profileAPIModel = ProfileAPIModel.fromJson(jsonData);
     // } else {
-    //   print("Else");
+    //   debugPrint("Else");
 
     //   // profileAPIModel =
     //   //     ProfileAPIModel(status: false, message: "No data", records: null);
     // }
     // } catch (e) {
-    //   print(e.toString());
-    //   print("ERRR");
+    //   debugPrint(e.toString());
+    //   debugPrint("ERRR");
     //   // profileAPIModel =
     //   //     ProfileAPIModel(status: false, message: "No data", records: null);
     // }
@@ -179,13 +179,13 @@ class ProfileProvider extends ChangeNotifier {
     // if (_pickedImage != null) {
     //   var image = File(_pickedImage.path.toString());
     //   final _sizeInKbBefore = image.lengthSync() / 1024;
-    //   print('Before Compress $_sizeInKbBefore kb');
+    //   debugPrint('Before Compress $_sizeInKbBefore kb');
     //   var _compressedImage = await AppHelper.compress(image: image);
     //   final _sizeInKbAfter = _compressedImage.lengthSync() / 1024;
-    //   print('After Compress $_sizeInKbAfter kb');
+    //   debugPrint('After Compress $_sizeInKbAfter kb');
     //   var _croppedImage = await AppHelper.cropImage(_compressedImage);
     //   if (_croppedImage == null) {
-    //     print("NU:L");
+    //     debugPrint("NU:L");
     //     return;
     //   }
     //   isImagePicked = true;
@@ -193,8 +193,8 @@ class ProfileProvider extends ChangeNotifier {
     //   imagePath = File(_croppedImage.path);
     //   // imagePath = _croppedImage.path;
 
-    //   print("FILE");
-    //   print(imagePath);
+    //   debugPrint("FILE");
+    //   debugPrint(imagePath);
     //   update();
 
     // imagePath = File(_croppedImage.path);
@@ -227,7 +227,7 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   void saveImage(Uint8List image, BuildContext context) {
-    print("Trigger");
+    debugPrint("Trigger");
     memoryImage = image;
     if (memoryImage != null) {
       base64Value = uint8ListTob64(memoryImage!);
@@ -268,7 +268,7 @@ class ProfileProvider extends ChangeNotifier {
     memoryImage = null;
 
     if (profileAPIModel.records != null) {
-      print("@");
+      debugPrint("@");
       if (profileAPIModel.records!.isImage == true) {
         var id = await secureStorage.read(
           key: "id",
@@ -318,8 +318,8 @@ class ProfileProvider extends ChangeNotifier {
     await secureStorage.write(key: key, value: value);
   }
 
-  Future<String> getValue(String Key) async {
-    return await secureStorage.read(key: Key) ?? "";
+  Future<String> getValue(String key) async {
+    return await secureStorage.read(key: key) ?? "";
   }
 
   saveDetails() async {
@@ -364,11 +364,11 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future pickImage(ImageSource source, BuildContext context) async {
-    final Image = await ImagePicker().pickImage(
+    final image = await ImagePicker().pickImage(
       source: source,
     );
-    if (Image == null) return;
-    var imagetemp = File(Image.path);
+    if (image == null) return;
+    var imagetemp = File(image.path);
     // imagetemp = await imagetemp.copy();
     pickedImage = imagetemp;
 
@@ -396,7 +396,7 @@ class ProfileProvider extends ChangeNotifier {
     var id = await secureStorage.read(
       key: "id",
     );
-    var resid = await secureStorage.read(
+    await secureStorage.read(
       key: "register_id",
     );
 
@@ -421,7 +421,7 @@ class ProfileProvider extends ChangeNotifier {
       // if()
 
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
     notifyListeners();
   }
@@ -440,7 +440,7 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
     var response =
         await ProfileRepository().updateProfile(id.toString(), params);
-    print(response.body.toString());
+    debugPrint(response.body.toString());
     isLoading = false;
     notifyListeners();
     if (response.statusCode == 200) {
@@ -458,9 +458,9 @@ class ProfileProvider extends ChangeNotifier {
     var resgisterId = await secureStorage.read(
       key: "register_id",
     );
-    String Url =
+    String url =
         "https://api-musiq.applogiq.org/public/users/${resgisterId.toString()}.png";
-    return Url;
+    return url;
   }
 
 // showImage(){

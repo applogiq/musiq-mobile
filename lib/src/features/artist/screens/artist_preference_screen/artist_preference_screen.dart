@@ -43,8 +43,8 @@ class _ArtistPreferenceScreenState extends State<ArtistPreferenceScreen> {
                             Size(MediaQuery.of(context).size.width, 80),
                         child: const ArtistPreferenceAppBarWidget(),
                       ),
-                      body: ArtistPreferenceScreenBody(
-                        artist_list: const [],
+                      body: const ArtistPreferenceScreenBody(
+                        artistList: [],
                       ),
                       bottomNavigationBar: Consumer<ArtistPreferenceProvider>(
                           builder: (context, pro, _) {
@@ -55,7 +55,7 @@ class _ArtistPreferenceScreenState extends State<ArtistPreferenceScreen> {
                                   onTap: () {
                                     pro.navigateToHome(context);
                                   },
-                                  child: CustomButton(label: "Save")),
+                                  child: const CustomButton(label: "Save")),
                         );
                       }));
             }),

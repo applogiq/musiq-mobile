@@ -2,7 +2,7 @@ import '../constants/api.dart';
 
 generateArtistImageUrl(artistId) {
   var url =
-      "${"${APIConstants.baseUrl}${APIConstants.versionUrl}public/artists/" + artistId}.png";
+      "${"${APIConstants.baseUrl}${APIConstants.versionUrl}public/artists/$artistId"}.png";
   return url;
 }
 
