@@ -4,7 +4,9 @@ class ConstantText {
   static String welcomeBack = "Welcome Back";
   static String name = "Name";
   static String noSongHere = "No Songs Here";
+  static String noPlaylistHere = "No Playlist Here";
   static String yourfavNoAvailable = "Your favourite songs will appear here";
+  static String yourPlaylistNoAvailable = "Your playlist will appear here";
   static String fullName = "Full Name";
   static String userName = "Username";
   static String email = "Email address";
@@ -55,11 +57,12 @@ class ConstantText {
 
   static String noSongInPlayList = "Your songs will appear here";
 
-  static var noPlaylistHere = "No Playlist Here";
-
   static var browseSong = "Browse songs";
 
   static String myProfile = "My Profile";
-// This name is already taken
 
+  static const String playAll = "Play All";
+  static const String addToQueue = "Add to queue";
+  static const String delete = "Delete";
+  static const String addSong = "Add Song";
 }

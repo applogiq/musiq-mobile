@@ -36,4 +36,26 @@ class LibraryRepository {
       rethrow;
     }
   }
+
+  Future<dynamic> deletePlaylist(String id) async {
+    try {
+      dynamic response = await apiServices.getDeleteAuthApiResponse(
+        APIConstants.kCreatePlayList + id.toString(),
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<dynamic> getPlayListSongListdata(String id) async {
+    try {
+      dynamic response = await apiServices.getGetAuthApiResponse(
+        APIConstants.kPlaylistSongList + id,
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

@@ -95,7 +95,7 @@ class HorizonalListViewWidget extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(12.0, 20.0, 12.0, 0.0),
+          padding: const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 0.0),
           child: ListHeaderWidget(
             title: title,
             actionTitle: actionTitle,

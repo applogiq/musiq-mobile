@@ -31,6 +31,11 @@ class ViewAllProvider extends ChangeNotifier {
   AuraSongListModel auraSongListModel = AuraSongListModel(
       success: false, message: "No records", records: [], totalRecords: 0);
 
+  loaderEnable() {
+    isLoad = true;
+    notifyListeners();
+  }
+
   void getViewAll(ViewAllStatus status,
       {int? id,
       Function? function,

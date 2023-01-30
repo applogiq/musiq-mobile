@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -33,6 +34,7 @@ class PlayerProvider extends ChangeNotifier {
   bool isShuffle = false;
   bool issongInfoDetailsLoad = true;
   int loopStatus = 0;
+  bool inQueue = false;
 
   late Store store;
   List<int> favouritesList = [];
@@ -87,12 +89,22 @@ class PlayerProvider extends ChangeNotifier {
   }
 
   addSongToQueueSongList(List<PlayerSongListModel> playerSongListModel) async {
+    print("SSS");
     await getApplicationDocumentsDirectory().then((Directory dir) {
       store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq');
       final queueBox = store.box<SongListModel>();
 
       List<SongListModel> songlist = [];
       for (var e in playerSongListModel) {
+        playlist.add(AudioSource.uri(
+            Uri.parse(
+                "https://api-musiq.applogiq.org/api/v1/audio?song_id=${e.id.toString()}"),
+            tag: PlayerSongListModel(
+                id: e.id,
+                albumName: e.albumName,
+                title: e.title,
+                musicDirectorName: e.musicDirectorName,
+                imageUrl: e.imageUrl)));
         songlist.add(SongListModel(
             songId: e.id,
             albumName: e.albumName,
@@ -102,68 +114,75 @@ class PlayerProvider extends ChangeNotifier {
             songUrl:
                 "https://api-musiq.applogiq.org/api/v1/audio?song_id=${e.id.toString()}"));
       }
+      print(songlist);
       queueBox.putMany(songlist);
 
       store.close();
+
       getQueueSongList();
     });
   }
 
   loadQueueSong() async {
-    await getApplicationDocumentsDirectory().then((Directory dir) async {
-      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq');
-      final box = store.box<SongListModel>();
+    if (!inQueue) {
+      await getApplicationDocumentsDirectory().then((Directory dir) async {
+        store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq');
+        final box = store.box<SongListModel>();
 
-      var res = box.getAll();
+        var res = box.getAll();
+        log("SFDgfg --- ${res.length}");
 
-      if (res.isNotEmpty) {
-        queueIdList.clear();
-        List<PlayerSongListModel> playerSongList = [];
-        for (var e in res) {
-          playerSongList.add(PlayerSongListModel(
-              id: e.songId,
-              albumName: e.albumName,
-              title: e.title,
-              imageUrl: e.imageUrl,
-              musicDirectorName: e.musicDirectorName));
+        if (res.isNotEmpty) {
+          queueIdList.clear();
+          List<PlayerSongListModel> playerSongList = [];
+          for (var e in res) {
+            print(e.songId);
+            playerSongList.add(PlayerSongListModel(
+                id: e.songId,
+                albumName: e.albumName,
+                title: e.title,
+                imageUrl: e.imageUrl,
+                musicDirectorName: e.musicDirectorName));
+          }
+          playlist = ConcatenatingAudioSource(
+            useLazyPreparation: true,
+            children: List.generate(
+              playerSongList.length,
+              (index) => AudioSource.uri(
+                  Uri.parse(
+                      "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongList[index].id.toString()}"),
+                  tag: PlayerSongListModel(
+                      id: playerSongList[index].id,
+                      albumName: playerSongList[index].albumName,
+                      title: playerSongList[index].title,
+                      musicDirectorName:
+                          playerSongList[index].musicDirectorName.toString(),
+                      imageUrl: playerSongList[index].imageUrl)),
+            ),
+          );
+          await player.setAudioSource(
+            playlist,
+            initialIndex: 0,
+            initialPosition: Duration.zero,
+          );
+          player.stop();
+          isPlay = true;
+          isPlaying = true;
+
+          playOrPause();
+          store.close();
         }
-        playlist = ConcatenatingAudioSource(
-          useLazyPreparation: true,
-          children: List.generate(
-            playerSongList.length,
-            (index) => AudioSource.uri(
-                Uri.parse(
-                    "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongList[index].id.toString()}"),
-                tag: PlayerSongListModel(
-                    id: playerSongList[index].id,
-                    albumName: playerSongList[index].albumName,
-                    title: playerSongList[index].title,
-                    musicDirectorName:
-                        playerSongList[index].musicDirectorName.toString(),
-                    imageUrl: playerSongList[index].imageUrl)),
-          ),
-        );
-        await player.setAudioSource(
-          playlist,
-          initialIndex: 0,
-          initialPosition: Duration.zero,
-        );
-        player.stop();
-        isPlay = true;
-        isPlaying = true;
+      });
 
-        playOrPause();
+      try {
+        await clearFavouriteSong();
+        await loadFavourites();
+      } catch (e) {
         store.close();
       }
-    });
-
-    try {
-      await clearFavouriteSong();
-      await loadFavourites();
-    } catch (e) {
-      store.close();
+      inQueue = true;
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   fetchLocalFavourites() async {}

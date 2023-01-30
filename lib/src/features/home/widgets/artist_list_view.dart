@@ -23,7 +23,7 @@ class ArtistListView extends StatelessWidget {
     return Column(
       children: [
         Padding(
-            padding: const EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 0.0),
+            padding: const EdgeInsets.fromLTRB(12.0, 24.0, 12.0, 0.0),
             child: Row(
               children: [
                 const Text(

@@ -33,8 +33,9 @@ class APIConstants {
   static String kPlaylistSong = "$baseUrl${versionUrl}playlist-song/";
   static String kAlbumSongList = "$baseUrl${versionUrl}songs?album_id=";
   static String kAuraSongList = "$baseUrl${versionUrl}aura-song/list/";
-
   static String searchArtist = "$baseUrl${versionUrl}artist/list/search?data=";
+  static String kPlaylistSongList = "${kPlaylistSong}list/";
+
   getRecentlyPlayedUrl(String userId, int limit) {
     var url = "$kRecentPlayedList$userId?limit=${limit.toString()}";
     return url;

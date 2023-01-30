@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/home/domain/model/aura_model.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../common_widgets/list/horizontal_list_view.dart';
 import '../../../utils/image_url_generate.dart';
+import '../provider/view_all_provider.dart';
 import '../screens/sliver_app_bar/view_all_screen.dart';
 import '../view_all_status.dart';
 
@@ -18,7 +20,7 @@ class CurrentMood extends StatelessWidget {
       actionTitle: "",
       listWidget: Container(
         alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.only(top: 8),
+        padding: const EdgeInsets.only(top: 12),
         height: 180,
         child: ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -40,6 +42,7 @@ class CurrentMood extends StatelessWidget {
                         children: [
                           InkWell(
                             onTap: () {
+                              context.read<ViewAllProvider>().loaderEnable();
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => ViewAllScreen(
                                         status: ViewAllStatus.aura,
@@ -49,43 +52,6 @@ class CurrentMood extends StatelessWidget {
                                             auraModel.records[index].auraName,
                                       )));
                             },
-                            // onTap: () async {
-                            //   ViewAllBanner banner = ViewAllBanner(
-                            //       bannerId: auraModel.records[index].auraId,
-                            //       bannerImageUrl: APIConstants.SONG_BASE_URL +
-                            //           APIConstants.AURA +
-                            //           auraModel.records[index].auraId +
-                            //           ".png",
-                            //       bannerTitle:
-                            //           auraModel.records[index].auraName);
-                            //   debugPrint(banner.bannerImageUrl.toString());
-                            //   AuraSongModel auraSongModel =
-                            //       await apiRoute.getSpecificAuraSongs(
-                            //           id: auraModel.records[index].id);
-                            //   List<ViewAllSongList> viewAllSongListModel = [];
-                            //   for (int i = 0;
-                            //       i < auraSongModel.records.length;
-                            //       i++) {
-                            //     viewAllSongListModel.add(ViewAllSongList(
-                            //         auraSongModel.records[i].auraSongs.id
-                            //             .toString(),
-                            //         generateSongImageUrl(
-                            //             auraSongModel.records[i].albumName,
-                            //             auraSongModel.records[i].albumId),
-                            //         auraSongModel.records[i].songName,
-                            //         auraSongModel
-                            //             .records[i].musicDirectorName[0],
-                            //         auraSongModel.records[i].albumName,
-                            //         auraSongModel.records[i].albumId));
-                            //   }
-
-                            //   Navigator.of(context).push(MaterialPageRoute(
-                            //       builder: (context) => ViewAllScreenSongList(
-                            //           banner: banner,
-                            //           view_all_song_list_model:
-                            //               viewAllSongListModel)));
-                            // },
-
                             child: CustomColorContainer(
                               shape: BoxShape.circle,
                               child: Image.network(

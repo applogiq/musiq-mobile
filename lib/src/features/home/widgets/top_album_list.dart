@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/home/domain/model/album_model.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../constants/color.dart';
 import '../../../constants/style.dart';
 import '../../../utils/image_url_generate.dart';
+import '../provider/view_all_provider.dart';
 import '../screens/sliver_app_bar/view_all_screen.dart';
 import '../view_all_status.dart';
 
@@ -25,21 +27,6 @@ class TopAlbum extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
               Spacer(),
-//         InkWell(
-//           onTap: () {
-//             Navigator.of(context).push(MaterialPageRoute(
-//                 builder: (context) =>  RecentlyPlayedViewAll(songList: recentlyPlayed, title: 'Recently Played',
-//                 imageURL:  "${APIConstants.SONG_BASE_URL}public/music/tamil/${recentlyPlayed.records[recentlyPlayed.records.length-1].albumName[0].toUpperCase()}/${recentlyPlayed.records[recentlyPlayed.records.length-1].albumName}/image/${recentlyPlayed.records[recentlyPlayed.records.length-1].albumId.toString()}.png",
-// )));
-//           },
-//           child: Text(
-//             "View All",
-//             style: TextStyle(
-//                 fontSize: 14,
-//                 fontWeight: FontWeight.w400,
-//                 color: CustomColor.secondaryColor),
-//           ),
-//         )
             ],
           ),
         ),
@@ -68,51 +55,14 @@ class TopAlbum extends StatelessWidget {
                           children: [
                             InkWell(
                               onTap: () {
+                                context.read<ViewAllProvider>().loaderEnable();
+
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => ViewAllScreen(
                                           status: ViewAllStatus.album,
                                           id: album.records[index].id,
                                         )));
                               },
-                              // onTap: () async {
-                              //   debugPrint(album.records[index].id);
-                              //   ViewAllBanner banner = ViewAllBanner(
-                              //     bannerId:
-                              //         album.records[index].id.toString(),
-                              //     bannerImageUrl:
-                              //         "${APIConstants.SONG_BASE_URL}public/music/tamil/${album.records[index].albumName[0].toUpperCase()}/${album.records[index].albumName}/image/${album.records[index].albumId.toString()}.png",
-                              //     bannerTitle: album.records[index].albumName
-                              //         .toString(),
-                              //   );
-                              //   debugPrint(banner.bannerImageUrl.toString());
-                              //   songList =
-                              //       await apiRoute.getSpecificAlbumSong(
-                              //           id: album.records[index].id);
-                              //   debugPrint(songList.records.length);
-                              //   List<ViewAllSongList> viewAllSongListModel =
-                              //       [];
-                              //   for (int i = 0;
-                              //       i < songList.records.length;
-                              //       i++) {
-                              //     viewAllSongListModel.add(ViewAllSongList(
-                              //         songList.records[i].id.toString(),
-                              //         generateSongImageUrl(
-                              //             songList.records[i].albumName,
-                              //             songList.records[i].albumId),
-                              //         songList.records[i].songName,
-                              //         songList
-                              //             .records[i].musicDirectorName[0],
-                              //         songList.records[i].albumName,
-                              //         songList.records[i].albumId));
-                              //   }
-
-                              //   Navigator.of(context).push(MaterialPageRoute(
-                              //       builder: (context) =>
-                              //           ViewAllScreenSongList(
-                              //               banner: banner,
-                              //               view_all_song_list_model:
-                              //                   viewAllSongListModel)));
-                              // },
                               child: CustomColorContainer(
                                 child: Image.network(
                                   generateSongImageUrl(

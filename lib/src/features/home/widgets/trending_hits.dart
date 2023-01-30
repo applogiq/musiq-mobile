@@ -33,6 +33,8 @@ class TrendingHitsWidget extends StatelessWidget {
               const Spacer(),
               InkWell(
                 onTap: () {
+                  context.read<ViewAllProvider>().loaderEnable();
+
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const ViewAllScreen(
                             status: ViewAllStatus.trendingHits,
@@ -56,32 +58,9 @@ class TrendingHitsWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Expanded(
-                    child: InkWell(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          image: DecorationImage(
-                            image: NetworkImage(generateSongImageUrl(
-                                trendingHitsModel.records[0].albumName,
-                                trendingHitsModel.records[0].albumId)),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                        child: Align(
-                          alignment: Alignment.bottomRight,
-                          child: InkWell(
-                              onTap: () {
-                                context.read<ViewAllProvider>().getViewAll(
-                                    ViewAllStatus.trendingHits,
-                                    context: context,
-                                    goToNextfunction: true,
-                                    index: 0);
-                              },
-                              child: const PlayButtonWidget()),
-                        ),
-                      ),
-                    ),
+                  TrendingHitsHomeContainer(
+                    trendingHitsModel: trendingHitsModel,
+                    index: 0,
                   ),
                   const SizedBox(
                     width: 12,

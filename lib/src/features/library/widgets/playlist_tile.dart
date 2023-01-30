@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/constants/string.dart';
 import 'package:musiq/src/features/library/domain/models/playlist_model.dart';
+import 'package:musiq/src/features/library/provider/library_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../constants/color.dart';
@@ -87,7 +90,6 @@ class PlaylistTile extends StatelessWidget {
                 ? Expanded(
                     flex: 2,
                     child: Align(
-                      // alignment: Alignment.centerRight,
                       child: PopupMenuButton(
                         color: CustomColor.appBarColor,
                         shape: const RoundedRectangleBorder(
@@ -99,21 +101,43 @@ class PlaylistTile extends StatelessWidget {
                           ),
                         ),
                         onSelected: (value) {
-                          // _onMenuItemSelected(value as int);
-                          // _onMenuItemSelected(value as int);
+                          switch (value) {
+                            case 1:
+                              context
+                                  .read<LibraryProvider>()
+                                  .play(record[index].id, context);
+                              break;
+                            case 2:
+                              context
+                                  .read<LibraryProvider>()
+                                  .addToQueue(record[index].id, context);
+                              print("queue");
+                              break;
+                            case 3:
+                              print("delete");
+                              context
+                                  .read<LibraryProvider>()
+                                  .deletePlayList(record[index].id);
+                              break;
+                          }
                         },
                         itemBuilder: (ctx) => [
-                          // _buildPopupMenuItem('Play All',
-                          //     Options.play.index),
-                          // _buildPopupMenuItem(
-                          //     'Add to queue',
-                          //     Options.queue.index),
-                          // _buildPopupMenuItem('Delete',
-                          //     Options.delete.index,
-                          //     id: libraryController
-                          //         .view_all_play_list
-                          //         .records[index]
-                          //         .id),
+                          PopupMenuItem(
+                            enabled:
+                                record[index].noOfSongs == 0 ? false : true,
+                            value: 1,
+                            child: const Text(ConstantText.playAll),
+                          ),
+                          PopupMenuItem(
+                            enabled:
+                                record[index].noOfSongs == 0 ? false : true,
+                            value: 2,
+                            child: const Text(ConstantText.addToQueue),
+                          ),
+                          const PopupMenuItem(
+                            value: 3,
+                            child: Text(ConstantText.delete),
+                          ),
                         ],
                       ),
                     ),

@@ -12,12 +12,14 @@ class CollapsedAppBar extends StatelessWidget {
     required this.size,
     required this.title,
     required this.callBack,
+    required this.addToQueue,
   }) : super(key: key);
 
   final double titleOpacity;
   final double size;
   final String title;
   final Function callBack;
+  final Function addToQueue;
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +114,16 @@ class CollapsedAppBar extends StatelessWidget {
                           ),
                         ),
                         padding: const EdgeInsets.all(0.0),
+                        onSelected: (value) {
+                          if (value == 1) {
+                            addToQueue();
+                          }
+                        },
                         itemBuilder: (ctx) => [
+                              const PopupMenuItem(
+                                value: 1,
+                                child: Text('Add to Queue'),
+                              ),
                               // _buildPopupMenuItem('Add to queue', 'share'),
                               // _buildPopupMenuItem(
                               //     'Add to playlist', "song_info"),

@@ -106,6 +106,9 @@ class SliverCustomAppBar extends StatelessWidget {
                           callBack: () {
                             callback();
                           },
+                          addToQueue: () {
+                            addToQueue();
+                          },
                         ),
                       ),
                     ),
@@ -120,7 +123,7 @@ class SliverCustomAppBar extends StatelessWidget {
                           },
                           size: shrinkToMaxAppBarHeightRatio,
                           addQueue: () {
-                            addToQueue() {}
+                            addToQueue();
                           },
                         ),
                 ],
