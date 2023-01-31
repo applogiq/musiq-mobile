@@ -9,6 +9,7 @@ import 'package:musiq/src/features/home/domain/model/new_release_model.dart';
 import 'package:musiq/src/features/home/domain/model/song_list_model.dart';
 import 'package:musiq/src/features/home/domain/model/trending_hits_model.dart';
 import 'package:musiq/src/features/home/domain/repository/home_repo.dart';
+import 'package:musiq/src/features/search/search_status.dart';
 import 'package:musiq/src/routing/route_name.dart';
 import 'package:musiq/src/utils/navigation.dart';
 
@@ -140,7 +141,8 @@ class HomeProvider extends ChangeNotifier {
   }
 
   goToSearch(context) {
-    Navigation.navigateToScreen(context, RouteName.search);
+    Navigation.navigateToScreen(context, RouteName.search,
+        args: SearchStatus.song);
   }
 
   newRelease() async {

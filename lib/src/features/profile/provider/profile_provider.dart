@@ -20,7 +20,7 @@ import '../../../common_widgets/model/profile_model.dart';
 import '../../../constants/images.dart';
 import '../../../constants/string.dart';
 import '../../../local/model/user_model.dart';
-import '../domain/api_models/profile_update_api_model..dart';
+import '../domain/api_models/profile_update_api_model.dart';
 
 class ProfileProvider extends ChangeNotifier {
 //! Start
@@ -124,7 +124,8 @@ class ProfileProvider extends ChangeNotifier {
     if (res.statusCode == 200) {
       if (fileImage != null && fileImage != "") {
         await getApplicationDocumentsDirectory().then((Directory dir) {
-          store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq');
+          store =
+              Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/');
           final ProfileImage profileImage = ProfileImage(
               isImage: true,
               registerId: id,

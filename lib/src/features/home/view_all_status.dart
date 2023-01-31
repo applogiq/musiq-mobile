@@ -1,1 +1,8 @@
-enum ViewAllStatus { trendingHits, recentlyPlayed, newRelease, album, aura }
+enum ViewAllStatus {
+  trendingHits,
+  recentlyPlayed,
+  newRelease,
+  album,
+  aura,
+  artist
+}

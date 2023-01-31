@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
+import 'package:musiq/src/features/home/screens/sliver_app_bar/widgets/album_song_list.dart';
 import 'package:musiq/src/features/home/screens/sliver_app_bar/widgets/sliver_app_bar.dart';
 import 'package:musiq/src/features/home/view_all_status.dart';
 import 'package:musiq/src/utils/image_url_generate.dart';
@@ -8,15 +9,20 @@ import 'package:provider/provider.dart';
 
 import '../../../common/screen/offline_screen.dart';
 import '../../provider/view_all_provider.dart';
-import 'widgets/album_song_list.dart';
 
 class ViewAllScreen extends StatefulWidget {
   const ViewAllScreen(
-      {super.key, required this.status, this.id, this.auraId, this.auraName});
+      {super.key,
+      required this.status,
+      this.id,
+      this.auraId,
+      this.title,
+      this.isImage = true});
   final ViewAllStatus status;
   final int? id;
   final String? auraId;
-  final String? auraName;
+  final String? title;
+  final bool isImage;
 
   @override
   State<ViewAllScreen> createState() => _ViewAllScreenState();
@@ -54,8 +60,10 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
             .albumSongListModel
             .records[0]
             .albumName;
+      case ViewAllStatus.artist:
+        return widget.title;
       case ViewAllStatus.aura:
-        return widget.auraName;
+        return widget.title;
       default:
         return "";
     }
@@ -79,6 +87,12 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
         );
       case ViewAllStatus.aura:
         return generateAuraImageUrl(widget.auraId);
+      case ViewAllStatus.artist:
+        if (widget.isImage) {
+          return generateArtistImageUrl(widget.auraId);
+        } else {
+          return "";
+        }
       default:
         return "https://images.unsplash.com/photo-1499415479124-43c32433a620?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1032&q=80";
     }
@@ -100,6 +114,12 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
             .length;
       case ViewAllStatus.aura:
         return context.read<ViewAllProvider>().auraSongListModel.records.length;
+      case ViewAllStatus.artist:
+        return context
+            .read<ViewAllProvider>()
+            .collectionViewAllModel
+            .records
+            .length;
       default:
         return 0;
     }
@@ -163,6 +183,8 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                                     trendingHitsModel: pro.trendingHitsModel,
                                     albumSongListModel: pro.albumSongListModel,
                                     auraSongListModel: pro.auraSongListModel,
+                                    collectionViewAllModel:
+                                        pro.collectionViewAllModel,
                                   ),
                                 ],
                               ),

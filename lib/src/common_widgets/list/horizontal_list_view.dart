@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../constants/color.dart';
 import '../container/custom_color_container.dart';
-import '../loader.dart';
 
 class CustomHorizontalListview extends StatelessWidget {
   const CustomHorizontalListview(
@@ -100,6 +99,7 @@ class HorizonalListViewWidget extends StatelessWidget {
             title: title,
             actionTitle: actionTitle,
             dataList: const [],
+            callback: () {},
           ),
         ),
         listWidget
@@ -113,12 +113,14 @@ class ListHeaderWidget extends StatelessWidget {
       {Key? key,
       required this.title,
       required this.actionTitle,
-      required this.dataList})
+      required this.dataList,
+      required this.callback})
       : super(key: key);
 
   final String title;
   final String actionTitle;
   final List dataList;
+  final Function callback;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -130,8 +132,7 @@ class ListHeaderWidget extends StatelessWidget {
         const Spacer(),
         InkWell(
           onTap: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const LoaderScreen()));
+            callback();
           },
           child: Text(
             actionTitle,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
+import 'package:musiq/src/features/library/screens/playlist/view_playlist_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/dialog/custom_dialog_box.dart';
@@ -8,7 +9,6 @@ import '../../../../constants/string.dart';
 import '../../../common/screen/no_song_screen.dart';
 import '../../provider/library_provider.dart';
 import '../../widgets/playlist_tile.dart';
-import 'playlist_song_list.dart';
 
 class PlaylistsScreen extends StatefulWidget {
   const PlaylistsScreen({super.key});
@@ -47,8 +47,9 @@ class _PlaylistsScreenState extends State<PlaylistsScreen> {
                           callBack: () {
                             print(record[index].id);
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    const PlayListSongList()));
+                                builder: (context) => ViewPlaylistSongScreen(
+                                    id: record[index].id,
+                                    title: record[index].playlistName)));
                           },
                         );
                       }),

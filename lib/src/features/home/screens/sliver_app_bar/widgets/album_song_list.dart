@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/home/domain/model/aura_song_list_model.dart';
+import 'package:musiq/src/features/home/domain/model/collection_view_all_model.dart';
 import 'package:musiq/src/features/home/domain/model/recent_song_model.dart';
 import 'package:musiq/src/features/player/provider/player_provider.dart';
 import 'package:provider/provider.dart';
@@ -26,12 +27,14 @@ class AlbumSongsList extends StatelessWidget {
     this.recentlyPlayed,
     this.albumSongListModel,
     this.auraSongListModel,
+    this.collectionViewAllModel,
   }) : super(key: key);
   final TrendingHitsModel? trendingHitsModel;
   final NewReleaseModel? newReleaseModel;
   final RecentlyPlayed? recentlyPlayed;
   final AlbumSongListModel? albumSongListModel;
   final AuraSongListModel? auraSongListModel;
+  final CollectionViewAllModel? collectionViewAllModel;
   final ViewAllStatus status;
   int getListCount(
     ViewAllStatus status,
@@ -48,6 +51,8 @@ class AlbumSongsList extends StatelessWidget {
 
       case ViewAllStatus.aura:
         return auraSongListModel!.records.length;
+      case ViewAllStatus.artist:
+        return collectionViewAllModel!.records.length;
       default:
         return 0;
     }
@@ -66,6 +71,8 @@ class AlbumSongsList extends StatelessWidget {
       case ViewAllStatus.aura:
         return int.parse(
             auraSongListModel!.records[index].auraSongs.songId.toString());
+      case ViewAllStatus.artist:
+        return collectionViewAllModel!.records[index]!.id;
       default:
         return 0;
     }
@@ -89,6 +96,10 @@ class AlbumSongsList extends StatelessWidget {
       case ViewAllStatus.aura:
         return generateSongImageUrl(auraSongListModel!.records[index].albumName,
             auraSongListModel!.records[index].albumId);
+      case ViewAllStatus.artist:
+        return generateSongImageUrl(
+            collectionViewAllModel!.records[index]!.albumName,
+            collectionViewAllModel!.records[index]!.albumId);
       default:
         return 0;
     }
@@ -107,6 +118,8 @@ class AlbumSongsList extends StatelessWidget {
         return albumSongListModel!.records[index].musicDirectorName[0];
       case ViewAllStatus.aura:
         return auraSongListModel!.records[index].musicDirectorName[0];
+      case ViewAllStatus.artist:
+        return collectionViewAllModel!.records[index]!.musicDirectorName![0];
       default:
         return 0;
     }
@@ -125,6 +138,8 @@ class AlbumSongsList extends StatelessWidget {
         return albumSongListModel!.records[index].songName;
       case ViewAllStatus.aura:
         return auraSongListModel!.records[index].songName;
+      case ViewAllStatus.artist:
+        return collectionViewAllModel!.records[index]!.songName;
       default:
         return 0;
     }
@@ -144,6 +159,8 @@ class AlbumSongsList extends StatelessWidget {
 
       case ViewAllStatus.aura:
         return auraSongListModel!.records[index].albumName;
+      case ViewAllStatus.artist:
+        return collectionViewAllModel!.records[index]!.albumName;
       default:
         return 0;
     }
@@ -192,7 +209,7 @@ class SongListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return DecoratedBox(
         decoration: const BoxDecoration(
-          color: Colors.black,
+          color: CustomColor.bg,
         ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),

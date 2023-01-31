@@ -16,19 +16,20 @@ import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
 import 'src/local/model/favourite_model.dart';
 import 'src/local/model/queue_model.dart';
+import 'src/local/model/search_model.dart';
 import 'src/local/model/user_model.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
 final _entities = <ModelEntity>[
   ModelEntity(
-      id: const IdUid(1, 4495571660465967790),
+      id: const IdUid(1, 6934859753459527929),
       name: 'FavouriteSong',
-      lastPropertyId: const IdUid(1, 8929129314937088027),
+      lastPropertyId: const IdUid(1, 7822800837622542910),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 8929129314937088027),
+            id: const IdUid(1, 7822800837622542910),
             name: 'songUniqueId',
             type: 6,
             flags: 129)
@@ -36,77 +37,72 @@ final _entities = <ModelEntity>[
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(2, 1525537422210265183),
-      name: 'User',
-      lastPropertyId: const IdUid(5, 1185744270334096347),
+      id: const IdUid(2, 4882588624603410407),
+      name: 'ProfileImage',
+      lastPropertyId: const IdUid(4, 7873480125347533283),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 8266275249019134947),
+            id: const IdUid(1, 3182726916203142745),
             name: 'id',
             type: 6,
             flags: 1),
         ModelProperty(
-            id: const IdUid(2, 7441799099215143413),
-            name: 'fullName',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(3, 2263768221886694536),
-            name: 'email',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(4, 3498932269694901501),
-            name: 'userName',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(5, 1185744270334096347),
+            id: const IdUid(2, 9065143046969225880),
             name: 'registerId',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 9102507035392334766),
+            name: 'isImage',
+            type: 1,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 7873480125347533283),
+            name: 'profileImageString',
             type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(4, 7421630934153589295),
+      id: const IdUid(3, 2309817460638534973),
       name: 'SongListModel',
-      lastPropertyId: const IdUid(7, 8594866812913580663),
+      lastPropertyId: const IdUid(7, 8775963013765827113),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 4223109003860018452),
+            id: const IdUid(1, 2174267121941455981),
             name: 'id',
             type: 6,
             flags: 129),
         ModelProperty(
-            id: const IdUid(2, 1017429475013175871),
+            id: const IdUid(2, 2184252476356230143),
             name: 'songId',
             type: 6,
             flags: 0),
         ModelProperty(
-            id: const IdUid(3, 2700674607898705447),
+            id: const IdUid(3, 6789303156733185279),
             name: 'albumName',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 639377665876451818),
+            id: const IdUid(4, 1368683647205503112),
             name: 'title',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(5, 3476718909214648657),
+            id: const IdUid(5, 5869086063956635880),
             name: 'musicDirectorName',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(6, 1648485750690727241),
+            id: const IdUid(6, 7484933757295749095),
             name: 'imageUrl',
             type: 9,
             flags: 0),
         ModelProperty(
-            id: const IdUid(7, 8594866812913580663),
+            id: const IdUid(7, 8775963013765827113),
             name: 'songUrl',
             type: 9,
             flags: 0)
@@ -114,30 +110,73 @@ final _entities = <ModelEntity>[
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(5, 2689595360361504866),
-      name: 'ProfileImage',
-      lastPropertyId: const IdUid(4, 487749968686667708),
+      id: const IdUid(4, 1438059175652400955),
+      name: 'User',
+      lastPropertyId: const IdUid(5, 4274857646076742090),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(1, 4814826554200792973),
+            id: const IdUid(1, 2215135472434435496),
             name: 'id',
             type: 6,
             flags: 1),
         ModelProperty(
-            id: const IdUid(2, 7328121718118522447),
+            id: const IdUid(2, 2054101606919097414),
+            name: 'fullName',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 1530581420345763741),
+            name: 'email',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 6581207847706124708),
+            name: 'userName',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 4274857646076742090),
             name: 'registerId',
             type: 9,
-            flags: 0),
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(6, 2201229725413812291),
+      name: 'SearchArtistLocalModel',
+      lastPropertyId: const IdUid(2, 401477523696851243),
+      flags: 0,
+      properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(3, 6874265334312145686),
-            name: 'profileImageString',
+            id: const IdUid(1, 6882532736547711212),
+            name: 'id',
+            type: 6,
+            flags: 129),
+        ModelProperty(
+            id: const IdUid(2, 401477523696851243),
+            name: 'searchName',
             type: 9,
-            flags: 0),
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(7, 2577012573481994611),
+      name: 'SearchSongLocalModel',
+      lastPropertyId: const IdUid(2, 6514242564041047160),
+      flags: 0,
+      properties: <ModelProperty>[
         ModelProperty(
-            id: const IdUid(4, 487749968686667708),
-            name: 'isImage',
-            type: 1,
+            id: const IdUid(1, 5993562285555669307),
+            name: 'id',
+            type: 6,
+            flags: 129),
+        ModelProperty(
+            id: const IdUid(2, 6514242564041047160),
+            name: 'searchName',
+            type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -164,16 +203,16 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(5, 2689595360361504866),
+      lastEntityId: const IdUid(7, 2577012573481994611),
       lastIndexId: const IdUid(0, 0),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
-      retiredEntityUids: const [6733950382070542724],
+      retiredEntityUids: const [8693981299913328279],
       retiredIndexUids: const [],
       retiredPropertyUids: const [
-        9005881871418114450,
-        2526815259030730135,
-        893678535750748607
+        5855155449864537733,
+        3567374957546305163,
+        2319702796785557064
       ],
       retiredRelationUids: const [],
       modelVersion: 5,
@@ -205,25 +244,23 @@ ModelDefinition getObjectBoxModel() {
 
           return object;
         }),
-    User: EntityDefinition<User>(
+    ProfileImage: EntityDefinition<ProfileImage>(
         model: _entities[1],
-        toOneRelations: (User object) => [],
-        toManyRelations: (User object) => {},
-        getId: (User object) => object.id,
-        setId: (User object, int id) {
+        toOneRelations: (ProfileImage object) => [],
+        toManyRelations: (ProfileImage object) => {},
+        getId: (ProfileImage object) => object.id,
+        setId: (ProfileImage object, int id) {
           object.id = id;
         },
-        objectToFB: (User object, fb.Builder fbb) {
-          final fullNameOffset = fbb.writeString(object.fullName);
-          final emailOffset = fbb.writeString(object.email);
-          final userNameOffset = fbb.writeString(object.userName);
+        objectToFB: (ProfileImage object, fb.Builder fbb) {
           final registerIdOffset = fbb.writeString(object.registerId);
-          fbb.startTable(6);
+          final profileImageStringOffset =
+              fbb.writeString(object.profileImageString);
+          fbb.startTable(5);
           fbb.addInt64(0, object.id);
-          fbb.addOffset(1, fullNameOffset);
-          fbb.addOffset(2, emailOffset);
-          fbb.addOffset(3, userNameOffset);
-          fbb.addOffset(4, registerIdOffset);
+          fbb.addOffset(1, registerIdOffset);
+          fbb.addBool(2, object.isImage);
+          fbb.addOffset(3, profileImageStringOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -231,15 +268,13 @@ ModelDefinition getObjectBoxModel() {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
 
-          final object = User(
+          final object = ProfileImage(
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
-              fullName: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 6, ''),
-              email: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 8, ''),
+              isImage:
+                  const fb.BoolReader().vTableGet(buffer, rootOffset, 8, false),
               registerId: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 12, ''),
-              userName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              profileImageString: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 10, ''));
 
           return object;
@@ -291,23 +326,25 @@ ModelDefinition getObjectBoxModel() {
 
           return object;
         }),
-    ProfileImage: EntityDefinition<ProfileImage>(
+    User: EntityDefinition<User>(
         model: _entities[3],
-        toOneRelations: (ProfileImage object) => [],
-        toManyRelations: (ProfileImage object) => {},
-        getId: (ProfileImage object) => object.id,
-        setId: (ProfileImage object, int id) {
+        toOneRelations: (User object) => [],
+        toManyRelations: (User object) => {},
+        getId: (User object) => object.id,
+        setId: (User object, int id) {
           object.id = id;
         },
-        objectToFB: (ProfileImage object, fb.Builder fbb) {
+        objectToFB: (User object, fb.Builder fbb) {
+          final fullNameOffset = fbb.writeString(object.fullName);
+          final emailOffset = fbb.writeString(object.email);
+          final userNameOffset = fbb.writeString(object.userName);
           final registerIdOffset = fbb.writeString(object.registerId);
-          final profileImageStringOffset =
-              fbb.writeString(object.profileImageString);
-          fbb.startTable(5);
+          fbb.startTable(6);
           fbb.addInt64(0, object.id);
-          fbb.addOffset(1, registerIdOffset);
-          fbb.addOffset(2, profileImageStringOffset);
-          fbb.addBool(3, object.isImage);
+          fbb.addOffset(1, fullNameOffset);
+          fbb.addOffset(2, emailOffset);
+          fbb.addOffset(3, userNameOffset);
+          fbb.addOffset(4, registerIdOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -315,14 +352,70 @@ ModelDefinition getObjectBoxModel() {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
 
-          final object = ProfileImage(
+          final object = User(
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
-              isImage: const fb.BoolReader()
-                  .vTableGet(buffer, rootOffset, 10, false),
-              registerId: const fb.StringReader(asciiOptimization: true)
+              fullName: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, ''),
-              profileImageString: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 8, ''));
+              email: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''),
+              registerId: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 12, ''),
+              userName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''));
+
+          return object;
+        }),
+    SearchArtistLocalModel: EntityDefinition<SearchArtistLocalModel>(
+        model: _entities[4],
+        toOneRelations: (SearchArtistLocalModel object) => [],
+        toManyRelations: (SearchArtistLocalModel object) => {},
+        getId: (SearchArtistLocalModel object) => object.id,
+        setId: (SearchArtistLocalModel object, int id) {
+          object.id = id;
+        },
+        objectToFB: (SearchArtistLocalModel object, fb.Builder fbb) {
+          final searchNameOffset = fbb.writeString(object.searchName);
+          fbb.startTable(3);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, searchNameOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = SearchArtistLocalModel(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              searchName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''));
+
+          return object;
+        }),
+    SearchSongLocalModel: EntityDefinition<SearchSongLocalModel>(
+        model: _entities[5],
+        toOneRelations: (SearchSongLocalModel object) => [],
+        toManyRelations: (SearchSongLocalModel object) => {},
+        getId: (SearchSongLocalModel object) => object.id,
+        setId: (SearchSongLocalModel object, int id) {
+          object.id = id;
+        },
+        objectToFB: (SearchSongLocalModel object, fb.Builder fbb) {
+          final searchNameOffset = fbb.writeString(object.searchName);
+          fbb.startTable(3);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, searchNameOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = SearchSongLocalModel(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              searchName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''));
 
           return object;
         })
@@ -338,23 +431,23 @@ class FavouriteSong_ {
       QueryIntegerProperty<FavouriteSong>(_entities[0].properties[0]);
 }
 
-/// [User] entity fields to define ObjectBox queries.
-class User_ {
-  /// see [User.id]
-  static final id = QueryIntegerProperty<User>(_entities[1].properties[0]);
+/// [ProfileImage] entity fields to define ObjectBox queries.
+class ProfileImage_ {
+  /// see [ProfileImage.id]
+  static final id =
+      QueryIntegerProperty<ProfileImage>(_entities[1].properties[0]);
 
-  /// see [User.fullName]
-  static final fullName = QueryStringProperty<User>(_entities[1].properties[1]);
-
-  /// see [User.email]
-  static final email = QueryStringProperty<User>(_entities[1].properties[2]);
-
-  /// see [User.userName]
-  static final userName = QueryStringProperty<User>(_entities[1].properties[3]);
-
-  /// see [User.registerId]
+  /// see [ProfileImage.registerId]
   static final registerId =
-      QueryStringProperty<User>(_entities[1].properties[4]);
+      QueryStringProperty<ProfileImage>(_entities[1].properties[1]);
+
+  /// see [ProfileImage.isImage]
+  static final isImage =
+      QueryBooleanProperty<ProfileImage>(_entities[1].properties[2]);
+
+  /// see [ProfileImage.profileImageString]
+  static final profileImageString =
+      QueryStringProperty<ProfileImage>(_entities[1].properties[3]);
 }
 
 /// [SongListModel] entity fields to define ObjectBox queries.
@@ -388,21 +481,43 @@ class SongListModel_ {
       QueryStringProperty<SongListModel>(_entities[2].properties[6]);
 }
 
-/// [ProfileImage] entity fields to define ObjectBox queries.
-class ProfileImage_ {
-  /// see [ProfileImage.id]
-  static final id =
-      QueryIntegerProperty<ProfileImage>(_entities[3].properties[0]);
+/// [User] entity fields to define ObjectBox queries.
+class User_ {
+  /// see [User.id]
+  static final id = QueryIntegerProperty<User>(_entities[3].properties[0]);
 
-  /// see [ProfileImage.registerId]
+  /// see [User.fullName]
+  static final fullName = QueryStringProperty<User>(_entities[3].properties[1]);
+
+  /// see [User.email]
+  static final email = QueryStringProperty<User>(_entities[3].properties[2]);
+
+  /// see [User.userName]
+  static final userName = QueryStringProperty<User>(_entities[3].properties[3]);
+
+  /// see [User.registerId]
   static final registerId =
-      QueryStringProperty<ProfileImage>(_entities[3].properties[1]);
+      QueryStringProperty<User>(_entities[3].properties[4]);
+}
 
-  /// see [ProfileImage.profileImageString]
-  static final profileImageString =
-      QueryStringProperty<ProfileImage>(_entities[3].properties[2]);
+/// [SearchArtistLocalModel] entity fields to define ObjectBox queries.
+class SearchArtistLocalModel_ {
+  /// see [SearchArtistLocalModel.id]
+  static final id =
+      QueryIntegerProperty<SearchArtistLocalModel>(_entities[4].properties[0]);
 
-  /// see [ProfileImage.isImage]
-  static final isImage =
-      QueryBooleanProperty<ProfileImage>(_entities[3].properties[3]);
+  /// see [SearchArtistLocalModel.searchName]
+  static final searchName =
+      QueryStringProperty<SearchArtistLocalModel>(_entities[4].properties[1]);
+}
+
+/// [SearchSongLocalModel] entity fields to define ObjectBox queries.
+class SearchSongLocalModel_ {
+  /// see [SearchSongLocalModel.id]
+  static final id =
+      QueryIntegerProperty<SearchSongLocalModel>(_entities[5].properties[0]);
+
+  /// see [SearchSongLocalModel.searchName]
+  static final searchName =
+      QueryStringProperty<SearchSongLocalModel>(_entities[5].properties[1]);
 }

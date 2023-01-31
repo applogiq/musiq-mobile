@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomColor {
-  static var bg = const Color.fromRGBO(22, 21, 28, 1);
+  static const Color bg = Color.fromRGBO(22, 21, 28, 1);
   static var defaultCard = const Color.fromRGBO(30, 30, 38, 1);
   static var defaultCardBorder = const Color.fromRGBO(255, 255, 255, 0.05);
   // 255, 255, 255, 0.05

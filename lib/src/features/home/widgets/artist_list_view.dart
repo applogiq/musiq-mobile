@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/routing/route_name.dart';
 import 'package:musiq/src/utils/navigation.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../constants/color.dart';
@@ -8,7 +9,9 @@ import '../../../constants/images.dart';
 import '../../../constants/style.dart';
 import '../../../utils/image_url_generate.dart';
 import '../../artist/domain/models/artist_model.dart';
-import '../domain/model/artist_view_all_model.dart';
+import '../provider/view_all_provider.dart';
+import '../screens/sliver_app_bar/view_all_screen.dart';
+import '../view_all_status.dart';
 
 class ArtistListView extends StatelessWidget {
   const ArtistListView({
@@ -67,15 +70,26 @@ class ArtistListView extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 6),
                         child: InkWell(
                           onTap: () {
-                            Navigation.navigateToScreen(
-                                context, RouteName.artistViewAllSongListScreen,
-                                args: ArtistViewAllModel(
-                                    id: artist.records[index].id.toString(),
-                                    artistId: artist.records[index].artistId
-                                        .toString(),
-                                    artistName: artist.records[index].artistName
-                                        .toString(),
-                                    isImage: artist.records[index].isImage));
+                            context.read<ViewAllProvider>().loaderEnable();
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ViewAllScreen(
+                                      status: ViewAllStatus.artist,
+                                      id: artist.records[index].id,
+                                      auraId: artist.records[index].artistId,
+                                      title: artist.records[index].artistName
+                                          .toString(),
+                                      isImage: artist.records[index].isImage,
+                                    )));
+
+                            // Navigation.navigateToScreen(
+                            //     context, RouteName.artistViewAllSongListScreen,
+                            //     args: ArtistViewAllModel(
+                            //         id: artist.records[index].id.toString(),
+                            //         artistId: artist.records[index].artistId
+                            //             .toString(),
+                            // artistName: artist.records[index].artistName
+                            //     .toString(),
+                            //         isImage: artist.records[index].isImage));
                           },
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,

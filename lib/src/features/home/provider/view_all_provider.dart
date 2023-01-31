@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/home/domain/model/album_song_list_model.dart';
 import 'package:musiq/src/features/home/domain/model/aura_song_list_model.dart';
+import 'package:musiq/src/features/home/domain/model/collection_view_all_model.dart';
 import 'package:musiq/src/features/home/domain/model/new_release_model.dart';
 import 'package:musiq/src/features/home/domain/model/recent_song_model.dart';
 import 'package:musiq/src/features/home/domain/model/trending_hits_model.dart';
@@ -30,6 +31,8 @@ class ViewAllProvider extends ChangeNotifier {
 
   AuraSongListModel auraSongListModel = AuraSongListModel(
       success: false, message: "No records", records: [], totalRecords: 0);
+  CollectionViewAllModel collectionViewAllModel = CollectionViewAllModel(
+      success: false, message: "No records", records: [], totalrecords: 0);
 
   loaderEnable() {
     isLoad = true;
@@ -81,6 +84,17 @@ class ViewAllProvider extends ChangeNotifier {
         var data = jsonDecode(res.body);
 
         auraSongListModel = AuraSongListModel.fromMap(data);
+        notifyListeners();
+      }
+    } else if (status == ViewAllStatus.artist) {
+      var res = await homeRepository.getSpecifArtistSong(id.toString());
+      collectionViewAllModel = CollectionViewAllModel(
+          success: false, message: "No records", records: [], totalrecords: 0);
+
+      if (res.statusCode == 200) {
+        var data = jsonDecode(res.body);
+
+        collectionViewAllModel = CollectionViewAllModel.fromMap(data);
         notifyListeners();
       }
     }
@@ -147,7 +161,16 @@ class ViewAllProvider extends ChangeNotifier {
               musicDirectorName: record.musicDirectorName[0].toString()));
         }
         break;
-
+      case ViewAllStatus.artist:
+        for (var record in collectionViewAllModel.records) {
+          playerSongList.add(PlayerSongListModel(
+              id: record!.id,
+              albumName: record.albumName.toString(),
+              title: record.songName.toString(),
+              imageUrl: generateSongImageUrl(record.albumName, record.albumId),
+              musicDirectorName: record.musicDirectorName![0].toString()));
+        }
+        break;
       default:
         break;
     }
@@ -214,7 +237,22 @@ class ViewAllProvider extends ChangeNotifier {
               musicDirectorName: record.musicDirectorName[0].toString()));
         }
         break;
+      case ViewAllStatus.artist:
+        for (var record in collectionViewAllModel.records) {
+          // print("Id${record!.id}");
+          // print("albumName${record.albumName}");
+          // print("title${record.songName}");
+          // print(generateSongImageUrl(record.albumName, record.albumId));
+          // print(record.musicDirectorName![0]);
 
+          playerSongList.add(PlayerSongListModel(
+              id: record!.id,
+              albumName: record.albumName.toString(),
+              title: record.songName.toString(),
+              imageUrl: generateSongImageUrl(record.albumName, record.albumId),
+              musicDirectorName: record.musicDirectorName![0].toString()));
+        }
+        break;
       default:
         break;
     }

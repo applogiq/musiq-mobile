@@ -67,7 +67,7 @@ class _ImageScreenState extends State<ImageScreen> {
 
   loadData() async {
     await getApplicationDocumentsDirectory().then((Directory dir) {
-      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq');
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/');
 
       // final SongListModel queueSongModel = SongListModel(
       //     songId: playerSongListModel.id,

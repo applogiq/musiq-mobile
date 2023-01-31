@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
 import 'package:musiq/src/features/artist/domain/models/artist_model.dart';
-import 'package:musiq/src/features/home/domain/model/artist_view_all_model.dart';
 import 'package:musiq/src/features/home/provider/artist_view_all_provider.dart';
+import 'package:musiq/src/features/search/search_status.dart';
 import 'package:musiq/src/routing/route_name.dart';
 import 'package:musiq/src/utils/image_url_generate.dart';
 import 'package:musiq/src/utils/navigation.dart';
@@ -13,7 +13,11 @@ import '../../../../common_widgets/app_bar.dart';
 import '../../../../common_widgets/container/custom_color_container.dart';
 import '../../../../constants/color.dart';
 import '../../../common/screen/offline_screen.dart';
+import '../../provider/search_provider.dart';
+import '../../provider/view_all_provider.dart';
+import '../../view_all_status.dart';
 import '../../widgets/search_notifications.dart';
+import '../sliver_app_bar/view_all_screen.dart';
 
 class ArtistViewAllScreen extends StatefulWidget {
   const ArtistViewAllScreen({
@@ -65,8 +69,10 @@ class _ArtistViewAllScreenState extends State<ArtistViewAllScreen> {
 }
 
 class ArtistGridView extends StatelessWidget {
-  const ArtistGridView({super.key, required this.artistModel});
+  const ArtistGridView(
+      {super.key, required this.artistModel, this.isFromSearch = false});
   final ArtistModel artistModel;
+  final bool isFromSearch;
 
   @override
   Widget build(BuildContext context) {
@@ -81,14 +87,26 @@ class ArtistGridView extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {
-              Navigation.navigateToScreen(
-                  context, RouteName.artistViewAllSongListScreen,
-                  args: ArtistViewAllModel(
-                      id: artistModel.records[index].id.toString(),
-                      artistId: artistModel.records[index].artistId.toString(),
-                      artistName:
-                          artistModel.records[index].artistName.toString(),
-                      isImage: artistModel.records[index].isImage));
+              if (isFromSearch) {
+                context.read<SearchProvider>().searchArtistStore();
+              }
+              context.read<ViewAllProvider>().loaderEnable();
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ViewAllScreen(
+                        status: ViewAllStatus.artist,
+                        id: artistModel.records[index].id,
+                        auraId: artistModel.records[index].artistId,
+                        title: artistModel.records[index].artistName.toString(),
+                        isImage: artistModel.records[index].isImage,
+                      )));
+              // Navigation.navigateToScreen(
+              //     context, RouteName.artistViewAllSongListScreen,
+              //     args: ArtistViewAllModel(
+              //         id: artistModel.records[index].id.toString(),
+              //         artistId: artistModel.records[index].artistId.toString(),
+              //         artistName:
+              //             artistModel.records[index].artistName.toString(),
+              //         isImage: artistModel.records[index].isImage));
             },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -149,11 +167,14 @@ class SearchSection extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: SearchTextWidget(
+        textEditingController: null,
         isReadOnly: true,
         onTap: () {
-          Navigation.navigateToScreen(context, RouteName.search);
+          Navigation.navigateToScreen(context, RouteName.search,
+              args: SearchStatus.artist);
         },
         hint: "Search Artists",
+        searchStatus: SearchStatus.artist,
       ),
     );
   }

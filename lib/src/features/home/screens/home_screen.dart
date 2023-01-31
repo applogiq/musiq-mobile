@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/common_widgets/box/vertical_box.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
-import 'package:musiq/src/features/home/domain/model/song_list_model.dart';
 import 'package:musiq/src/features/home/provider/home_provider.dart';
-import 'package:musiq/src/features/home/screens/sliver_app_bar/view_all_screen.dart';
 import 'package:musiq/src/features/home/widgets/current_mood.dart';
 import 'package:musiq/src/features/home/widgets/top_album_list.dart';
 import 'package:musiq/src/features/home/widgets/trending_hits.dart';
+import 'package:musiq/src/features/search/search_status.dart';
 import 'package:musiq/src/utils/size_config.dart';
 import 'package:provider/provider.dart';
 
-import '../../../common_widgets/container/custom_color_container.dart';
-import '../../../constants/api.dart';
-import '../../../constants/color.dart';
-import '../provider/view_all_provider.dart';
-import '../view_all_status.dart';
 import '../widgets/artist_list_view.dart';
 import '../widgets/home_screen_song_list.dart';
 import '../widgets/search_notifications.dart';
@@ -46,7 +40,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 shrinkWrap: true,
                 children: [
                   const VerticalBox(height: 8),
-                  const SearchAndNotifications(),
+                  const SearchAndNotifications(
+                    searchStatus: SearchStatus.song,
+                  ),
                   pro.recentlyPlayed.success == false
                       ? const SizedBox.shrink()
                       : HomeScreenSongList(

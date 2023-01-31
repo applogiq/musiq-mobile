@@ -84,9 +84,9 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                               )),
                           Expanded(
                               child: Padding(
-                            padding: const EdgeInsets.only(right: 16.0),
+                            padding: const EdgeInsets.only(right: 0.0),
                             child: Align(
-                              alignment: Alignment.centerRight,
+                              // alignment: Alignment.centerRight,
                               child: PopupMenuButton(
                                   color: CustomColor.appBarColor,
                                   shape: const RoundedRectangleBorder(

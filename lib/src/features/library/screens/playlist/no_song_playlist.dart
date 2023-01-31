@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/features/search/search_status.dart';
+import 'package:musiq/src/routing/route_name.dart';
+import 'package:musiq/src/utils/navigation.dart';
 
 import '../../../../common_widgets/buttons/custom_button.dart';
 import '../../../../constants/color.dart';
@@ -94,8 +97,10 @@ class NoPlaylistSong extends StatelessWidget {
             mainTitle: ConstantText.noSongHere,
             subTitle: ConstantText.noSongInPlayList,
           ),
-          InkWell(
+          GestureDetector(
               onTap: () {
+                Navigation.navigateToScreen(context, RouteName.search,
+                    args: SearchStatus.playlist);
                 // Navigator.of(context).push(
                 //     MaterialPageRoute(builder: (context) => SearchScreen()));
               },

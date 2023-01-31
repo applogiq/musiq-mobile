@@ -1,9 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:musiq/src/constants/color.dart';
 import 'package:musiq/src/features/home/provider/home_provider.dart';
 import 'package:musiq/src/features/home/provider/search_provider.dart';
+import 'package:musiq/src/features/search/search_status.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';
@@ -11,8 +10,9 @@ import '../../../common_widgets/container/custom_color_container.dart';
 class SearchAndNotifications extends StatelessWidget {
   const SearchAndNotifications({
     Key? key,
+    required this.searchStatus,
   }) : super(key: key);
-
+  final SearchStatus searchStatus;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -24,6 +24,7 @@ class SearchAndNotifications extends StatelessWidget {
           children: [
             Expanded(
               child: SearchTextWidget(
+                textEditingController: null,
                 isReadOnly: true,
                 onTap: () {
                   context.read<SearchProvider>().resetState();
@@ -32,6 +33,7 @@ class SearchAndNotifications extends StatelessWidget {
                   //     MaterialPageRoute(builder: (context) => SearchScreen()));
                 },
                 hint: "Search Music and Podcasts",
+                searchStatus: searchStatus,
               ),
             ),
             // const SizedBox(
@@ -72,46 +74,66 @@ class SearchTextWidget extends StatefulWidget {
     required this.hint,
     this.isReadOnly = false,
     required this.onTap,
+    required this.searchStatus,
+    required this.textEditingController,
   }) : super(key: key);
   final String hint;
   final bool isReadOnly;
 
   final VoidCallback onTap;
+  final SearchStatus searchStatus;
+  final TextEditingController? textEditingController;
 
   @override
   State<SearchTextWidget> createState() => _SearchTextWidgetState();
 }
 
 class _SearchTextWidgetState extends State<SearchTextWidget> {
-  late TextEditingController _controller;
-  Timer? _debounceTimer;
-  void debouncing({required Function() fn, int waitForMs = 500}) {
-    _debounceTimer?.cancel();
+  // late TextEditingController _controller;
+  // Timer? _debounceTimer;
+  // void debouncing({required Function() fn, int waitForMs = 500}) {
+  //   _debounceTimer?.cancel();
 
-    _debounceTimer = Timer(Duration(milliseconds: waitForMs), fn);
-  }
+  //   _debounceTimer = Timer(Duration(milliseconds: waitForMs), fn);
+  // }
 
-  @override
-  void initState() {
-    _controller = TextEditingController();
-    _controller.addListener(_onSearchChange);
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   context.read<SearchProvider>().init();
+  //   // _controller = TextEditingController();
+  //   context
+  //       .read<SearchProvider>()
+  //       .searchEditingController
+  //       .addListener(_onSearchChange);
+  //   super.initState();
+  // }
 
-  void _onSearchChange() {
-    debouncing(
-      fn: () {
-        context.read<SearchProvider>().artistSearch(_controller.text);
-      },
-    );
-  }
+  // void _onSearchChange() {
+  //   debouncing(
+  //     fn: () {
+  //       // context.read<SearchProvider>().artistSearch(_controller.text);
+  //       context.read<SearchProvider>().getSearch(
+  //           context.read<SearchProvider>().searchEditingController.text,
+  //           widget.searchStatus);
+  //     },
+  //   );
+  // }
 
-  @override
-  void dispose() {
-    _debounceTimer?.cancel();
-    _controller.removeListener(_onSearchChange);
-    super.dispose();
-  }
+  // destroy(BuildContext context) async {
+  //   _debounceTimer?.cancel();
+  //   // context
+  //   //     .read<SearchProvider>()
+  //   //     .searchEditingController
+  //   //     .removeListener(_onSearchChange);
+  //   await context.read<SearchProvider>().destroy();
+  // }
+
+  // @override
+  // void dispose() {
+  //   destroy(context);
+
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +145,7 @@ class _SearchTextWidgetState extends State<SearchTextWidget> {
         constraints:
             const BoxConstraints.expand(height: 40, width: double.maxFinite),
         child: TextField(
-          controller: _controller,
+          controller: widget.textEditingController,
           onTap: widget.onTap,
           readOnly: widget.isReadOnly,
           onChanged: (val) {},

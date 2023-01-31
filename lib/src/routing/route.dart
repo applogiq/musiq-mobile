@@ -16,6 +16,7 @@ import 'package:musiq/src/features/profile/screens/my_profile_screen.dart';
 import 'package:musiq/src/features/profile/screens/preference_screen.dart';
 import 'package:musiq/src/features/profile/screens/profile_screen.dart';
 import 'package:musiq/src/features/search/screens/search_screen.dart';
+import 'package:musiq/src/features/search/search_status.dart';
 import 'package:musiq/src/routing/route_name.dart';
 
 import '../features/artist/screens/artist_preference_screen/artist_preference_screen.dart';
@@ -83,8 +84,14 @@ class Routes {
         return MaterialPageRoute(
             builder: (BuildContext context) => const ImageCrop());
       case RouteName.search:
+        if (args is SearchStatus) {
+          return MaterialPageRoute(
+              builder: (BuildContext context) => SearchScreen(
+                    searchStatus: args,
+                  ));
+        }
         return MaterialPageRoute(
-            builder: (BuildContext context) => const SearchScreen());
+            builder: (BuildContext context) => const ErrorScreen());
       case RouteName.profile:
         return MaterialPageRoute(
             builder: (BuildContext context) => const ProfileScreen());

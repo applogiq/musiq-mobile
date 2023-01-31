@@ -48,7 +48,7 @@ class CurrentMood extends StatelessWidget {
                                         status: ViewAllStatus.aura,
                                         id: auraModel.records[index].id,
                                         auraId: auraModel.records[index].auraId,
-                                        auraName:
+                                        title:
                                             auraModel.records[index].auraName,
                                       )));
                             },

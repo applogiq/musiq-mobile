@@ -19,12 +19,14 @@ import '../../../constants/string.dart';
 class LibraryProvider extends ChangeNotifier {
   bool isFavouriteLoad = true;
   bool isPlayListLoad = true;
+  bool isPlayListSongLoad = true;
   bool isPlayListError = false;
   List playListNameExistList = [];
 
   String playListError = "";
   String playListName = "";
-
+  PlaylistSongListModel playlistSongListModel = PlaylistSongListModel(
+      success: false, message: "No records", records: [], totalRecords: 0);
   FavouriteModel favouriteModel = FavouriteModel(
       success: false, message: "No records", records: [], totalRecords: 0);
   PlayListModel playListModel = PlayListModel(
@@ -158,6 +160,22 @@ class LibraryProvider extends ChangeNotifier {
       }
       context.read<PlayerProvider>().addSongToQueueSongList(playSongListModel);
     }
+  }
+
+  getPlayListSongList(int id) async {
+    isPlayListSongLoad = true;
+    notifyListeners();
+    playlistSongListModel.records.clear();
+    var response =
+        await LibraryRepository().getPlayListSongListdata(id.toString());
+
+    print(response.body);
+    if (response.statusCode == 200) {
+      playlistSongListModel =
+          PlaylistSongListModel.fromMap(jsonDecode(response.body));
+    }
+    isPlayListSongLoad = false;
+    notifyListeners();
   }
 
   void play(int id, BuildContext context) async {
