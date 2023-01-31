@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import '../../../base_service/network/base_api_services.dart';
 import '../../../base_service/network/network_api_service.dart';
 import '../../../constants/api.dart';
@@ -38,6 +40,19 @@ class LibraryRepository {
   }
 
   Future<dynamic> getPlayList(String id) async {
+    print(APIConstants.playListUrl + id);
+    try {
+      dynamic response = await apiServices.getGetAuthApiResponse(
+        APIConstants.playListUrl + id,
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<dynamic> searchMusic(String id) async {
+    print(APIConstants.playListUrl + id);
     try {
       dynamic response = await apiServices.getGetAuthApiResponse(
         APIConstants.playListUrl + id,

@@ -92,7 +92,14 @@ class _PlaylistsScreenState extends State<PlaylistsScreen> {
                           index: index,
                           callBack: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const ViewSongScreen()));
+                                builder: (context) => ViewSongScreen(
+                                      albumId: record[index].albumId.toString(),
+                                      albumName:
+                                          record[index].albumName.toString(),
+                                      songId: record[index].id.toString(),
+                                      playListName:
+                                          record[index].playlistName.toString(),
+                                    )));
                           },
                         );
                       }),

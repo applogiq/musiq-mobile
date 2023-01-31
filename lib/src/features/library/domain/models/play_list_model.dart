@@ -1,5 +1,5 @@
-class Playlistmodel {
-  Playlistmodel({
+class PlayListView {
+  PlayListView({
     required this.success,
     required this.message,
     required this.records,
@@ -11,8 +11,8 @@ class Playlistmodel {
   final List<Record> records;
   final int? totalRecords;
 
-  factory Playlistmodel.fromJson(Map<String, dynamic> json) {
-    return Playlistmodel(
+  factory PlayListView.fromJson(Map<String, dynamic> json) {
+    return PlayListView(
       success: json["success"],
       message: json["message"],
       records: json["records"] == null
@@ -25,7 +25,7 @@ class Playlistmodel {
   Map<String, dynamic> toJson() => {
         "success": success,
         "message": message,
-        "records": records.map((x) => x?.toJson()).toList(),
+        "records": records.map((x) => x.toJson()).toList(),
         "total_records": totalRecords,
       };
 }

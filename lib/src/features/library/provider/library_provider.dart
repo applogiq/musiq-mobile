@@ -18,7 +18,7 @@ class LibraryProvider extends ChangeNotifier {
   bool isPlayListLoad = true;
   bool isPlayListError = false;
   List playListNameExistList = [];
-
+  int playListID = 1;
   String playListError = "";
   String playListName = "";
 
@@ -39,6 +39,7 @@ class LibraryProvider extends ChangeNotifier {
         context.read<PlayerProvider>().getPlayListsList();
       }
       playListModel = PlayListModel.fromMap(jsonDecode(response.body));
+
       // update();
       notifyListeners();
       Navigator.of(context).pop();
@@ -81,11 +82,18 @@ class LibraryProvider extends ChangeNotifier {
       var id = await secureStorage.read(key: "id");
 
       var response = await LibraryRepository().getPlayListdata(id!);
-      print(id);
+      // print(id);
       if (response.statusCode == 200) {
-        log(response.body);
+        // log(response.body);
         playListModel =
             PlayListModel.fromMap(jsonDecode(response.body.toString()));
+        // var s = playListModel.records[2].id;
+        // print(s.toString());
+        for (int i = 0; i < playListModel.records.length; i++) {
+          print(i);
+          playListID = playListModel.records[i].id;
+          print(playListID);
+        }
         playListNameExistList.clear();
         if (playListModel.success == true) {
           for (int i = 0; i < playListModel.totalRecords; i++) {

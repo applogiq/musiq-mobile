@@ -37,6 +37,8 @@ class APIConstants {
   static String kAuraSongList = "$baseUrl${versionUrl}aura-song/list/";
   static String playListUrl =
       "https://api-musiq.applogiq.org/api/v1/playlist-song/list/";
+  static String searchURL =
+      "https://api-musiq.applogiq.org/api/v1/search?data=";
 
   static String searchArtist = "$baseUrl${versionUrl}artist/list/search?data=";
   getRecentlyPlayedUrl(String userId, int limit) {

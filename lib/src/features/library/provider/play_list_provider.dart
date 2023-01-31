@@ -1,38 +1,56 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musiq/src/features/library/domain/library_repo.dart';
-import 'package:musiq/src/features/library/domain/models/playlist_model.dart';
+import 'package:musiq/src/features/library/domain/models/play_list_model.dart';
 
 class PlayListProvider extends ChangeNotifier {
+  PlayListView playListModel = PlayListView(
+      success: false, message: "No records", records: [], totalRecords: 0);
   FlutterSecureStorage secureStorage = const FlutterSecureStorage();
   String playListName = "";
   int noOfSongs = 1;
   bool isLoad = true;
-  getPlayListDetails() async {
+  bool isNoSong = true;
+
+  getPlayListDetails(String songID) async {
     isLoad = true;
+    notifyListeners();
     try {
-      var id = await secureStorage.read(key: "id");
-      var res = await LibraryRepository().getPlayList(id!);
-      log(res.statusCode.toString());
-      log(res.body.toString());
+      var res = await LibraryRepository().getPlayList(songID);
+      isNoSong = false;
+      notifyListeners();
       if (res.statusCode == 200) {
-        print("1");
-        PlayListModel playListModel =
-            PlayListModel.fromMap(jsonDecode(res.body.toString()));
+        isNoSong = false;
+        playListModel = PlayListView.fromJson(jsonDecode(res.body.toString()));
+
         playListName = playListModel.records[0].playlistName.toString();
         noOfSongs = playListModel.records[0].noOfSongs!;
 
         isLoad = false;
         notifyListeners();
-      } else {}
-      // log(playListModel.records[0].playlistName.toString());
+      } else if (res.statusCode == 404) {
+        isNoSong = true;
+        isLoad = false;
+        notifyListeners();
+      } else {
+        isNoSong = false;
+        notifyListeners();
+        ;
+      }
     } catch (e) {
       print(e.toString());
     }
   }
 
-  notifyListeners();
+  songSearch() async {
+    try {
+      // ignore: unused_local_variable
+      var response = await LibraryRepository().searchMusic("1");
+      print(response.statusCode.toString());
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }
