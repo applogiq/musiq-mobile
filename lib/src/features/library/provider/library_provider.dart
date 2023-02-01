@@ -19,23 +19,22 @@ import '../../../routing/route_name.dart';
 import '../../../utils/navigation.dart';
 
 class LibraryProvider extends ChangeNotifier {
-  FavouriteModel favouriteModel = FavouriteModel(
-      success: false, message: "No records", records: [], totalRecords: 0);
-
   bool isFavouriteLoad = true;
   bool isPlayListError = false;
   bool isPlayListLoad = true;
   bool isPlayListSongLoad = true;
   String playListError = "";
+  String playListName = "";
+  List playListNameExistList = [];
+  FlutterSecureStorage secureStorage = const FlutterSecureStorage();
+
+  FavouriteModel favouriteModel = FavouriteModel(
+      success: false, message: "No records", records: [], totalRecords: 0);
   PlayListModel playListModel = PlayListModel(
       success: false, message: "No records", records: [], totalRecords: 0);
 
-  String playListName = "";
-  List playListNameExistList = [];
   PlaylistSongListModel playlistSongListModel = PlaylistSongListModel(
       success: false, message: "No records", records: [], totalRecords: 0);
-
-  FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
   createPlayList(BuildContext context, {bool isAddPlaylist = false}) async {
     var id = await secureStorage.read(key: "id");
@@ -48,7 +47,7 @@ class LibraryProvider extends ChangeNotifier {
         context.read<PlayerProvider>().getPlayListsList();
       }
       playListModel = PlayListModel.fromMap(jsonDecode(response.body));
-      // update();
+
       notifyListeners();
       Navigator.of(context).pop();
     }
@@ -68,7 +67,7 @@ class LibraryProvider extends ChangeNotifier {
       }
       Navigator.of(context).pop();
 
-      Navigation.navigateReplaceToScreen(context, RouteName.library);
+      Navigation.navigateReplaceToScreen(context, RouteName.mainScreen);
 
       notifyListeners();
     }
@@ -138,6 +137,7 @@ class LibraryProvider extends ChangeNotifier {
   }
 
   checkPlayListName(String name) {
+    print(name);
     if (name.trim() == "") {
       isPlayListError = true;
       playListError = ConstantText.fieldRequired;
@@ -187,8 +187,8 @@ class LibraryProvider extends ChangeNotifier {
   }
 
   getPlayListSongList(int id) async {
-    isPlayListSongLoad = true;
-    notifyListeners();
+    // isPlayListSongLoad = true;
+    // notifyListeners();
     playlistSongListModel.records.clear();
     var response =
         await LibraryRepository().getPlayListSongListdata(id.toString());
@@ -198,8 +198,8 @@ class LibraryProvider extends ChangeNotifier {
       playlistSongListModel =
           PlaylistSongListModel.fromMap(jsonDecode(response.body));
     }
-    isPlayListSongLoad = false;
-    notifyListeners();
+    // isPlayListSongLoad = false;
+    // notifyListeners();
   }
 
   void play(int id, BuildContext context, {int index = 0}) async {

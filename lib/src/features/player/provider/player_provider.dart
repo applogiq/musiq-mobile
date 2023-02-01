@@ -35,6 +35,11 @@ class PlayerProvider extends ChangeNotifier {
   bool issongInfoDetailsLoad = true;
   int loopStatus = 0;
   bool inQueue = false;
+  bool isUpNextShow = false;
+  void toggleUpNext() {
+    isUpNextShow = !isUpNextShow;
+    notifyListeners();
+  }
 
   late Store store;
   List<int> favouritesList = [];

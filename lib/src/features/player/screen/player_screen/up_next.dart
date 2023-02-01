@@ -35,7 +35,6 @@ class UpNextExpandable extends StatelessWidget {
             trailing: InkWell(
                 onTap: () {
                   context.read<ArtistViewAllProvider>().toggleUpNext();
-                  // songController.isBottomSheetView.toggle();
                 },
                 child: const Icon(Icons.keyboard_arrow_down_rounded)),
           ),

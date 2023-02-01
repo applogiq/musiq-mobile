@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/features/library/provider/library_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/color.dart';
@@ -6,8 +7,8 @@ import '../../constants/style.dart';
 import '../buttons/custom_button.dart';
 import '../container/custom_color_container.dart';
 
-class CustomDialogBox extends StatelessWidget {
-  const CustomDialogBox({
+class PlaylistDialogBox extends StatelessWidget {
+  const PlaylistDialogBox({
     Key? key,
     required this.title,
     required this.fieldName,
@@ -29,7 +30,7 @@ class CustomDialogBox extends StatelessWidget {
   final String errorValue;
   final String initialText;
   final bool isError;
-  final Function onChanged;
+  final ValueChanged<String> onChanged;
 
   contentBox(context) {
     return Consumer(builder: (context, pro, _) {
@@ -70,54 +71,55 @@ class CustomDialogBox extends StatelessWidget {
                 Divider(
                   color: CustomColor.textfieldBg,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Text(
-                        fieldName,
-                        style: fontWeight500(size: 14.0),
+                Consumer<LibraryProvider>(builder: (context, pro, _) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: Text(
+                          fieldName,
+                          style: fontWeight500(size: 14.0),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: CustomColorContainer(
-                        left: 16,
-                        right: 24,
-                        verticalPadding: 0,
-                        bgColor: CustomColor.textfieldBg,
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints.expand(
-                              height: 46, width: double.maxFinite),
-                          child: TextFormField(
-                            initialValue: initialText,
-                            cursorColor: Colors.white,
-                            onChanged: (value) {
-                              onChanged(value);
-                              // libraryController.checkPlayListName(value);
-                            },
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: CustomColorContainer(
+                          left: 16,
+                          right: 24,
+                          verticalPadding: 0,
+                          bgColor: CustomColor.textfieldBg,
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints.expand(
+                                height: 46, width: double.maxFinite),
+                            child: TextFormField(
+                              initialValue: initialText,
+                              cursorColor: Colors.white,
+                              onChanged: (value) {
+                                pro.checkPlayListName(value);
+                              },
 
-                            // inputFormatters: [WhitelistingTextInputFormatter(RegExp("[a-zA-Z]")),],,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintStyle: TextStyle(fontSize: 14),
+                              // inputFormatters: [WhitelistingTextInputFormatter(RegExp("[a-zA-Z]")),],,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintStyle: TextStyle(fontSize: 14),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    isError
-                        ? Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Text(
-                              errorValue,
-                              style: const TextStyle(color: Colors.red),
-                            ),
-                          )
-                        : const SizedBox.shrink()
-                  ],
-                ),
+                      pro.isPlayListError
+                          ? Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                pro.playListError,
+                                style: const TextStyle(color: Colors.red),
+                              ),
+                            )
+                          : const SizedBox.shrink()
+                    ],
+                  );
+                }),
                 InkWell(
                     onTap: () {
                       callBack();

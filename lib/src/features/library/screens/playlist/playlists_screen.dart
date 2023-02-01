@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import '../../../../common_widgets/loader.dart';
-import 'view_playlist_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/dialog/custom_dialog_box.dart';
+import '../../../../common_widgets/loader.dart';
 import '../../../../constants/color.dart';
 import '../../../../constants/string.dart';
 import '../../../common/screen/no_song_screen.dart';
 import '../../provider/library_provider.dart';
 import '../../widgets/playlist_tile.dart';
+import 'view_playlist_screen.dart';
 
 class PlaylistsScreen extends StatefulWidget {
   const PlaylistsScreen({super.key});
@@ -73,9 +73,9 @@ class PlayListAddButton extends StatelessWidget {
               context: context,
               barrierDismissible: false,
               builder: (BuildContext context) {
-                return CustomDialogBox(
+                return PlaylistDialogBox(
                   onChanged: (v) {
-                    pro.checkPlayListName(v);
+                    // pro.checkPlayListName(v);
                   },
                   callBack: () async {
                     await pro.createPlayList(context);

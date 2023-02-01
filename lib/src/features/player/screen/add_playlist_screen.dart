@@ -47,7 +47,7 @@ class _AddToPlaylistScreenState extends State<AddToPlaylistScreen> {
                 context: context,
                 barrierDismissible: false,
                 builder: (BuildContext context) {
-                  return CustomDialogBox(
+                  return PlaylistDialogBox(
                     onChanged: (v) {
                       pro.checkPlayListName(v);
                     },

@@ -17,7 +17,7 @@ ThemeData themeData(BuildContext context) {
         foregroundColor: Colors.white,
         backgroundColor: CustomColor.secondaryColor),
     brightness: Brightness.dark,
-    scaffoldBackgroundColor: CustomColor.bg,
+    scaffoldBackgroundColor: const Color(0xFF16151C),
     textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme)
         .apply(bodyColor: Colors.white),
   );
