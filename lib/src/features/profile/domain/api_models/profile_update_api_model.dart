@@ -5,10 +5,6 @@ class ProfileAPIModel {
     required this.records,
   });
 
-  final bool? status;
-  final String? message;
-  final Records? records;
-
   factory ProfileAPIModel.fromJson(Map<String, dynamic> json) {
     return ProfileAPIModel(
       status: json["status"],
@@ -17,6 +13,10 @@ class ProfileAPIModel {
           json["records"] == null ? null : Records.fromJson(json["records"]),
     );
   }
+
+  final String? message;
+  final Records? records;
+  final bool? status;
 }
 
 class Records {
@@ -41,26 +41,6 @@ class Records {
     required this.isPreference,
     required this.updatedBy,
   });
-
-  final int? registerId;
-  final String? otp;
-  final int? updatedUserBy;
-  final int? id;
-  final double? otpTime;
-  final bool? isDelete;
-  final String? fullname;
-  final bool? isImage;
-  final bool? isActive;
-  final String? username;
-  final DateTime? createdAt;
-  final String? email;
-  final DateTime? updatedAt;
-  final String? password;
-  final dynamic createdBy;
-  final Preference? preference;
-  final int? createdUserBy;
-  final bool? isPreference;
-  final dynamic updatedBy;
 
   factory Records.fromJson(Map<String, dynamic> json) {
     return Records(
@@ -91,14 +71,32 @@ class Records {
       updatedBy: json["updated_by"],
     );
   }
+
+  final DateTime? createdAt;
+  final dynamic createdBy;
+  final int? createdUserBy;
+  final String? email;
+  final String? fullname;
+  final int? id;
+  final bool? isActive;
+  final bool? isDelete;
+  final bool? isImage;
+  final bool? isPreference;
+  final String? otp;
+  final double? otpTime;
+  final String? password;
+  final Preference? preference;
+  final int? registerId;
+  final DateTime? updatedAt;
+  final dynamic updatedBy;
+  final int? updatedUserBy;
+  final String? username;
 }
 
 class Preference {
   Preference({
     required this.artist,
   });
-
-  final List<String> artist;
 
   factory Preference.fromJson(Map<String, dynamic> json) {
     return Preference(
@@ -107,4 +105,6 @@ class Preference {
           : List<String>.from(json["artist"]!.map((x) => x)),
     );
   }
+
+  final List<String> artist;
 }

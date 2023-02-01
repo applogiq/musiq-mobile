@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/constants/images.dart';
-import 'package:musiq/src/features/profile/widgets/logout_dialog.dart';
-import 'package:musiq/src/utils/image_url_generate.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../constants/color.dart';
+import '../../../constants/images.dart';
 import '../../../constants/style.dart';
+import '../../../utils/image_url_generate.dart';
 import '../../../utils/size_config.dart';
 import '../provider/profile_provider.dart';
+import '../widgets/logout_dialog.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -177,7 +177,9 @@ class ProfileListTile extends StatelessWidget {
     Key? key,
     required this.index,
   }) : super(key: key);
+
   final int index;
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -204,6 +206,7 @@ class AboutUsTextWidget extends StatelessWidget {
     Key? key,
     required this.title,
   }) : super(key: key);
+
   final String title;
 
   @override

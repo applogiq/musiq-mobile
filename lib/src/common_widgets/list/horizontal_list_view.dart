@@ -11,9 +11,9 @@ class CustomHorizontalListview extends StatelessWidget {
       this.alignText = TextAlign.left})
       : super(key: key);
 
+  final TextAlign alignText;
   final List images;
   final BoxShape shape;
-  final TextAlign alignText;
 
   @override
   Widget build(BuildContext context) {
@@ -85,9 +85,10 @@ class HorizonalListViewWidget extends StatelessWidget {
     required this.actionTitle,
     required this.listWidget,
   }) : super(key: key);
-  final String title;
+
   final String actionTitle;
   final Widget listWidget;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -117,10 +118,11 @@ class ListHeaderWidget extends StatelessWidget {
       required this.callback})
       : super(key: key);
 
-  final String title;
   final String actionTitle;
-  final List dataList;
   final Function callback;
+  final List dataList;
+  final String title;
+
   @override
   Widget build(BuildContext context) {
     return Row(

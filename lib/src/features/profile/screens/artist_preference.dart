@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:musiq/src/common_widgets/loader.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common_widgets/loader.dart';
 import '../../artist/provider/artist_provider.dart';
 import '../../artist/screens/artist_preference_screen/artist_preference_body.dart';
 import '../../common/screen/offline_screen.dart';

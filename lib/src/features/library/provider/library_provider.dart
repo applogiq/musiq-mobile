@@ -15,22 +15,26 @@ import 'package:musiq/src/utils/image_url_generate.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/string.dart';
+import '../../../routing/route_name.dart';
+import '../../../utils/navigation.dart';
 
 class LibraryProvider extends ChangeNotifier {
-  bool isFavouriteLoad = true;
-  bool isPlayListLoad = true;
-  bool isPlayListSongLoad = true;
-  bool isPlayListError = false;
-  List playListNameExistList = [];
-
-  String playListError = "";
-  String playListName = "";
-  PlaylistSongListModel playlistSongListModel = PlaylistSongListModel(
-      success: false, message: "No records", records: [], totalRecords: 0);
   FavouriteModel favouriteModel = FavouriteModel(
       success: false, message: "No records", records: [], totalRecords: 0);
+
+  bool isFavouriteLoad = true;
+  bool isPlayListError = false;
+  bool isPlayListLoad = true;
+  bool isPlayListSongLoad = true;
+  String playListError = "";
   PlayListModel playListModel = PlayListModel(
       success: false, message: "No records", records: [], totalRecords: 0);
+
+  String playListName = "";
+  List playListNameExistList = [];
+  PlaylistSongListModel playlistSongListModel = PlaylistSongListModel(
+      success: false, message: "No records", records: [], totalRecords: 0);
+
   FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
   createPlayList(BuildContext context, {bool isAddPlaylist = false}) async {
@@ -47,6 +51,26 @@ class LibraryProvider extends ChangeNotifier {
       // update();
       notifyListeners();
       Navigator.of(context).pop();
+    }
+  }
+
+  updatePlayListName(BuildContext context, int playlistId,
+      {bool isAddPlaylist = false}) async {
+    // var id = await secureStorage.read(key: "id");
+    Map params = {"name": playListName};
+    var response =
+        await LibraryRepository().updatePlaylistName(params, playlistId);
+    if (response.statusCode == 200) {
+      playListNameExistList.add(playListName);
+
+      if (isAddPlaylist) {
+        context.read<PlayerProvider>().getPlayListsList();
+      }
+      Navigator.of(context).pop();
+
+      Navigation.navigateReplaceToScreen(context, RouteName.library);
+
+      notifyListeners();
     }
   }
 
@@ -178,7 +202,7 @@ class LibraryProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void play(int id, BuildContext context) async {
+  void play(int id, BuildContext context, {int index = 0}) async {
     var response =
         await LibraryRepository().getPlayListSongListdata(id.toString());
     print(response.statusCode);
@@ -195,7 +219,29 @@ class LibraryProvider extends ChangeNotifier {
             imageUrl: generateSongImageUrl(element.albumName, element.albumId),
             musicDirectorName: element.musicDirectorName[0]));
       }
-      context.read<PlayerProvider>().goToPlayer(context, playSongListModel, 0);
+      context
+          .read<PlayerProvider>()
+          .goToPlayer(context, playSongListModel, index);
     }
+  }
+
+  void playFavourite(BuildContext context, {int index = 0}) async {
+    List<PlayerSongListModel> playSongListModel = [];
+
+    for (var element in favouriteModel.records) {
+      playSongListModel.add(PlayerSongListModel(
+          id: element.id,
+          albumName: element.albumName,
+          title: element.songName,
+          imageUrl: generateSongImageUrl(element.albumName, element.albumId),
+          musicDirectorName: element.musicDirectorName[0]));
+      context
+          .read<PlayerProvider>()
+          .goToPlayer(context, playSongListModel, index);
+    }
+  }
+
+  void navigateToPlayerScreen(BuildContext context, int id, {int index = 0}) {
+    play(id, context, index: index);
   }
 }

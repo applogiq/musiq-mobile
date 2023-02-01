@@ -3,20 +3,26 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
-import 'package:musiq/src/features/artist/domain/models/artist_model.dart';
-import 'package:musiq/src/features/home/domain/repository/search_repo.dart';
-import 'package:musiq/src/features/search/search_status.dart';
-import 'package:musiq/src/local/model/search_model.dart';
+import '../../library/provider/library_provider.dart';
+import '../../player/domain/repo/player_repo.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../objectbox.g.dart';
+import '../../../local/model/search_model.dart';
+import '../../artist/domain/models/artist_model.dart';
+import '../../library/domain/library_repo.dart';
+import '../../library/domain/models/playlist_song_list_model.dart';
+import '../../search/search_status.dart';
 import '../domain/model/song_search_model.dart';
+import '../domain/repository/search_repo.dart';
 
 class SearchProvider extends ChangeNotifier {
   late TextEditingController searchEditingController;
   SearchRepository searchRepository = SearchRepository();
   List<String> searchArtistList = [];
   List<String> searchSongList = [];
+  List<int> playlistSongId = [];
   String searchQuery = "";
   late Store store;
   init() {
@@ -57,6 +63,11 @@ class SearchProvider extends ChangeNotifier {
         message: "Search not started",
         records: [],
         totalRecords: 0);
+    searchSongModel = SearchSongModel(
+        success: false,
+        message: "Search not started",
+        records: [],
+        totalrecords: 0);
     isRecentSearch = true;
     notifyListeners();
   }
@@ -75,13 +86,16 @@ class SearchProvider extends ChangeNotifier {
   //   log(res.body.toString());
   // }
 
-  getSearch(String data, SearchStatus status) async {
+  getSearch(String data, SearchStatus status, int? playlistId,
+      BuildContext context) async {
+    playlistSongId.clear();
     searchSongList.clear();
     artistModel = ArtistModel(
         success: false,
         message: "Search not started",
         records: [],
         totalRecords: 0);
+
     searchSongModel.records.clear();
     searchQuery = data;
     if (data.trim() != "") {
@@ -107,6 +121,11 @@ class SearchProvider extends ChangeNotifier {
         if (res.statusCode == 200) {
           searchSongModel =
               SearchSongModel.fromMap(jsonDecode(res.body.toString()));
+
+          if (playlistId != null) {
+            getPlaylistSongList(playlistId);
+            context.read<LibraryProvider>().getPlayListSongList(playlistId);
+          }
         } else {
           searchSongModel = SearchSongModel(
               success: false,
@@ -118,6 +137,39 @@ class SearchProvider extends ChangeNotifier {
       }
     } else {
       isRecentSearch = true;
+      notifyListeners();
+    }
+  }
+
+  addSongToPlaylist(int songId, int playlistId) async {
+    Map params = {"playlist_id": playlistId, "song_id": songId};
+    var res = await PlayerRepo().addToPlaylist(params);
+    if (res.statusCode == 200) {
+      getPlaylistSongList(playlistId);
+    }
+  }
+
+  deleteSongToPlaylist(int playlistSongId, int playlistId) async {
+    var res =
+        await LibraryRepository().deletePlaylistSong(playlistSongId.toString());
+    if (res.statusCode == 200) {
+      getPlaylistSongList(playlistId);
+    }
+  }
+
+  getPlaylistSongList(int id) async {
+    var response =
+        await LibraryRepository().getPlayListSongListdata(id.toString());
+
+    print(response.body);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      PlaylistSongListModel playlistSongListModel =
+          PlaylistSongListModel.fromMap(jsonDecode(response.body));
+      playlistSongId.clear();
+      for (var element in playlistSongListModel.records) {
+        playlistSongId.add(element.playlistSongs.songId);
+      }
       notifyListeners();
     }
   }

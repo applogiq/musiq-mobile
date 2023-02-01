@@ -17,11 +17,6 @@ class PlayListModel {
     required this.totalRecords,
   });
 
-  bool success;
-  String message;
-  List<Record> records;
-  int totalRecords;
-
   factory PlayListModel.fromMap(Map<String, dynamic> json) => PlayListModel(
         success: json["success"],
         message: json["message"],
@@ -29,6 +24,11 @@ class PlayListModel {
             List<Record>.from(json["records"].map((x) => Record.fromMap(x))),
         totalRecords: json["total_records"],
       );
+
+  String message;
+  List<Record> records;
+  bool success;
+  int totalRecords;
 
   Map<String, dynamic> toMap() => {
         "success": success,
@@ -61,26 +61,6 @@ class Record {
     required this.isActive,
   });
 
-  PlaylistSongs? playlistSongs;
-  String playlistName;
-  int id;
-  int? noOfSongs;
-  String? songId;
-  String? songName;
-  String? albumId;
-  String? albumName;
-  List<String?>? musicDirectorName;
-  bool? isImage;
-  DateTime? createdAt;
-  dynamic createdBy;
-  dynamic updatedBy;
-  bool? isDelete;
-  int? userId;
-  dynamic updatedAt;
-  int? createdUserBy;
-  dynamic updatedUserBy;
-  bool? isActive;
-
   factory Record.fromMap(Map<String, dynamic> json) => Record(
         playlistSongs: json["playlist_songs"] == null
             ? null
@@ -108,6 +88,26 @@ class Record {
         updatedUserBy: json["updated_user_by"],
         isActive: json["is_active"],
       );
+
+  String? albumId;
+  String? albumName;
+  DateTime? createdAt;
+  dynamic createdBy;
+  int? createdUserBy;
+  int id;
+  bool? isActive;
+  bool? isDelete;
+  bool? isImage;
+  List<String?>? musicDirectorName;
+  int? noOfSongs;
+  String playlistName;
+  PlaylistSongs? playlistSongs;
+  String? songId;
+  String? songName;
+  dynamic updatedAt;
+  dynamic updatedBy;
+  dynamic updatedUserBy;
+  int? userId;
 
   Map<String, dynamic> toMap() => {
         "playlist_songs": playlistSongs == null ? null : playlistSongs!.toMap(),
@@ -149,18 +149,6 @@ class PlaylistSongs {
     required this.isActive,
   });
 
-  dynamic updatedAt;
-  int playlistId;
-  int songId;
-  int createdBy;
-  dynamic updatedBy;
-  bool isDelete;
-  int id;
-  DateTime createdAt;
-  dynamic createdUserBy;
-  dynamic updatedUserBy;
-  bool isActive;
-
   factory PlaylistSongs.fromMap(Map<String, dynamic> json) => PlaylistSongs(
         updatedAt: json["updated_at"],
         playlistId: json["playlist_id"],
@@ -174,6 +162,18 @@ class PlaylistSongs {
         updatedUserBy: json["updated_user_by"],
         isActive: json["is_active"],
       );
+
+  DateTime createdAt;
+  int createdBy;
+  dynamic createdUserBy;
+  int id;
+  bool isActive;
+  bool isDelete;
+  int playlistId;
+  int songId;
+  dynamic updatedAt;
+  dynamic updatedBy;
+  dynamic updatedUserBy;
 
   Map<String, dynamic> toMap() => {
         "updated_at": updatedAt,

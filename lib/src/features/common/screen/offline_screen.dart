@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/constants/images.dart';
 
 import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../constants/color.dart';
+import '../../../constants/images.dart';
 import '../../../constants/string.dart';
 import '../../../constants/style.dart';
 

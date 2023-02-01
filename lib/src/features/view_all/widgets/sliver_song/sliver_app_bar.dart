@@ -1,11 +1,11 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/home/domain/model/trending_hits_model.dart';
-import 'package:musiq/src/features/view_all/widgets/secondary_app_bar.dart';
 
+import '../../../home/domain/model/trending_hits_model.dart';
 import '../app_bar_overlay.dart';
 import '../gradient_cover.dart';
+import '../secondary_app_bar.dart';
 import 'album_image.dart';
 
 typedef SliverAppBarDelegateBuilder = Widget Function(
@@ -23,11 +23,11 @@ class SliverCustomAppBarSong extends StatelessWidget {
     required this.songCount,
   }) : super(key: key);
 
+  final TrendingHitsModel artistViewAllModel;
   final double maxAppBarHeight;
   final double minAppBarHeight;
-  final String title;
-  final TrendingHitsModel artistViewAllModel;
   final int songCount;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -134,25 +134,29 @@ class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     required this.maxHeight,
     required this.builder,
   });
-  final double minHeight;
-  final double maxHeight;
+
   final SliverAppBarDelegateBuilder builder;
-  @override
-  double get minExtent => minHeight;
+  final double maxHeight;
+  final double minHeight;
+
   @override
   double get maxExtent => math.max(maxHeight, minHeight);
+
   @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return SizedBox.expand(
-      child: builder(context, shrinkOffset),
-    );
-  }
+  double get minExtent => minHeight;
 
   @override
   bool shouldRebuild(SliverAppBarDelegate oldDelegate) {
     return maxHeight != oldDelegate.maxHeight ||
         minHeight != oldDelegate.minHeight ||
         builder != oldDelegate.builder;
+  }
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return SizedBox.expand(
+      child: builder(context, shrinkOffset),
+    );
   }
 }

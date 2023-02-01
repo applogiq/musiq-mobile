@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/common_widgets/box/vertical_box.dart';
-import 'package:musiq/src/common_widgets/loader.dart';
-import 'package:musiq/src/constants/color.dart';
-import 'package:musiq/src/features/player/domain/model/player_song_list_model.dart';
-import 'package:musiq/src/utils/image_url_generate.dart';
-import 'package:musiq/src/utils/size_config.dart';
-import 'package:musiq/src/utils/time.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common_widgets/box/vertical_box.dart';
 import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../common_widgets/image/no_artist.dart';
+import '../../../common_widgets/loader.dart';
+import '../../../constants/color.dart';
 import '../../../constants/style.dart';
+import '../../../utils/image_url_generate.dart';
+import '../../../utils/size_config.dart';
+import '../../../utils/time.dart';
+import '../domain/model/player_song_list_model.dart';
 import '../provider/player_provider.dart';
 
 class SongInfoScreen extends StatefulWidget {
   const SongInfoScreen({super.key, required this.playerSongListModel});
+
   final PlayerSongListModel playerSongListModel;
 
   @override

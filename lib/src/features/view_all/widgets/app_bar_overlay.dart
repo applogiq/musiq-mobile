@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/home/provider/artist_view_all_provider.dart';
-import 'package:musiq/src/features/player/domain/model/player_song_list_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../constants/color.dart';
 import '../../../constants/style.dart';
 import '../../../utils/image_url_generate.dart';
+import '../../home/provider/artist_view_all_provider.dart';
+import '../../player/domain/model/player_song_list_model.dart';
 import '../../player/provider/player_provider.dart';
 
 class AppBarOverlayContent extends StatelessWidget {
@@ -18,10 +18,11 @@ class AppBarOverlayContent extends StatelessWidget {
       required this.size})
       : super(key: key);
 
-  final String title;
-  final int count;
   final VoidCallback callback;
+  final int count;
   final double size;
+  final String title;
+
   PopupMenuItem _buildPopupMenuItem(String title, String routeName) {
     return PopupMenuItem(
       onTap: () {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/utils/size_config.dart';
 
 import '../../constants/color.dart';
 import '../../constants/style.dart';
+import '../../utils/size_config.dart';
 import '../container/custom_color_container.dart';
 
 class TextFieldWithError extends StatelessWidget {
@@ -16,11 +16,12 @@ class TextFieldWithError extends StatelessWidget {
       required this.errorMessage,
       required this.initialValue})
       : super(key: key);
-  final bool isValidatorEnable;
-  final bool isPassword;
-  final String initialValue;
-  final String label;
+
   final String errorMessage;
+  final String initialValue;
+  final bool isPassword;
+  final bool isValidatorEnable;
+  final String label;
   final ValueSetter<String>? onChange;
   final VoidCallback onTap;
 

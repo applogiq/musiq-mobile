@@ -10,12 +10,14 @@ class CustomColorContainer extends StatelessWidget {
     this.right = 0.0,
     this.verticalPadding = 0.0,
   }) : super(key: key);
+
+  final dynamic bgColor;
   final Widget child;
   final double left;
   final double right;
-  final double verticalPadding;
   final BoxShape shape;
-  final dynamic bgColor;
+  final double verticalPadding;
+
   @override
   Widget build(BuildContext context) {
     return Container(

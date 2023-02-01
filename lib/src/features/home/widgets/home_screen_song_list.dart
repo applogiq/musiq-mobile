@@ -16,9 +16,9 @@ class HomeScreenSongList extends StatelessWidget {
       required this.isViewAll,
       required this.songList});
 
-  final String title;
   final bool isViewAll;
   final List<SongListModel> songList;
+  final String title;
 
   @override
   Widget build(BuildContext context) {

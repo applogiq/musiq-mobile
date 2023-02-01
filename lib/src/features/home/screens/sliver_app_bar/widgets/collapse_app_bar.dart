@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/home/provider/view_all_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants/color.dart';
 import '../../../../player/screen/player_screen/player_controller.dart';
+import '../../../provider/view_all_provider.dart';
 
 class CollapsedAppBar extends StatelessWidget {
   const CollapsedAppBar({
@@ -13,6 +13,7 @@ class CollapsedAppBar extends StatelessWidget {
     required this.title,
     required this.callBack,
     required this.addToQueue,
+    required this.popUpMenu,
   }) : super(key: key);
 
   final double titleOpacity;
@@ -20,6 +21,7 @@ class CollapsedAppBar extends StatelessWidget {
   final String title;
   final Function callBack;
   final Function addToQueue;
+  final Widget popUpMenu;
 
   @override
   Widget build(BuildContext context) {
@@ -101,34 +103,36 @@ class CollapsedAppBar extends StatelessWidget {
                     );
                   }),
                   AnimatedOpacity(
-                    opacity: 1,
-                    duration: const Duration(milliseconds: 100),
-                    child: PopupMenuButton(
-                        color: CustomColor.appBarColor,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(8.0),
-                            bottomRight: Radius.circular(8.0),
-                            topLeft: Radius.circular(8.0),
-                            topRight: Radius.circular(8.0),
-                          ),
-                        ),
-                        padding: const EdgeInsets.all(0.0),
-                        onSelected: (value) {
-                          if (value == 1) {
-                            addToQueue();
-                          }
-                        },
-                        itemBuilder: (ctx) => [
-                              const PopupMenuItem(
-                                value: 1,
-                                child: Text('Add to Queue'),
-                              ),
-                              // _buildPopupMenuItem('Add to queue', 'share'),
-                              // _buildPopupMenuItem(
-                              //     'Add to playlist', "song_info"),
-                            ]),
-                  ),
+                      opacity: 1,
+                      duration: const Duration(milliseconds: 100),
+                      child: popUpMenu
+                      //  PopupMenuButton(
+                      //     color: CustomColor.appBarColor,
+                      //     shape: const RoundedRectangleBorder(
+                      //       borderRadius: BorderRadius.only(
+                      //         bottomLeft: Radius.circular(8.0),
+                      //         bottomRight: Radius.circular(8.0),
+                      //         topLeft: Radius.circular(8.0),
+                      //         topRight: Radius.circular(8.0),
+                      //       ),
+                      //     ),
+                      //     padding: const EdgeInsets.all(0.0),
+                      //     onSelected: (value) {
+                      //       if (value == 1) {
+                      //         addToQueue();
+                      //       }
+                      //     },
+                      //     itemBuilder: (ctx) => [
+                      //           const PopupMenuItem(
+                      //             value: 1,
+                      //             child: Text('Add to Queue'),
+                      //           ),
+                      //           // _buildPopupMenuItem('Add to queue', 'share'),
+                      //           // _buildPopupMenuItem(
+                      //           //     'Add to playlist', "song_info"),
+                      //         ]),
+
+                      ),
                 ],
               ),
             ),

@@ -16,9 +16,10 @@ class FixedAppBar extends StatelessWidget {
     required this.size,
   }) : super(key: key);
 
-  final double titleOpacity;
   final double size;
   final String title;
+  final double titleOpacity;
+
   PopupMenuItem _buildPopupMenuItem(String title, String routeName) {
     return PopupMenuItem(
       onTap: () {

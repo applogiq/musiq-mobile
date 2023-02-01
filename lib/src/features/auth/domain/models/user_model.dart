@@ -9,11 +9,11 @@ class UserModel {
     required this.records,
   });
 
-  Records records;
-
   factory UserModel.fromMap(Map<String, dynamic> json) => UserModel(
         records: Records.fromMap(json["records"]),
       );
+
+  Records records;
 
   Map<String, dynamic> toMap() => {
         "records": records.toMap(),
@@ -37,21 +37,6 @@ class Records {
     required this.refreshToken,
   });
 
-  int registerId;
-
-  int id;
-  bool isDelete;
-  String fullname;
-  bool? isImage;
-  bool isActive;
-  String username;
-  String email;
-  String password;
-  Preference preference;
-  bool isPreference;
-  String accessToken;
-  String refreshToken;
-
   factory Records.fromMap(Map<String, dynamic> json) => Records(
         registerId: json["register_id"],
         id: json["id"],
@@ -67,6 +52,20 @@ class Records {
         accessToken: json["access_token"],
         refreshToken: json["refresh_token"],
       );
+
+  String accessToken;
+  String email;
+  String fullname;
+  int id;
+  bool isActive;
+  bool isDelete;
+  bool? isImage;
+  bool isPreference;
+  String password;
+  Preference preference;
+  String refreshToken;
+  int registerId;
+  String username;
 
   Map<String, dynamic> toMap() => {
         "register_id": registerId,
@@ -90,11 +89,11 @@ class Preference {
     required this.artist,
   });
 
-  List<String> artist;
-
   factory Preference.fromMap(Map<String, dynamic> json) => Preference(
         artist: List<String>.from(json["artist"].map((x) => x)),
       );
+
+  List<String> artist;
 
   Map<String, dynamic> toMap() => {
         "artist": List<dynamic>.from(artist.map((x) => x)),

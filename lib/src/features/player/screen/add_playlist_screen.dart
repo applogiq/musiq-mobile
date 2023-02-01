@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/common_widgets/loader.dart';
-import 'package:musiq/src/features/player/provider/player_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/dialog/custom_dialog_box.dart';
+import '../../../common_widgets/loader.dart';
 import '../../../constants/color.dart';
 import '../../../constants/string.dart';
 import '../../library/provider/library_provider.dart';
 import '../../library/widgets/playlist_tile.dart';
+import '../provider/player_provider.dart';
 
 class AddToPlaylistScreen extends StatefulWidget {
   const AddToPlaylistScreen({super.key, required this.songId});
+
   final int songId;
 
   @override

@@ -14,11 +14,6 @@ class CollectionViewAllModel {
     required this.totalrecords,
   });
 
-  bool success;
-  String message;
-  List<Record?> records;
-  int totalrecords;
-
   factory CollectionViewAllModel.fromMap(Map<String, dynamic> json) =>
       CollectionViewAllModel(
         success: json["success"],
@@ -29,6 +24,11 @@ class CollectionViewAllModel {
                 json["records"]!.map((x) => Record.fromMap(x))),
         totalrecords: json["totalrecords"],
       );
+
+  String message;
+  List<Record?> records;
+  bool success;
+  int totalrecords;
 
   Map<String, dynamic> toMap() => {
         "success": success,
@@ -51,16 +51,6 @@ class Record {
     required this.isImage,
   });
 
-  int id;
-  String songName;
-  String? lyrics;
-  bool isMusic;
-  List<int?> artistId;
-  String albumId;
-  String albumName;
-  List<String?>? musicDirectorName;
-  bool isImage;
-
   factory Record.fromMap(Map<String, dynamic> json) => Record(
         id: json["id"],
         songName: json["song_name"],
@@ -75,6 +65,16 @@ class Record {
             List<String?>.from(json["music_director_name"]!.map((x) => x)),
         isImage: json["is_image"],
       );
+
+  String albumId;
+  String albumName;
+  List<int?> artistId;
+  int id;
+  bool isImage;
+  bool isMusic;
+  String? lyrics;
+  List<String?>? musicDirectorName;
+  String songName;
 
   Map<String, dynamic> toMap() => {
         "id": id,

@@ -18,6 +18,7 @@ class RouteName {
   static const String artistViewAllSongListScreen =
       "artist_view_all_song_list_screen";
   static const String viewAllScreen = "view_all_screen";
+  static const String library = "library_screen";
 
   static const String crop = "crop";
   static const String search = "search";

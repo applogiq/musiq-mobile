@@ -5,13 +5,12 @@ import '../constants/color.dart';
 
 ThemeData themeData(BuildContext context) {
   return ThemeData(
-    appBarTheme: AppBarTheme(
-      iconTheme: const IconThemeData(size: 20),
+    appBarTheme: const AppBarTheme(
+      iconTheme: IconThemeData(size: 20),
       backgroundColor: CustomColor.bg,
       elevation: 0,
       titleSpacing: 23,
-      titleTextStyle:
-          const TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+      titleTextStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
         splashColor: Colors.white.withOpacity(0.25),

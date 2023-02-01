@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/constants/color.dart';
-import 'package:musiq/src/constants/style.dart';
+
+import '../../constants/color.dart';
+import '../../constants/style.dart';
 
 class CustomElevatedButton extends StatelessWidget {
   const CustomElevatedButton(
@@ -14,14 +15,15 @@ class CustomElevatedButton extends StatelessWidget {
       this.isLoading = false,
       required this.onTap})
       : super(key: key);
-  final VoidCallback onTap;
-  final String label;
-  final double verticalMargin;
+
   final double horizontalMargin;
-  final double radius;
   final bool isIcon;
-  final bool isValid;
   final bool isLoading;
+  final bool isValid;
+  final String label;
+  final VoidCallback onTap;
+  final double radius;
+  final double verticalMargin;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +62,6 @@ class CustomElevatedButton extends StatelessWidget {
                     ),
             ],
           ))),
-   
     );
   }
 }

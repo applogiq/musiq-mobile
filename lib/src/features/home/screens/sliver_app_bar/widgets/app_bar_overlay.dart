@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/home/provider/artist_view_all_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../common_widgets/buttons/custom_button.dart';
 import '../../../../../constants/color.dart';
 import '../../../../../constants/style.dart';
+import '../../../provider/artist_view_all_provider.dart';
 
 class AppBarOverlayContent extends StatelessWidget {
   const AppBarOverlayContent(
@@ -13,7 +13,8 @@ class AppBarOverlayContent extends StatelessWidget {
       required this.count,
       required this.callback,
       required this.size,
-      required this.addQueue})
+      required this.addQueue,
+      required this.popUpMenu})
       : super(key: key);
 
   final String title;
@@ -21,19 +22,7 @@ class AppBarOverlayContent extends StatelessWidget {
   final VoidCallback callback;
   final VoidCallback addQueue;
   final double size;
-  PopupMenuItem _buildPopupMenuItem(String title, String routeName) {
-    return PopupMenuItem(
-      onTap: () {
-        if (routeName == "hide") {
-          // setState(() {
-          //   hideLyrics;
-          // });
-        } else if (title == "") {
-        } else {}
-      },
-      child: Text(title),
-    );
-  }
+  final Widget popUpMenu;
 
   @override
   Widget build(BuildContext context) {
@@ -65,29 +54,7 @@ class AppBarOverlayContent extends StatelessWidget {
                   count <= 0
                       ? const SizedBox.shrink()
                       : size < 0.6
-                          ? PopupMenuButton(
-                              color: CustomColor.appBarColor,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(8.0),
-                                  bottomRight: Radius.circular(8.0),
-                                  topLeft: Radius.circular(8.0),
-                                  topRight: Radius.circular(8.0),
-                                ),
-                              ),
-                              padding: const EdgeInsets.all(0.0),
-                              onSelected: (value) {
-                                if (value == 1) {
-                                  addQueue();
-                                }
-                              },
-                              itemBuilder: (ctx) => [
-                                const PopupMenuItem(
-                                  value: 1,
-                                  child: Text('Add to Queue'),
-                                ),
-                              ],
-                            )
+                          ? popUpMenu
                           : const SizedBox.shrink()
                 ],
               ),

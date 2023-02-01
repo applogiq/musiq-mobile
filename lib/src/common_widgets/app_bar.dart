@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/auth/provider/register_provider.dart';
 import 'package:provider/provider.dart';
+
+import '../features/auth/provider/register_provider.dart';
 
 class CustomAppBarWidget extends StatelessWidget {
   const CustomAppBarWidget(
@@ -10,10 +11,12 @@ class CustomAppBarWidget extends StatelessWidget {
       this.height = 64.0,
       this.onBack})
       : super(key: key);
-  final String title;
+
   final dynamic actions;
   final double height;
   final Function? onBack;
+  final String title;
+
   @override
   Widget build(BuildContext context) {
     var pro = Provider.of<RegisterProvider>(context);

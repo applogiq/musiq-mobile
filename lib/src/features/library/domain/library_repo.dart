@@ -37,10 +37,31 @@ class LibraryRepository {
     }
   }
 
+  Future<dynamic> updatePlaylistName(Map params, int id) async {
+    try {
+      dynamic response = await apiServices.getPutAuthApiResponse(
+          APIConstants.kCreatePlayList + id.toString(), params);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<dynamic> deletePlaylist(String id) async {
     try {
       dynamic response = await apiServices.getDeleteAuthApiResponse(
         APIConstants.kCreatePlayList + id.toString(),
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<dynamic> deletePlaylistSong(String id) async {
+    try {
+      dynamic response = await apiServices.getDeleteAuthApiResponse(
+        APIConstants.kPlaylistSong + id.toString(),
       );
       return response;
     } catch (e) {

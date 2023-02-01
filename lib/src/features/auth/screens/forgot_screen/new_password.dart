@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:musiq/src/common_widgets/box/vertical_box.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../common_widgets/box/vertical_box.dart';
 import '../../../../common_widgets/buttons/custom_button.dart';
 import '../../../../common_widgets/text_field/custom_password_text_field.dart';
 import '../../../../constants/string.dart';
 import '../../../../constants/style.dart';
 import '../../../common/screen/offline_screen.dart';
-import '../../provider/new_password_provider.dart';
+import '../../provider/forgot_password_provider.dart';
 
 class NewPasswordScreen extends StatefulWidget {
   const NewPasswordScreen({

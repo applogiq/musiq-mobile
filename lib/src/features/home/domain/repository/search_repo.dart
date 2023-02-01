@@ -7,6 +7,7 @@ import '../../../../constants/api.dart';
 class SearchRepository {
   BaseApiServices apiServices = NetworkApiService();
   FlutterSecureStorage storage = const FlutterSecureStorage();
+
   Future<dynamic> getArtistSearch(String data) async {
     try {
       // var userId = await storage.read(key: "register_id");

@@ -17,17 +17,17 @@ class SongInfoModel {
     required this.totalrecords,
   });
 
-  final bool success;
-  final String message;
-  final Records records;
-  final int totalrecords;
-
   factory SongInfoModel.fromMap(Map<String, dynamic> json) => SongInfoModel(
         success: json["success"],
         message: json["message"],
         records: Records.fromMap(json["records"]),
         totalrecords: json["totalrecords"],
       );
+
+  final String message;
+  final Records records;
+  final bool success;
+  final int totalrecords;
 
   Map<String, dynamic> toMap() => {
         "success": success,
@@ -62,28 +62,6 @@ class Records {
     required this.artistDetails,
   });
 
-  final int id;
-  final List<int> artistId;
-  final String songSize;
-  final int albumId;
-  final bool isMusic;
-  final GenreId genreId;
-  final DateTime createdAt;
-  final String duration;
-  final dynamic updatedAt;
-  final String lyrics;
-  final int createdBy;
-  final int? listeners;
-  final dynamic updatedBy;
-  final String songId;
-  final String label;
-  final bool isDelete;
-  final String songName;
-  final DateTime releasedDate;
-  final bool isActive;
-  final AlbumDetails albumDetails;
-  final List<ArtistDetail> artistDetails;
-
   factory Records.fromMap(Map<String, dynamic> json) => Records(
         id: json["id"],
         artistId: List<int>.from(json["artist_id"].map((x) => x)),
@@ -108,6 +86,28 @@ class Records {
         artistDetails: List<ArtistDetail>.from(
             json["artist_details"].map((x) => ArtistDetail.fromMap(x))),
       );
+
+  final AlbumDetails albumDetails;
+  final int albumId;
+  final List<ArtistDetail> artistDetails;
+  final List<int> artistId;
+  final DateTime createdAt;
+  final int createdBy;
+  final String duration;
+  final GenreId genreId;
+  final int id;
+  final bool isActive;
+  final bool isDelete;
+  final bool isMusic;
+  final String label;
+  final int? listeners;
+  final String lyrics;
+  final DateTime releasedDate;
+  final String songId;
+  final String songName;
+  final String songSize;
+  final dynamic updatedAt;
+  final dynamic updatedBy;
 
   Map<String, dynamic> toMap() => {
         "id": id,
@@ -154,21 +154,6 @@ class AlbumDetails {
     required this.isDelete,
   });
 
-  final int id;
-  final int releasedYear;
-  final List<int> musicDirector;
-  final bool isImage;
-  final dynamic updatedAt;
-  final dynamic updatedBy;
-  final bool isActive;
-  final String albumId;
-  final String albumName;
-  final int noOfSongs;
-  final List<String> musicDirectorName;
-  final DateTime createdAt;
-  final int createdBy;
-  final bool isDelete;
-
   factory AlbumDetails.fromMap(Map<String, dynamic> json) => AlbumDetails(
         id: json["id"],
         releasedYear: json["released_year"],
@@ -186,6 +171,21 @@ class AlbumDetails {
         createdBy: json["created_by"],
         isDelete: json["is_delete"],
       );
+
+  final String albumId;
+  final String albumName;
+  final DateTime createdAt;
+  final int createdBy;
+  final int id;
+  final bool isActive;
+  final bool isDelete;
+  final bool isImage;
+  final List<int> musicDirector;
+  final List<String> musicDirectorName;
+  final int noOfSongs;
+  final int releasedYear;
+  final dynamic updatedAt;
+  final dynamic updatedBy;
 
   Map<String, dynamic> toMap() => {
         "id": id,
@@ -221,18 +221,6 @@ class ArtistDetail {
     required this.isActive,
   });
 
-  final int followers;
-  final int id;
-  final DateTime createdAt;
-  final int createdBy;
-  final bool isDelete;
-  final String artistId;
-  final String artistName;
-  final bool isImage;
-  final dynamic updatedAt;
-  final dynamic updatedBy;
-  final bool isActive;
-
   factory ArtistDetail.fromMap(Map<String, dynamic> json) => ArtistDetail(
         followers: json["followers"],
         id: json["id"],
@@ -246,6 +234,18 @@ class ArtistDetail {
         updatedBy: json["updated_by"],
         isActive: json["is_active"],
       );
+
+  final String artistId;
+  final String artistName;
+  final DateTime createdAt;
+  final int createdBy;
+  final int followers;
+  final int id;
+  final bool isActive;
+  final bool isDelete;
+  final bool isImage;
+  final dynamic updatedAt;
+  final dynamic updatedBy;
 
   Map<String, dynamic> toMap() => {
         "followers": followers,
@@ -267,11 +267,11 @@ class GenreId {
     required this.genres,
   });
 
-  final List<String> genres;
-
   factory GenreId.fromMap(Map<String, dynamic> json) => GenreId(
         genres: List<String>.from(json["genres"].map((x) => x)),
       );
+
+  final List<String> genres;
 
   Map<String, dynamic> toMap() => {
         "genres": List<dynamic>.from(genres.map((x) => x)),

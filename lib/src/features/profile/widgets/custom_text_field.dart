@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:musiq/src/common_widgets/text_field/text_style.dart';
-import 'package:musiq/src/constants/color.dart';
-import 'package:musiq/src/utils/size_config.dart';
+
+import '../../../common_widgets/text_field/text_style.dart';
+import '../../../constants/color.dart';
+import '../../../utils/size_config.dart';
 
 class CustomTextField extends StatelessWidget {
   const CustomTextField(
@@ -15,13 +16,15 @@ class CustomTextField extends StatelessWidget {
       required this.initialValue,
       required this.inputFormatter})
       : super(key: key);
-  final ValueSetter<String>? onChange;
-  final TextInputType keyboardType;
+
   final String errorMessage;
-  final bool readOnly;
   final String fieldLabel;
   final String initialValue;
   final List<TextInputFormatter> inputFormatter;
+  final TextInputType keyboardType;
+  final ValueSetter<String>? onChange;
+  final bool readOnly;
+
   @override
   Widget build(BuildContext context) {
     return Column(

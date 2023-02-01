@@ -1,12 +1,12 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/view_all/widgets/secondary_app_bar.dart';
 
 import '../../home/domain/model/artist_view_all_model.dart';
 import 'album_image.dart';
 import 'app_bar_overlay.dart';
 import 'gradient_cover.dart';
+import 'secondary_app_bar.dart';
 
 typedef SliverAppBarDelegateBuilder = Widget Function(
   BuildContext context,

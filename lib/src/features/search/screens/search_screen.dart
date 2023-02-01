@@ -2,25 +2,34 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:musiq/src/constants/style.dart';
-import 'package:musiq/src/features/common/screen/no_song_screen.dart';
-import 'package:musiq/src/features/home/provider/search_provider.dart';
-import 'package:musiq/src/features/home/screens/artist_view_all/artist_view_all_screen.dart';
-import 'package:musiq/src/features/player/domain/model/player_song_list_model.dart';
-import 'package:musiq/src/features/player/provider/player_provider.dart';
-import 'package:musiq/src/features/search/search_status.dart';
-import 'package:musiq/src/utils/image_url_generate.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/list/horizontal_list_view.dart';
+import '../../../constants/style.dart';
+import '../../../utils/image_url_generate.dart';
+import '../../common/screen/no_song_screen.dart';
 import '../../common/screen/offline_screen.dart';
 import '../../home/domain/model/song_search_model.dart';
+import '../../home/provider/search_provider.dart';
+import '../../home/screens/artist_view_all/artist_view_all_screen.dart';
 import '../../home/screens/sliver_app_bar/widgets/album_song_list.dart';
 import '../../home/widgets/search_notifications.dart';
+import '../../player/domain/model/player_song_list_model.dart';
+import '../../player/provider/player_provider.dart';
+import '../search_status.dart';
+
+class SearchRequestModel {
+  SearchRequestModel({required this.searchStatus, this.playlistId});
+
+  final int? playlistId;
+  final SearchStatus searchStatus;
+}
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key? key, required this.searchStatus}) : super(key: key);
-  final SearchStatus searchStatus;
+  const SearchScreen({Key? key, required this.searchRequestModel})
+      : super(key: key);
+
+  final SearchRequestModel searchRequestModel;
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -29,25 +38,6 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   late TextEditingController _controller;
   Timer? _debounceTimer;
-  void debouncing({required Function() fn, int waitForMs = 500}) {
-    _debounceTimer?.cancel();
-
-    _debounceTimer = Timer(Duration(milliseconds: waitForMs), fn);
-  }
-
-  @override
-  void initState() {
-    // context.read<SearchProvider>().init();
-    _controller = TextEditingController();
-    _controller.addListener(_onSearchChange);
-
-    if (widget.searchStatus == SearchStatus.artist) {
-      context.read<SearchProvider>().getArtistSearchHistory();
-    } else {
-      context.read<SearchProvider>().getSongSearchHistory();
-    }
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -59,13 +49,35 @@ class _SearchScreenState extends State<SearchScreen> {
     // context.read<SearchProvider>().destroy();
   }
 
+  @override
+  void initState() {
+    // context.read<SearchProvider>().init();
+    _controller = TextEditingController();
+    _controller.addListener(_onSearchChange);
+
+    if (widget.searchRequestModel.searchStatus == SearchStatus.artist) {
+      context.read<SearchProvider>().getArtistSearchHistory();
+    } else {
+      context.read<SearchProvider>().getSongSearchHistory();
+    }
+    super.initState();
+  }
+
+  void debouncing({required Function() fn, int waitForMs = 500}) {
+    _debounceTimer?.cancel();
+
+    _debounceTimer = Timer(Duration(milliseconds: waitForMs), fn);
+  }
+
   void _onSearchChange() {
     debouncing(
       fn: () {
         // context.read<SearchProvider>().artistSearch(_controller.text);
-        context
-            .read<SearchProvider>()
-            .getSearch(_controller.text, widget.searchStatus);
+        context.read<SearchProvider>().getSearch(
+            _controller.text,
+            widget.searchRequestModel.searchStatus,
+            widget.searchRequestModel.playlistId,
+            context);
       },
     );
   }
@@ -100,17 +112,22 @@ class _SearchScreenState extends State<SearchScreen> {
                             onTap: () {
                               // context.read<SearchProvider>().searchFieldTap();
                             },
-                            hint: widget.searchStatus == SearchStatus.artist
+                            hint: widget.searchRequestModel.searchStatus ==
+                                    SearchStatus.artist
                                 ? "Search Artist"
                                 : "Search Music and Podcasts",
-                            searchStatus: widget.searchStatus,
+                            searchStatus:
+                                widget.searchRequestModel.searchStatus,
                           ),
                         ),
                       ],
                     ),
                   ),
                   Consumer<SearchProvider>(builder: (context, pro, _) {
-                    return (pro.isRecentSearch && pro.searchSongList.isNotEmpty)
+                    return (pro.isRecentSearch &&
+                            pro.searchSongList.isNotEmpty &&
+                            widget.searchRequestModel.searchStatus !=
+                                SearchStatus.playlist)
                         ? Column(
                             children: [
                               Padding(
@@ -164,7 +181,8 @@ class _SearchScreenState extends State<SearchScreen> {
                             ],
                           )
                         : Builder(builder: (context) {
-                            if (widget.searchStatus == SearchStatus.artist) {
+                            if (widget.searchRequestModel.searchStatus ==
+                                SearchStatus.artist) {
                               return pro.artistModel.message == "No records"
                                   ? const NoRecordWidget()
                                   : Expanded(
@@ -175,55 +193,130 @@ class _SearchScreenState extends State<SearchScreen> {
                             } else {
                               return pro.searchSongModel.message == "No records"
                                   ? const NoRecordWidget()
-                                  : Expanded(
-                                      child: ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount:
-                                            pro.searchSongModel.records.length,
-                                        itemBuilder: (context, index) =>
-                                            InkWell(
-                                          onTap: () {
-                                            context
-                                                .read<SearchProvider>()
-                                                .searchSongStore();
-                                            Record rec = pro
-                                                .searchSongModel.records[index];
-                                            PlayerSongListModel
-                                                playerSongListModel =
-                                                PlayerSongListModel(
-                                                    id: rec.id,
-                                                    albumName: rec.albumName,
-                                                    title: rec.songName,
-                                                    imageUrl:
-                                                        generateSongImageUrl(
+                                  : widget.searchRequestModel.searchStatus ==
+                                          SearchStatus.playlist
+                                      ? Expanded(
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: pro
+                                                .searchSongModel.records.length,
+                                            itemBuilder: (context, index) =>
+                                                InkWell(
+                                              onTap: () {
+                                                context
+                                                    .read<SearchProvider>()
+                                                    .searchSongStore();
+                                                Record rec = pro.searchSongModel
+                                                    .records[index];
+                                                PlayerSongListModel
+                                                    playerSongListModel =
+                                                    PlayerSongListModel(
+                                                        id: rec.id,
+                                                        albumName:
                                                             rec.albumName,
-                                                            rec.albumId),
-                                                    musicDirectorName: rec
-                                                        .musicDirectorName[0]);
-                                            context
-                                                .read<PlayerProvider>()
-                                                .playSingleSong(context,
-                                                    playerSongListModel);
-                                          },
-                                          child: SongListTile(
-                                              albumName: pro.searchSongModel
-                                                  .records[index].albumName,
-                                              imageUrl: generateSongImageUrl(
-                                                  pro.searchSongModel
+                                                        title: rec.songName,
+                                                        imageUrl:
+                                                            generateSongImageUrl(
+                                                                rec.albumName,
+                                                                rec.albumId),
+                                                        musicDirectorName:
+                                                            rec.musicDirectorName[
+                                                                0]);
+                                                context
+                                                    .read<PlayerProvider>()
+                                                    .playSingleSong(context,
+                                                        playerSongListModel);
+                                              },
+                                              child: SongPlayListTile(
+                                                playlistId: widget
+                                                    .searchRequestModel
+                                                    .playlistId!,
+                                                albumName: pro.searchSongModel
+                                                    .records[index].albumName,
+                                                imageUrl: generateSongImageUrl(
+                                                    pro
+                                                        .searchSongModel
+                                                        .records[index]
+                                                        .albumName,
+                                                    pro
+                                                        .searchSongModel
+                                                        .records[index]
+                                                        .albumId),
+                                                musicDirectorName: pro
+                                                    .searchSongModel
+                                                    .records[index]
+                                                    .musicDirectorName[0],
+                                                songName: pro.searchSongModel
+                                                    .records[index].songName,
+                                                songId: pro.searchSongModel
+                                                    .records[index].id,
+                                                isAdded: pro.playlistSongId
+                                                        .contains(pro
+                                                            .searchSongModel
+                                                            .records[index]
+                                                            .id)
+                                                    ? true
+                                                    : false,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : Expanded(
+                                          child: ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: pro
+                                                .searchSongModel.records.length,
+                                            itemBuilder: (context, index) =>
+                                                InkWell(
+                                              onTap: () {
+                                                context
+                                                    .read<SearchProvider>()
+                                                    .searchSongStore();
+                                                Record rec = pro.searchSongModel
+                                                    .records[index];
+                                                PlayerSongListModel
+                                                    playerSongListModel =
+                                                    PlayerSongListModel(
+                                                        id: rec.id,
+                                                        albumName:
+                                                            rec.albumName,
+                                                        title: rec.songName,
+                                                        imageUrl:
+                                                            generateSongImageUrl(
+                                                                rec.albumName,
+                                                                rec.albumId),
+                                                        musicDirectorName:
+                                                            rec.musicDirectorName[
+                                                                0]);
+                                                context
+                                                    .read<PlayerProvider>()
+                                                    .playSingleSong(context,
+                                                        playerSongListModel);
+                                              },
+                                              child: SongListTile(
+                                                  albumName: pro.searchSongModel
                                                       .records[index].albumName,
-                                                  pro.searchSongModel
-                                                      .records[index].albumId),
-                                              musicDirectorName: pro
-                                                  .searchSongModel
-                                                  .records[index]
-                                                  .musicDirectorName[0],
-                                              songName: pro.searchSongModel
-                                                  .records[index].songName,
-                                              songId: pro.searchSongModel
-                                                  .records[index].id),
-                                        ),
-                                      ),
-                                    );
+                                                  imageUrl:
+                                                      generateSongImageUrl(
+                                                          pro
+                                                              .searchSongModel
+                                                              .records[index]
+                                                              .albumName,
+                                                          pro
+                                                              .searchSongModel
+                                                              .records[index]
+                                                              .albumId),
+                                                  musicDirectorName: pro
+                                                      .searchSongModel
+                                                      .records[index]
+                                                      .musicDirectorName[0],
+                                                  songName: pro.searchSongModel
+                                                      .records[index].songName,
+                                                  songId: pro.searchSongModel
+                                                      .records[index].id),
+                                            ),
+                                          ),
+                                        );
                             }
                           });
                   }),

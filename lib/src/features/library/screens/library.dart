@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/library/screens/favourite_screen.dart';
-import 'package:musiq/src/features/library/screens/playlist/playlists_screen.dart';
 
 import '../../../constants/color.dart';
+import 'favourite_screen.dart';
+import 'playlist/playlists_screen.dart';
 
 class LibraryScreen extends StatelessWidget {
   const LibraryScreen({Key? key}) : super(key: key);

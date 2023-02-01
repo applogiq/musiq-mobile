@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppBarSliver extends StatefulWidget {
   const AppBarSliver({super.key, required this.sliverList});
+
   final Widget sliverList;
 
   @override
@@ -9,9 +10,23 @@ class AppBarSliver extends StatefulWidget {
 }
 
 class _AppBarSliverState extends State<AppBarSliver> {
-  ScrollController? _scrollController;
-  bool lastStatus = true;
   double height = 200;
+  bool lastStatus = true;
+
+  ScrollController? _scrollController;
+
+  @override
+  void dispose() {
+    _scrollController?.removeListener(_scrollListener);
+    _scrollController?.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController()..addListener(_scrollListener);
+  }
 
   void _scrollListener() {
     if (_isShrink != lastStatus) {
@@ -25,19 +40,6 @@ class _AppBarSliverState extends State<AppBarSliver> {
     return _scrollController != null &&
         _scrollController!.hasClients &&
         _scrollController!.offset > (height - kToolbarHeight);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController()..addListener(_scrollListener);
-  }
-
-  @override
-  void dispose() {
-    _scrollController?.removeListener(_scrollListener);
-    _scrollController?.dispose();
-    super.dispose();
   }
 
   @override

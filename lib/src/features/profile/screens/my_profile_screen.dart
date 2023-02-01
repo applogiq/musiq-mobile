@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:musiq/src/common_widgets/loader.dart';
-import 'package:musiq/src/constants/string.dart';
-import 'package:musiq/src/features/profile/provider/profile_provider.dart';
-import 'package:musiq/src/utils/image_url_generate.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/buttons/custom_button.dart';
+import '../../../common_widgets/loader.dart';
 import '../../../common_widgets/text_field/custom_text_field.dart';
 import '../../../constants/images.dart';
+import '../../../constants/string.dart';
+import '../../../utils/image_url_generate.dart';
 import '../../../utils/size_config.dart';
 import '../../common/screen/offline_screen.dart';
+import '../provider/profile_provider.dart';
 import '../widgets/image_picker_sheet.dart';
 
 class MyProfile extends StatefulWidget {

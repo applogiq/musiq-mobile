@@ -4,5 +4,6 @@ enum ViewAllStatus {
   newRelease,
   album,
   aura,
-  artist
+  artist,
+  playlist
 }

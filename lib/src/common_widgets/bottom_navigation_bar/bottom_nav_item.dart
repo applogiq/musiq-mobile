@@ -10,8 +10,8 @@ class NavBarItem extends StatelessWidget {
     required this.index,
   }) : super(key: key);
 
-  final double width;
   final int index;
+  final double width;
 
   @override
   Widget build(BuildContext context) {

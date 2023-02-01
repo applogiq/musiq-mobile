@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/utils/image_url_generate.dart';
 
 import '../../../../constants/color.dart';
 import '../../../../constants/images.dart';
+import '../../../../utils/image_url_generate.dart';
 
 class AlbumImage extends StatelessWidget {
   const AlbumImage({
@@ -19,16 +19,16 @@ class AlbumImage extends StatelessWidget {
     required this.label,
   }) : super(key: key);
 
-  final EdgeInsets padding;
-  final bool animateOpacityToZero;
-  final bool animateAlbumImage;
-  final double shrinkToMaxAppBarHeightRatio;
-  final double albumImageSize;
-  final String id;
-  final String albumName;
-  final String label;
   final String albumId;
+  final double albumImageSize;
+  final String albumName;
+  final bool animateAlbumImage;
+  final bool animateOpacityToZero;
+  final String id;
   final bool isImage;
+  final String label;
+  final EdgeInsets padding;
+  final double shrinkToMaxAppBarHeightRatio;
 
   @override
   Widget build(BuildContext context) {

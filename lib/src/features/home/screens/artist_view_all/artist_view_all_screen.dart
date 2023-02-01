@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:musiq/src/common_widgets/loader.dart';
-import 'package:musiq/src/features/artist/domain/models/artist_model.dart';
-import 'package:musiq/src/features/home/provider/artist_view_all_provider.dart';
-import 'package:musiq/src/features/search/search_status.dart';
-import 'package:musiq/src/routing/route_name.dart';
-import 'package:musiq/src/utils/image_url_generate.dart';
-import 'package:musiq/src/utils/navigation.dart';
+import '../../../search/screens/search_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/app_bar.dart';
 import '../../../../common_widgets/container/custom_color_container.dart';
+import '../../../../common_widgets/loader.dart';
 import '../../../../constants/color.dart';
+import '../../../../routing/route_name.dart';
+import '../../../../utils/image_url_generate.dart';
+import '../../../../utils/navigation.dart';
+import '../../../artist/domain/models/artist_model.dart';
 import '../../../common/screen/offline_screen.dart';
+import '../../../search/search_status.dart';
+import '../../provider/artist_view_all_provider.dart';
 import '../../provider/search_provider.dart';
 import '../../provider/view_all_provider.dart';
 import '../../view_all_status.dart';
@@ -171,7 +172,7 @@ class SearchSection extends StatelessWidget {
         isReadOnly: true,
         onTap: () {
           Navigation.navigateToScreen(context, RouteName.search,
-              args: SearchStatus.artist);
+              args: SearchRequestModel(searchStatus: SearchStatus.artist));
         },
         hint: "Search Artists",
         searchStatus: SearchStatus.artist,

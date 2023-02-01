@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:musiq/src/common_widgets/text_field/text_style.dart';
-import 'package:musiq/src/features/auth/screens/decoration.dart';
+
+import '../../../common_widgets/text_field/text_style.dart';
+import 'decoration.dart';
 
 class OTPField extends StatefulWidget {
   const OTPField({

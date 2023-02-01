@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/constants/images.dart';
 
 import '../../../../../constants/color.dart';
+import '../../../../../constants/images.dart';
 
 class ExpandedAppBar extends StatelessWidget {
   const ExpandedAppBar({

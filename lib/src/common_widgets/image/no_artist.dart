@@ -6,6 +6,7 @@ import '../../constants/images.dart';
 class NoArtist extends StatelessWidget {
   const NoArtist({Key? key, this.height = 240, this.width = 200})
       : super(key: key);
+
   final double height;
   final double width;
 

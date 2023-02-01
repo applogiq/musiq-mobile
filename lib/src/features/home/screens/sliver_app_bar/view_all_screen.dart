@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:musiq/src/common_widgets/loader.dart';
-import 'package:musiq/src/features/home/screens/sliver_app_bar/widgets/album_song_list.dart';
-import 'package:musiq/src/features/home/screens/sliver_app_bar/widgets/sliver_app_bar.dart';
-import 'package:musiq/src/features/home/view_all_status.dart';
-import 'package:musiq/src/utils/image_url_generate.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../common_widgets/loader.dart';
+import '../../../../constants/color.dart';
+import '../../../../utils/image_url_generate.dart';
 import '../../../common/screen/offline_screen.dart';
 import '../../provider/view_all_provider.dart';
+import '../../view_all_status.dart';
+import 'widgets/album_song_list.dart';
+import 'widgets/sliver_app_bar.dart';
 
 class ViewAllScreen extends StatefulWidget {
   const ViewAllScreen(
@@ -160,6 +161,32 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                                 controller: scrollController,
                                 slivers: [
                                   SliverCustomAppBar(
+                                      popUpMenu: PopupMenuButton(
+                                        color: CustomColor.appBarColor,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(8.0),
+                                            bottomRight: Radius.circular(8.0),
+                                            topLeft: Radius.circular(8.0),
+                                            topRight: Radius.circular(8.0),
+                                          ),
+                                        ),
+                                        padding: const EdgeInsets.all(0.0),
+                                        onSelected: (value) {
+                                          if (value == 1) {
+                                            context
+                                                .read<ViewAllProvider>()
+                                                .addQueue(
+                                                    widget.status, context);
+                                          }
+                                        },
+                                        itemBuilder: (ctx) => [
+                                          const PopupMenuItem(
+                                            value: 1,
+                                            child: Text('Add to Queue'),
+                                          ),
+                                        ],
+                                      ),
                                       maxAppBarHeight: maxAppBarHeight,
                                       minAppBarHeight: minAppBarHeight,
                                       title: getTitle(widget.status),
@@ -171,11 +198,7 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                                                 context, widget.status);
                                       },
                                       imageUrl: getImageUrl(widget.status, pro),
-                                      addToQueue: () {
-                                        context
-                                            .read<ViewAllProvider>()
-                                            .addQueue(widget.status, context);
-                                      }),
+                                      addToQueue: () {}),
                                   AlbumSongsList(
                                     status: widget.status,
                                     newReleaseModel: pro.newReleaseModel,

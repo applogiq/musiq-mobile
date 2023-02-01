@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:musiq/src/routing/route_name.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/app_bar.dart';
 import '../../../constants/color.dart';
+import '../../../routing/route_name.dart';
 import '../../common/screen/offline_screen.dart';
 
 class PreferenceScreen extends StatelessWidget {
@@ -65,11 +65,13 @@ class PreferenceMainHeaderWidget extends StatelessWidget {
     required this.navigationScreen1,
     required this.navigationScreen2,
   }) : super(key: key);
+
   final String mainTitle;
-  final String subTitle1;
   final String navigationScreen1;
-  final String subTitle2;
   final String navigationScreen2;
+  final String subTitle1;
+  final String subTitle2;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -106,9 +108,11 @@ class NotificationPreferenceHeaderWidget extends StatelessWidget {
     required this.subTitle1,
     required this.subTitle2,
   }) : super(key: key);
+
   final String mainTitle;
   final String subTitle1;
   final String subTitle2;
+
   @override
   Widget build(BuildContext context) {
     bool isNewReleaseSwitched = false;
@@ -137,8 +141,8 @@ class NotificationPreferenceListTile extends StatefulWidget {
     this.isSwitched = false,
   }) : super(key: key);
 
-  final String title;
   bool isSwitched;
+  final String title;
 
   @override
   State<NotificationPreferenceListTile> createState() =>
@@ -182,8 +186,10 @@ class PreferenceListTile extends StatelessWidget {
     required this.label,
     required this.navigationRoute,
   }) : super(key: key);
+
   final String label;
   final String navigationRoute;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(

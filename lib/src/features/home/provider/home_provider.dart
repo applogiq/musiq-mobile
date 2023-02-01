@@ -2,18 +2,19 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
-import 'package:musiq/src/features/artist/domain/models/artist_model.dart';
-import 'package:musiq/src/features/home/domain/model/album_model.dart';
-import 'package:musiq/src/features/home/domain/model/aura_model.dart';
-import 'package:musiq/src/features/home/domain/model/new_release_model.dart';
-import 'package:musiq/src/features/home/domain/model/song_list_model.dart';
-import 'package:musiq/src/features/home/domain/model/trending_hits_model.dart';
-import 'package:musiq/src/features/home/domain/repository/home_repo.dart';
-import 'package:musiq/src/features/search/search_status.dart';
-import 'package:musiq/src/routing/route_name.dart';
-import 'package:musiq/src/utils/navigation.dart';
+import '../../search/screens/search_screen.dart';
 
+import '../../../routing/route_name.dart';
+import '../../../utils/navigation.dart';
+import '../../artist/domain/models/artist_model.dart';
+import '../../search/search_status.dart';
+import '../domain/model/album_model.dart';
+import '../domain/model/aura_model.dart';
+import '../domain/model/new_release_model.dart';
 import '../domain/model/recent_song_model.dart';
+import '../domain/model/song_list_model.dart';
+import '../domain/model/trending_hits_model.dart';
+import '../domain/repository/home_repo.dart';
 
 class HomeProvider extends ChangeNotifier {
   bool isLoad = true;
@@ -142,7 +143,7 @@ class HomeProvider extends ChangeNotifier {
 
   goToSearch(context) {
     Navigation.navigateToScreen(context, RouteName.search,
-        args: SearchStatus.song);
+        args: SearchRequestModel(searchStatus: SearchStatus.song));
   }
 
   newRelease() async {

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/common_widgets/box/vertical_box.dart';
-import 'package:musiq/src/common_widgets/loader.dart';
-import 'package:musiq/src/features/home/provider/home_provider.dart';
-import 'package:musiq/src/features/home/widgets/current_mood.dart';
-import 'package:musiq/src/features/home/widgets/top_album_list.dart';
-import 'package:musiq/src/features/home/widgets/trending_hits.dart';
-import 'package:musiq/src/features/search/search_status.dart';
-import 'package:musiq/src/utils/size_config.dart';
+import '../../../common_widgets/box/vertical_box.dart';
+import '../../../common_widgets/loader.dart';
+import '../provider/home_provider.dart';
+import '../widgets/current_mood.dart';
+import '../widgets/top_album_list.dart';
+import '../widgets/trending_hits.dart';
+import '../../search/search_status.dart';
+import '../../../utils/size_config.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/artist_list_view.dart';

@@ -1,48 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/constants/color.dart';
-import 'package:musiq/src/constants/style.dart';
 import 'package:provider/provider.dart';
 
+import '../../constants/color.dart';
+import '../../constants/style.dart';
 import '../buttons/custom_button.dart';
 import '../container/custom_color_container.dart';
 
 class CustomDialogBox extends StatelessWidget {
+  const CustomDialogBox({
+    Key? key,
+    required this.title,
+    required this.fieldName,
+    required this.buttonText,
+    required this.onChanged,
+    required this.callBack,
+    required this.isError,
+    required this.errorValue,
+    this.initialText = "",
+    // this.isRename = false,
+    // this.playlistId = 0
+  }) : super(key: key);
+
   final String title, fieldName, buttonText;
-
-  const CustomDialogBox(
-      {Key? key,
-      required this.title,
-      required this.fieldName,
-      required this.buttonText,
-      required this.onChanged,
-      required this.callBack,
-      required this.isError,
-      required this.errorValue
-
-      // this.initialText = "",
-      // this.isRename = false,
-      // this.playlistId = 0
-      })
-      : super(key: key);
-  // final String initialText;
   // int playlistId;
   // final bool isRename;
   final Function callBack;
-  final Function onChanged;
-  final bool isError;
-  final String errorValue;
 
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      elevation: 0,
-      backgroundColor: Colors.amber,
-      child: contentBox(context),
-    );
-  }
+  final String errorValue;
+  final String initialText;
+  final bool isError;
+  final Function onChanged;
 
   contentBox(context) {
     return Consumer(builder: (context, pro, _) {
@@ -104,6 +91,7 @@ class CustomDialogBox extends StatelessWidget {
                           constraints: const BoxConstraints.expand(
                               height: 46, width: double.maxFinite),
                           child: TextFormField(
+                            initialValue: initialText,
                             cursorColor: Colors.white,
                             onChanged: (value) {
                               onChanged(value);
@@ -149,5 +137,17 @@ class CustomDialogBox extends StatelessWidget {
         ),
       );
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      elevation: 0,
+      backgroundColor: Colors.amber,
+      child: contentBox(context),
+    );
   }
 }

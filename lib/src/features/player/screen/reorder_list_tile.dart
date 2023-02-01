@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/home/domain/model/collection_view_all_model.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../constants/color.dart';
 import '../../../constants/style.dart';
 import '../../../utils/image_url_generate.dart';
+import '../../home/domain/model/collection_view_all_model.dart';
 
 class ReorderListUpNextSongTile extends StatefulWidget {
   const ReorderListUpNextSongTile({
@@ -12,9 +12,10 @@ class ReorderListUpNextSongTile extends StatefulWidget {
     required this.playScreenModel,
     required this.index,
   }) : super(key: key);
+
+  final int index;
 // final SongController songController;
   final CollectionViewAllModel playScreenModel;
-  final int index;
 
   @override
   State<ReorderListUpNextSongTile> createState() =>

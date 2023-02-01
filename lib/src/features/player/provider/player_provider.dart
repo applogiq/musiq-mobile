@@ -239,40 +239,44 @@ class PlayerProvider extends ChangeNotifier {
 
   void goToPlayer(BuildContext context,
       List<PlayerSongListModel> playerSongList, int index) async {
-    await addNewQueueSongList(playerSongList);
-    playlist = ConcatenatingAudioSource(
-      useLazyPreparation: true,
-      children: List.generate(
-        playerSongList.length,
-        (index) => AudioSource.uri(
-            Uri.parse(
-                "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongList[index].id.toString()}"),
-            tag: PlayerSongListModel(
-                id: playerSongList[index].id,
-                albumName: playerSongList[index].albumName,
-                title: playerSongList[index].title,
-                musicDirectorName:
-                    playerSongList[index].musicDirectorName.toString(),
-                imageUrl: playerSongList[index].imageUrl)),
-      ),
-    );
-    await player.setAudioSource(
-      playlist,
-      initialIndex: index,
-      initialPosition: Duration.zero,
-    );
-    player.stop();
-    isPlay = false;
-    isPlaying = true;
-    playOrPause();
     try {
-      await clearFavouriteSong();
-      await loadFavourites();
-    } catch (e) {}
+      await addNewQueueSongList(playerSongList);
+      playlist = ConcatenatingAudioSource(
+        useLazyPreparation: true,
+        children: List.generate(
+          playerSongList.length,
+          (index) => AudioSource.uri(
+              Uri.parse(
+                  "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongList[index].id.toString()}"),
+              tag: PlayerSongListModel(
+                  id: playerSongList[index].id,
+                  albumName: playerSongList[index].albumName,
+                  title: playerSongList[index].title,
+                  musicDirectorName:
+                      playerSongList[index].musicDirectorName.toString(),
+                  imageUrl: playerSongList[index].imageUrl)),
+        ),
+      );
+      await player.setAudioSource(
+        playlist,
+        initialIndex: index,
+        initialPosition: Duration.zero,
+      );
+      player.stop();
+      isPlay = false;
+      isPlaying = true;
+      playOrPause();
+      try {
+        await clearFavouriteSong();
+        await loadFavourites();
+      } catch (e) {}
 
-    Navigation.navigateToScreen(context, RouteName.player);
+      Navigation.navigateToScreen(context, RouteName.player);
 
-    notifyListeners();
+      notifyListeners();
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   playSingleSong(

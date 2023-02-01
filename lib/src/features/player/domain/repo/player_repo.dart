@@ -7,6 +7,7 @@ import '../../../../constants/api.dart';
 class PlayerRepo {
   BaseApiServices apiServices = NetworkApiService();
   FlutterSecureStorage storage = const FlutterSecureStorage();
+
   Future<dynamic> addToFavourite(Map params) async {
     try {
       var id = await storage.read(key: "id");

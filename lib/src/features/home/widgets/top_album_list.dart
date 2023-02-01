@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/home/domain/model/album_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../constants/color.dart';
 import '../../../constants/style.dart';
 import '../../../utils/image_url_generate.dart';
+import '../domain/model/album_model.dart';
 import '../provider/view_all_provider.dart';
 import '../screens/sliver_app_bar/view_all_screen.dart';
 import '../view_all_status.dart';

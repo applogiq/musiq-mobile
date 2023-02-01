@@ -7,44 +7,75 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart ' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:musiq/src/constants/color.dart';
-import 'package:musiq/src/features/common/screen/main_screen.dart';
-import 'package:musiq/src/features/profile/domain/repository/profile_repo.dart';
-import 'package:musiq/src/routing/route_name.dart';
-import 'package:musiq/src/utils/navigation.dart';
-import 'package:musiq/src/utils/toast_message.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../../objectbox.g.dart';
 import '../../../common_widgets/model/profile_model.dart';
+import '../../../constants/color.dart';
 import '../../../constants/images.dart';
 import '../../../constants/string.dart';
 import '../../../local/model/user_model.dart';
+import '../../../routing/route_name.dart';
+import '../../../utils/navigation.dart';
+import '../../../utils/toast_message.dart';
+import '../../common/screen/main_screen.dart';
 import '../domain/api_models/profile_update_api_model.dart';
+import '../domain/repository/profile_repo.dart';
 
 class ProfileProvider extends ChangeNotifier {
+  ProfileProvider() {
+    getuserApi();
+    notifyListeners();
+  }
+
+  String base64Value = "";
 //! Start
   File? fileImage;
-  late Store store;
 
-  String name = "";
-  String nameErrorMessage = "";
-
-  String userName = "";
-  String userNameErrorMessage = "";
-
-  bool isProfileSaveLoading = false;
-  bool isProfileSave = true;
-
-  bool isCropSaveLoading = false;
+  String getImageValue = "";
+  var isAboutOpen = false;
   bool isCropSave = true;
-
-  bool myProfileLoading = true;
-  String base64Value = "";
-
+  bool isCropSaveLoading = false;
+  bool isLoading = false;
+  bool isProfileSave = true;
+  bool isProfileSaveLoading = false;
   Uint8List? memoryImage;
+  bool myProfileLoading = true;
+  String name = "";
+  // String name = "";
+  String nameError = "";
+
+  String nameErrorMessage = "";
+//! END
+
+  File? pickedImage;
+
+  ProfileAPIModel? profileAPI;
   ProfileAPIModel profileAPIModel =
       ProfileAPIModel(status: false, message: "No data", records: null);
+
+  List<ProfileModel> profileContent = [
+    ProfileModel(
+        title: "My Profile", isArrow: true, navigateScreen: "myProfile"),
+    ProfileModel(
+        title: "Preferences", isArrow: true, navigateScreen: "preferences"),
+    ProfileModel(
+        title: "Contact us", isArrow: true, navigateScreen: "contact_us"),
+  ];
+
+  var profileImage = "";
+  var profileName = "";
+  var profileUserName = "";
+  var registerid = "";
+  FlutterSecureStorage secureStorage = const FlutterSecureStorage();
+  late Store store;
+  String updatedImage = "";
+  String userName = "";
+  // String userName = "";
+  String userNameError = "";
+
+  String userNameErrorMessage = "";
+  Uint8List? viewImage;
 
   removeMyProfileState() {
     fileImage = null;
@@ -343,34 +374,9 @@ class ProfileProvider extends ChangeNotifier {
 
     notifyListeners();
   }
-//! END
 
-  File? pickedImage;
-  Uint8List? viewImage;
-  String getImageValue = "";
-  // String name = "";
-  String nameError = "";
-  // String userName = "";
-  String userNameError = "";
-  ProfileAPIModel? profileAPI;
-  var profileName = "";
-  var profileUserName = "";
-  var profileImage = "";
-  var registerid = "";
-  String updatedImage = "";
-  bool isLoading = false;
-  FlutterSecureStorage secureStorage = const FlutterSecureStorage();
-
-  ProfileProvider() {
-    getuserApi();
-    notifyListeners();
-  }
   void showAPIgetvalue() {
     getValue("id");
-  }
-
-  Future<void> _save(String key, String value) async {
-    await secureStorage.write(key: key, value: value);
   }
 
   Future<String> getValue(String key) async {
@@ -381,17 +387,6 @@ class ProfileProvider extends ChangeNotifier {
     _save("id", name);
     _save("id", userName);
   }
-
-  List<ProfileModel> profileContent = [
-    ProfileModel(
-        title: "My Profile", isArrow: true, navigateScreen: "myProfile"),
-    ProfileModel(
-        title: "Preferences", isArrow: true, navigateScreen: "preferences"),
-    ProfileModel(
-        title: "Contact us", isArrow: true, navigateScreen: "contact_us"),
-  ];
-
-  var isAboutOpen = false;
 
   void aboutToggle() {
     isAboutOpen = !isAboutOpen;
@@ -502,6 +497,7 @@ class ProfileProvider extends ChangeNotifier {
       Navigator.pop(context);
     }
   }
+
   // updatedProfileImage() async {
   //   var resgisterId = await secureStorage.read(key: "register_id");
   //   updatedImage =
@@ -522,4 +518,7 @@ class ProfileProvider extends ChangeNotifier {
 //   var data =
 // }
 
+  Future<void> _save(String key, String value) async {
+    await secureStorage.write(key: key, value: value);
+  }
 }

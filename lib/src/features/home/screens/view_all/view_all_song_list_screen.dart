@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/home/provider/view_all_provider.dart';
-import 'package:musiq/src/features/home/view_all_status.dart';
-import 'package:musiq/src/features/view_all/widgets/sliver_song/sliver_app_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/loader.dart';
+import '../../../view_all/widgets/sliver_song/sliver_app_bar.dart';
+import '../../provider/view_all_provider.dart';
+import '../../view_all_status.dart';
 import '../artist_view_all/album_songs_list.dart';
 
 class ViewAllSongListScreen extends StatefulWidget {

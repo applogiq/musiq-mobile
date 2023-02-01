@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:musiq/src/common_widgets/box/vertical_box.dart';
-import 'package:musiq/src/common_widgets/buttons/custom_button.dart';
+import '../../../../common_widgets/box/vertical_box.dart';
+import '../../../../common_widgets/buttons/custom_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants/color.dart';
@@ -11,7 +11,7 @@ import '../../../../constants/style.dart';
 import '../../../../core/package/otp_package/pinput.dart';
 import '../../../../utils/size_config.dart';
 import '../../../common/screen/offline_screen.dart';
-import '../../provider/new_password_provider.dart';
+import '../../provider/forgot_password_provider.dart';
 
 class OTPScreen extends StatefulWidget {
   const OTPScreen({super.key});

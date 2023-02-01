@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/constants/images.dart';
 
+import '../../constants/images.dart';
 import 'horizontal_list_view.dart';
 
 class RecommendedSongs extends StatelessWidget {

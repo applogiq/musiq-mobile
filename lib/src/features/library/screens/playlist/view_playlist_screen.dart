@@ -1,36 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:musiq/src/constants/color.dart';
-import 'package:musiq/src/features/library/provider/library_provider.dart';
-import 'package:musiq/src/features/library/screens/playlist/no_song_playlist.dart';
-import 'package:musiq/src/utils/image_url_generate.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../common_widgets/dialog/custom_dialog_box.dart';
 import '../../../../common_widgets/loader.dart';
+import '../../../../constants/color.dart';
+import '../../../../constants/string.dart';
+import '../../../../routing/route_name.dart';
+import '../../../../utils/image_url_generate.dart';
+import '../../../../utils/navigation.dart';
 import '../../../common/screen/offline_screen.dart';
+import '../../../home/provider/search_provider.dart';
 import '../../../home/screens/sliver_app_bar/widgets/album_song_list.dart';
 import '../../../home/screens/sliver_app_bar/widgets/sliver_app_bar.dart';
+import '../../../search/screens/search_screen.dart';
+import '../../../search/search_status.dart';
+import '../../provider/library_provider.dart';
+import 'no_song_playlist.dart';
 
 class ViewPlaylistSongScreen extends StatefulWidget {
   const ViewPlaylistSongScreen(
       {super.key, this.id, this.auraId, this.title, this.isImage = true});
 
-  final int? id;
   final String? auraId;
-  final String? title;
+  final int? id;
   final bool isImage;
+  final String? title;
 
   @override
   State<ViewPlaylistSongScreen> createState() => _ViewPlaylistSongScreenState();
 }
 
 class _ViewPlaylistSongScreenState extends State<ViewPlaylistSongScreen> {
-  late ScrollController scrollController;
-
+  late double infoBoxHeight;
   late double maxAppBarHeight;
   late double minAppBarHeight;
   late double playPauseButtonSize;
-  late double infoBoxHeight;
+  late ScrollController scrollController;
 
   @override
   void initState() {
@@ -41,85 +47,6 @@ class _ViewPlaylistSongScreenState extends State<ViewPlaylistSongScreen> {
       provider.getPlayListSongList(widget.id!);
     });
   }
-
-  // getTitle(ViewAllStatus viewAllStatus) {
-  //   switch (viewAllStatus) {
-  //     case ViewAllStatus.newRelease:
-  //       return "New Release";
-  //     case ViewAllStatus.recentlyPlayed:
-  //       return "Recently Played";
-  //     case ViewAllStatus.trendingHits:
-  //       return "Trending hits";
-  //     case ViewAllStatus.album:
-  //       return context
-  //           .read<ViewAllProvider>()
-  //           .albumSongListModel
-  //           .records[0]
-  //           .albumName;
-  //     case ViewAllStatus.artist:
-  //       return widget.title;
-  //     case ViewAllStatus.aura:
-  //       return widget.title;
-  //     default:
-  //       return "";
-  //   }
-  // }
-
-  // getImageUrl(ViewAllStatus status, ViewAllProvider pro) {
-  //   switch (status) {
-  //     case ViewAllStatus.newRelease:
-  //       return generateSongImageUrl(pro.newReleaseModel.records[0].albumName,
-  //           pro.newReleaseModel.records[0].albumId);
-  //     case ViewAllStatus.recentlyPlayed:
-  //       return generateSongImageUrl(pro.recentlyPlayed.records[0][0].albumName,
-  //           pro.recentlyPlayed.records[0][0].albumId);
-  //     case ViewAllStatus.trendingHits:
-  //       return generateSongImageUrl(pro.trendingHitsModel.records[0].albumName,
-  //           pro.trendingHitsModel.records[0].albumId);
-  //     case ViewAllStatus.album:
-  //       return generateSongImageUrl(
-  //         pro.albumSongListModel.records[0].albumName,
-  //         pro.albumSongListModel.records[0].albumId,
-  //       );
-  //     case ViewAllStatus.aura:
-  //       return generateAuraImageUrl(widget.auraId);
-  //     case ViewAllStatus.artist:
-  //       if (widget.isImage) {
-  //         return generateArtistImageUrl(widget.auraId);
-  //       } else {
-  //         return "";
-  //       }
-  //     default:
-  //       return "https://images.unsplash.com/photo-1499415479124-43c32433a620?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1032&q=80";
-  //   }
-  // }
-
-  // int getSongCount(ViewAllStatus viewAllStatus) {
-  //   switch (viewAllStatus) {
-  //     case ViewAllStatus.newRelease:
-  //       return context.read<ViewAllProvider>().newReleaseModel.records.length;
-  //     case ViewAllStatus.recentlyPlayed:
-  //       return context.read<ViewAllProvider>().recentlyPlayed.records.length;
-  //     case ViewAllStatus.trendingHits:
-  //       return context.read<ViewAllProvider>().trendingHitsModel.records.length;
-  //     case ViewAllStatus.album:
-  //       return context
-  //           .read<ViewAllProvider>()
-  //           .albumSongListModel
-  //           .records
-  //           .length;
-  //     case ViewAllStatus.aura:
-  //       return context.read<ViewAllProvider>().auraSongListModel.records.length;
-  //     case ViewAllStatus.artist:
-  //       return context
-  //           .read<ViewAllProvider>()
-  //           .collectionViewAllModel
-  //           .records
-  //           .length;
-  //     default:
-  //       return 0;
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +67,77 @@ class _ViewPlaylistSongScreenState extends State<ViewPlaylistSongScreen> {
                       : pro.playlistSongListModel.records.isEmpty
                           ? NoPlaylistSong(
                               appBarTitle: widget.title!,
-                              playListId: widget.id.toString())
+                              playListId: widget.id.toString(),
+                              popUpMenu: PopupMenuButton(
+                                color: CustomColor.appBarColor,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(8.0),
+                                    bottomRight: Radius.circular(8.0),
+                                    topLeft: Radius.circular(8.0),
+                                    topRight: Radius.circular(8.0),
+                                  ),
+                                ),
+                                padding: const EdgeInsets.all(0.0),
+                                onSelected: (value) async {
+                                  if (value == 1) {
+                                    context.read<SearchProvider>().resetState();
+                                    Navigation.navigateToScreen(
+                                        context, RouteName.search,
+                                        args: SearchRequestModel(
+                                            searchStatus: SearchStatus.playlist,
+                                            playlistId: widget.id));
+                                    // context
+                                    //     .read<ViewAllProvider>()
+                                    //     .addQueue(
+                                    //         widget.status, context);
+                                  } else if (value == 2) {
+                                    print("Rename");
+                                    showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (BuildContext context) {
+                                          return CustomDialogBox(
+                                            onChanged: (v) {
+                                              pro.checkPlayListName(v);
+                                            },
+                                            callBack: () async {
+                                              await pro.updatePlayListName(
+                                                  context, widget.id!);
+                                            },
+                                            initialText: widget.title!,
+                                            title: ConstantText.renamePlaylist,
+                                            fieldName: ConstantText.name,
+                                            buttonText: ConstantText.rename,
+                                            errorValue: pro.playListError,
+                                            isError: pro.isPlayListError,
+                                            // callback: libraryController.createPlaylist(context),
+                                          );
+                                        });
+                                  } else if (value == 3) {
+                                    await context
+                                        .read<LibraryProvider>()
+                                        .deletePlayList(widget.id!);
+                                    Navigation.navigateReplaceToScreen(
+                                        context, RouteName.library);
+                                  }
+                                },
+                                itemBuilder: (ctx) => [
+                                  const PopupMenuItem(
+                                    value: 1,
+                                    child: Text('Add songs'),
+                                  ),
+                                  const PopupMenuItem(
+                                    value: 2,
+                                    child: Text('Rename'),
+                                  ),
+                                  const PopupMenuItem(
+                                    value: 3,
+                                    child: Text('Delete'),
+                                  ),
+                                ],
+                              ),
+                            )
                           : DecoratedBox(
                               decoration: const BoxDecoration(
                                 gradient: LinearGradient(
@@ -161,12 +158,103 @@ class _ViewPlaylistSongScreenState extends State<ViewPlaylistSongScreen> {
                                     controller: scrollController,
                                     slivers: [
                                       SliverCustomAppBar(
+                                          popUpMenu: PopupMenuButton(
+                                            color: CustomColor.appBarColor,
+                                            shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.only(
+                                                bottomLeft:
+                                                    Radius.circular(8.0),
+                                                bottomRight:
+                                                    Radius.circular(8.0),
+                                                topLeft: Radius.circular(8.0),
+                                                topRight: Radius.circular(8.0),
+                                              ),
+                                            ),
+                                            padding: const EdgeInsets.all(0.0),
+                                            onSelected: (value) async {
+                                              if (value == 1) {
+                                                context
+                                                    .read<SearchProvider>()
+                                                    .resetState();
+                                                Navigation.navigateToScreen(
+                                                    context, RouteName.search,
+                                                    args: SearchRequestModel(
+                                                        searchStatus:
+                                                            SearchStatus
+                                                                .playlist,
+                                                        playlistId: widget.id));
+                                                // context
+                                                //     .read<ViewAllProvider>()
+                                                //     .addQueue(
+                                                //         widget.status, context);
+                                              } else if (value == 2) {
+                                                print("Rename");
+                                                showDialog(
+                                                    context: context,
+                                                    barrierDismissible: false,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return CustomDialogBox(
+                                                        onChanged: (v) {
+                                                          pro.checkPlayListName(
+                                                              v);
+                                                        },
+                                                        callBack: () async {
+                                                          await pro
+                                                              .updatePlayListName(
+                                                                  context,
+                                                                  widget.id!);
+                                                        },
+                                                        initialText:
+                                                            widget.title!,
+                                                        title: ConstantText
+                                                            .renamePlaylist,
+                                                        fieldName:
+                                                            ConstantText.name,
+                                                        buttonText:
+                                                            ConstantText.rename,
+                                                        errorValue:
+                                                            pro.playListError,
+                                                        isError:
+                                                            pro.isPlayListError,
+                                                        // callback: libraryController.createPlaylist(context),
+                                                      );
+                                                    });
+                                              } else if (value == 3) {
+                                                await context
+                                                    .read<LibraryProvider>()
+                                                    .deletePlayList(widget.id!);
+                                                Navigation
+                                                    .navigateReplaceToScreen(
+                                                        context,
+                                                        RouteName.library);
+                                              }
+                                            },
+                                            itemBuilder: (ctx) => [
+                                              const PopupMenuItem(
+                                                value: 1,
+                                                child: Text('Add songs'),
+                                              ),
+                                              const PopupMenuItem(
+                                                value: 2,
+                                                child: Text('Rename'),
+                                              ),
+                                              const PopupMenuItem(
+                                                value: 3,
+                                                child: Text('Delete'),
+                                              ),
+                                            ],
+                                          ),
                                           maxAppBarHeight: maxAppBarHeight,
                                           minAppBarHeight: minAppBarHeight,
                                           title: widget.title!,
                                           songCounts: pro.playlistSongListModel
                                               .records.length,
                                           callback: () {
+                                            context
+                                                .read<LibraryProvider>()
+                                                .navigateToPlayerScreen(
+                                                    context, widget.id!);
                                             // context
                                             //     .read<ViewAllProvider>()
                                             //     .navigateToPlayerScreen(
@@ -188,6 +276,11 @@ class _ViewPlaylistSongScreenState extends State<ViewPlaylistSongScreen> {
                                               pro.playlistSongListModel.records;
                                           return InkWell(
                                             onTap: () {
+                                              context
+                                                  .read<LibraryProvider>()
+                                                  .navigateToPlayerScreen(
+                                                      context, widget.id!,
+                                                      index: index);
                                               // context
                                               //     .read<ViewAllProvider>()
                                               //     .navigateToPlayerScreen(context, status, index: index);

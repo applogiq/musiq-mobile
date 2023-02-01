@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:musiq/src/features/home/provider/artist_view_all_provider.dart';
-import 'package:musiq/src/features/player/screen/player_screen/player_background.dart';
-import 'package:musiq/src/features/player/screen/player_screen/player_controller.dart';
-import 'package:musiq/src/features/player/screen/player_screen/up_next.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/container/empty_box.dart';
 import '../../../common/screen/offline_screen.dart';
+import '../../../home/provider/artist_view_all_provider.dart';
+import 'player_background.dart';
+import 'player_controller.dart';
+import 'up_next.dart';
 
 class PlayerScreen extends StatefulWidget {
   const PlayerScreen({

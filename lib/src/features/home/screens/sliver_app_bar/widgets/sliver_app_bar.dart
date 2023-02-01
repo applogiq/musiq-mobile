@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/home/screens/sliver_app_bar/widgets/collapse_app_bar.dart';
-import 'package:musiq/src/features/home/screens/sliver_app_bar/widgets/flexible_app_bar.dart';
 
 import '../../../../view_all/widgets/gradient_cover.dart';
 import '../../../../view_all/widgets/sliver_app_bar.dart';
 import 'app_bar_overlay.dart';
+import 'collapse_app_bar.dart';
+import 'flexible_app_bar.dart';
 
 class SliverCustomAppBar extends StatelessWidget {
   const SliverCustomAppBar({
@@ -16,6 +16,7 @@ class SliverCustomAppBar extends StatelessWidget {
     required this.callback,
     required this.imageUrl,
     required this.addToQueue,
+    required this.popUpMenu,
   }) : super(key: key);
 
   final double maxAppBarHeight;
@@ -25,6 +26,7 @@ class SliverCustomAppBar extends StatelessWidget {
   final int songCounts;
   final Function callback;
   final Function addToQueue;
+  final Widget popUpMenu;
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +105,7 @@ class SliverCustomAppBar extends StatelessWidget {
                           titleOpacity: titleOpacity,
                           size: shrinkToMaxAppBarHeightRatio,
                           title: title,
+                          popUpMenu: popUpMenu,
                           callBack: () {
                             callback();
                           },
@@ -116,6 +119,7 @@ class SliverCustomAppBar extends StatelessWidget {
                   shrinkToMaxAppBarHeightRatio > 0.6
                       ? const SizedBox.shrink()
                       : AppBarOverlayContent(
+                          popUpMenu: popUpMenu,
                           title: title,
                           count: songCounts,
                           callback: () {

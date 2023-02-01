@@ -139,8 +139,10 @@ class PlayNextPrev extends StatelessWidget {
     required this.onTap,
     required this.iconData,
   }) : super(key: key);
-  final Function onTap;
+
   final IconData iconData;
+  final Function onTap;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -226,11 +228,12 @@ class PlayButtonWidget extends StatelessWidget {
       this.padding = 6.0,
       this.icon = Icons.play_arrow})
       : super(key: key);
+
   final Color bgColor;
-  final Color iconColor;
-  final double size;
-  final double padding;
   final IconData icon;
+  final Color iconColor;
+  final double padding;
+  final double size;
 
   @override
   Widget build(BuildContext context) {

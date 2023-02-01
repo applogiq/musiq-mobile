@@ -3,32 +3,31 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:musiq/src/constants/string.dart';
-import 'package:musiq/src/utils/size_config.dart';
 
+import '../../../constants/string.dart';
 import '../../../routing/route_name.dart';
 import '../../../utils/navigation.dart';
+import '../../../utils/size_config.dart';
 import '../../../utils/validation.dart';
 import '../../artist/screens/artist_preference_screen/artist_preference_screen.dart';
 import '../domain/models/user_model.dart';
 import '../domain/repository/auth_repo.dart';
 
 class RegisterProvider extends ChangeNotifier with InputValidationMixin {
-  String fullName = "";
-  String fullNameError = "";
+  String confirmPassword = "";
+  String confirmPasswordError = "";
   String email = "";
   String emailError = "";
+  String fullName = "";
+  String fullNameError = "";
+  bool isButtonEnable = true;
+  bool isButtonLoading = false;
+  String password = "";
+  String passwordError = "";
+  final storage = const FlutterSecureStorage();
   String userName = "";
   String userNameError = "";
 
-  String password = "";
-  String passwordError = "";
-  String confirmPassword = "";
-  String confirmPasswordError = "";
-  bool isButtonLoading = false;
-  bool isButtonEnable = true;
-
-  final storage = const FlutterSecureStorage();
   fullNameChanged(value) {
     fullName = value;
     if (value.isEmpty) {

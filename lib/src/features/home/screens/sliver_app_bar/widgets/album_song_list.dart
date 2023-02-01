@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/home/domain/model/aura_song_list_model.dart';
-import 'package:musiq/src/features/home/domain/model/collection_view_all_model.dart';
-import 'package:musiq/src/features/home/domain/model/recent_song_model.dart';
-import 'package:musiq/src/features/player/provider/player_provider.dart';
+import '../../../provider/search_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../common_widgets/container/custom_color_container.dart';
@@ -12,8 +9,12 @@ import '../../../../../routing/route_name.dart';
 import '../../../../../utils/image_url_generate.dart';
 import '../../../../../utils/navigation.dart';
 import '../../../../player/domain/model/player_song_list_model.dart';
+import '../../../../player/provider/player_provider.dart';
 import '../../../domain/model/album_song_list_model.dart';
+import '../../../domain/model/aura_song_list_model.dart';
+import '../../../domain/model/collection_view_all_model.dart';
 import '../../../domain/model/new_release_model.dart';
+import '../../../domain/model/recent_song_model.dart';
 import '../../../domain/model/trending_hits_model.dart';
 import '../../../provider/view_all_provider.dart';
 import '../../../view_all_status.dart';
@@ -29,13 +30,15 @@ class AlbumSongsList extends StatelessWidget {
     this.auraSongListModel,
     this.collectionViewAllModel,
   }) : super(key: key);
-  final TrendingHitsModel? trendingHitsModel;
-  final NewReleaseModel? newReleaseModel;
-  final RecentlyPlayed? recentlyPlayed;
+
   final AlbumSongListModel? albumSongListModel;
   final AuraSongListModel? auraSongListModel;
   final CollectionViewAllModel? collectionViewAllModel;
+  final NewReleaseModel? newReleaseModel;
+  final RecentlyPlayed? recentlyPlayed;
   final ViewAllStatus status;
+  final TrendingHitsModel? trendingHitsModel;
+
   int getListCount(
     ViewAllStatus status,
   ) {
@@ -190,6 +193,98 @@ class AlbumSongsList extends StatelessWidget {
   }
 }
 
+class SongPlayListTile extends StatelessWidget {
+  const SongPlayListTile({
+    super.key,
+    required this.imageUrl,
+    required this.songName,
+    required this.musicDirectorName,
+    required this.songId,
+    required this.albumName,
+    required this.isAdded,
+    required this.playlistId,
+  });
+
+  final String albumName;
+  final String imageUrl;
+  final bool isAdded;
+  final String musicDirectorName;
+  final int songId;
+  final int playlistId;
+  final String songName;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+        decoration: const BoxDecoration(
+          color: CustomColor.bg,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: CustomColorContainer(
+                  child: Stack(
+                    children: [
+                      Image.network(
+                        imageUrl,
+                        height: 70,
+                        width: 70,
+                        fit: BoxFit.cover,
+                      ),
+                      isAdded
+                          ? Positioned.fill(
+                              child: ColoredBox(
+                                  color: Colors.black.withOpacity(0.8),
+                                  child: const Icon(Icons.check)))
+                          : const SizedBox.shrink()
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                  flex: 8,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          songName,
+                          style: fontWeight400(),
+                        ),
+                        Text(
+                          musicDirectorName,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: fontWeight400(
+                              size: 12.0, color: CustomColor.subTitle),
+                        ),
+                      ],
+                    ),
+                  )),
+              isAdded
+                  ? const SizedBox.shrink()
+                  : Expanded(
+                      child: IconButton(
+                        icon: const Icon(Icons.add),
+                        onPressed: () {
+                          context
+                              .read<SearchProvider>()
+                              .addSongToPlaylist(songId, playlistId);
+                          print("add");
+                        },
+                      ),
+                    )
+            ],
+          ),
+        ));
+  }
+}
+
 class SongListTile extends StatelessWidget {
   const SongListTile({
     super.key,
@@ -199,11 +294,12 @@ class SongListTile extends StatelessWidget {
     required this.songId,
     required this.albumName,
   });
-  final String imageUrl;
-  final String songName;
+
   final String albumName;
+  final String imageUrl;
   final String musicDirectorName;
   final int songId;
+  final String songName;
 
   @override
   Widget build(BuildContext context) {

@@ -16,13 +16,13 @@ class AlbumImage extends StatelessWidget {
     required this.isImage,
   }) : super(key: key);
 
-  final EdgeInsets padding;
-  final bool animateOpacityToZero;
-  final bool animateAlbumImage;
-  final double shrinkToMaxAppBarHeightRatio;
   final double albumImageSize;
+  final bool animateAlbumImage;
+  final bool animateOpacityToZero;
   final String id;
   final bool isImage;
+  final EdgeInsets padding;
+  final double shrinkToMaxAppBarHeightRatio;
 
   @override
   Widget build(BuildContext context) {

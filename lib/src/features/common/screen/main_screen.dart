@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:musiq/src/common_widgets/box/horizontal_box.dart';
-import 'package:musiq/src/common_widgets/box/vertical_box.dart';
-import 'package:musiq/src/features/player/provider/player_provider.dart';
-import 'package:musiq/src/features/player/screen/player_screen/player_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/bottom_navigation_bar/bottom_navigation_bar.dart';
+import '../../../common_widgets/box/horizontal_box.dart';
+import '../../../common_widgets/box/vertical_box.dart';
 import '../../../core/package/miniplayer/miniplayer.dart';
 import '../../player/domain/model/player_song_list_model.dart';
+import '../../player/provider/player_provider.dart';
 import '../../player/screen/player_screen/player_controller.dart';
+import '../../player/screen/player_screen/player_screen.dart';
 import '../provider/bottom_navigation_bar_provider.dart';
 import 'offline_screen.dart';
 

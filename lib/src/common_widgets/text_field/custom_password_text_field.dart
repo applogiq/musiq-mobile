@@ -16,11 +16,10 @@ class PasswordTextFieldWithError extends StatefulWidget {
       required this.onTap})
       : super(key: key);
 
-  final bool isValidatorEnable;
-  final bool isPassword;
-
-  final String label;
   final String errorMessage;
+  final bool isPassword;
+  final bool isValidatorEnable;
+  final String label;
   final ValueSetter<String>? onChange;
   final VoidCallback onTap;
 
@@ -32,6 +31,7 @@ class PasswordTextFieldWithError extends StatefulWidget {
 class _PasswordTextFieldWithErrorState
     extends State<PasswordTextFieldWithError> {
   bool obscure = true;
+
   @override
   void initState() {
     super.initState();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/common_widgets/loader.dart';
-import 'package:musiq/src/features/library/screens/playlist/view_playlist_screen.dart';
+import '../../../../common_widgets/loader.dart';
+import 'view_playlist_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/dialog/custom_dialog_box.dart';

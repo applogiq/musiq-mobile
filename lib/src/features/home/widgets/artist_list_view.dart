@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/routing/route_name.dart';
-import 'package:musiq/src/utils/navigation.dart';
+import '../../../routing/route_name.dart';
+import '../../../utils/navigation.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';

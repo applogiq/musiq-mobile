@@ -17,18 +17,17 @@ import '../domain/repository/auth_repo.dart';
 class LoginProvider extends ChangeNotifier with InputValidationMixin {
   String emailAddress = "";
   String emailAddressErrorMessage = "";
-  String password = "";
-  String passwordErrorMessage = "";
-  late Store store;
-
-  final storage = const FlutterSecureStorage();
-
-  bool isLoginButtonEnable = false;
-  bool isShowStatus = false;
   bool isErrorStatus = false;
   bool isLoading = false;
-  bool isSuccess = false;
+  bool isLoginButtonEnable = false;
   bool isPasswordReset = false;
+  bool isShowStatus = false;
+  bool isSuccess = false;
+  String password = "";
+  String passwordErrorMessage = "";
+  final storage = const FlutterSecureStorage();
+  late Store store;
+
   changeErrorStatus() {
     isShowStatus = false;
     isErrorStatus = false;

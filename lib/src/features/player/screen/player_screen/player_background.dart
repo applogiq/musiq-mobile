@@ -14,6 +14,7 @@ class PlayerBackground extends StatelessWidget {
   const PlayerBackground({
     super.key,
   });
+
   // final PlayerModel playerModel;
   PopupMenuItem _buildPopupMenuItem(String title, String routeName,
       BuildContext context, PlayerSongListModel playerSongListModel) {

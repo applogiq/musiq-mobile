@@ -13,25 +13,29 @@ class SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     required this.maxHeight,
     required this.builder,
   });
-  final double minHeight;
-  final double maxHeight;
+
   final SliverAppBarDelegateBuilder builder;
-  @override
-  double get minExtent => minHeight;
+  final double maxHeight;
+  final double minHeight;
+
   @override
   double get maxExtent => math.max(maxHeight, minHeight);
+
   @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return SizedBox.expand(
-      child: builder(context, shrinkOffset),
-    );
-  }
+  double get minExtent => minHeight;
 
   @override
   bool shouldRebuild(SliverAppBarDelegate oldDelegate) {
     return maxHeight != oldDelegate.maxHeight ||
         minHeight != oldDelegate.minHeight ||
         builder != oldDelegate.builder;
+  }
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return SizedBox.expand(
+      child: builder(context, shrinkOffset),
+    );
   }
 }

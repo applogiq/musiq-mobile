@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/search/search_status.dart';
-import 'package:musiq/src/routing/route_name.dart';
-import 'package:musiq/src/utils/navigation.dart';
+import '../../../search/screens/search_screen.dart';
 
 import '../../../../common_widgets/buttons/custom_button.dart';
-import '../../../../constants/color.dart';
 import '../../../../constants/string.dart';
+import '../../../../routing/route_name.dart';
+import '../../../../utils/navigation.dart';
 import '../../../common/screen/no_song_screen.dart';
+import '../../../search/search_status.dart';
 
 class NoPlaylistSong extends StatelessWidget {
   const NoPlaylistSong(
-      {Key? key, required this.appBarTitle, required this.playListId})
+      {Key? key,
+      required this.appBarTitle,
+      required this.playListId,
+      required this.popUpMenu})
       : super(key: key);
   final String appBarTitle;
+  final Widget popUpMenu;
   final String playListId;
 
   PopupMenuItem _buildPopupMenuItem(String title, value, context) {
@@ -64,27 +68,28 @@ class NoPlaylistSong extends StatelessWidget {
               child: const Icon(Icons.arrow_back_ios_rounded)),
           title: Text(appBarTitle),
           actions: [
-            PopupMenuButton(
-              color: CustomColor.appBarColor,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(8.0),
-                  bottomRight: Radius.circular(8.0),
-                  topLeft: Radius.circular(8.0),
-                  topRight: Radius.circular(8.0),
-                ),
-              ),
-              onSelected: (value) {
-                print(value);
-                // _onMenuItemSelected(value as int);
-                // _onMenuItemSelected(value as int);
-              },
-              itemBuilder: (ctx) => [
-                // _buildPopupMenuItem('Add songs', Options.play.index, context),
-                // _buildPopupMenuItem('Rename', Options.rename.index, context),
-                // _buildPopupMenuItem('Delete', Options.delete.index, context)
-              ],
-            ),
+            popUpMenu
+            // PopupMenuButton(
+            //   color: CustomColor.appBarColor,
+            //   shape: const RoundedRectangleBorder(
+            //     borderRadius: BorderRadius.only(
+            //       bottomLeft: Radius.circular(8.0),
+            //       bottomRight: Radius.circular(8.0),
+            //       topLeft: Radius.circular(8.0),
+            //       topRight: Radius.circular(8.0),
+            //     ),
+            //   ),
+            //   onSelected: (value) {
+            //     print(value);
+            //     // _onMenuItemSelected(value as int);
+            //     // _onMenuItemSelected(value as int);
+            //   },
+            //   itemBuilder: (ctx) => [
+            //     // _buildPopupMenuItem('Add songs', Options.play.index, context),
+            //     // _buildPopupMenuItem('Rename', Options.rename.index, context),
+            //     // _buildPopupMenuItem('Delete', Options.delete.index, context)
+            //   ],
+            // ),
           ],
         ),
       ),
@@ -100,7 +105,9 @@ class NoPlaylistSong extends StatelessWidget {
           GestureDetector(
               onTap: () {
                 Navigation.navigateToScreen(context, RouteName.search,
-                    args: SearchStatus.playlist);
+                    args: SearchRequestModel(
+                        searchStatus: SearchStatus.playlist,
+                        playlistId: int.parse(playListId)));
                 // Navigator.of(context).push(
                 //     MaterialPageRoute(builder: (context) => SearchScreen()));
               },

@@ -1,37 +1,51 @@
 class ImageModel {
-  String imageURL;
-  String title;
-  String subTitle;
   ImageModel({
     required this.imageURL,
     required this.title,
     required this.subTitle,
   });
+
+  String imageURL;
+  String subTitle;
+  String title;
 }
 
 class ArtistImageModel {
-  String imageURL;
-  String title;
-  String subTitle;
-  bool isFollowing;
   ArtistImageModel({
     required this.imageURL,
     required this.title,
     required this.subTitle,
     required this.isFollowing,
   });
+
+  String imageURL;
+  bool isFollowing;
+  String subTitle;
+  String title;
 }
 
 class Images {
-  static String logoImage = "assets/icons/logo.png";
   static String heroImage = "logo";
-  static String logoImageWithName = "assets/icons/logowithname.png";
-  static String noInternet = "assets/icons/internet.png";
   static String loaderImage = "assets/gifs/loader.gif";
+  static String logoImage = "assets/icons/logo.png";
+  static String logoImageWithName = "assets/icons/logowithname.png";
   static String noArtist = "assets/images/default/no_artist.png";
-  static String noSong = "assets/images/default/no_song.png";
   static String noFav = "assets/images/un_happy.png";
+  static String noInternet = "assets/icons/internet.png";
+  static String noSong = "assets/images/default/no_song.png";
   static String userDefault = "assets/images/no_user.png";
+
+  List<ImageModel> artistList = [
+    ImageModel(
+        imageURL: "assets/images/homepage/a1.jpg",
+        title: "The Weekend",
+        subTitle: ""),
+    ImageModel(
+        imageURL: "assets/images/homepage/a2.jpg",
+        title: "Selena Gomez",
+        subTitle: ""),
+  ];
+
   // un_happy.png
 
   List<ArtistImageModel> artistPrefList = [
@@ -87,34 +101,6 @@ class Images {
         subTitle: "3.25M followers"),
   ];
 
-  List<ImageModel> recentlyPlayed = [
-    ImageModel(
-        imageURL: "assets/images/homepage/rp1.jpeg",
-        title: "Selfish love",
-        subTitle: "Single - selena go.."),
-    ImageModel(
-        imageURL: "assets/images/homepage/rp2.jpg",
-        title: "Safari",
-        subTitle: "Single - serena"),
-    ImageModel(
-        imageURL: "assets/images/homepage/rp3.webp",
-        title: "Reputation",
-        subTitle: "Single - Taylor Sw.."),
-  ];
-  List<ImageModel> recommendedSong = [
-    ImageModel(
-        imageURL: "assets/images/homepage/rs1.webp",
-        title: "Selfish love",
-        subTitle: "Single - selena go.."),
-    ImageModel(
-        imageURL: "assets/images/homepage/rs2.jpg",
-        title: "Havana",
-        subTitle: "Single - Camila ca.."),
-    ImageModel(
-        imageURL: "assets/images/homepage/rs3.jpg",
-        title: "Una vez",
-        subTitle: "Single - Selena go..."),
-  ];
   List<ImageModel> artistSearchList = [
     ImageModel(
         imageURL: "assets/images/homepage/a1.jpg",
@@ -148,45 +134,6 @@ class Images {
         imageURL: "assets/images/homepage/a2.jpg",
         title: "Selena Gomez",
         subTitle: ""),
-  ];
-  List<ImageModel> artistList = [
-    ImageModel(
-        imageURL: "assets/images/homepage/a1.jpg",
-        title: "The Weekend",
-        subTitle: ""),
-    ImageModel(
-        imageURL: "assets/images/homepage/a2.jpg",
-        title: "Selena Gomez",
-        subTitle: ""),
-  ];
-
-  List<ImageModel> podcastList = [
-    ImageModel(
-        imageURL: "assets/images/homepage/p1.jpg",
-        title: "Pastlife",
-        subTitle: "Trevor daniel"),
-    ImageModel(
-        imageURL: "assets/images/homepage/p4.webp",
-        title: "In my blood",
-        subTitle: "Miley cyrus"),
-    ImageModel(
-        imageURL: "assets/images/homepage/p3.png",
-        title: "Love yourself",
-        subTitle: "Yony"),
-  ];
-  List<ImageModel> topAlbumList = [
-    ImageModel(
-        imageURL: "assets/images/homepage/ta1.webp",
-        title: "For You",
-        subTitle: "Album - selena go.."),
-    ImageModel(
-        imageURL: "assets/images/homepage/ta2.jpg",
-        title: "In your eyes",
-        subTitle: "Album - The weeke.."),
-    ImageModel(
-        imageURL: "assets/images/homepage/ta3.webp",
-        title: "Adele 25",
-        subTitle: "Album - Adele"),
   ];
 
   List<ImageModel> basedOnYourInterestList = [
@@ -265,6 +212,7 @@ class Images {
         title: "Lean on ft. MO",
         subTitle: "Charlie Puth"),
   ];
+
   List<ImageModel> playList = [
     ImageModel(
         imageURL: "assets/images/playlist/pl1.jpg",
@@ -310,5 +258,65 @@ class Images {
         imageURL: "assets/images/playlist/pl3.webp",
         title: "Melody",
         subTitle: "Playlist - 20 songs"),
+  ];
+
+  List<ImageModel> podcastList = [
+    ImageModel(
+        imageURL: "assets/images/homepage/p1.jpg",
+        title: "Pastlife",
+        subTitle: "Trevor daniel"),
+    ImageModel(
+        imageURL: "assets/images/homepage/p4.webp",
+        title: "In my blood",
+        subTitle: "Miley cyrus"),
+    ImageModel(
+        imageURL: "assets/images/homepage/p3.png",
+        title: "Love yourself",
+        subTitle: "Yony"),
+  ];
+
+  List<ImageModel> recentlyPlayed = [
+    ImageModel(
+        imageURL: "assets/images/homepage/rp1.jpeg",
+        title: "Selfish love",
+        subTitle: "Single - selena go.."),
+    ImageModel(
+        imageURL: "assets/images/homepage/rp2.jpg",
+        title: "Safari",
+        subTitle: "Single - serena"),
+    ImageModel(
+        imageURL: "assets/images/homepage/rp3.webp",
+        title: "Reputation",
+        subTitle: "Single - Taylor Sw.."),
+  ];
+
+  List<ImageModel> recommendedSong = [
+    ImageModel(
+        imageURL: "assets/images/homepage/rs1.webp",
+        title: "Selfish love",
+        subTitle: "Single - selena go.."),
+    ImageModel(
+        imageURL: "assets/images/homepage/rs2.jpg",
+        title: "Havana",
+        subTitle: "Single - Camila ca.."),
+    ImageModel(
+        imageURL: "assets/images/homepage/rs3.jpg",
+        title: "Una vez",
+        subTitle: "Single - Selena go..."),
+  ];
+
+  List<ImageModel> topAlbumList = [
+    ImageModel(
+        imageURL: "assets/images/homepage/ta1.webp",
+        title: "For You",
+        subTitle: "Album - selena go.."),
+    ImageModel(
+        imageURL: "assets/images/homepage/ta2.jpg",
+        title: "In your eyes",
+        subTitle: "Album - The weeke.."),
+    ImageModel(
+        imageURL: "assets/images/homepage/ta3.webp",
+        title: "Adele 25",
+        subTitle: "Album - Adele"),
   ];
 }

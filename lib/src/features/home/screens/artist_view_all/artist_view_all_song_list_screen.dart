@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:musiq/src/common_widgets/loader.dart';
-import 'package:musiq/src/features/home/domain/model/artist_view_all_model.dart';
+import '../../../../common_widgets/loader.dart';
+import '../../domain/model/artist_view_all_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/screen/offline_screen.dart';

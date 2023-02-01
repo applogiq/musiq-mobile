@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/constants/color.dart';
-import 'package:musiq/src/features/home/provider/home_provider.dart';
-import 'package:musiq/src/features/home/provider/search_provider.dart';
-import 'package:musiq/src/features/search/search_status.dart';
+import '../../../constants/color.dart';
+import '../provider/home_provider.dart';
+import '../provider/search_provider.dart';
+import '../../search/search_status.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';

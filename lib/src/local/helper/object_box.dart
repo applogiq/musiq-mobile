@@ -2,12 +2,12 @@ import '../../../objectbox.g.dart';
 import '../model/user_model.dart';
 
 class ObjectBox {
-  late final Store _store;
-  late final Box<User> _userBox;
-
   ObjectBox._init(this._store) {
     _userBox = Box<User>(_store);
   }
+
+  late final Store _store;
+  late final Box<User> _userBox;
 
   static Future<ObjectBox> init() async {
     final store = await openStore();
@@ -25,6 +25,7 @@ class ObjectBox {
   int insertUser(User user) => _userBox.put(user);
 
   bool deleteUser(int id) => _userBox.remove(id);
+
   Future<List<User>> getAll() async {
     return _userBox.getAll();
   }

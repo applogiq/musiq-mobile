@@ -1,19 +1,20 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:musiq/src/common_widgets/loader.dart';
-import 'package:musiq/src/features/profile/provider/profile_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/buttons/custom_button.dart';
+import '../../../common_widgets/loader.dart';
 import '../../../constants/string.dart';
 import '../../../core/package/crop/crop_your_image.dart';
 import '../../../utils/size_config.dart';
+import '../provider/profile_provider.dart';
 
 class ImageCrop extends StatefulWidget {
   const ImageCrop({
     Key? key,
   }) : super(key: key);
+
   // final File imageUrl;
 
   @override
@@ -21,11 +22,11 @@ class ImageCrop extends StatefulWidget {
 }
 
 class _ImageCropState extends State<ImageCrop> {
-  final _controller = CropController();
-
-  bool isLoad = true;
   late Uint8List image;
   bool imageLoad = true;
+  bool isLoad = true;
+
+  final _controller = CropController();
 
   @override
   void initState() {

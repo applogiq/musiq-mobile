@@ -1,6 +1,9 @@
-class OTPvalidation{
- 
- final String value;
+class OTPvalidation {
   final String error;
-  OTPvalidation(this.value, this.error, );
+  final String value;
+
+  OTPvalidation(
+    this.value,
+    this.error,
+  );
 }

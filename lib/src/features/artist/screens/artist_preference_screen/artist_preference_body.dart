@@ -12,6 +12,7 @@ import '../../provider/artist_provider.dart';
 class ArtistPreferenceScreenBody extends StatelessWidget {
   const ArtistPreferenceScreenBody({Key? key, required this.artistList})
       : super(key: key);
+
   final List? artistList;
 
   @override

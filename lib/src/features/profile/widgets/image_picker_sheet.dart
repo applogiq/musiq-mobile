@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:musiq/src/common_widgets/container/empty_box.dart';
-import 'package:musiq/src/features/profile/provider/profile_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common_widgets/container/empty_box.dart';
 import '../../../constants/color.dart';
 import '../../../constants/style.dart';
+import '../provider/profile_provider.dart';
 
 class ImagePickerSheet extends StatelessWidget {
   const ImagePickerSheet({super.key, required this.mainContext});
+
   final BuildContext mainContext;
 
   @override

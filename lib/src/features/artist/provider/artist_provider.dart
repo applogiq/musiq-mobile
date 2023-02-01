@@ -2,22 +2,21 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:musiq/src/features/artist/domain/repository/artist_repo.dart';
-import 'package:musiq/src/features/common/provider/bottom_navigation_bar_provider.dart';
-import 'package:musiq/src/utils/navigation.dart';
 import 'package:provider/provider.dart';
 
+import '../../../utils/navigation.dart';
 import '../../auth/domain/models/user_model.dart';
 import '../../auth/domain/repository/auth_repo.dart';
+import '../../common/provider/bottom_navigation_bar_provider.dart';
 import '../../common/screen/main_screen.dart';
 import '../domain/models/artist_model.dart';
+import '../domain/repository/artist_repo.dart';
 
 class ArtistPreferenceProvider extends ChangeNotifier {
-  var isLoaded = false;
-  var userFollowedArtist = [];
   ArtistModel? artistModel;
-
+  var isLoaded = false;
   FlutterSecureStorage storage = const FlutterSecureStorage();
+  var userFollowedArtist = [];
 
   getUserFollowDatas() async {
     Map<String, String> allValues = await storage.readAll();

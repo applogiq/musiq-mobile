@@ -13,11 +13,6 @@ class ArtistModel {
     required this.totalRecords,
   });
 
-  bool success;
-  String message;
-  List<Record> records;
-  int totalRecords;
-
   factory ArtistModel.fromMap(Map<String, dynamic> json) => ArtistModel(
         success: json["success"],
         message: json["message"],
@@ -25,6 +20,11 @@ class ArtistModel {
             List<Record>.from(json["records"].map((x) => Record.fromMap(x))),
         totalRecords: json["total_records"] ?? json["totalrecords"],
       );
+
+  String message;
+  List<Record> records;
+  bool success;
+  int totalRecords;
 
   Map<String, dynamic> toMap() => {
         "success": success,
@@ -49,18 +49,6 @@ class Record {
     required this.isDelete,
   });
 
-  int id;
-  String artistName;
-  bool isImage;
-  dynamic updatedAt;
-  dynamic updatedBy;
-  bool isActive;
-  dynamic followers;
-  String artistId;
-  DateTime createdAt;
-  int createdBy;
-  bool isDelete;
-
   factory Record.fromMap(Map<String, dynamic> json) => Record(
         id: json["id"],
         artistName: json["artist_name"],
@@ -74,6 +62,18 @@ class Record {
         createdBy: json["created_by"],
         isDelete: json["is_delete"],
       );
+
+  String artistId;
+  String artistName;
+  DateTime createdAt;
+  int createdBy;
+  dynamic followers;
+  int id;
+  bool isActive;
+  bool isDelete;
+  bool isImage;
+  dynamic updatedAt;
+  dynamic updatedBy;
 
   Map<String, dynamic> toMap() => {
         "id": id,

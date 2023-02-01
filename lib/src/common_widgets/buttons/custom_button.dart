@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/constants/color.dart';
-import 'package:musiq/src/constants/style.dart';
+
+import '../../constants/color.dart';
+import '../../constants/style.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton(
@@ -14,14 +15,16 @@ class CustomButton extends StatelessWidget {
       this.isLoading = false,
       this.height = 52})
       : super(key: key);
-  final String label;
-  final double verticalMargin;
-  final double horizontalMargin;
-  final double radius;
-  final bool isIcon;
-  final bool isValid;
-  final bool isLoading;
+
   final double height;
+  final double horizontalMargin;
+  final bool isIcon;
+  final bool isLoading;
+  final bool isValid;
+  final String label;
+  final double radius;
+  final double verticalMargin;
+
   @override
   Widget build(BuildContext context) {
     return Container(

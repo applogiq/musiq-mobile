@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/home/provider/view_all_provider.dart';
-import 'package:musiq/src/features/home/view_all_status.dart';
+import '../provider/view_all_provider.dart';
+import '../view_all_status.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/color.dart';

@@ -17,11 +17,6 @@ class SearchSongModel {
     required this.totalrecords,
   });
 
-  final bool success;
-  final String message;
-  final List<Record> records;
-  final int totalrecords;
-
   factory SearchSongModel.fromMap(Map<String, dynamic> json) => SearchSongModel(
         success: json["success"],
         message: json["message"],
@@ -29,6 +24,11 @@ class SearchSongModel {
             List<Record>.from(json["records"].map((x) => Record.fromMap(x))),
         totalrecords: json["totalrecords"],
       );
+
+  final String message;
+  final List<Record> records;
+  final bool success;
+  final int totalrecords;
 
   Map<String, dynamic> toMap() => {
         "success": success,
@@ -48,13 +48,6 @@ class Record {
     required this.musicDirectorName,
   });
 
-  final int id;
-  final String songName;
-  final String songId;
-  final String albumName;
-  final String albumId;
-  final List<String> musicDirectorName;
-
   factory Record.fromMap(Map<String, dynamic> json) => Record(
         id: json["id"],
         songName: json["song_name"],
@@ -64,6 +57,13 @@ class Record {
         musicDirectorName:
             List<String>.from(json["music_director_name"].map((x) => x)),
       );
+
+  final String albumId;
+  final String albumName;
+  final int id;
+  final List<String> musicDirectorName;
+  final String songId;
+  final String songName;
 
   Map<String, dynamic> toMap() => {
         "id": id,

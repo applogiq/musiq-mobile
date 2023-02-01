@@ -11,6 +11,7 @@ class UpNextExpandable extends StatelessWidget {
     Key? key,
     required this.playerModel,
   }) : super(key: key);
+
   final PlayerModel playerModel;
 
   @override

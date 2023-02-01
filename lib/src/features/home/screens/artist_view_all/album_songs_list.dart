@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/home/provider/artist_view_all_provider.dart';
-import 'package:musiq/src/features/player/domain/model/player_song_list_model.dart';
-import 'package:musiq/src/routing/route_name.dart';
-import 'package:musiq/src/utils/navigation.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/container/custom_color_container.dart';
 import '../../../../constants/color.dart';
 import '../../../../constants/style.dart';
+import '../../../../routing/route_name.dart';
 import '../../../../utils/image_url_generate.dart';
+import '../../../../utils/navigation.dart';
+import '../../../player/domain/model/player_song_list_model.dart';
 import '../../../player/provider/player_provider.dart';
+import '../../provider/artist_view_all_provider.dart';
 
 class AlbumSongsList extends StatelessWidget {
   const AlbumSongsList({

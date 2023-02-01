@@ -4,7 +4,7 @@ mixin InputValidationMixin {
   bool isEmailValid(String email) {
     bool emailValid = RegExp(r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
         .hasMatch(email);
-    //
+
     return emailValid;
   }
 
@@ -19,7 +19,6 @@ mixin InputValidationMixin {
   bool isPhoneNumberValid(String email) {
     bool phoneNumberValid =
         RegExp(r'(^(?:[+0]9)?[0-9]{10,12}$)').hasMatch(email);
-    //
     return phoneNumberValid;
   }
 

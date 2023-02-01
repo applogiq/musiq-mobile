@@ -2,41 +2,43 @@ import '../config/api_config.dart';
 
 class APIConstants {
   static String baseUrl = hostConfig["api_url"];
-
-  static String versionUrl = "api/v1/";
-
-  static String kLoginEndPoint = "$baseUrl${versionUrl}users/login";
-  static String kRegisterEndPoint = "$baseUrl${versionUrl}users/register";
-  static String kProfileEndPoint = "$baseUrl${versionUrl}users/";
-  static String kProfileImageDeleteEndPoint =
-      "$baseUrl${versionUrl}users/image/";
+  static String kAlbumList = "$baseUrl${versionUrl}albums/";
+  static String kAlbumSongList = "$baseUrl${versionUrl}songs?album_id=";
+  static String kArtistFollowing = "$baseUrl${versionUrl}users/follow";
+  static String kArtistList = "$baseUrl${versionUrl}artist/";
+  static String kAuraList = "$baseUrl${versionUrl}aura/";
+  static String kAuraSongList = "$baseUrl${versionUrl}aura-song/list/";
+  static String kCreatePlayList = "$baseUrl${versionUrl}playlist/";
   // users/image
   static String kEmailVerficationEndPoint = "$baseUrl${versionUrl}users/email";
+
+  static String kFavourite = "$baseUrl${versionUrl}favourite/";
+  static String kFavouriteList = "$baseUrl${versionUrl}favourite/";
+  static String kLoginEndPoint = "$baseUrl${versionUrl}users/login";
+  static String kNewRelease = "$baseUrl${versionUrl}new_release";
   static String kOTPVerficationEndPoint =
       "$baseUrl${versionUrl}users/email/otp-verify";
+
   static String kPasswordChangeEndPoint =
       "$baseUrl${versionUrl}users/email/forget-password";
 
-  static String kUpdateProfileEndPoint = "$baseUrl${versionUrl}users/";
-  static String kRecentPlayedList = "$baseUrl${versionUrl}recent-list/";
-  static String kArtistFollowing = "$baseUrl${versionUrl}users/follow";
-  static String kTrendingHits = "$baseUrl${versionUrl}trending-hits";
-  static String kAuraList = "$baseUrl${versionUrl}aura/";
-  static String kArtistList = "$baseUrl${versionUrl}artist/";
-  static String kAlbumList = "$baseUrl${versionUrl}albums/";
-  static String kFavouriteList = "$baseUrl${versionUrl}favourite/";
   static String kPlayList = "$baseUrl${versionUrl}playlist/user/";
-  static String kCreatePlayList = "$baseUrl${versionUrl}playlist/";
-  static String kNewRelease = "$baseUrl${versionUrl}new_release";
-  static String kFavourite = "$baseUrl${versionUrl}favourite/";
-  static String kSongs = "$baseUrl${versionUrl}songs/";
   static String kPlaylistSong = "$baseUrl${versionUrl}playlist-song/";
-  static String kAlbumSongList = "$baseUrl${versionUrl}songs?album_id=";
-  static String kAuraSongList = "$baseUrl${versionUrl}aura-song/list/";
-  static String searchArtist = "$baseUrl${versionUrl}artist/list/search?data=";
-  static String kSearchSong = "$baseUrl${versionUrl}search?data=";
   static String kPlaylistSongList = "${kPlaylistSong}list/";
-// https://api-musiq.applogiq.org/api/v1/search?data=Paiya
+  static String kProfileEndPoint = "$baseUrl${versionUrl}users/";
+  static String kProfileImageDeleteEndPoint =
+      "$baseUrl${versionUrl}users/image/";
+
+  static String kRecentPlayedList = "$baseUrl${versionUrl}recent-list/";
+  static String kRegisterEndPoint = "$baseUrl${versionUrl}users/register";
+  static String kSearchSong = "$baseUrl${versionUrl}search?data=";
+  static String kSongs = "$baseUrl${versionUrl}songs/";
+  static String kTrendingHits = "$baseUrl${versionUrl}trending-hits";
+  static String kUpdateProfileEndPoint = "$baseUrl${versionUrl}users/";
+  static String searchArtist = "$baseUrl${versionUrl}artist/list/search?data=";
+  static String versionUrl = "api/v1/";
+
+// https://api-musiq.applogiq.org/api/v1/playlist-song/26
   getRecentlyPlayedUrl(String userId, int limit) {
     var url = "$kRecentPlayedList$userId?limit=${limit.toString()}";
     return url;

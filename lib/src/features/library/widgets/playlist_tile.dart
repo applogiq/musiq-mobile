@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/constants/string.dart';
-import 'package:musiq/src/features/library/domain/models/playlist_model.dart';
-import 'package:musiq/src/features/library/provider/library_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../constants/color.dart';
+import '../../../constants/string.dart';
 import '../../../constants/style.dart';
 import '../../../constants/style/box_decoration.dart';
 import '../../../utils/image_url_generate.dart';
+import '../domain/models/playlist_model.dart';
+import '../provider/library_provider.dart';
 
 class PlaylistTile extends StatelessWidget {
   const PlaylistTile(
@@ -17,10 +17,11 @@ class PlaylistTile extends StatelessWidget {
       required this.index,
       this.isMore = true,
       required this.callBack});
-  final List<Record> record;
+
+  final Function callBack;
   final int index;
   final bool isMore;
-  final Function callBack;
+  final List<Record> record;
 
   @override
   Widget build(BuildContext context) {

@@ -10,10 +10,12 @@ class CenterTextWidget extends StatelessWidget {
     required this.textSize,
     required this.textColor,
   }) : super(key: key);
+
   final String label;
-  final double topPadding;
-  final double textSize;
   final Color textColor;
+  final double textSize;
+  final double topPadding;
+
   @override
   Widget build(BuildContext context) {
     return Padding(

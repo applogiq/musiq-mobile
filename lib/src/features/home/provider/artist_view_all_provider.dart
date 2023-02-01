@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
-import 'package:musiq/src/features/home/domain/model/collection_view_all_model.dart';
+import '../domain/model/collection_view_all_model.dart';
 
 import '../../artist/domain/models/artist_model.dart';
 import '../domain/repository/home_repo.dart';

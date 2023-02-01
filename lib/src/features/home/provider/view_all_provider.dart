@@ -1,14 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/home/domain/model/album_song_list_model.dart';
-import 'package:musiq/src/features/home/domain/model/aura_song_list_model.dart';
-import 'package:musiq/src/features/home/domain/model/collection_view_all_model.dart';
-import 'package:musiq/src/features/home/domain/model/new_release_model.dart';
-import 'package:musiq/src/features/home/domain/model/recent_song_model.dart';
-import 'package:musiq/src/features/home/domain/model/trending_hits_model.dart';
-import 'package:musiq/src/features/home/domain/repository/home_repo.dart';
-import 'package:musiq/src/features/home/view_all_status.dart';
+import '../domain/model/album_song_list_model.dart';
+import '../domain/model/aura_song_list_model.dart';
+import '../domain/model/collection_view_all_model.dart';
+import '../domain/model/new_release_model.dart';
+import '../domain/model/recent_song_model.dart';
+import '../domain/model/trending_hits_model.dart';
+import '../domain/repository/home_repo.dart';
+import '../view_all_status.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/image_url_generate.dart';
