@@ -22,8 +22,8 @@ class PreferenceScreen extends StatelessWidget {
                 title: "Preferences",
               ),
             ),
-            body: ListView(children: const [
-              Padding(
+            body: ListView(children: [
+              const Padding(
                 padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
                 child: PreferenceMainHeaderWidget(
                   mainTitle: "Music Preference",
@@ -33,24 +33,26 @@ class PreferenceScreen extends StatelessWidget {
                   navigationScreen2: "audioQuality",
                 ),
               ),
-              // Padding(
-              //   padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
-              //   child: PreferenceMainHeaderWidget(
-              //     mainTitle: "Podcast Preference",
-              //     subTitle1: "Artist Preference",
-              //     navigationScreen1: "artistPreference",
-              //     subTitle2: "Audio Quality",
-              //     navigationScreen2: "audioQuality",
-              //   ),
-              // ),
-              // Padding(
-              //   padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
-              //   child: NotificationPreferenceHeaderWidget(
-              //     mainTitle: "Notification Preference",
-              //     subTitle1: "New Releases",
-              //     subTitle2: "Artist Updates",
-              //   ),
-              // ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
+                child: PreferenceMainHeaderWidget(
+                  mainTitle: "Podcast Preference",
+                  subTitle1: "Artist Preference",
+                  navigationScreen1: "artistPreference",
+                  subTitle2: "Audio Quality",
+                  navigationScreen2: "audioQuality",
+                ),
+              ),
+              Positioned.fill(
+                  child: ColoredBox(color: Colors.white.withOpacity(0.7))),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
+                child: NotificationPreferenceHeaderWidget(
+                  mainTitle: "Notification Preference",
+                  subTitle1: "New Releases",
+                  subTitle2: "Artist Updates",
+                ),
+              ),
             ]),
           );
   }
@@ -89,13 +91,17 @@ class PreferenceMainHeaderWidget extends StatelessWidget {
             navigationRoute: navigationScreen1,
           ),
         ),
-        // Padding(
-        //   padding: const EdgeInsets.only(top: 24.0),
-        //   child: PreferenceListTile(
-        //     label: subTitle2,
-        //     navigationRoute: navigationScreen2,
-        //   ),
-        // ),
+        Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 24.0),
+              child: PreferenceListTile(
+                label: subTitle2,
+                navigationRoute: navigationScreen2,
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }

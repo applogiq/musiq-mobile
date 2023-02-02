@@ -46,6 +46,8 @@ class ConstantText {
   static const String addFavourites = "Add to Favourites";
   static const String addPlaylist = "Add to Playlist";
   static const String songInfo = "Song Info";
+  static const String upNext = "Up Next";
+  static const String playNext = "Play Next";
 
   static String playListNameExist = 'This name is already taken';
   static String pleaseTry = "Please check your connection";
@@ -70,4 +72,8 @@ class ConstantText {
   static String welcomeBack = "Welcome Back";
   static String yourPlaylistNoAvailable = "Your playlist will appear here";
   static String yourfavNoAvailable = "Your favourite songs will appear here";
+
+  static const String share = "Share";
+
+  static const String remove = "Remove";
 }

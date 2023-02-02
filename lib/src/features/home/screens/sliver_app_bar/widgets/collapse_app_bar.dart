@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants/color.dart';
-import '../../../../player/screen/player_screen/player_controller.dart';
+import '../../../../player/widget/player/player_widgets.dart';
 import '../../../provider/view_all_provider.dart';
 
 class CollapsedAppBar extends StatelessWidget {

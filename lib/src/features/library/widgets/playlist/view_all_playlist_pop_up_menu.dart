@@ -1,0 +1,86 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../common_widgets/dialog/custom_dialog_box.dart';
+import '../../../../constants/constant.dart';
+import '../../../../routing/route_name.dart';
+import '../../../../utils/navigation.dart';
+import '../../../home/provider/search_provider.dart';
+import '../../../search/screens/search_screen.dart';
+import '../../../search/search_status.dart';
+import '../../provider/library_provider.dart';
+
+class ViewAllPlaylistPopUpMenu extends StatelessWidget {
+  const ViewAllPlaylistPopUpMenu({
+    Key? key,
+    required this.id,
+    required this.title,
+  }) : super(key: key);
+
+  final int id;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+      color: CustomColor.appBarColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(8.0),
+          bottomRight: Radius.circular(8.0),
+          topLeft: Radius.circular(8.0),
+          topRight: Radius.circular(8.0),
+        ),
+      ),
+      padding: const EdgeInsets.all(0.0),
+      onSelected: (value) async {
+        if (value == 1) {
+          context.read<SearchProvider>().resetState();
+          Navigation.navigateToScreen(context, RouteName.search,
+              args: SearchRequestModel(
+                  searchStatus: SearchStatus.playlist, playlistId: id));
+        } else if (value == 2) {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return PlaylistDialogBox(
+                  onChanged: (v) {
+                    context.read<LibraryProvider>().checkPlayListName(v);
+                  },
+                  callBack: () async {
+                    await context
+                        .read<LibraryProvider>()
+                        .updatePlayListName(context, id);
+                  },
+                  initialText: title,
+                  title: ConstantText.renamePlaylist,
+                  fieldName: ConstantText.name,
+                  buttonText: ConstantText.rename,
+                  errorValue: context.read<LibraryProvider>().playListError,
+                  isError: context.read<LibraryProvider>().isPlayListError,
+                  // callback: libraryController.createPlaylist(context),
+                );
+              });
+        } else if (value == 3) {
+          await context.read<LibraryProvider>().deletePlayList(id);
+          Navigation.navigateReplaceToScreen(context, RouteName.mainScreen);
+        }
+      },
+      itemBuilder: (ctx) => [
+        const PopupMenuItem(
+          value: 1,
+          child: Text('Add songs'),
+        ),
+        const PopupMenuItem(
+          value: 2,
+          child: Text('Rename'),
+        ),
+        const PopupMenuItem(
+          value: 3,
+          child: Text('Delete'),
+        ),
+      ],
+    );
+  }
+}

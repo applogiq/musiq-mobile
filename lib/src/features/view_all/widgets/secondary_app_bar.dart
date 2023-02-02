@@ -6,7 +6,7 @@ import '../../../utils/image_url_generate.dart';
 import '../../home/provider/artist_view_all_provider.dart';
 import '../../player/domain/model/player_song_list_model.dart';
 import '../../player/provider/player_provider.dart';
-import '../../player/screen/player_screen/player_controller.dart';
+import '../../player/widget/player/player_widgets.dart';
 
 class FixedAppBar extends StatelessWidget {
   const FixedAppBar({

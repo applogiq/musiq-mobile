@@ -42,6 +42,18 @@ class PlayerRepo {
     }
   }
 
+  Future<dynamic> recentList(Map params) async {
+    try {
+      var id = await storage.read(key: "register_id");
+      params["user_id"] = id;
+      dynamic response = await apiServices.getPutAuthApiResponse(
+          APIConstants.kRecentPlayedList, params);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<dynamic> songInfo(String id) async {
     try {
       var url = APIConstants.kSongs + id;

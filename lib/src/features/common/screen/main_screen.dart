@@ -8,7 +8,7 @@ import '../../../common_widgets/box/horizontal_box.dart';
 import '../../../common_widgets/box/vertical_box.dart';
 import '../../player/domain/model/player_song_list_model.dart';
 import '../../player/provider/player_provider.dart';
-import '../../player/screen/player_screen/player_controller.dart';
+import '../../player/widget/player/player_widgets.dart';
 import '../provider/bottom_navigation_bar_provider.dart';
 import 'offline_screen.dart';
 

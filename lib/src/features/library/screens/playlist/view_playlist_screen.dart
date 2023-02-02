@@ -16,7 +16,8 @@ import '../../../home/screens/sliver_app_bar/widgets/sliver_app_bar.dart';
 import '../../../search/screens/search_screen.dart';
 import '../../../search/search_status.dart';
 import '../../provider/library_provider.dart';
-import 'no_song_playlist.dart';
+import '../../widgets/playlist/no_song_playlist.dart';
+import '../../widgets/playlist/view_all_playlist_pop_up_menu.dart';
 
 class ViewPlaylistSongScreen extends StatefulWidget {
   const ViewPlaylistSongScreen(
@@ -73,73 +74,9 @@ class _ViewPlaylistSongScreenState extends State<ViewPlaylistSongScreen> {
                               ? NoPlaylistSong(
                                   appBarTitle: widget.title!,
                                   playListId: widget.id.toString(),
-                                  popUpMenu: PopupMenuButton(
-                                    color: CustomColor.appBarColor,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(8.0),
-                                        bottomRight: Radius.circular(8.0),
-                                        topLeft: Radius.circular(8.0),
-                                        topRight: Radius.circular(8.0),
-                                      ),
-                                    ),
-                                    padding: const EdgeInsets.all(0.0),
-                                    onSelected: (value) async {
-                                      if (value == 1) {
-                                        context
-                                            .read<SearchProvider>()
-                                            .resetState();
-                                        Navigation.navigateToScreen(
-                                            context, RouteName.search,
-                                            args: SearchRequestModel(
-                                                searchStatus:
-                                                    SearchStatus.playlist,
-                                                playlistId: widget.id));
-                                      } else if (value == 2) {
-                                        showDialog(
-                                            context: context,
-                                            barrierDismissible: false,
-                                            builder: (BuildContext context) {
-                                              return PlaylistDialogBox(
-                                                onChanged: (v) {
-                                                  pro.checkPlayListName(v);
-                                                },
-                                                callBack: () async {
-                                                  await pro.updatePlayListName(
-                                                      context, widget.id!);
-                                                },
-                                                initialText: widget.title!,
-                                                title:
-                                                    ConstantText.renamePlaylist,
-                                                fieldName: ConstantText.name,
-                                                buttonText: ConstantText.rename,
-                                                errorValue: pro.playListError,
-                                                isError: pro.isPlayListError,
-                                                // callback: libraryController.createPlaylist(context),
-                                              );
-                                            });
-                                      } else if (value == 3) {
-                                        await context
-                                            .read<LibraryProvider>()
-                                            .deletePlayList(widget.id!);
-                                        Navigation.navigateReplaceToScreen(
-                                            context, RouteName.mainScreen);
-                                      }
-                                    },
-                                    itemBuilder: (ctx) => [
-                                      const PopupMenuItem(
-                                        value: 1,
-                                        child: Text('Add songs'),
-                                      ),
-                                      const PopupMenuItem(
-                                        value: 2,
-                                        child: Text('Rename'),
-                                      ),
-                                      const PopupMenuItem(
-                                        value: 3,
-                                        child: Text('Delete'),
-                                      ),
-                                    ],
+                                  popUpMenu: ViewAllPlaylistPopUpMenu(
+                                    id: widget.id!,
+                                    title: widget.title!,
                                   ),
                                 )
                               : DecoratedBox(
@@ -162,100 +99,10 @@ class _ViewPlaylistSongScreenState extends State<ViewPlaylistSongScreen> {
                                         controller: scrollController,
                                         slivers: [
                                           SliverCustomAppBar(
-                                              popUpMenu: PopupMenuButton(
-                                                color: CustomColor.appBarColor,
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    bottomLeft:
-                                                        Radius.circular(8.0),
-                                                    bottomRight:
-                                                        Radius.circular(8.0),
-                                                    topLeft:
-                                                        Radius.circular(8.0),
-                                                    topRight:
-                                                        Radius.circular(8.0),
-                                                  ),
-                                                ),
-                                                padding:
-                                                    const EdgeInsets.all(0.0),
-                                                onSelected: (value) async {
-                                                  if (value == 1) {
-                                                    context
-                                                        .read<SearchProvider>()
-                                                        .resetState();
-                                                    Navigation.navigateToScreen(
-                                                        context,
-                                                        RouteName.search,
-                                                        args: SearchRequestModel(
-                                                            searchStatus:
-                                                                SearchStatus
-                                                                    .playlist,
-                                                            playlistId:
-                                                                widget.id));
-                                                  } else if (value == 2) {
-                                                    print("Rename");
-                                                    showDialog(
-                                                        context: context,
-                                                        barrierDismissible:
-                                                            false,
-                                                        builder: (BuildContext
-                                                            context) {
-                                                          return PlaylistDialogBox(
-                                                            onChanged: (v) {
-                                                              pro.checkPlayListName(
-                                                                  v);
-                                                            },
-                                                            callBack: () async {
-                                                              await pro
-                                                                  .updatePlayListName(
-                                                                      context,
-                                                                      widget
-                                                                          .id!);
-                                                            },
-                                                            initialText:
-                                                                widget.title!,
-                                                            title: ConstantText
-                                                                .renamePlaylist,
-                                                            fieldName:
-                                                                ConstantText
-                                                                    .name,
-                                                            buttonText:
-                                                                ConstantText
-                                                                    .rename,
-                                                            errorValue: pro
-                                                                .playListError,
-                                                            isError: pro
-                                                                .isPlayListError,
-                                                            // callback: libraryController.createPlaylist(context),
-                                                          );
-                                                        });
-                                                  } else if (value == 3) {
-                                                    await context
-                                                        .read<LibraryProvider>()
-                                                        .deletePlayList(
-                                                            widget.id!);
-                                                    Navigation
-                                                        .navigateReplaceToScreen(
-                                                            context,
-                                                            RouteName.library);
-                                                  }
-                                                },
-                                                itemBuilder: (ctx) => [
-                                                  const PopupMenuItem(
-                                                    value: 1,
-                                                    child: Text('Add songs'),
-                                                  ),
-                                                  const PopupMenuItem(
-                                                    value: 2,
-                                                    child: Text('Rename'),
-                                                  ),
-                                                  const PopupMenuItem(
-                                                    value: 3,
-                                                    child: Text('Delete'),
-                                                  ),
-                                                ],
+                                              popUpMenu:
+                                                  ViewAllPlaylistPopUpMenu(
+                                                id: widget.id!,
+                                                title: widget.title!,
                                               ),
                                               maxAppBarHeight: maxAppBarHeight,
                                               minAppBarHeight: minAppBarHeight,
