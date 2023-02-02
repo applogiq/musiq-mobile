@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../features/library/screens/library.dart';
 
 import '../features/artist/screens/artist_preference_screen/artist_preference_screen.dart';
 import '../features/auth/screens/forgot_screen/forgot_main_screen.dart';
@@ -17,7 +16,7 @@ import '../features/home/screens/artist_view_all/artist_view_all_song_list_scree
 import '../features/home/screens/home_screen.dart';
 import '../features/home/screens/view_all/view_all_song_list_screen.dart';
 import '../features/home/view_all_status.dart';
-import '../features/player/domain/model/player_song_list_model.dart';
+import '../features/library/screens/library.dart';
 import '../features/player/screen/add_playlist_screen.dart';
 import '../features/player/screen/player_screen/player_screen.dart';
 import '../features/player/screen/song_info_screen.dart';
@@ -116,10 +115,10 @@ class Routes {
       //     builder: (BuildContext context) => const ErrorScreen());
 
       case RouteName.songInfo:
-        if (args is PlayerSongListModel) {
+        if (args is int) {
           return MaterialPageRoute(
               builder: (BuildContext context) => SongInfoScreen(
-                    playerSongListModel: args,
+                    id: args,
                   ));
         }
         return MaterialPageRoute(

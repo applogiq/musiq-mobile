@@ -10,13 +10,12 @@ import '../../../constants/style.dart';
 import '../../../utils/image_url_generate.dart';
 import '../../../utils/size_config.dart';
 import '../../../utils/time.dart';
-import '../domain/model/player_song_list_model.dart';
 import '../provider/player_provider.dart';
 
 class SongInfoScreen extends StatefulWidget {
-  const SongInfoScreen({super.key, required this.playerSongListModel});
+  const SongInfoScreen({super.key, required this.id});
 
-  final PlayerSongListModel playerSongListModel;
+  final int id;
 
   @override
   State<SongInfoScreen> createState() => _SongInfoScreenState();
@@ -27,9 +26,7 @@ class _SongInfoScreenState extends State<SongInfoScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      context
-          .read<PlayerProvider>()
-          .songInfo(widget.playerSongListModel.id.toString());
+      context.read<PlayerProvider>().songInfo(widget.id.toString());
     });
   }
 

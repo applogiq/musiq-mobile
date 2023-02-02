@@ -42,6 +42,11 @@ class ConstantText {
       "The password must contain alteast 8 characters, include 1 uppercase, 1 lowercase, 1 number and 1 special character.";
 
   static const String playAll = "Play All";
+  static const String deleteInQueue = "Delete in Queue";
+  static const String addFavourites = "Add to Favourites";
+  static const String addPlaylist = "Add to Playlist";
+  static const String songInfo = "Song Info";
+
   static String playListNameExist = 'This name is already taken';
   static String pleaseTry = "Please check your connection";
   static String recentlyPlayedText = 'Recently Played';

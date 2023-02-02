@@ -612,4 +612,8 @@ class PlayerProvider extends ChangeNotifier {
       toastMessage("Song already in $playListName", Colors.grey, Colors.white);
     }
   }
+
+  void deleteSongInQueue(int index) {
+    playlist.removeAt(index);
+  }
 }

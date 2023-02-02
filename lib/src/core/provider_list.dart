@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:musiq/src/features/common/provider/pop_up_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 import '../features/artist/provider/artist_provider.dart';
-import '../features/auth/provider/login_provider.dart';
 import '../features/auth/provider/forgot_password_provider.dart';
+import '../features/auth/provider/login_provider.dart';
 import '../features/auth/provider/register_provider.dart';
 import '../features/common/provider/bottom_navigation_bar_provider.dart';
 import '../features/common/provider/internet_connectivity_provider.dart';
@@ -31,6 +32,9 @@ List<SingleChildWidget> providersList = [
   ),
   ChangeNotifierProvider(
     create: (BuildContext context) => SplashProvider(),
+  ),
+  ChangeNotifierProvider(
+    create: (BuildContext context) => PopUpProvider(),
   ),
   ChangeNotifierProvider(
     create: (BuildContext context) => InternetConnectivityProvider(),

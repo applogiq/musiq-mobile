@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import '../../../../common_widgets/container/empty_box.dart';
 import '../../../../constants/style.dart';
 import '../../../common/screen/offline_screen.dart';
-import '../../../home/provider/artist_view_all_provider.dart';
 import '../../domain/model/player_song_list_model.dart';
 import 'player_background.dart';
 import 'player_controller.dart';
@@ -58,9 +57,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                       topRight: Radius.circular(30))),
                               child: ListTile(
                                 onTap: () {
-                                  context
-                                      .read<ArtistViewAllProvider>()
-                                      .toggleUpNext();
+                                  context.read<PlayerProvider>().toggleUpNext();
                                 },
                                 title: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -122,15 +119,13 @@ class UpNextExpandableWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ArtistViewAllProvider>(builder: (context, pro, _) {
-      return const SizedBox(
-        child:
-            //  pro.isUpNextShow
-            //     ? UpNextExpandable(
-            //         playerModel: widget.playerModel,
-            //       )
-            //     :
-            EmptyBox(),
+    return Consumer<PlayerProvider>(builder: (context, pro, _) {
+      return SizedBox(
+        child: pro.isUpNextShow
+            ? const UpNextExpandable(
+                // playerModel: widget.playerModel,
+                )
+            : const EmptyBox(),
       );
     });
   }
