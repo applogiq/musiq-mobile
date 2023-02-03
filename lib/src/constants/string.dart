@@ -66,7 +66,8 @@ class ConstantText {
   static String save = 'Save';
   static String sendOTPSuccessfully = 'OTP send successfully';
   static String slogan = "Queue your favourite music";
-  static String subSlogan = "All your latest songs and podacsts\n in one palce";
+  static String subSlogan =
+      "All your latest songs and podacasts\n in one palce";
   static String trendingHitsText = 'Trending Hits';
   static String userName = "Username";
   static String welcomeBack = "Welcome Back";

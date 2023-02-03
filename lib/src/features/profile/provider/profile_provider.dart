@@ -116,8 +116,10 @@ class ProfileProvider extends ChangeNotifier {
   void profileNameChanged(String value) {
     name = value;
     if (value.isEmpty) {
+      isProfileSave = false;
       nameErrorMessage = ConstantText.fieldRequired;
     } else {
+      isProfileSave = true;
       nameErrorMessage = "";
     }
     notifyListeners();
@@ -127,9 +129,12 @@ class ProfileProvider extends ChangeNotifier {
     userName = value;
     if (value.isEmpty) {
       userNameErrorMessage = ConstantText.fieldRequired;
+      isProfileSave = false;
     } else if (value.contains(" ")) {
       userNameErrorMessage = ConstantText.invalidUserName;
+      isProfileSave = false;
     } else {
+      isProfileSave = true;
       userNameErrorMessage = "";
     }
     // buttonEnable();
@@ -155,8 +160,8 @@ class ProfileProvider extends ChangeNotifier {
     if (res.statusCode == 200) {
       if (fileImage != null && fileImage != "") {
         await getApplicationDocumentsDirectory().then((Directory dir) {
-          store =
-              Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/');
+          store = Store(getObjectBoxModel(),
+              directory: '\$\{dir\.path\}/musiq/db/1');
           final ProfileImage profileImage = ProfileImage(
               isImage: true,
               registerId: id,

@@ -187,19 +187,18 @@ class LibraryProvider extends ChangeNotifier {
   }
 
   getPlayListSongList(int id) async {
-    // isPlayListSongLoad = true;
-    // notifyListeners();
+    isPlayListSongLoad = true;
+    notifyListeners();
     playlistSongListModel.records.clear();
     var response =
         await LibraryRepository().getPlayListSongListdata(id.toString());
 
-    print(response.body);
     if (response.statusCode == 200) {
       playlistSongListModel =
           PlaylistSongListModel.fromMap(jsonDecode(response.body));
     }
-    // isPlayListSongLoad = false;
-    // notifyListeners();
+    isPlayListSongLoad = false;
+    notifyListeners();
   }
 
   void play(int id, BuildContext context, {int index = 0}) async {
@@ -243,5 +242,15 @@ class LibraryProvider extends ChangeNotifier {
 
   void navigateToPlayerScreen(BuildContext context, int id, {int index = 0}) {
     play(id, context, index: index);
+  }
+
+  void removeSongFromPlayLlist(int playlistSongId, playlistId) async {
+    var response =
+        await LibraryRepository().removeSongFromPlaylist(playlistSongId);
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      getPlayListSongList(playlistId);
+    }
   }
 }

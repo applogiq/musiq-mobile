@@ -4,12 +4,12 @@
   "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
   "entities": [
     {
-      "id": "1:6934859753459527929",
-      "lastPropertyId": "1:7822800837622542910",
+      "id": "1:7896320191453702639",
+      "lastPropertyId": "1:5016485628401240728",
       "name": "FavouriteSong",
       "properties": [
         {
-          "id": "1:7822800837622542910",
+          "id": "1:5016485628401240728",
           "name": "songUniqueId",
           "type": 6,
           "flags": 129
@@ -18,106 +18,28 @@
       "relations": []
     },
     {
-      "id": "2:4882588624603410407",
-      "lastPropertyId": "4:7873480125347533283",
+      "id": "2:5833112001524634385",
+      "lastPropertyId": "4:2134781622070694483",
       "name": "ProfileImage",
       "properties": [
         {
-          "id": "1:3182726916203142745",
+          "id": "1:3615212728086977923",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "2:9065143046969225880",
-          "name": "registerId",
-          "type": 9
-        },
-        {
-          "id": "3:9102507035392334766",
+          "id": "2:8319024973373335680",
           "name": "isImage",
           "type": 1
         },
         {
-          "id": "4:7873480125347533283",
+          "id": "3:5240430700263575031",
           "name": "profileImageString",
           "type": 9
-        }
-      ],
-      "relations": []
-    },
-    {
-      "id": "3:2309817460638534973",
-      "lastPropertyId": "7:8775963013765827113",
-      "name": "SongListModel",
-      "properties": [
-        {
-          "id": "1:2174267121941455981",
-          "name": "id",
-          "type": 6,
-          "flags": 129
         },
         {
-          "id": "2:2184252476356230143",
-          "name": "songId",
-          "type": 6
-        },
-        {
-          "id": "3:6789303156733185279",
-          "name": "albumName",
-          "type": 9
-        },
-        {
-          "id": "4:1368683647205503112",
-          "name": "title",
-          "type": 9
-        },
-        {
-          "id": "5:5869086063956635880",
-          "name": "musicDirectorName",
-          "type": 9
-        },
-        {
-          "id": "6:7484933757295749095",
-          "name": "imageUrl",
-          "type": 9
-        },
-        {
-          "id": "7:8775963013765827113",
-          "name": "songUrl",
-          "type": 9
-        }
-      ],
-      "relations": []
-    },
-    {
-      "id": "4:1438059175652400955",
-      "lastPropertyId": "5:4274857646076742090",
-      "name": "User",
-      "properties": [
-        {
-          "id": "1:2215135472434435496",
-          "name": "id",
-          "type": 6,
-          "flags": 1
-        },
-        {
-          "id": "2:2054101606919097414",
-          "name": "fullName",
-          "type": 9
-        },
-        {
-          "id": "3:1530581420345763741",
-          "name": "email",
-          "type": 9
-        },
-        {
-          "id": "4:6581207847706124708",
-          "name": "userName",
-          "type": 9
-        },
-        {
-          "id": "5:4274857646076742090",
+          "id": "4:2134781622070694483",
           "name": "registerId",
           "type": 9
         }
@@ -125,18 +47,18 @@
       "relations": []
     },
     {
-      "id": "6:2201229725413812291",
-      "lastPropertyId": "2:401477523696851243",
+      "id": "3:4881826034808360132",
+      "lastPropertyId": "2:2691569810605337671",
       "name": "SearchArtistLocalModel",
       "properties": [
         {
-          "id": "1:6882532736547711212",
+          "id": "1:5834730837602391017",
           "name": "id",
           "type": 6,
           "flags": 129
         },
         {
-          "id": "2:401477523696851243",
+          "id": "2:2691569810605337671",
           "name": "searchName",
           "type": 9
         }
@@ -144,40 +66,112 @@
       "relations": []
     },
     {
-      "id": "7:2577012573481994611",
-      "lastPropertyId": "2:6514242564041047160",
+      "id": "4:3109596954584400394",
+      "lastPropertyId": "2:5832714907013588595",
       "name": "SearchSongLocalModel",
       "properties": [
         {
-          "id": "1:5993562285555669307",
+          "id": "1:8218693665586964439",
           "name": "id",
           "type": 6,
           "flags": 129
         },
         {
-          "id": "2:6514242564041047160",
+          "id": "2:5832714907013588595",
           "name": "searchName",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "5:7342810452216053734",
+      "lastPropertyId": "7:6348277271098114095",
+      "name": "SongListModel",
+      "properties": [
+        {
+          "id": "1:4277192714724952282",
+          "name": "albumName",
+          "type": 9
+        },
+        {
+          "id": "2:7315531026924877754",
+          "name": "id",
+          "type": 6,
+          "flags": 129
+        },
+        {
+          "id": "3:4214075554489458133",
+          "name": "imageUrl",
+          "type": 9
+        },
+        {
+          "id": "4:3419979671878608749",
+          "name": "musicDirectorName",
+          "type": 9
+        },
+        {
+          "id": "5:3625974886578133972",
+          "name": "songId",
+          "type": 6
+        },
+        {
+          "id": "6:8173567984402481958",
+          "name": "songUrl",
+          "type": 9
+        },
+        {
+          "id": "7:6348277271098114095",
+          "name": "title",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "6:4964923419436557718",
+      "lastPropertyId": "5:9192544115162387739",
+      "name": "User",
+      "properties": [
+        {
+          "id": "1:6368229255617293581",
+          "name": "email",
+          "type": 9
+        },
+        {
+          "id": "2:8389641301032528177",
+          "name": "fullName",
+          "type": 9
+        },
+        {
+          "id": "3:6248096742650518814",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "4:5193225695264071898",
+          "name": "registerId",
+          "type": 9
+        },
+        {
+          "id": "5:9192544115162387739",
+          "name": "userName",
           "type": 9
         }
       ],
       "relations": []
     }
   ],
-  "lastEntityId": "7:2577012573481994611",
+  "lastEntityId": "6:4964923419436557718",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
-  "retiredEntityUids": [
-    8693981299913328279
-  ],
+  "retiredEntityUids": [],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [
-    5855155449864537733,
-    3567374957546305163,
-    2319702796785557064
-  ],
+  "retiredPropertyUids": [],
   "retiredRelationUids": [],
   "version": 1
 }

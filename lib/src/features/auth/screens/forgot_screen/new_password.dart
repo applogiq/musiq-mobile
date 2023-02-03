@@ -105,11 +105,13 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   Consumer<ForgotPasswordProvider>(
                     builder: (context, value, child) {
                       return GestureDetector(
-                        onTap: () {
-                          value.resetPassword(context);
-                          // value.navigateToNext(context);
-                          // value.emailVerfied(context);
-                        },
+                        onTap: value.isResetButtonEnable
+                            ? () {
+                                value.resetPassword(context);
+                                // value.navigateToNext(context);
+                                // value.emailVerfied(context);
+                              }
+                            : () {},
                         child: CustomButton(
                           label: ConstantText.resetPasssword,
                           horizontalMargin: 0,

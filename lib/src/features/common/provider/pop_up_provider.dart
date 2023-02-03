@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/features/library/provider/library_provider.dart';
 import 'package:musiq/src/features/player/domain/model/player_song_list_model.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -60,5 +61,10 @@ class PopUpProvider extends ChangeNotifier {
 
   addSong() {}
 
-  removeSongFromPlaylist() {}
+  removeSongFromPlaylist(
+      int playlistSongId, BuildContext context, int playlistId) {
+    context
+        .read<LibraryProvider>()
+        .removeSongFromPlayLlist(playlistSongId, playlistId);
+  }
 }

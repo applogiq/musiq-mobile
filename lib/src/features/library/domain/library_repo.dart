@@ -94,4 +94,15 @@ class LibraryRepository {
       rethrow;
     }
   }
+
+  removeSongFromPlaylist(int id) async {
+    try {
+      dynamic response = await apiServices.getDeleteAuthApiResponse(
+        APIConstants.kPlaylistSong + id.toString(),
+      );
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

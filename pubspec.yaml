@@ -13,22 +13,18 @@ dependencies:
   audio_service: ^0.18.9
   rxdart: ^0.27.7
   internet_connection_checker: ^0.0.1+4
-  # image_cropper: ^2.0.3
-  # image_crop: ^0.4.0
-  # image_cropper: ^2.0.3
-  # crop_your_image: ^0.7.2
+
   flutter_native_image: ^0.0.6+1
 
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
-  # flutter_otp_text_field: ^1.0.1
   flutter_secure_storage: ^5.0.2
   image_picker: ^0.8.5+3
   google_fonts: ^3.0.1
   http: ^0.13.4
   just_audio: ^0.9.24
-  just_audio_background: any
+  # just_audio_background: any
   connectivity_plus: ^2.3.5
   fluttertoast: ^8.0.9
   cached_network_image: ^3.2.3
@@ -36,6 +32,7 @@ dependencies:
   objectbox_flutter_libs: any
   share_plus: ^6.3.0
   path_provider: ^2.0.11
+  get_it: ^7.1.2
 
 dev_dependencies:
   flutter_launcher_icons: "^0.9.2"

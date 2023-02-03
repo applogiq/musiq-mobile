@@ -361,7 +361,7 @@ class PlayerProvider extends ChangeNotifier {
     PlayerSongListModel playerSongListModel,
   ) async {
     await getApplicationDocumentsDirectory().then((Directory dir) {
-      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/');
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/1/');
       final SongListModel queueSongModel = SongListModel(
           songId: playerSongListModel.id,
           albumName: playerSongListModel.albumName,
@@ -391,7 +391,7 @@ class PlayerProvider extends ChangeNotifier {
 
   getQueueSongList() async {
     await getApplicationDocumentsDirectory().then((Directory dir) {
-      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/');
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/1/');
     });
     final box = store.box<SongListModel>();
 
@@ -408,7 +408,7 @@ class PlayerProvider extends ChangeNotifier {
   addFavouriteSongToLocalDb(int songId) async {
     final song = FavouriteSong(songUniqueId: songId);
     await getApplicationDocumentsDirectory().then((Directory dir) {
-      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/');
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/1/');
     });
     final box = store.box<FavouriteSong>();
     box.put(song);
@@ -419,7 +419,7 @@ class PlayerProvider extends ChangeNotifier {
 
   clearFavouriteSong() async {
     await getApplicationDocumentsDirectory().then((Directory dir) {
-      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/');
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/1/');
     });
     final box = store.box<FavouriteSong>();
     box.removeAll();
@@ -430,7 +430,7 @@ class PlayerProvider extends ChangeNotifier {
 
   getSongList() async {
     await getApplicationDocumentsDirectory().then((Directory dir) {
-      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/');
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/1/');
       final box = store.box<FavouriteSong>();
 
       var res = box.getAll();
@@ -464,7 +464,7 @@ class PlayerProvider extends ChangeNotifier {
 
   addNewQueueSongList(List<PlayerSongListModel> playerSongListModel) async {
     await getApplicationDocumentsDirectory().then((Directory dir) {
-      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/');
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/1/');
       final queueBox = store.box<SongListModel>();
 
       queueBox.removeAll();
@@ -488,7 +488,7 @@ class PlayerProvider extends ChangeNotifier {
 
   addSongToQueueSongList(List<PlayerSongListModel> playerSongListModel) async {
     await getApplicationDocumentsDirectory().then((Directory dir) {
-      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/');
+      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/1/');
       final queueBox = store.box<SongListModel>();
 
       List<SongListModel> songlist = [];
@@ -522,63 +522,146 @@ class PlayerProvider extends ChangeNotifier {
 
   loadQueueSong() async {
     if (!inQueue) {
-      await getApplicationDocumentsDirectory().then((Directory dir) async {
-        store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/');
-        final box = store.box<SongListModel>();
+      try {
+        await getApplicationDocumentsDirectory().then((Directory dir) async {
+          store =
+              Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/1/');
+          final box = store.box<SongListModel>();
 
-        var res = box.getAll();
-        log("SFDgfg --- ${res.length}");
+          var res = box.getAll();
+          log("SFDgfg --- ${res.length}");
 
-        if (res.isNotEmpty) {
-          queueIdList.clear();
-          List<PlayerSongListModel> playerSongList = [];
-          for (var e in res) {
-            print(e.songId);
-            playerSongList.add(PlayerSongListModel(
-                id: e.songId,
-                albumName: e.albumName,
-                title: e.title,
-                imageUrl: e.imageUrl,
-                musicDirectorName: e.musicDirectorName));
+          if (res.isNotEmpty) {
+            queueIdList.clear();
+            List<PlayerSongListModel> playerSongList = [];
+            for (var e in res) {
+              print(e.songId);
+              playerSongList.add(PlayerSongListModel(
+                  id: e.songId,
+                  albumName: e.albumName,
+                  title: e.title,
+                  imageUrl: e.imageUrl,
+                  musicDirectorName: e.musicDirectorName));
+            }
+            playlist = ConcatenatingAudioSource(
+              useLazyPreparation: true,
+              children: List.generate(
+                playerSongList.length,
+                (index) => AudioSource.uri(
+                    Uri.parse(
+                        "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongList[index].id.toString()}"),
+                    tag: PlayerSongListModel(
+                        id: playerSongList[index].id,
+                        albumName: playerSongList[index].albumName,
+                        title: playerSongList[index].title,
+                        musicDirectorName:
+                            playerSongList[index].musicDirectorName.toString(),
+                        imageUrl: playerSongList[index].imageUrl)),
+              ),
+            );
+            await player.setAudioSource(
+              playlist,
+              initialIndex: 0,
+              initialPosition: Duration.zero,
+            );
+            player.stop();
+            isPlay = true;
+            isPlaying = true;
+
+            playOrPause();
+            store.close();
           }
-          playlist = ConcatenatingAudioSource(
-            useLazyPreparation: true,
-            children: List.generate(
-              playerSongList.length,
-              (index) => AudioSource.uri(
-                  Uri.parse(
-                      "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongList[index].id.toString()}"),
-                  tag: PlayerSongListModel(
-                      id: playerSongList[index].id,
-                      albumName: playerSongList[index].albumName,
-                      title: playerSongList[index].title,
-                      musicDirectorName:
-                          playerSongList[index].musicDirectorName.toString(),
-                      imageUrl: playerSongList[index].imageUrl)),
-            ),
-          );
-          await player.setAudioSource(
-            playlist,
-            initialIndex: 0,
-            initialPosition: Duration.zero,
-          );
-          player.stop();
-          isPlay = true;
-          isPlaying = true;
+        });
 
-          playOrPause();
+        try {
+          await clearFavouriteSong();
+          await loadFavourites();
+        } catch (e) {
           store.close();
         }
-      });
-
-      try {
-        await clearFavouriteSong();
-        await loadFavourites();
+        inQueue = true;
+        notifyListeners();
       } catch (e) {
+        print("DDD");
         store.close();
+        print(e.toString());
       }
-      inQueue = true;
-      notifyListeners();
     }
   }
+
+  // loadAudioHandler() async {
+  //   if (!inQueue) {
+  //     await getApplicationDocumentsDirectory().then((Directory dir) async {
+  //       store = Store(getObjectBoxModel(), directory: '\$\{dir\.path\}/musiq/db/1');
+  //       final box = store.box<SongListModel>();
+
+  //       var res = box.getAll();
+  //       log("SFDgfg --- ${res.length}");
+
+  //       if (res.isNotEmpty) {
+  //         final mediaItems = res
+  //             .map((song) => MediaItem(
+  //                   id: song.id.toString() ?? '',
+  //                   album: song.albumName ?? '',
+  //                   title: song.title ?? '',
+  //                   extras: {'url': song.songUrl},
+  //                 ))
+  //             .toList();
+  //         _audioHandler.addQueueItems(mediaItems);
+  //         // playerSongList.add(PlayerSongListModel(
+  //         //     id: e.songId,
+  //         //     albumName: e.albumName,
+  //         //     title: e.title,
+  //         //     imageUrl: e.imageUrl,
+  //         //     musicDirectorName: e.musicDirectorName));
+
+  //       }
+
+  //       // if (res.isNotEmpty) {
+  //       //   queueIdList.clear();
+  //       //   List<PlayerSongListModel> playerSongList = [];
+  //       //   for (var e in res) {
+  //       //     print(e.songId);
+  //       //     playerSongList.add(PlayerSongListModel(
+  //       //         id: e.songId,
+  //       //         albumName: e.albumName,
+  //       //         title: e.title,
+  //       //         imageUrl: e.imageUrl,
+  //       //         musicDirectorName: e.musicDirectorName));
+  //       //   }
+  //       //   playlist = ConcatenatingAudioSource(
+  //       //     useLazyPreparation: true,
+  //       //     children: List.generate(
+  //       //       playerSongList.length,
+  //       //       (index) => AudioSource.uri(
+  //       //           Uri.parse(
+  //       //               "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongList[index].id.toString()}"),
+  //       //           tag: PlayerSongListModel(
+  //       //               id: playerSongList[index].id,
+  //       //               albumName: playerSongList[index].albumName,
+  //       //               title: playerSongList[index].title,
+  //       //               musicDirectorName:
+  //       //                   playerSongList[index].musicDirectorName.toString(),
+  //       //               imageUrl: playerSongList[index].imageUrl)),
+  //       //     ),
+  //       //   );
+  //       //   await player.setAudioSource(
+  //       //     playlist,
+  //       //     initialIndex: 0,
+  //       //     initialPosition: Duration.zero,
+  //       //   );
+  //       //   player.stop();
+  //       //   isPlay = true;
+  //       //   isPlaying = true;
+
+  //       //   playOrPause();
+  //       //   store.close();
+  //       // }
+  //     });
+
+  //     inQueue = true;
+  //     notifyListeners();
+  //   }
+  // }
+
 }

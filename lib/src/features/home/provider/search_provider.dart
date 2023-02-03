@@ -3,8 +3,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
-import '../../library/provider/library_provider.dart';
-import '../../player/domain/repo/player_repo.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +11,8 @@ import '../../../local/model/search_model.dart';
 import '../../artist/domain/models/artist_model.dart';
 import '../../library/domain/library_repo.dart';
 import '../../library/domain/models/playlist_song_list_model.dart';
+import '../../library/provider/library_provider.dart';
+import '../../player/domain/repo/player_repo.dart';
 import '../../search/search_status.dart';
 import '../domain/model/song_search_model.dart';
 import '../domain/repository/search_repo.dart';
@@ -176,7 +176,7 @@ class SearchProvider extends ChangeNotifier {
 
   void searchArtistStore() async {
     await getApplicationDocumentsDirectory().then((Directory dir) async {
-      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/');
+      store = Store(getObjectBoxModel(), directory: '\${dir.path}/musiq/db/1');
       final box = store.box<SearchArtistLocalModel>();
       var res = box.getAll();
       if (res.isEmpty) {
@@ -198,7 +198,7 @@ class SearchProvider extends ChangeNotifier {
 
   void searchSongStore() async {
     await getApplicationDocumentsDirectory().then((Directory dir) async {
-      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/');
+      store = Store(getObjectBoxModel(), directory: '\${dir.path}/musiq/db/1');
       final box = store.box<SearchSongLocalModel>();
       var res = box.getAll();
       if (res.isEmpty) {
@@ -220,7 +220,7 @@ class SearchProvider extends ChangeNotifier {
 
   getArtistSearchHistory() async {
     await getApplicationDocumentsDirectory().then((Directory dir) async {
-      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/');
+      store = Store(getObjectBoxModel(), directory: '\${dir.path}/musiq/db/1');
       final box = store.box<SearchArtistLocalModel>();
       var res = box.getAll();
       if (res.isEmpty) {
@@ -239,7 +239,7 @@ class SearchProvider extends ChangeNotifier {
 
   getSongSearchHistory() async {
     await getApplicationDocumentsDirectory().then((Directory dir) async {
-      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/');
+      store = Store(getObjectBoxModel(), directory: "${dir.path}/musiq/db/1/");
       final box = store.box<SearchSongLocalModel>();
       var res = box.getAll();
       if (res.isEmpty) {
@@ -258,7 +258,7 @@ class SearchProvider extends ChangeNotifier {
 
   void clearSongHistoryList() async {
     await getApplicationDocumentsDirectory().then((Directory dir) async {
-      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/');
+      store = Store(getObjectBoxModel(), directory: '\${dir.path}/musiq/db/1');
       final box = store.box<SearchSongLocalModel>();
       box.removeAll();
       store.close();

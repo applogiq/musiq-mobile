@@ -38,7 +38,7 @@ class APIConstants {
   static String searchArtist = "$baseUrl${versionUrl}artist/list/search?data=";
   static String versionUrl = "api/v1/";
 
-// https://api-musiq.applogiq.org/api/v1/playlist-song/26
+// https://api-musiq.applogiq.org/api/v1/playlist-song/40
   getRecentlyPlayedUrl(String userId, int limit) {
     var url = "$kRecentPlayedList$userId?limit=${limit.toString()}";
     return url;
