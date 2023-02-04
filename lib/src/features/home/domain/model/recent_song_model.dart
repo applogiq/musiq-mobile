@@ -1,10 +1,3 @@
-import 'dart:convert';
-
-RecentlyPlayed recentlyPlayedFromMap(String str) =>
-    RecentlyPlayed.fromMap(json.decode(str));
-
-String recentlyPlayedToMap(RecentlyPlayed data) => json.encode(data.toMap());
-
 class RecentlyPlayed {
   RecentlyPlayed({
     required this.success,

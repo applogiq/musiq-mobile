@@ -2,14 +2,6 @@
 //
 //     final trendingHitsModel = trendingHitsModelFromMap(jsonString);
 
-import 'dart:convert';
-
-TrendingHitsModel trendingHitsModelFromMap(String str) =>
-    TrendingHitsModel.fromMap(json.decode(str));
-
-String trendingHitsModelToMap(TrendingHitsModel data) =>
-    json.encode(data.toMap());
-
 class TrendingHitsModel {
   TrendingHitsModel({
     required this.success,

@@ -8,10 +8,10 @@ import '../domain/model/new_release_model.dart';
 import '../domain/model/recent_song_model.dart';
 import '../domain/model/trending_hits_model.dart';
 import '../domain/repository/home_repo.dart';
-import '../view_all_status.dart';
+import '../../../enums/view_all_status.dart';
 import 'package:provider/provider.dart';
 
-import '../../../utils/image_url_generate.dart';
+import '../../../utils/url_generate.dart';
 import '../../player/domain/model/player_song_list_model.dart';
 import '../../player/provider/player_provider.dart';
 

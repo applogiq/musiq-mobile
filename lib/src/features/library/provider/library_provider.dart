@@ -11,7 +11,7 @@ import 'package:musiq/src/features/library/domain/models/playlist_model.dart';
 import 'package:musiq/src/features/library/domain/models/playlist_song_list_model.dart';
 import 'package:musiq/src/features/player/domain/model/player_song_list_model.dart';
 import 'package:musiq/src/features/player/provider/player_provider.dart';
-import 'package:musiq/src/utils/image_url_generate.dart';
+import 'package:musiq/src/utils/url_generate.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/string.dart';
@@ -137,7 +137,6 @@ class LibraryProvider extends ChangeNotifier {
   }
 
   checkPlayListName(String name) {
-    print(name);
     if (name.trim() == "") {
       isPlayListError = true;
       playListError = ConstantText.fieldRequired;
@@ -165,16 +164,12 @@ class LibraryProvider extends ChangeNotifier {
   void addToQueue(int id, BuildContext context) async {
     var response =
         await LibraryRepository().getPlayListSongListdata(id.toString());
-    print(response.statusCode);
-    print(response.body);
+
     if (response.statusCode == 200) {
       List<PlayerSongListModel> playSongListModel = [];
       PlaylistSongListModel playlistSongListModel =
           PlaylistSongListModel.fromMap(jsonDecode(response.body));
       for (var element in playlistSongListModel.records) {
-        print(generateSongImageUrl(element.albumName, element.albumId));
-        print(element.playlistSongs.songId);
-
         playSongListModel.add(PlayerSongListModel(
             id: element.playlistSongs.songId,
             albumName: element.albumName,
@@ -204,8 +199,7 @@ class LibraryProvider extends ChangeNotifier {
   void play(int id, BuildContext context, {int index = 0}) async {
     var response =
         await LibraryRepository().getPlayListSongListdata(id.toString());
-    print(response.statusCode);
-    print(response.body);
+
     if (response.statusCode == 200) {
       List<PlayerSongListModel> playSongListModel = [];
       PlaylistSongListModel playlistSongListModel =
@@ -247,8 +241,7 @@ class LibraryProvider extends ChangeNotifier {
   void removeSongFromPlayLlist(int playlistSongId, playlistId) async {
     var response =
         await LibraryRepository().removeSongFromPlaylist(playlistSongId);
-    print(response.statusCode);
-    print(response.body);
+
     if (response.statusCode == 200) {
       getPlayListSongList(playlistId);
     }

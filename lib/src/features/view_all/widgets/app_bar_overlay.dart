@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../constants/color.dart';
 import '../../../constants/style.dart';
-import '../../../utils/image_url_generate.dart';
+import '../../../utils/url_generate.dart';
 import '../../home/provider/artist_view_all_provider.dart';
 import '../../player/domain/model/player_song_list_model.dart';
 import '../../player/provider/player_provider.dart';

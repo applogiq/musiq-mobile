@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../constants/color.dart';
 import '../../../../constants/images.dart';
-import '../../../../utils/image_url_generate.dart';
+import '../../../../utils/url_generate.dart';
 
 class AlbumImage extends StatelessWidget {
   const AlbumImage({

@@ -23,7 +23,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    // context.read<PlayerProvider>().loadQueueSong();
+    context.read<PlayerProvider>().loadSingleQueueSong();
   }
 
   @override

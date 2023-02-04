@@ -5,7 +5,7 @@ import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../constants/color.dart';
 import '../../../constants/images.dart';
 import '../../../constants/style.dart';
-import '../../../utils/image_url_generate.dart';
+import '../../../utils/url_generate.dart';
 import '../../../utils/size_config.dart';
 import '../provider/profile_provider.dart';
 import '../widgets/logout_dialog.dart';

@@ -1,9 +1,3 @@
-import 'dart:convert';
-
-AuraModel auraModelFromMap(String str) => AuraModel.fromMap(json.decode(str));
-
-String auraModelToMap(AuraModel data) => json.encode(data.toMap());
-
 class AuraModel {
   AuraModel({
     required this.success,

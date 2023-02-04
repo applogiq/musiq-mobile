@@ -1,82 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../constants/color.dart';
-import '../container/custom_color_container.dart';
-
-class CustomHorizontalListview extends StatelessWidget {
-  const CustomHorizontalListview(
-      {Key? key,
-      required this.images,
-      this.shape = BoxShape.rectangle,
-      this.alignText = TextAlign.left})
-      : super(key: key);
-
-  final TextAlign alignText;
-  final List images;
-  final BoxShape shape;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(top: 8),
-      height: alignText == TextAlign.center ? 180 : 200,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          shrinkWrap: true,
-          physics: const BouncingScrollPhysics(),
-          itemCount: images.length,
-          itemBuilder: (context, index) => Row(
-                children: [
-                  index == 0
-                      ? const SizedBox(
-                          width: 10,
-                        )
-                      : const SizedBox(),
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(6, 8, 6, 0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: alignText == TextAlign.center
-                          ? CrossAxisAlignment.center
-                          : CrossAxisAlignment.start,
-                      children: [
-                        CustomColorContainer(
-                          shape: shape,
-                          child: Image.asset(
-                            images[index].imageURL,
-                            height: 125,
-                            width: 125,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 6,
-                        ),
-                        Text(
-                          images[index].title,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 12),
-                        ),
-                        const SizedBox(
-                          height: 2,
-                        ),
-                        images[index].subTitle == ""
-                            ? const SizedBox(
-                                height: 0,
-                              )
-                            : Text(images[index].subTitle,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 12,
-                                    color: CustomColor.subTitle))
-                      ],
-                    ),
-                  ),
-                ],
-              )),
-    );
-  }
-}
+import 'list_header_widget.dart';
 
 class HorizonalListViewWidget extends StatelessWidget {
   const HorizonalListViewWidget({
@@ -104,46 +28,6 @@ class HorizonalListViewWidget extends StatelessWidget {
           ),
         ),
         listWidget
-      ],
-    );
-  }
-}
-
-class ListHeaderWidget extends StatelessWidget {
-  const ListHeaderWidget(
-      {Key? key,
-      required this.title,
-      required this.actionTitle,
-      required this.dataList,
-      required this.callback})
-      : super(key: key);
-
-  final String actionTitle;
-  final Function callback;
-  final List dataList;
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          title,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-        ),
-        const Spacer(),
-        InkWell(
-          onTap: () {
-            callback();
-          },
-          child: Text(
-            actionTitle,
-            style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: CustomColor.secondaryColor),
-          ),
-        )
       ],
     );
   }

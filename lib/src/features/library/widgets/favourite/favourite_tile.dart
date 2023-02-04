@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/container/custom_color_container.dart';
 import '../../../../constants/constant.dart';
-import '../../../../utils/image_url_generate.dart';
+import '../../../../utils/url_generate.dart';
 import '../../domain/models/favourite_model.dart';
 import '../../provider/library_provider.dart';
 import 'favourite_widgets.dart';

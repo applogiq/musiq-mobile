@@ -1,14 +1,3 @@
-// To parse this JSON data, do
-//
-//     final songInfoModel = songInfoModelFromMap(jsonString);
-
-import 'dart:convert';
-
-SongInfoModel songInfoModelFromMap(String str) =>
-    SongInfoModel.fromMap(json.decode(str));
-
-String songInfoModelToMap(SongInfoModel data) => json.encode(data.toMap());
-
 class SongInfoModel {
   SongInfoModel({
     required this.success,

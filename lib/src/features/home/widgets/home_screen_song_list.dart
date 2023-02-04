@@ -7,7 +7,7 @@ import '../../../constants/color.dart';
 import '../domain/model/song_list_model.dart';
 import '../provider/view_all_provider.dart';
 import '../screens/sliver_app_bar/view_all_screen.dart';
-import '../view_all_status.dart';
+import '../../../enums/view_all_status.dart';
 
 class HomeScreenSongList extends StatelessWidget {
   const HomeScreenSongList(

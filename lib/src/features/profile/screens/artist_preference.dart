@@ -37,17 +37,15 @@ class _ProfileArtistPreferenceScreenState
               automaticallyImplyLeading: true,
               title: const Text("Artist Preference"),
             ),
-            body:
-                Consumer<ArtistPreferenceProvider>(builder: (context, pro, _) {
-              return !pro.isLoaded
-                  ? const LoaderScreen()
-                  : const ArtistPreferenceScreenBody(
-                      artistList: [],
-                    );
-            }),
-            // body: ArtistPreferenceScreenBody(
-            //   artist_list: const [],
-            // ),
+            body: Consumer<ArtistPreferenceProvider>(
+              builder: (context, pro, _) {
+                return !pro.isLoaded
+                    ? const LoaderScreen()
+                    : const ArtistPreferenceScreenBody(
+                        artistList: [],
+                      );
+              },
+            ),
           );
   }
 }

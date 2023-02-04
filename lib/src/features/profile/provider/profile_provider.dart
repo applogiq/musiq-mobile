@@ -91,11 +91,9 @@ class ProfileProvider extends ChangeNotifier {
   getProfileDetails() async {
     myProfileLoading = true;
     notifyListeners();
-    var id = await secureStorage.read(
-      key: "id",
-    );
+
     try {
-      var res = await ProfileRepository().getProfile(id!);
+      var res = await ProfileRepository().getProfile();
       debugPrint(res.body);
       if (res.statusCode == 200) {
         var jsonData = jsonDecode(res.body);
@@ -158,10 +156,10 @@ class ProfileProvider extends ChangeNotifier {
     debugPrint(res.body);
     debugPrint(res.statusCode.toString());
     if (res.statusCode == 200) {
-      if (fileImage != null && fileImage != "") {
+      if (fileImage != null) {
         await getApplicationDocumentsDirectory().then((Directory dir) {
-          store = Store(getObjectBoxModel(),
-              directory: '\$\{dir\.path\}/musiq/db/1');
+          store =
+              Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/1');
           final ProfileImage profileImage = ProfileImage(
               isImage: true,
               registerId: id,
@@ -177,8 +175,7 @@ class ProfileProvider extends ChangeNotifier {
           final box = store.box<ProfileImage>();
 
           var res = box.getAll();
-          print("res.length");
-          print(res.length);
+
           if (res.isEmpty) {
             box.put(profileImage);
             var res = box.getAll();
@@ -188,7 +185,6 @@ class ProfileProvider extends ChangeNotifier {
               log(element.id.toString());
             }
           } else {
-            final myObject = box.getAll();
             for (var element in res) {
               if (element.registerId == id) {
                 element.profileImageString = uint8ListTob64(memoryImage!);

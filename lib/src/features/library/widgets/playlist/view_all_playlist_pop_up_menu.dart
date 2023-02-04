@@ -1,13 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../common_widgets/dialog/custom_dialog_box.dart';
+import '../../../../common_widgets/dialog/playlist_dialog_box.dart';
 import '../../../../constants/constant.dart';
+import '../../../../enums/search_status.dart';
 import '../../../../routing/route_name.dart';
 import '../../../../utils/navigation.dart';
-import '../../../home/provider/search_provider.dart';
+import '../../../search/provider/search_provider.dart';
 import '../../../search/screens/search_screen.dart';
-import '../../../search/search_status.dart';
 import '../../provider/library_provider.dart';
 
 class ViewAllPlaylistPopUpMenu extends StatelessWidget {

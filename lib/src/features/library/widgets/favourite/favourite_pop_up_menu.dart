@@ -3,7 +3,7 @@ import 'package:musiq/src/features/library/domain/models/favourite_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants/constant.dart';
-import '../../../../utils/image_url_generate.dart';
+import '../../../../utils/url_generate.dart';
 import '../../../common/provider/pop_up_provider.dart';
 import '../../../player/domain/model/player_song_list_model.dart';
 import '../../../player/provider/player_provider.dart';

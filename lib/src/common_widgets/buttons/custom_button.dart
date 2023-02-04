@@ -28,17 +28,18 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.symmetric(
-            horizontal: horizontalMargin, vertical: verticalMargin),
-        width: MediaQuery.of(context).size.width,
-        height: height,
-        decoration: BoxDecoration(
-            color: isValid
-                ? CustomColor.secondaryColor
-                : const Color.fromRGBO(96, 20, 20, 1),
-            borderRadius: BorderRadius.circular(radius)),
-        child: Center(
-            child: Row(
+      margin: EdgeInsets.symmetric(
+          horizontal: horizontalMargin, vertical: verticalMargin),
+      width: MediaQuery.of(context).size.width,
+      height: height,
+      decoration: BoxDecoration(
+        color: isValid
+            ? CustomColor.secondaryColor
+            : const Color.fromRGBO(96, 20, 20, 1),
+        borderRadius: BorderRadius.circular(radius),
+      ),
+      child: Center(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             isIcon ? const Icon(Icons.play_arrow_rounded) : const SizedBox(),
@@ -46,18 +47,21 @@ class CustomButton extends StatelessWidget {
                 ? const Padding(
                     padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 8),
                     child: SizedBox(
-                        height: 24,
-                        width: 24,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 3,
-                        )),
+                      height: 24,
+                      width: 24,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 3,
+                      ),
+                    ),
                   )
                 : Text(
                     label,
                     style: fontWeight500(size: 16.0),
                   ),
           ],
-        )));
+        ),
+      ),
+    );
   }
 }

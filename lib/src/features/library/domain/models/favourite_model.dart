@@ -1,10 +1,3 @@
-import 'dart:convert';
-
-FavouriteModel favouriteFromMap(String str) =>
-    FavouriteModel.fromMap(json.decode(str));
-
-String favouriteToMap(FavouriteModel data) => json.encode(data.toMap());
-
 class FavouriteModel {
   FavouriteModel({
     required this.success,

@@ -1,10 +1,3 @@
-import 'dart:convert';
-
-ArtistModel artistModelFromMap(String str) =>
-    ArtistModel.fromMap(json.decode(str));
-
-String artistModelToMap(ArtistModel data) => json.encode(data.toMap());
-
 class ArtistModel {
   ArtistModel({
     required this.success,

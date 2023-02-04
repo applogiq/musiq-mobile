@@ -5,7 +5,7 @@ import '../../../../common_widgets/container/custom_color_container.dart';
 import '../../../../constants/color.dart';
 import '../../../../constants/style.dart';
 import '../../../../routing/route_name.dart';
-import '../../../../utils/image_url_generate.dart';
+import '../../../../utils/url_generate.dart';
 import '../../../../utils/navigation.dart';
 import '../../../player/domain/model/player_song_list_model.dart';
 import '../../../player/provider/player_provider.dart';

@@ -11,8 +11,8 @@ import 'package:musiq/src/core/package/miniplayer/src/utils.dart';
 ///Type definition for the builder function
 typedef MiniplayerBuilder = Widget Function(double height, double percentage);
 
-///Type definition for onDismiss. Will be used in a future version.
-typedef DismissCallback = void Function(double percentage);
+// ///Type definition for onDismiss. Will be used in a future version.
+// typedef DismissCallback = void Function(double percentage);
 
 ///Miniplayer class
 class Miniplayer extends StatefulWidget {

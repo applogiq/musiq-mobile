@@ -17,15 +17,17 @@ class NoArtist extends StatelessWidget {
       width: width,
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-          color: CustomColor.defaultCard,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: CustomColor.defaultCardBorder, width: 2.0)),
+        color: CustomColor.defaultCard,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: CustomColor.defaultCardBorder, width: 2.0),
+      ),
       child: Center(
-          child: Image.asset(
-        Images.noArtist,
-        width: 113,
-        height: 118,
-      )),
+        child: Image.asset(
+          Images.noArtist,
+          width: 113,
+          height: 118,
+        ),
+      ),
     );
   }
 }

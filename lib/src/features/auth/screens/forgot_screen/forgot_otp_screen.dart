@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import '../../../../common_widgets/box/vertical_box.dart';
-import '../../../../common_widgets/buttons/custom_button.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../common_widgets/box/vertical_box.dart';
+import '../../../../common_widgets/buttons/custom_button.dart';
 import '../../../../constants/color.dart';
 import '../../../../constants/string.dart';
 import '../../../../constants/style.dart';
@@ -74,17 +74,6 @@ class _OTPScreenState extends State<OTPScreen> {
                     context
                         .read<ForgotPasswordProvider>()
                         .forgotPasswordEmailBack(context);
-                    // Navigator.of(context).pop();
-                    // // provider.clearOTPError("");
-                    // // provider.isNotClearError();
-                    // //  provider.buttonEnable();
-                    // fieldOne.clear();
-                    // fieldTwo.clear();
-                    // fieldThree.clear();
-                    // fieldfour.clear();
-                    // fieldFive.clear();
-                    // fieldSix.clear();
-                    // FocusScope.of(context).unfocus();
                   },
                   child: const Icon(Icons.arrow_back_ios_rounded)),
               title: Text(ConstantText.otp),

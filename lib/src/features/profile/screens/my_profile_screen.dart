@@ -7,7 +7,7 @@ import '../../../common_widgets/loader.dart';
 import '../../../common_widgets/text_field/custom_text_field.dart';
 import '../../../constants/images.dart';
 import '../../../constants/string.dart';
-import '../../../utils/image_url_generate.dart';
+import '../../../utils/url_generate.dart';
 import '../../../utils/size_config.dart';
 import '../../common/screen/offline_screen.dart';
 import '../provider/profile_provider.dart';

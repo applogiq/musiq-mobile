@@ -2,12 +2,6 @@
 //
 //     final album = albumFromMap(jsonString);
 
-import 'dart:convert';
-
-Album albumFromMap(String str) => Album.fromMap(json.decode(str));
-
-String albumToMap(Album data) => json.encode(data.toMap());
-
 class Album {
   Album({
     required this.success,

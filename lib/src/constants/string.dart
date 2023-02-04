@@ -77,4 +77,6 @@ class ConstantText {
   static const String share = "Share";
 
   static const String remove = "Remove";
+
+  static const String loginSuccess = "Login Success";
 }

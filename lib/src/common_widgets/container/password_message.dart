@@ -24,17 +24,18 @@ class PasswordMessage extends StatelessWidget {
             color: CustomColor.subTitle2,
           ),
           Expanded(
-              child: Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Text(
-              ConstantText.passwordToolTip,
-              style: fontWeight400(
-                size: 12.0,
-                color: CustomColor.subTitle2,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Text(
+                ConstantText.passwordToolTip,
+                style: fontWeight400(
+                  size: 12.0,
+                  color: CustomColor.subTitle2,
+                ),
+                textAlign: TextAlign.left,
               ),
-              textAlign: TextAlign.left,
             ),
-          ))
+          )
         ],
       ),
     );

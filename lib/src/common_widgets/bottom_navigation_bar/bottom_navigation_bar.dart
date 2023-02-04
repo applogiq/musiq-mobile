@@ -20,17 +20,18 @@ class BottomNavigationBarWidget extends StatelessWidget {
       height: 80,
       color: CustomColor.bottomNavBarColor,
       child: Consumer<BottomNavigationBarProvider>(
-          builder: (context, provider, _) {
-        return Row(
-          children: List.generate(
-            provider.pages.length,
-            (index) => NavBarItem(
-              width: width,
-              index: index,
+        builder: (context, provider, _) {
+          return Row(
+            children: List.generate(
+              provider.pages.length,
+              (index) => NavBarItem(
+                width: width,
+                index: index,
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        },
+      ),
     );
   }
 }

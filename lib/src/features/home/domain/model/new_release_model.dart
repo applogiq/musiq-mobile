@@ -1,13 +1,6 @@
 // To parse this JSON data, do
 //
 
-import 'dart:convert';
-
-NewReleaseModel newReleaseModelFromMap(String str) =>
-    NewReleaseModel.fromMap(json.decode(str));
-
-String newReleaseModelToMap(NewReleaseModel data) => json.encode(data.toMap());
-
 class NewReleaseModel {
   NewReleaseModel({
     required this.success,

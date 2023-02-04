@@ -24,7 +24,7 @@ mixin InputValidationMixin {
 
   bool isFirstNameValid(String email) {
     bool firstNameValid = RegExp('[a-zA-Z]').hasMatch(email);
-    //
+
     return firstNameValid;
   }
 

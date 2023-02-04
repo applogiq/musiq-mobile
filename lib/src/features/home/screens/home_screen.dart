@@ -5,7 +5,7 @@ import '../provider/home_provider.dart';
 import '../widgets/current_mood.dart';
 import '../widgets/top_album_list.dart';
 import '../widgets/trending_hits.dart';
-import '../../search/search_status.dart';
+import '../../../enums/search_status.dart';
 import '../../../utils/size_config.dart';
 import 'package:provider/provider.dart';
 

@@ -2,14 +2,6 @@
 //
 //     final albumSongListModel = albumSongListModelFromMap(jsonString);
 
-import 'dart:convert';
-
-AlbumSongListModel albumSongListModelFromMap(String str) =>
-    AlbumSongListModel.fromMap(json.decode(str));
-
-String albumSongListModelToMap(AlbumSongListModel data) =>
-    json.encode(data.toMap());
-
 class AlbumSongListModel {
   AlbumSongListModel({
     required this.success,

@@ -1,9 +1,12 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import '../../../../base_service/network/base_api_services.dart';
 import '../../../../base_service/network/network_api_service.dart';
 import '../../../../constants/api.dart';
 
 class ProfileRepository {
   BaseApiServices apiServices = NetworkApiService();
+  FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
   Future<dynamic> updateProfile(String id, Map params) async {
     try {
@@ -15,10 +18,11 @@ class ProfileRepository {
     }
   }
 
-  Future<dynamic> getProfile(
-    String id,
-  ) async {
+  Future<dynamic> getProfile() async {
     try {
+      var id = await secureStorage.read(
+        key: "id",
+      );
       dynamic response = await apiServices.getGetAuthApiResponse(
         APIConstants.kUpdateProfileEndPoint + id.toString(),
       );

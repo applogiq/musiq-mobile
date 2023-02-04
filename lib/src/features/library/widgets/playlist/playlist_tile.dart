@@ -6,7 +6,7 @@ import '../../../../constants/color.dart';
 import '../../../../constants/string.dart';
 import '../../../../constants/style.dart';
 import '../../../../constants/style/box_decoration.dart';
-import '../../../../utils/image_url_generate.dart';
+import '../../../../utils/url_generate.dart';
 import '../../domain/models/playlist_model.dart';
 import '../../provider/library_provider.dart';
 
@@ -112,10 +112,9 @@ class PlaylistTile extends StatelessWidget {
                               context
                                   .read<LibraryProvider>()
                                   .addToQueue(record[index].id, context);
-                              print("queue");
+
                               break;
                             case 3:
-                              print("delete");
                               context
                                   .read<LibraryProvider>()
                                   .deletePlayList(record[index].id);

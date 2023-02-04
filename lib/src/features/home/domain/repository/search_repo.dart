@@ -21,9 +21,7 @@ class SearchRepository {
 
   Future<dynamic> getSongSearch(String data) async {
     try {
-      // var userId = await storage.read(key: "register_id");
       var endpoint = APIConstants.kSearchSong + data;
-      print(endpoint);
       dynamic response = await apiServices.getGetAuthApiResponse(endpoint);
       return response;
     } catch (e) {

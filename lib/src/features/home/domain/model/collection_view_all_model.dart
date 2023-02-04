@@ -1,11 +1,3 @@
-import 'dart:convert';
-
-CollectionViewAllModel? collectionViewAllModelFromMap(String str) =>
-    CollectionViewAllModel.fromMap(json.decode(str));
-
-String collectionViewAllModelToMap(CollectionViewAllModel? data) =>
-    json.encode(data!.toMap());
-
 class CollectionViewAllModel {
   CollectionViewAllModel({
     required this.success,

@@ -4,20 +4,20 @@ import 'package:musiq/src/features/common/provider/pop_up_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../common_widgets/container/custom_color_container.dart';
+import '../../../../../enums/view_all_status.dart';
 import '../../../../../routing/route_name.dart';
-import '../../../../../utils/image_url_generate.dart';
 import '../../../../../utils/navigation.dart';
+import '../../../../../utils/url_generate.dart';
 import '../../../../player/domain/model/player_song_list_model.dart';
 import '../../../../player/provider/player_provider.dart';
+import '../../../../search/provider/search_provider.dart';
 import '../../../domain/model/album_song_list_model.dart';
 import '../../../domain/model/aura_song_list_model.dart';
 import '../../../domain/model/collection_view_all_model.dart';
 import '../../../domain/model/new_release_model.dart';
 import '../../../domain/model/recent_song_model.dart';
 import '../../../domain/model/trending_hits_model.dart';
-import '../../../provider/search_provider.dart';
 import '../../../provider/view_all_provider.dart';
-import '../../../view_all_status.dart';
 
 class AlbumSongsList extends StatelessWidget {
   const AlbumSongsList({
@@ -275,7 +275,6 @@ class SongPlayListTile extends StatelessWidget {
                           context
                               .read<SearchProvider>()
                               .addSongToPlaylist(songId, playlistId);
-                          print("add");
                         },
                       ),
                     )

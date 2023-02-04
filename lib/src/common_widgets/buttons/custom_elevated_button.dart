@@ -30,17 +30,18 @@ class CustomElevatedButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-          margin: EdgeInsets.symmetric(
-              horizontal: horizontalMargin, vertical: verticalMargin),
-          width: MediaQuery.of(context).size.width,
-          height: 52,
-          decoration: BoxDecoration(
-              color: isValid
-                  ? CustomColor.secondaryColor
-                  : CustomColor.secondaryColor.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(radius)),
-          child: Center(
-              child: Row(
+        margin: EdgeInsets.symmetric(
+            horizontal: horizontalMargin, vertical: verticalMargin),
+        width: MediaQuery.of(context).size.width,
+        height: 52,
+        decoration: BoxDecoration(
+          color: isValid
+              ? CustomColor.secondaryColor
+              : CustomColor.secondaryColor.withOpacity(0.5),
+          borderRadius: BorderRadius.circular(radius),
+        ),
+        child: Center(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               isIcon ? const Icon(Icons.play_arrow_rounded) : const SizedBox(),
@@ -49,19 +50,22 @@ class CustomElevatedButton extends StatelessWidget {
                       padding:
                           EdgeInsets.symmetric(vertical: 6.0, horizontal: 8),
                       child: SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 3,
-                          )),
+                        height: 24,
+                        width: 24,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 3,
+                        ),
+                      ),
                     )
                   : Text(
                       label,
                       style: fontWeight500(size: 16.0),
                     ),
             ],
-          ))),
+          ),
+        ),
+      ),
     );
   }
 }

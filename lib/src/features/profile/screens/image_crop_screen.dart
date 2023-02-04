@@ -96,22 +96,23 @@ class _ImageCropState extends State<ImageCrop> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Consumer<ProfileProvider>(
-                      builder: (context, provider, _) {
-                    return InkWell(
-                      onTap: () async {
-                        setState(() {
-                          isLoad = true;
-                        });
-                        _controller.crop();
-                      },
-                      child: CustomButton(
-                        isValid: !isLoad,
-                        isLoading: provider.isCropSaveLoading,
-                        label: ConstantText.save,
-                        horizontalMargin: 0,
-                      ),
-                    );
-                  }),
+                    builder: (context, provider, _) {
+                      return InkWell(
+                        onTap: () async {
+                          setState(() {
+                            isLoad = true;
+                          });
+                          _controller.crop();
+                        },
+                        child: CustomButton(
+                          isValid: !isLoad,
+                          isLoading: provider.isCropSaveLoading,
+                          label: ConstantText.save,
+                          horizontalMargin: 0,
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ],
             ),

@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:musiq/src/features/search/provider/search_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/navigation.dart';
@@ -71,15 +74,16 @@ class ArtistPreferenceProvider extends ChangeNotifier {
   }
 
   void followAndUnfollow(Map params) async {
-    var res = await ArtistRepo().followAndUnfollow(params);
+    await ArtistRepo().followAndUnfollow(params);
   }
 
-  void checkFollow(Record record, int index) async {
+  void checkFollow(Record record, int index, BuildContext context) async {
     var userId = await storage.read(key: "register_id");
     if (userFollowedArtist.contains(record.artistId)) {
       artistModel!.records[index].followers = (record.followers! - 1);
 
       userFollowedArtist.remove(record.artistId);
+      context.read<SearchProvider>().userFollowedArtist.remove(record.artistId);
       notifyListeners();
 
       Map<String, dynamic> params = {
@@ -96,12 +100,14 @@ class ArtistPreferenceProvider extends ChangeNotifier {
       }
 
       userFollowedArtist.add(record.artistId);
+      context.read<SearchProvider>().userFollowedArtist.add(record.artistId);
       Map<String, dynamic> params = {
         "artist_id": record.artistId,
         "follow": true,
         "user_id": userId
       };
       followAndUnfollow(params);
+      // context.read<SearchProvider>().getUserFollowedList();
       notifyListeners();
     }
   }

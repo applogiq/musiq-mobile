@@ -56,3 +56,14 @@ BoxDecoration topLeftRightDecoration() {
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30), topRight: Radius.circular(30)));
 }
+
+BoxDecoration dialogBoxDecoration() {
+  return BoxDecoration(
+    shape: BoxShape.rectangle,
+    color: CustomColor.appBarColor,
+    borderRadius: BorderRadius.circular(12),
+    boxShadow: const [
+      BoxShadow(color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
+    ],
+  );
+}

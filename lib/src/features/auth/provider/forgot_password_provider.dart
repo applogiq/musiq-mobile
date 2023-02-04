@@ -141,7 +141,7 @@ class ForgotPasswordProvider extends ChangeNotifier with InputValidationMixin {
     notifyListeners();
     startTimer();
     Map params = {"email": emailAddress};
-    var res = await AuthRepository().emailVerfication(params);
+    await AuthRepository().emailVerfication(params);
   }
 
   passwordTapped() {

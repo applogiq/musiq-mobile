@@ -2,14 +2,6 @@
 //
 //     final auraSongListModel = auraSongListModelFromMap(jsonString);
 
-import 'dart:convert';
-
-AuraSongListModel auraSongListModelFromMap(String str) =>
-    AuraSongListModel.fromMap(json.decode(str));
-
-String auraSongListModelToMap(AuraSongListModel data) =>
-    json.encode(data.toMap());
-
 class AuraSongListModel {
   AuraSongListModel({
     required this.success,

@@ -16,9 +16,9 @@ class NavBarItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        width: width / 3,
-        child: Consumer<BottomNavigationBarProvider>(
-            builder: (context, provider, _) {
+      width: width / 3,
+      child: Consumer<BottomNavigationBarProvider>(
+        builder: (context, provider, _) {
           return InkWell(
             onTap: () {
               provider.changeIndex(index);
@@ -34,9 +34,6 @@ class NavBarItem extends StatelessWidget {
                     color: provider.iconColor(index),
                   ),
                 ),
-                // const SizedBox(
-                //   height: 8,
-                // ),
                 Text(
                   provider.bottomItems[index].labelData,
                   style: TextStyle(
@@ -46,6 +43,8 @@ class NavBarItem extends StatelessWidget {
               ],
             ),
           );
-        }));
+        },
+      ),
+    );
   }
 }

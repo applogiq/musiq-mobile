@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musiq/main.dart';
 import 'package:musiq/src/features/library/domain/models/favourite_model.dart';
 import 'package:musiq/src/features/library/provider/library_provider.dart';
 import 'package:musiq/src/features/player/domain/model/player_song_list_model.dart';
@@ -16,14 +17,15 @@ import 'package:musiq/src/features/view_all/domain/model/player_model.dart';
 import 'package:musiq/src/local/model/favourite_model.dart';
 import 'package:musiq/src/local/model/queue_model.dart';
 import 'package:musiq/src/routing/route_name.dart';
-import 'package:musiq/src/utils/image_url_generate.dart';
 import 'package:musiq/src/utils/navigation.dart';
 import 'package:musiq/src/utils/toast_message.dart';
+import 'package:musiq/src/utils/url_generate.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../objectbox.g.dart';
 import '../../../core/package/miniplayer/miniplayer.dart';
+import '../../../utils/audio_player_handler.dart';
 import '../../home/provider/home_provider.dart';
 import '../../library/domain/library_repo.dart';
 import '../../library/domain/models/playlist_model.dart';
@@ -135,13 +137,15 @@ class PlayerProvider extends ChangeNotifier {
       try {
         await clearFavouriteSong();
         await loadFavourites();
-      } catch (e) {}
+      } catch (e) {
+        debugPrint(e.toString());
+      }
 
       Navigation.navigateToScreen(context, RouteName.player);
 
       notifyListeners();
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
   }
 
@@ -174,7 +178,9 @@ class PlayerProvider extends ChangeNotifier {
     try {
       await clearFavouriteSong();
       await loadFavourites();
-    } catch (e) {}
+    } catch (e) {
+      debugPrint(e.toString());
+    }
 
     Navigation.navigateToScreen(context, RouteName.player);
 
@@ -260,7 +266,8 @@ class PlayerProvider extends ChangeNotifier {
   }
 
   queueSong(PlayerSongListModel playerSongListModel) {
-    playlist.add(AudioSource.uri(
+    playlist.add(
+      AudioSource.uri(
         Uri.parse(
             "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongListModel.id.toString()}"),
         tag: PlayerSongListModel(
@@ -268,7 +275,9 @@ class PlayerProvider extends ChangeNotifier {
             albumName: playerSongListModel.albumName,
             title: playerSongListModel.title,
             musicDirectorName: playerSongListModel.musicDirectorName,
-            imageUrl: playerSongListModel.imageUrl)));
+            imageUrl: playerSongListModel.imageUrl),
+      ),
+    );
   }
 
   void play() {
@@ -285,7 +294,9 @@ class PlayerProvider extends ChangeNotifier {
     player.durationStream.listen((event) {
       try {
         totalDurationValue = event!.inMilliseconds;
-      } catch (e) {}
+      } catch (e) {
+        debugPrint(e.toString());
+      }
       notifyListeners();
     });
     player.bufferedPositionStream.listen((event) {
@@ -297,8 +308,7 @@ class PlayerProvider extends ChangeNotifier {
             .effectiveSequence[player.currentIndex!].tag as PlayerSongListModel;
         Map params = {"song_id": metaData.id};
         var res = await PlayerRepo().recentList(params);
-        print(res.statusCode);
-        print(res.body);
+
         if (res.statusCode == 200) {
           HomeProvider().recentSongList();
         }
@@ -351,7 +361,7 @@ class PlayerProvider extends ChangeNotifier {
     });
     final box = store.box<FavouriteSong>();
 
-    var id = box.remove(uniqueId);
+    box.remove(uniqueId);
 
     store.close();
     getSongList();
@@ -463,27 +473,28 @@ class PlayerProvider extends ChangeNotifier {
   }
 
   addNewQueueSongList(List<PlayerSongListModel> playerSongListModel) async {
-    await getApplicationDocumentsDirectory().then((Directory dir) {
-      store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/1/');
-      final queueBox = store.box<SongListModel>();
+    // await getApplicationDocumentsDirectory().then((Directory dir) {
+    //   store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/1/');
+    //   final queueBox = store.box<SongListModel>();
 
-      queueBox.removeAll();
-      List<SongListModel> songlist = [];
-      for (var e in playerSongListModel) {
-        songlist.add(SongListModel(
-            songId: e.id,
-            albumName: e.albumName,
-            title: e.title,
-            musicDirectorName: e.musicDirectorName,
-            imageUrl: e.imageUrl,
-            songUrl:
-                "https://api-musiq.applogiq.org/api/v1/audio?song_id=${e.id.toString()}"));
-      }
-      queueBox.putMany(songlist);
+    //   queueBox.removeAll();
+    List<SongListModel> songlist = [];
+    for (var e in playerSongListModel) {
+      songlist.add(SongListModel(
+          songId: e.id,
+          albumName: e.albumName,
+          title: e.title,
+          musicDirectorName: e.musicDirectorName,
+          imageUrl: e.imageUrl,
+          songUrl:
+              "https://api-musiq.applogiq.org/api/v1/audio?song_id=${e.id.toString()}"));
+    }
+    objectbox.addNewSongListQueue(songlist);
+    //     queueBox.putMany(songlist);
 
-      store.close();
-      getQueueSongList();
-    });
+    //     store.close();
+    //     getQueueSongList();
+    //   });
   }
 
   addSongToQueueSongList(List<PlayerSongListModel> playerSongListModel) async {
@@ -511,7 +522,6 @@ class PlayerProvider extends ChangeNotifier {
             songUrl:
                 "https://api-musiq.applogiq.org/api/v1/audio?song_id=${e.id.toString()}"));
       }
-      print(songlist);
       queueBox.putMany(songlist);
 
       store.close();
@@ -535,7 +545,6 @@ class PlayerProvider extends ChangeNotifier {
             queueIdList.clear();
             List<PlayerSongListModel> playerSongList = [];
             for (var e in res) {
-              print(e.songId);
               playerSongList.add(PlayerSongListModel(
                   id: e.songId,
                   albumName: e.albumName,
@@ -582,86 +591,158 @@ class PlayerProvider extends ChangeNotifier {
         inQueue = true;
         notifyListeners();
       } catch (e) {
-        print("DDD");
         store.close();
-        print(e.toString());
+        debugPrint(e.toString());
       }
     }
   }
 
-  // loadAudioHandler() async {
-  //   if (!inQueue) {
-  //     await getApplicationDocumentsDirectory().then((Directory dir) async {
-  //       store = Store(getObjectBoxModel(), directory: '\$\{dir\.path\}/musiq/db/1');
-  //       final box = store.box<SongListModel>();
+  loadSingleQueueSong() async {
+    // AudioPlayerHandler().load();
+    // if (!inQueue) {
+    //   // try {
+    //   // await getApplicationDocumentsDirectory().then((Directory dir) async {
+    //   //   store =
+    //   //       Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/1/');
+    //   //   final box = store.box<SongListModel>();
 
-  //       var res = box.getAll();
-  //       log("SFDgfg --- ${res.length}");
+    var res = objectbox.getAllQueueSong();
+    log("SFDgfg --- ${res.length}");
 
-  //       if (res.isNotEmpty) {
-  //         final mediaItems = res
-  //             .map((song) => MediaItem(
-  //                   id: song.id.toString() ?? '',
-  //                   album: song.albumName ?? '',
-  //                   title: song.title ?? '',
-  //                   extras: {'url': song.songUrl},
-  //                 ))
-  //             .toList();
-  //         _audioHandler.addQueueItems(mediaItems);
-  //         // playerSongList.add(PlayerSongListModel(
-  //         //     id: e.songId,
-  //         //     albumName: e.albumName,
-  //         //     title: e.title,
-  //         //     imageUrl: e.imageUrl,
-  //         //     musicDirectorName: e.musicDirectorName));
+    if (res.isNotEmpty) {
+      queueIdList.clear();
+      List<PlayerSongListModel> playerSongList = [];
+      var e = res.first;
+      // for (var e in res) {
+      playerSongList.add(PlayerSongListModel(
+          id: e.songId,
+          albumName: e.albumName,
+          title: e.title,
+          imageUrl: e.imageUrl,
+          musicDirectorName: e.musicDirectorName));
+      AudioPlayerHandler playerHandler = AudioPlayerHandler();
+      playerHandler.setSongToPlayer(playerSongList.first);
+    }
+    //     // AudioPlayerHandler().setSongToPlayer(playerSongList.first);
+    //     // }
+    //     // playlist = ConcatenatingAudioSource(
+    //     //   useLazyPreparation: true,
+    //     //   children: List.generate(
+    //     //     playerSongList.length,
+    //     //     (index) => AudioSource.uri(
+    //     //         Uri.parse(
+    //     //             "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongList[index].id.toString()}"),
+    //     //         tag: PlayerSongListModel(
+    //     //             id: playerSongList[index].id,
+    //     //             albumName: playerSongList[index].albumName,
+    //     //             title: playerSongList[index].title,
+    //     //             musicDirectorName:
+    //     //                 playerSongList[index].musicDirectorName.toString(),
+    //     //             imageUrl: playerSongList[index].imageUrl)),
+    //     //   ),
+    //     // );
+    //     // await player.setAudioSource(
+    //     //   playlist,
+    //     //   initialIndex: 0,
+    //     //   initialPosition: Duration.zero,
+    //     // );
+    //     // player.stop();
+    //     // isPlay = true;
+    //     // isPlaying = true;
 
-  //       }
+    //     // playOrPause();
+    //     // store.close();
+    //     //     }
+    //     //   });
 
-  //       // if (res.isNotEmpty) {
-  //       //   queueIdList.clear();
-  //       //   List<PlayerSongListModel> playerSongList = [];
-  //       //   for (var e in res) {
-  //       //     print(e.songId);
-  //       //     playerSongList.add(PlayerSongListModel(
-  //       //         id: e.songId,
-  //       //         albumName: e.albumName,
-  //       //         title: e.title,
-  //       //         imageUrl: e.imageUrl,
-  //       //         musicDirectorName: e.musicDirectorName));
-  //       //   }
-  //       //   playlist = ConcatenatingAudioSource(
-  //       //     useLazyPreparation: true,
-  //       //     children: List.generate(
-  //       //       playerSongList.length,
-  //       //       (index) => AudioSource.uri(
-  //       //           Uri.parse(
-  //       //               "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongList[index].id.toString()}"),
-  //       //           tag: PlayerSongListModel(
-  //       //               id: playerSongList[index].id,
-  //       //               albumName: playerSongList[index].albumName,
-  //       //               title: playerSongList[index].title,
-  //       //               musicDirectorName:
-  //       //                   playerSongList[index].musicDirectorName.toString(),
-  //       //               imageUrl: playerSongList[index].imageUrl)),
-  //       //     ),
-  //       //   );
-  //       //   await player.setAudioSource(
-  //       //     playlist,
-  //       //     initialIndex: 0,
-  //       //     initialPosition: Duration.zero,
-  //       //   );
-  //       //   player.stop();
-  //       //   isPlay = true;
-  //       //   isPlaying = true;
+    //     //   // try {
+    //     //   //   await clearFavouriteSong();
+    //     //   //   await loadFavourites();
+    //     //   // } catch (e) {
+    //     //   //   store.close();
+    //     //   // }
+    //     //   // inQueue = true;
+    //     //   // notifyListeners();
+    //     // } catch (e) {
+    //     //   store.close();
+    //     //   debugPrint(e.toString());
+    //     // }
+    //   }
+    // }
 
-  //       //   playOrPause();
-  //       //   store.close();
-  //       // }
-  //     });
+    // loadAudioHandler() async {
+    //   if (!inQueue) {
+    //     await getApplicationDocumentsDirectory().then((Directory dir) async {
+    //       store = Store(getObjectBoxModel(), directory: '\$\{dir\.path\}/musiq/db/1');
+    //       final box = store.box<SongListModel>();
 
-  //     inQueue = true;
-  //     notifyListeners();
-  //   }
-  // }
+    //       var res = box.getAll();
+    //       log("SFDgfg --- ${res.length}");
 
+    //       if (res.isNotEmpty) {
+    //         final mediaItems = res
+    //             .map((song) => MediaItem(
+    //                   id: song.id.toString() ?? '',
+    //                   album: song.albumName ?? '',
+    //                   title: song.title ?? '',
+    //                   extras: {'url': song.songUrl},
+    //                 ))
+    //             .toList();
+    //         _audioHandler.addQueueItems(mediaItems);
+    //         // playerSongList.add(PlayerSongListModel(
+    //         //     id: e.songId,
+    //         //     albumName: e.albumName,
+    //         //     title: e.title,
+    //         //     imageUrl: e.imageUrl,
+    //         //     musicDirectorName: e.musicDirectorName));
+
+    //       }
+
+    //       // if (res.isNotEmpty) {
+    //       //   queueIdList.clear();
+    //       //   List<PlayerSongListModel> playerSongList = [];
+    //       //   for (var e in res) {
+    //       //     print(e.songId);
+    //       //     playerSongList.add(PlayerSongListModel(
+    //       //         id: e.songId,
+    //       //         albumName: e.albumName,
+    //       //         title: e.title,
+    //       //         imageUrl: e.imageUrl,
+    //       //         musicDirectorName: e.musicDirectorName));
+    //       //   }
+    //       //   playlist = ConcatenatingAudioSource(
+    //       //     useLazyPreparation: true,
+    //       //     children: List.generate(
+    //       //       playerSongList.length,
+    //       //       (index) => AudioSource.uri(
+    //       //           Uri.parse(
+    //       //               "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongList[index].id.toString()}"),
+    //       //           tag: PlayerSongListModel(
+    //       //               id: playerSongList[index].id,
+    //       //               albumName: playerSongList[index].albumName,
+    //       //               title: playerSongList[index].title,
+    //       //               musicDirectorName:
+    //       //                   playerSongList[index].musicDirectorName.toString(),
+    //       //               imageUrl: playerSongList[index].imageUrl)),
+    //       //     ),
+    //       //   );
+    //       //   await player.setAudioSource(
+    //       //     playlist,
+    //       //     initialIndex: 0,
+    //       //     initialPosition: Duration.zero,
+    //       //   );
+    //       //   player.stop();
+    //       //   isPlay = true;
+    //       //   isPlaying = true;
+
+    //       //   playOrPause();
+    //       //   store.close();
+    //       // }
+    //     });
+
+    //     inQueue = true;
+    //     notifyListeners();
+    //   }
+    // }
+  }
 }

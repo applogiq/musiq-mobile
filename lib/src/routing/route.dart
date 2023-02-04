@@ -15,7 +15,7 @@ import '../features/home/screens/artist_view_all/artist_view_all_screen.dart';
 import '../features/home/screens/artist_view_all/artist_view_all_song_list_screen.dart';
 import '../features/home/screens/home_screen.dart';
 import '../features/home/screens/view_all/view_all_song_list_screen.dart';
-import '../features/home/view_all_status.dart';
+import '../enums/view_all_status.dart';
 import '../features/library/screens/library.dart';
 import '../features/player/screen/add_playlist_screen.dart';
 import '../features/player/screen/player_screen/player_screen.dart';

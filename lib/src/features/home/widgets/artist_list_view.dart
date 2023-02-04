@@ -7,11 +7,11 @@ import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../constants/color.dart';
 import '../../../constants/images.dart';
 import '../../../constants/style.dart';
-import '../../../utils/image_url_generate.dart';
+import '../../../utils/url_generate.dart';
 import '../../artist/domain/models/artist_model.dart';
 import '../provider/view_all_provider.dart';
 import '../screens/sliver_app_bar/view_all_screen.dart';
-import '../view_all_status.dart';
+import '../../../enums/view_all_status.dart';
 
 class ArtistListView extends StatelessWidget {
   const ArtistListView({

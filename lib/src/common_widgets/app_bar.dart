@@ -30,8 +30,6 @@ class CustomAppBarWidget extends StatelessWidget {
             }
             Navigator.of(context).pop();
             pro.clearError();
-            // Provider.of<ForgotPasswordProvider>(context, listen: false)
-            //     .isClearError();
           },
           child: const Icon(Icons.arrow_back_ios_rounded)),
       title: Text(title),

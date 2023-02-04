@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../../../../constants/api.dart';
 
 import '../../../../base_service/network/base_api_services.dart';
 import '../../../../base_service/network/network_api_service.dart';
+import '../../../../constants/api.dart';
 
 class HomeRepository {
   BaseApiServices apiServices = NetworkApiService();
@@ -14,6 +15,7 @@ class HomeRepository {
       dynamic response = await apiServices.getGetAuthApiResponse(endpoint);
       return response;
     } catch (e) {
+      debugPrint(e.toString());
       rethrow;
     }
   }

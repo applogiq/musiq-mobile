@@ -1,11 +1,3 @@
-import 'dart:convert';
-
-PlaylistSongListModel playlistSongListModelFromMap(String str) =>
-    PlaylistSongListModel.fromMap(json.decode(str));
-
-String playlistSongListModelToMap(PlaylistSongListModel data) =>
-    json.encode(data.toMap());
-
 class PlaylistSongListModel {
   PlaylistSongListModel({
     required this.success,

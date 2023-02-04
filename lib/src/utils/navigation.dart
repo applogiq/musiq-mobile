@@ -22,11 +22,3 @@ class Navigation {
         (Route route) => false);
   }
 }
-
-class OneTimeNavigation {
-  oneTimeNavigation(BuildContext context, Widget screen) {
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => screen),
-        (Route route) => false);
-  }
-}

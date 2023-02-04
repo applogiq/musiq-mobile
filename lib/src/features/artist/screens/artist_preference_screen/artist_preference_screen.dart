@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:musiq/src/features/search/provider/search_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/buttons/custom_button.dart';
 import '../../../../common_widgets/container/empty_box.dart';
 import '../../../../common_widgets/loader.dart';
+import '../../../../enums/search_status.dart';
+import '../../../../routing/route_name.dart';
+import '../../../../utils/navigation.dart';
 import '../../../common/screen/offline_screen.dart';
+import '../../../search/screens/search_screen.dart';
 import '../../provider/artist_provider.dart';
 import 'artist_preference_body.dart';
 
@@ -78,7 +83,12 @@ class ArtistPreferenceAppBarWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              context.read<SearchProvider>().resetState();
+              Navigation.navigateToScreen(context, RouteName.search,
+                  args: SearchRequestModel(
+                      searchStatus: SearchStatus.artistPreference));
+            },
             child: Image.asset(
               "assets/icons/search.png",
               height: 18,

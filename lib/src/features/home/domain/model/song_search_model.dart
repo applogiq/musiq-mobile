@@ -2,13 +2,6 @@
 //
 //     final searchSongModel = searchSongModelFromMap(jsonString);
 
-import 'dart:convert';
-
-SearchSongModel searchSongModelFromMap(String str) =>
-    SearchSongModel.fromMap(json.decode(str));
-
-String searchSongModelToMap(SearchSongModel data) => json.encode(data.toMap());
-
 class SearchSongModel {
   SearchSongModel({
     required this.success,
