@@ -1,9 +1,10 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:musiq/src/utils/url_generate.dart';
+import 'package:musiq/src/core/utils/url_generate.dart';
 
-import '../../main.dart';
-import '../features/player/domain/model/player_song_list_model.dart';
+import '../../../../main.dart';
+import '../../features/player/domain/model/player_song_list_model.dart';
+import '../../features/player/provider/player_provider.dart';
 
 init() async {
   audioHandler = await AudioService.init(
@@ -30,14 +31,21 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
     artUri: Uri.parse(generateSongImageUrl("Matinee", "AL006")),
   );
   AudioPlayerHandler() {
+    // getDataFromQueue();
+    // // PlayerProvider().loadSingleQueueSong();
     _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
-    // mediaItem.add(_item);
+    mediaItem.add(_item);
 
-    // _player.setAudioSource(AudioSource.uri(Uri.parse(_item.id)));
-    // play();
-    // load();
-    // // loadQueueSong();
+    _player.setAudioSource(AudioSource.uri(Uri.parse(_item.id)));
+    play();
+    load();
+    // // // loadQueueSong();
   }
+
+  getDataFromQueue() async {
+    await PlayerProvider().loadSingleQueueSong();
+  }
+
   load() async {
     // _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
 
@@ -57,6 +65,8 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   }
 
   setSongToPlayer(PlayerSongListModel playerSongListModel) {
+    _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
+
     var mediaItemData = MediaItem(
       id: generateSongUrl(playerSongListModel.id),
       album: playerSongListModel.albumName,

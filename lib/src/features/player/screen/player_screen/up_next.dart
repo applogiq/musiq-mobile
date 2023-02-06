@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../constants/constant.dart';
+import '../../../../core/constants/constant.dart';
 import '../../widget/up_next/up_next_widgets.dart';
 
 class UpNextExpandable extends StatelessWidget {

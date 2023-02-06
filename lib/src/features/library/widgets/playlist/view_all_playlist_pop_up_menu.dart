@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/dialog/playlist_dialog_box.dart';
-import '../../../../constants/constant.dart';
-import '../../../../enums/search_status.dart';
-import '../../../../routing/route_name.dart';
-import '../../../../utils/navigation.dart';
+import '../../../../core/constants/constant.dart';
+import '../../../../core/enums/search_status.dart';
+import '../../../../core/routing/route_name.dart';
+import '../../../../core/utils/navigation.dart';
 import '../../../search/provider/search_provider.dart';
 import '../../../search/screens/search_screen.dart';
 import '../../provider/library_provider.dart';

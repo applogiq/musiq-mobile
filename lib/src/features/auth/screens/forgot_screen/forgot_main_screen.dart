@@ -6,7 +6,7 @@ import '../../../../common_widgets/app_bar.dart';
 import '../../../../common_widgets/box/vertical_box.dart';
 import '../../../../common_widgets/buttons/custom_button.dart';
 import '../../../../common_widgets/text_field/custom_text_field.dart';
-import '../../../../constants/string.dart';
+import '../../../../core/constants/string.dart';
 import '../../../common/screen/offline_screen.dart';
 import '../../provider/forgot_password_provider.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../constants/constant.dart';
+import '../../../../core/constants/constant.dart';
 import '../../provider/player_provider.dart';
 import 'player_widgets.dart';
 

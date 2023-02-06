@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 
 import '../../../../main.dart';
 import '../../../common_widgets/list/list_header_widget.dart';
-import '../../../constants/constant.dart';
-import '../../../local/model/search_model.dart';
+import '../../../core/constants/constant.dart';
+import '../../../core/local/model/search_model.dart';
 import '../../common/screen/no_song_screen.dart';
 
 class SongSearchHistoryBuilder extends StatelessWidget {

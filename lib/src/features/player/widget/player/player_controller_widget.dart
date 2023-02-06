@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../constants/constant.dart';
-import '../../../../routing/route_name.dart';
-import '../../../../utils/navigation.dart';
+import '../../../../core/constants/constant.dart';
+import '../../../../core/routing/route_name.dart';
+import '../../../../core/utils/navigation.dart';
 import '../../../home/provider/artist_view_all_provider.dart';
 import '../../domain/model/player_song_list_model.dart';
 import '../../provider/player_provider.dart';

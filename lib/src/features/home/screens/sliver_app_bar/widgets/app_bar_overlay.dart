@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../common_widgets/buttons/custom_button.dart';
-import '../../../../../constants/color.dart';
-import '../../../../../constants/style.dart';
+import '../../../../../core/constants/color.dart';
+import '../../../../../core/constants/style.dart';
 import '../../../provider/artist_view_all_provider.dart';
 
 class AppBarOverlayContent extends StatelessWidget {

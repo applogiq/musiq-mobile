@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/buttons/custom_button.dart';
-import '../../../../constants/string.dart';
-import '../../../../enums/search_status.dart';
-import '../../../../routing/route_name.dart';
-import '../../../../utils/navigation.dart';
+import '../../../../core/constants/string.dart';
+import '../../../../core/enums/search_status.dart';
+import '../../../../core/routing/route_name.dart';
+import '../../../../core/utils/navigation.dart';
 import '../../../common/screen/no_song_screen.dart';
 import '../../../search/provider/search_provider.dart';
 import '../../../search/screens/search_screen.dart';

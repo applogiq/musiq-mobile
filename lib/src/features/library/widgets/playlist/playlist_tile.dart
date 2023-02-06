@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/container/custom_color_container.dart';
-import '../../../../constants/color.dart';
-import '../../../../constants/string.dart';
-import '../../../../constants/style.dart';
-import '../../../../constants/style/box_decoration.dart';
-import '../../../../utils/url_generate.dart';
+import '../../../../core/constants/color.dart';
+import '../../../../core/constants/string.dart';
+import '../../../../core/constants/style.dart';
+import '../../../../core/constants/style/box_decoration.dart';
+import '../../../../core/utils/url_generate.dart';
 import '../../domain/models/playlist_model.dart';
 import '../../provider/library_provider.dart';
 

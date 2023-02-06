@@ -3,7 +3,7 @@ import 'package:musiq/src/features/library/provider/library_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/dialog/playlist_dialog_box.dart';
-import '../../../../constants/constant.dart';
+import '../../../../core/constants/constant.dart';
 
 class PlayListAddButton extends StatelessWidget {
   const PlayListAddButton({

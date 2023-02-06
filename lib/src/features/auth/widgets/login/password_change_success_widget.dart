@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/container/empty_box.dart';
-import '../../../../constants/constant.dart';
+import '../../../../core/constants/constant.dart';
 import '../../provider/login_provider.dart';
 
 class PasswordChangeSuccessWidget extends StatelessWidget {

@@ -1,6 +1,7 @@
 class PlayerSongListModel {
   PlayerSongListModel(
       {required this.id,
+      required this.duration,
       required this.albumName,
       required this.title,
       required this.imageUrl,
@@ -11,4 +12,5 @@ class PlayerSongListModel {
   final String imageUrl;
   final String musicDirectorName;
   final String title;
+  final String duration;
 }

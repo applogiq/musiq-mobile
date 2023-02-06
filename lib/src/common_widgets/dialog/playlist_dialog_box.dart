@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:musiq/src/features/library/provider/library_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../constants/constant.dart';
+import '../../core/constants/constant.dart';
 import '../buttons/custom_button.dart';
 import '../container/custom_color_container.dart';
 

@@ -4,8 +4,8 @@ import 'package:musiq/src/features/player/domain/model/player_song_list_model.da
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../routing/route_name.dart';
-import '../../../utils/navigation.dart';
+import '../../../core/routing/route_name.dart';
+import '../../../core/utils/navigation.dart';
 import '../../player/provider/player_provider.dart';
 
 class PopUpProvider extends ChangeNotifier {

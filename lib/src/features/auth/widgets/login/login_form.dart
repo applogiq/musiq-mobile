@@ -8,10 +8,10 @@ import '../../../../common_widgets/image/logo_image.dart';
 import '../../../../common_widgets/text/forgot_password.dart';
 import '../../../../common_widgets/text_field/custom_password_text_field.dart';
 import '../../../../common_widgets/text_field/custom_text_field.dart';
-import '../../../../constants/constant.dart';
-import '../../../../routing/route_name.dart';
-import '../../../../utils/navigation.dart';
-import '../../../../utils/size_config.dart';
+import '../../../../core/constants/constant.dart';
+import '../../../../core/routing/route_name.dart';
+import '../../../../core/utils/navigation.dart';
+import '../../../../core/utils/size_config.dart';
 import '../../provider/login_provider.dart';
 import 'login_button.dart';
 

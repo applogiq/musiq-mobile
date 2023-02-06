@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musiq/src/features/player/provider/player_provider.dart';
 
-import '../../../../utils/toast_message.dart';
+import '../../../../core/utils/toast_message.dart';
 
 extension PlayerControllerExtension on PlayerProvider {
   loopSongController() async {

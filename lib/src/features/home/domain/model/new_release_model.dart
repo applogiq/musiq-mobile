@@ -40,6 +40,7 @@ class Record {
     required this.albumName,
     required this.musicDirectorName,
     required this.isImage,
+    required this.duration,
   });
 
   factory Record.fromMap(Map<String, dynamic> json) => Record(
@@ -49,6 +50,7 @@ class Record {
         artistId: List<int>.from(json["artist_id"].map((x) => x)),
         albumId: json["album_id"],
         albumName: json["album_name"],
+        duration: json["duration"],
         musicDirectorName:
             List<String>.from(json["music_director_name"].map((x) => x)),
         isImage: json["is_image"],
@@ -62,6 +64,7 @@ class Record {
   bool isMusic;
   List<String> musicDirectorName;
   String songName;
+  String duration;
 
   Map<String, dynamic> toMap() => {
         "id": id,
@@ -69,6 +72,7 @@ class Record {
         "is_music": isMusic,
         "artist_id": List<dynamic>.from(artistId.map((x) => x)),
         "album_id": albumId,
+        "duration": duration,
         "album_name": albumName,
         "music_director_name": musicDirectorName,
         "is_image": isImage,

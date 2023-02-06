@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/buttons/custom_button.dart';
-import '../../../constants/color.dart';
-import '../../../constants/images.dart';
-import '../../../constants/style.dart';
-import '../../../utils/url_generate.dart';
-import '../../../utils/size_config.dart';
+import '../../../core/constants/color.dart';
+import '../../../core/constants/images.dart';
+import '../../../core/constants/style.dart';
+import '../../../core/utils/url_generate.dart';
+import '../../../core/utils/size_config.dart';
 import '../provider/profile_provider.dart';
 import '../widgets/logout_dialog.dart';
 

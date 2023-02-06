@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../constants/style.dart';
+import '../../core/constants/style.dart';
 import '../../features/auth/provider/login_provider.dart';
-import '../../utils/navigation.dart';
+import '../../core/utils/navigation.dart';
 
 class TextWithButton extends StatelessWidget {
   const TextWithButton({

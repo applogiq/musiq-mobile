@@ -1,6 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../core/enums/view_all_status.dart';
+import '../../../core/utils/url_generate.dart';
+import '../../player/domain/model/player_song_list_model.dart';
+import '../../player/provider/player_provider.dart';
 import '../domain/model/album_song_list_model.dart';
 import '../domain/model/aura_song_list_model.dart';
 import '../domain/model/collection_view_all_model.dart';
@@ -8,12 +14,6 @@ import '../domain/model/new_release_model.dart';
 import '../domain/model/recent_song_model.dart';
 import '../domain/model/trending_hits_model.dart';
 import '../domain/repository/home_repo.dart';
-import '../../../enums/view_all_status.dart';
-import 'package:provider/provider.dart';
-
-import '../../../utils/url_generate.dart';
-import '../../player/domain/model/player_song_list_model.dart';
-import '../../player/provider/player_provider.dart';
 
 class ViewAllProvider extends ChangeNotifier {
   bool isLoad = true;
@@ -116,7 +116,8 @@ class ViewAllProvider extends ChangeNotifier {
               albumName: record.albumName.toString(),
               title: record.songName.toString(),
               imageUrl: generateSongImageUrl(record.albumName, record.albumId),
-              musicDirectorName: record.musicDirectorName[0].toString()));
+              musicDirectorName: record.musicDirectorName[0].toString(),
+              duration: record.duration));
         }
         break;
       case ViewAllStatus.recentlyPlayed:
@@ -127,7 +128,8 @@ class ViewAllProvider extends ChangeNotifier {
               title: record[0].songName.toString(),
               imageUrl:
                   generateSongImageUrl(record[0].albumName, record[0].albumId),
-              musicDirectorName: record[0].musicDirectorName[0].toString()));
+              musicDirectorName: record[0].musicDirectorName[0].toString(),
+              duration: record[0].duration));
         }
         break;
       case ViewAllStatus.trendingHits:
@@ -137,7 +139,8 @@ class ViewAllProvider extends ChangeNotifier {
               albumName: record.albumName.toString(),
               title: record.songName.toString(),
               imageUrl: generateSongImageUrl(record.albumName, record.albumId),
-              musicDirectorName: record.musicDirectorName[0].toString()));
+              musicDirectorName: record.musicDirectorName[0].toString(),
+              duration: record.duration));
         }
         break;
 
@@ -148,7 +151,8 @@ class ViewAllProvider extends ChangeNotifier {
               albumName: record.albumName.toString(),
               title: record.songName.toString(),
               imageUrl: generateSongImageUrl(record.albumName, record.albumId),
-              musicDirectorName: record.musicDirectorName[0].toString()));
+              musicDirectorName: record.musicDirectorName[0].toString(),
+              duration: record.duration));
         }
         break;
       case ViewAllStatus.aura:
@@ -158,7 +162,8 @@ class ViewAllProvider extends ChangeNotifier {
               albumName: record.albumName.toString(),
               title: record.songName.toString(),
               imageUrl: generateSongImageUrl(record.albumName, record.albumId),
-              musicDirectorName: record.musicDirectorName[0].toString()));
+              musicDirectorName: record.musicDirectorName[0].toString(),
+              duration: record.duration));
         }
         break;
       case ViewAllStatus.artist:
@@ -168,7 +173,8 @@ class ViewAllProvider extends ChangeNotifier {
               albumName: record.albumName.toString(),
               title: record.songName.toString(),
               imageUrl: generateSongImageUrl(record.albumName, record.albumId),
-              musicDirectorName: record.musicDirectorName![0].toString()));
+              musicDirectorName: record.musicDirectorName![0].toString(),
+              duration: record.duration));
         }
         break;
       default:
@@ -192,7 +198,8 @@ class ViewAllProvider extends ChangeNotifier {
               albumName: record.albumName.toString(),
               title: record.songName.toString(),
               imageUrl: generateSongImageUrl(record.albumName, record.albumId),
-              musicDirectorName: record.musicDirectorName[0].toString()));
+              musicDirectorName: record.musicDirectorName[0].toString(),
+              duration: record.duration));
         }
         break;
       case ViewAllStatus.recentlyPlayed:
@@ -203,7 +210,8 @@ class ViewAllProvider extends ChangeNotifier {
               title: record[0].songName.toString(),
               imageUrl:
                   generateSongImageUrl(record[0].albumName, record[0].albumId),
-              musicDirectorName: record[0].musicDirectorName[0].toString()));
+              musicDirectorName: record[0].musicDirectorName[0].toString(),
+              duration: record[0].duration));
         }
         break;
       case ViewAllStatus.trendingHits:
@@ -213,7 +221,8 @@ class ViewAllProvider extends ChangeNotifier {
               albumName: record.albumName.toString(),
               title: record.songName.toString(),
               imageUrl: generateSongImageUrl(record.albumName, record.albumId),
-              musicDirectorName: record.musicDirectorName[0].toString()));
+              musicDirectorName: record.musicDirectorName[0].toString(),
+              duration: record.duration));
         }
         break;
 
@@ -224,7 +233,8 @@ class ViewAllProvider extends ChangeNotifier {
               albumName: record.albumName.toString(),
               title: record.songName.toString(),
               imageUrl: generateSongImageUrl(record.albumName, record.albumId),
-              musicDirectorName: record.musicDirectorName[0].toString()));
+              musicDirectorName: record.musicDirectorName[0].toString(),
+              duration: record.duration));
         }
         break;
       case ViewAllStatus.aura:
@@ -234,7 +244,8 @@ class ViewAllProvider extends ChangeNotifier {
               albumName: record.albumName.toString(),
               title: record.songName.toString(),
               imageUrl: generateSongImageUrl(record.albumName, record.albumId),
-              musicDirectorName: record.musicDirectorName[0].toString()));
+              musicDirectorName: record.musicDirectorName[0].toString(),
+              duration: record.duration));
         }
         break;
       case ViewAllStatus.artist:
@@ -250,7 +261,8 @@ class ViewAllProvider extends ChangeNotifier {
               albumName: record.albumName.toString(),
               title: record.songName.toString(),
               imageUrl: generateSongImageUrl(record.albumName, record.albumId),
-              musicDirectorName: record.musicDirectorName![0].toString()));
+              musicDirectorName: record.musicDirectorName![0].toString(),
+              duration: record.duration));
         }
         break;
       default:

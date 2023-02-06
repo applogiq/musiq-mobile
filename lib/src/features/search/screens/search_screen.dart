@@ -8,13 +8,13 @@ import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../common_widgets/image/no_artist.dart';
-import '../../../constants/constant.dart';
-import '../../../enums/search_status.dart';
-import '../../../utils/url_generate.dart';
+import '../../../core/constants/constant.dart';
+import '../../../core/enums/search_status.dart';
+import '../../../core/utils/url_generate.dart';
 import '../../common/screen/offline_screen.dart';
 import '../../home/domain/model/song_search_model.dart';
 import '../../home/screens/artist_view_all/artist_view_all_screen.dart';
-import '../../home/screens/sliver_app_bar/widgets/album_song_list.dart';
+import '../../home/screens/sliver_app_bar/widgets/song_play_list_tile.dart';
 import '../../home/widgets/search_notifications.dart';
 import '../../player/domain/model/player_song_list_model.dart';
 import '../../player/provider/player_provider.dart';
@@ -340,7 +340,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                                                         .albumId),
                                                                 musicDirectorName:
                                                                     rec.musicDirectorName[
-                                                                        0]);
+                                                                        0],
+                                                                duration: rec
+                                                                    .duration);
                                                         context
                                                             .read<
                                                                 PlayerProvider>()

@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../../../constants/string.dart';
-import '../../../routing/route_name.dart';
-import '../../../utils/navigation.dart';
-import '../../../utils/size_config.dart';
-import '../../../utils/validation.dart';
+import '../../../core/constants/string.dart';
+import '../../../core/routing/route_name.dart';
+import '../../../core/utils/navigation.dart';
+import '../../../core/utils/size_config.dart';
+import '../../../core/utils/validation.dart';
 import '../../artist/screens/artist_preference_screen/artist_preference_screen.dart';
 import '../domain/models/user_model.dart';
 import '../domain/repository/auth_repo.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../constants/images.dart';
+import '../../core/constants/images.dart';
 
 class LogoWithImage extends StatelessWidget {
   const LogoWithImage({

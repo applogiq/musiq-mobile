@@ -6,9 +6,9 @@ import '../../../common_widgets/app_bar.dart';
 import '../../../common_widgets/buttons/custom_elevated_button.dart';
 import '../../../common_widgets/text_field/custom_password_text_field.dart';
 import '../../../common_widgets/text_field/custom_text_field.dart';
-import '../../../constants/string.dart';
-import '../../../constants/style.dart';
-import '../../../utils/size_config.dart';
+import '../../../core/constants/string.dart';
+import '../../../core/constants/style.dart';
+import '../../../core/utils/size_config.dart';
 import '../../common/screen/offline_screen.dart';
 import '../provider/register_provider.dart';
 

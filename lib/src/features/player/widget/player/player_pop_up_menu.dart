@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../constants/constant.dart';
+import '../../../../core/constants/constant.dart';
 import '../../../common/provider/pop_up_provider.dart';
 import '../../domain/model/player_song_list_model.dart';
 

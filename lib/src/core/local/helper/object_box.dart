@@ -1,8 +1,8 @@
-import 'package:musiq/src/local/model/user_model.dart';
+import 'package:musiq/src/core/local/model/user_model.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
-import '../../../objectbox.g.dart';
+import '../../../../objectbox.g.dart';
 import '../model/favourite_model.dart';
 import '../model/queue_model.dart';
 import '../model/search_model.dart';

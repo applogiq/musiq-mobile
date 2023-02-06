@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/constants/constant.dart';
+import 'package:musiq/src/core/constants/constant.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/loader.dart';

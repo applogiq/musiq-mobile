@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../common_widgets/model/bottom_nav_model.dart';
-import '../../../constants/color.dart';
+import '../../../core/constants/color.dart';
 import '../../home/screens/home_screen.dart';
 import '../../library/screens/library.dart';
 import '../../profile/screens/profile_screen.dart';

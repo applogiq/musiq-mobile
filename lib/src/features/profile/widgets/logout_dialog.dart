@@ -5,9 +5,9 @@ import 'package:musiq/src/features/common/screen/onboarding_screen.dart';
 import 'package:musiq/src/features/player/provider/player_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../../utils/auth.dart';
-import '../../../utils/navigation.dart';
-import '../../../utils/size_config.dart';
+import '../../../core/utils/auth.dart';
+import '../../../core/utils/navigation.dart';
+import '../../../core/utils/size_config.dart';
 import '../../auth/provider/register_provider.dart';
 
 showAlertDialog(BuildContext context) {

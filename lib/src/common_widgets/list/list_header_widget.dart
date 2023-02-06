@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../constants/constant.dart';
+import '../../core/constants/constant.dart';
 
 class ListHeaderWidget extends StatelessWidget {
   const ListHeaderWidget(

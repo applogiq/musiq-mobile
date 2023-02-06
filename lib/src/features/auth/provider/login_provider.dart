@@ -4,12 +4,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:musiq/src/constants/string.dart';
+import 'package:musiq/src/core/constants/string.dart';
 import 'package:musiq/src/features/common/screen/main_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../objectbox.g.dart';
-import '../../../utils/validation.dart';
+import '../../../core/utils/validation.dart';
 import '../../common/provider/bottom_navigation_bar_provider.dart';
 import '../domain/models/user_model.dart';
 import '../domain/repository/auth_repo.dart';

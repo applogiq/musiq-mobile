@@ -3,7 +3,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../constants/constant.dart';
+import '../../../../core/constants/constant.dart';
 import '../../../../core/package/miniplayer/miniplayer.dart';
 import '../../../home/provider/artist_view_all_provider.dart';
 import '../../domain/model/player_song_list_model.dart';

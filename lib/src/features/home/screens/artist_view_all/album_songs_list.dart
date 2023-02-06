@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/container/custom_color_container.dart';
-import '../../../../constants/color.dart';
-import '../../../../constants/style.dart';
-import '../../../../routing/route_name.dart';
-import '../../../../utils/url_generate.dart';
-import '../../../../utils/navigation.dart';
+import '../../../../core/constants/color.dart';
+import '../../../../core/constants/style.dart';
+import '../../../../core/routing/route_name.dart';
+import '../../../../core/utils/navigation.dart';
+import '../../../../core/utils/url_generate.dart';
 import '../../../player/domain/model/player_song_list_model.dart';
 import '../../../player/provider/player_provider.dart';
 import '../../provider/artist_view_all_provider.dart';
@@ -61,8 +61,8 @@ class AlbumSongsList extends StatelessWidget {
                     title: record.songName.toString(),
                     imageUrl:
                         generateSongImageUrl(record.albumName, record.albumId),
-                    musicDirectorName:
-                        record.musicDirectorName![0].toString()));
+                    musicDirectorName: record.musicDirectorName![0].toString(),
+                    duration: record.duration));
               }
               context
                   .read<PlayerProvider>()
@@ -139,7 +139,8 @@ class AlbumSongsList extends StatelessWidget {
                                           record[index]!.albumId),
                                       musicDirectorName: record[index]!
                                           .musicDirectorName![0]
-                                          .toString());
+                                          .toString(),
+                                      duration: record[index]!.duration);
                               return [
                                 _buildPopupMenuItem('Add to Favourites',
                                     playerSongListModel, context),

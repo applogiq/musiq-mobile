@@ -1,8 +1,8 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../../../../base_service/network/base_api_services.dart';
-import '../../../../base_service/network/network_api_service.dart';
-import '../../../../constants/api.dart';
+import '../../../../core/base_service/network/base_api_services.dart';
+import '../../../../core/base_service/network/network_api_service.dart';
+import '../../../../core/constants/api.dart';
 
 class ProfileRepository {
   BaseApiServices apiServices = NetworkApiService();

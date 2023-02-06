@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../../../../common_widgets/container/custom_color_container.dart';
-import '../../../../constants/constant.dart';
+import '../../../../core/constants/constant.dart';
 import '../../domain/model/player_song_list_model.dart';
 import 'up_next_widgets.dart';
 

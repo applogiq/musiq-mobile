@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/loader.dart';
-import '../../../../constants/string.dart';
+import '../../../../core/constants/string.dart';
 import '../../../common/screen/no_song_screen.dart';
 import '../../provider/library_provider.dart';
 import '../../widgets/playlist/playlist_widgets.dart';

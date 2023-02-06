@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/loader.dart';
-import '../../../constants/color.dart';
-import '../../../utils/size_config.dart';
+import '../../../core/constants/color.dart';
+import '../../../core/utils/size_config.dart';
 import '../provider/player_provider.dart';
 import '../widget/song_info/song_info.dart';
 

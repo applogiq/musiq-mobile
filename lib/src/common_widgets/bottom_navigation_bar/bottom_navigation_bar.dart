@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../constants/color.dart';
+import '../../core/constants/color.dart';
 import '../../features/common/provider/bottom_navigation_bar_provider.dart';
 import 'bottom_nav_item.dart';
 

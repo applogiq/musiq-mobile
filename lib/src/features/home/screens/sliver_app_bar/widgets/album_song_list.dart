@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/constants/constant.dart';
-import 'package:musiq/src/features/common/provider/pop_up_provider.dart';
+import 'package:musiq/src/core/constants/constant.dart';
+import 'package:musiq/src/features/home/screens/sliver_app_bar/widgets/song_list_tile.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../common_widgets/container/custom_color_container.dart';
-import '../../../../../enums/view_all_status.dart';
-import '../../../../../routing/route_name.dart';
-import '../../../../../utils/navigation.dart';
-import '../../../../../utils/url_generate.dart';
+import '../../../../../core/enums/view_all_status.dart';
+import '../../../../../core/routing/route_name.dart';
+import '../../../../../core/utils/navigation.dart';
+import '../../../../../core/utils/url_generate.dart';
 import '../../../../player/domain/model/player_song_list_model.dart';
 import '../../../../player/provider/player_provider.dart';
 import '../../../../search/provider/search_provider.dart';
@@ -148,6 +148,26 @@ class AlbumSongsList extends StatelessWidget {
     }
   }
 
+  getDuration(ViewAllStatus status, int index) {
+    switch (status) {
+      case ViewAllStatus.newRelease:
+        return newReleaseModel!.records[index].duration;
+
+      case ViewAllStatus.recentlyPlayed:
+        return recentlyPlayed!.records[index][0].duration;
+      case ViewAllStatus.trendingHits:
+        return trendingHitsModel!.records[index].duration;
+      case ViewAllStatus.album:
+        return albumSongListModel!.records[index].duration;
+      case ViewAllStatus.aura:
+        return auraSongListModel!.records[index].duration;
+      case ViewAllStatus.artist:
+        return collectionViewAllModel!.records[index]!.duration;
+      default:
+        return "0";
+    }
+  }
+
   getAlbumName(ViewAllStatus status, int index) {
     switch (status) {
       case ViewAllStatus.newRelease:
@@ -186,447 +206,10 @@ class AlbumSongsList extends StatelessWidget {
             musicDirectorName: getMusicDirectorName(status, index),
             songName: getSongName(status, index),
             songId: getSongId(status, index),
+            duration: getDuration(status, index),
           ),
         );
       }),
-    );
-  }
-}
-
-class SongPlayListTile extends StatelessWidget {
-  const SongPlayListTile({
-    super.key,
-    required this.imageUrl,
-    required this.songName,
-    required this.musicDirectorName,
-    required this.songId,
-    required this.albumName,
-    required this.isAdded,
-    required this.playlistId,
-  });
-
-  final String albumName;
-  final String imageUrl;
-  final bool isAdded;
-  final String musicDirectorName;
-  final int songId;
-  final int playlistId;
-  final String songName;
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-        decoration: const BoxDecoration(
-          color: CustomColor.bg,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: CustomColorContainer(
-                  child: Stack(
-                    children: [
-                      Image.network(
-                        imageUrl,
-                        height: 70,
-                        width: 70,
-                        fit: BoxFit.cover,
-                      ),
-                      isAdded
-                          ? Positioned.fill(
-                              child: ColoredBox(
-                                  color: Colors.black.withOpacity(0.8),
-                                  child: const Icon(Icons.check)))
-                          : const SizedBox.shrink()
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                  flex: 8,
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          songName,
-                          style: fontWeight400(),
-                        ),
-                        Text(
-                          musicDirectorName,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: fontWeight400(
-                              size: 12.0, color: CustomColor.subTitle),
-                        ),
-                      ],
-                    ),
-                  )),
-              isAdded
-                  ? const SizedBox.shrink()
-                  : Expanded(
-                      child: IconButton(
-                        icon: const Icon(Icons.add),
-                        onPressed: () {
-                          context
-                              .read<SearchProvider>()
-                              .addSongToPlaylist(songId, playlistId);
-                        },
-                      ),
-                    )
-            ],
-          ),
-        ));
-  }
-}
-
-class SongListTile extends StatelessWidget {
-  const SongListTile({
-    super.key,
-    required this.imageUrl,
-    required this.songName,
-    required this.musicDirectorName,
-    required this.songId,
-    required this.albumName,
-  });
-
-  final String albumName;
-  final String imageUrl;
-  final String musicDirectorName;
-  final int songId;
-  final String songName;
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-        decoration: const BoxDecoration(
-          color: CustomColor.bg,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: CustomColorContainer(
-                  child: Image.network(
-                    imageUrl,
-                    height: 70,
-                    width: 70,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Expanded(
-                  flex: 8,
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          songName,
-                          style: fontWeight400(),
-                        ),
-                        Text(
-                          musicDirectorName,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: fontWeight400(
-                              size: 12.0, color: CustomColor.subTitle),
-                        ),
-                      ],
-                    ),
-                  )),
-              Expanded(
-                  child: PopupMenuButton<int>(
-                color: CustomColor.appBarColor,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(8.0),
-                    bottomRight: Radius.circular(8.0),
-                    topLeft: Radius.circular(8.0),
-                    topRight: Radius.circular(8.0),
-                  ),
-                ),
-                onSelected: (value) {
-                  switch (value) {
-                    case 1:
-                      context.read<PlayerProvider>().addFavourite(songId);
-                      break;
-                    case 2:
-                      Navigation.navigateToScreen(
-                          context, RouteName.addPlaylist,
-                          args: songId.toString());
-                      break;
-
-                    case 3:
-                      PlayerSongListModel playerSongListModel =
-                          PlayerSongListModel(
-                              id: songId,
-                              albumName: albumName,
-                              title: songName,
-                              imageUrl: imageUrl,
-                              musicDirectorName: musicDirectorName);
-                      context
-                          .read<PlayerProvider>()
-                          .queuePlayNext(playerSongListModel);
-                      break;
-                    case 4:
-                      PlayerSongListModel playerSongListModel =
-                          PlayerSongListModel(
-                              id: songId,
-                              albumName: albumName,
-                              title: songName,
-                              imageUrl: imageUrl,
-                              musicDirectorName: musicDirectorName);
-                      Navigation.navigateToScreen(context, RouteName.songInfo,
-                          args: playerSongListModel);
-                      break;
-                    case 5:
-                      PlayerSongListModel playerSongListModel =
-                          PlayerSongListModel(
-                              id: songId,
-                              albumName: albumName,
-                              title: songName,
-                              imageUrl: imageUrl,
-                              musicDirectorName: musicDirectorName);
-                      // Navigation.navigateToScreen(context, RouteName.songInfo,
-                      //     args: playerSongListModel);
-                      context.read<PlayerProvider>().addQueueToLocalDb(
-                            playerSongListModel,
-                          );
-                      break;
-                  }
-                },
-                itemBuilder: (BuildContext context) {
-                  return [
-                    const PopupMenuItem(
-                      value: 1,
-                      child: Text('Add to Favourites'),
-                    ),
-                    const PopupMenuItem(
-                      value: 2,
-                      child: Text('Add to Playlist'),
-                    ),
-                    const PopupMenuItem(
-                      value: 5,
-                      child: Text('Add to Queue'),
-                    ),
-                    const PopupMenuItem(
-                      value: 3,
-                      child: Text('Play next'),
-                    ),
-                    const PopupMenuItem(
-                      value: 4,
-                      child: Text('Song info'),
-                    ),
-                  ];
-                },
-              ))
-              // Expanded(
-              //     child: Padding(
-              //   padding: const EdgeInsets.only(right: 0.0),
-              //   child: Align(
-              //     alignment: Alignment.centerRight,
-              //     child: PopupMenuButton(
-              // color: CustomColor.appBarColor,
-              // shape: const RoundedRectangleBorder(
-              //   borderRadius: BorderRadius.only(
-              //     bottomLeft: Radius.circular(8.0),
-              //     bottomRight: Radius.circular(8.0),
-              //     topLeft: Radius.circular(8.0),
-              //     topRight: Radius.circular(8.0),
-              //   ),
-              // ),
-              //       // onSelected: (value) {
-              //       //   _onMenuItemSelected(value as int);
-              //       // },
-              //       itemBuilder: (ctx) {
-              //         PlayerSongListModel playerSongListModel =
-              //             PlayerSongListModel(
-              //                 id: record[index]!.id,
-              //                 albumName: record[index]!.albumName,
-              //                 title: record[index]!.songName,
-              //                 imageUrl: generateSongImageUrl(
-              //                     record[index]!.albumName,
-              //                     record[index]!.albumId),
-              //                 musicDirectorName: record[index]!
-              //                     .musicDirectorName![0]
-              //                     .toString());
-              //         return [
-              //           _buildPopupMenuItem('Add to Favourites',
-              //               playerSongListModel, context),
-              //           _buildPopupMenuItem('Add to Playlist',
-              //               playerSongListModel, context),
-              //           _buildPopupMenuItem(
-              //               'Play next', playerSongListModel, context),
-              //           _buildPopupMenuItem('Add to queue',
-              //               playerSongListModel, context),
-              //           _buildPopupMenuItem(
-              //               'Song info', playerSongListModel, context),
-              //         ];
-              //       },
-              //     ),
-              //   ),
-              // ))
-            ],
-          ),
-        ));
-  }
-}
-
-class PlaylistSongListTile extends StatelessWidget {
-  const PlaylistSongListTile({
-    super.key,
-    required this.imageUrl,
-    required this.songName,
-    required this.musicDirectorName,
-    required this.songId,
-    required this.albumName,
-    required this.playlistSongId,
-    required this.playlistId,
-  });
-
-  final String albumName;
-  final String imageUrl;
-  final String musicDirectorName;
-  final int songId;
-  final String songName;
-  final int playlistSongId;
-  final int playlistId;
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: const BoxDecoration(
-        color: CustomColor.bg,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: CustomColorContainer(
-                child: Image.network(
-                  imageUrl,
-                  height: 70,
-                  width: 70,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 8,
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      songName,
-                      style: fontWeight400(),
-                    ),
-                    Text(
-                      musicDirectorName,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: fontWeight400(
-                          size: 12.0, color: CustomColor.subTitle),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              child: PopupMenuButton<int>(
-                color: CustomColor.appBarColor,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(8.0),
-                    bottomRight: Radius.circular(8.0),
-                    topLeft: Radius.circular(8.0),
-                    topRight: Radius.circular(8.0),
-                  ),
-                ),
-                onSelected: (value) {
-                  switch (value) {
-                    case PopUpConstants.addToFavourites:
-                      context
-                          .read<PopUpProvider>()
-                          .addToFavourites(songId, context);
-                      break;
-                    case PopUpConstants.playNext:
-                      PlayerSongListModel playerSongListModel =
-                          PlayerSongListModel(
-                              id: songId,
-                              albumName: albumName,
-                              title: songName,
-                              imageUrl: imageUrl,
-                              musicDirectorName: musicDirectorName);
-                      context
-                          .read<PopUpProvider>()
-                          .playNext(playerSongListModel, context);
-                      break;
-                    case PopUpConstants.addToQueue:
-                      PlayerSongListModel playerSongListModel =
-                          PlayerSongListModel(
-                              id: songId,
-                              albumName: albumName,
-                              title: songName,
-                              imageUrl: imageUrl,
-                              musicDirectorName: musicDirectorName);
-                      context
-                          .read<PopUpProvider>()
-                          .addToQueue(playerSongListModel, context);
-                      break;
-                    case PopUpConstants.removePlaylist:
-                      context.read<PopUpProvider>().removeSongFromPlaylist(
-                          playlistSongId, context, playlistId);
-                      break;
-                    case PopUpConstants.songInfo:
-                      context
-                          .read<PopUpProvider>()
-                          .goToSongInfo(songId, context);
-                      break;
-                  }
-                },
-                itemBuilder: (BuildContext context) {
-                  return [
-                    const PopupMenuItem(
-                      value: PopUpConstants.addToFavourites,
-                      child: Text(ConstantText.addFavourites),
-                    ),
-                    const PopupMenuItem(
-                      value: PopUpConstants.playNext,
-                      child: Text(ConstantText.playNext),
-                    ),
-                    const PopupMenuItem(
-                      value: PopUpConstants.addToQueue,
-                      child: Text(ConstantText.addToQueue),
-                    ),
-                    const PopupMenuItem(
-                      value: PopUpConstants.removePlaylist,
-                      child: Text(ConstantText.remove),
-                    ),
-                    const PopupMenuItem(
-                      value: PopUpConstants.songInfo,
-                      child: Text(ConstantText.songInfo),
-                    ),
-                  ];
-                },
-              ),
-            )
-          ],
-        ),
-      ),
     );
   }
 }

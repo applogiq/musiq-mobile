@@ -5,9 +5,9 @@ import 'package:provider/provider.dart';
 
 import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../common_widgets/loader.dart';
-import '../../../constants/string.dart';
+import '../../../core/constants/string.dart';
 import '../../../core/package/crop/crop_your_image.dart';
-import '../../../utils/size_config.dart';
+import '../../../core/utils/size_config.dart';
 import '../provider/profile_provider.dart';
 
 class ImageCrop extends StatefulWidget {

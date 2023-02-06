@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants/color.dart';
+import '../../../core/constants/color.dart';
 import 'favourite_screen.dart';
 import 'playlist/playlists_screen.dart';
 

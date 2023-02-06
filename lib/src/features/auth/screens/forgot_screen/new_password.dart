@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 import '../../../../common_widgets/box/vertical_box.dart';
 import '../../../../common_widgets/buttons/custom_button.dart';
 import '../../../../common_widgets/text_field/custom_password_text_field.dart';
-import '../../../../constants/string.dart';
-import '../../../../constants/style.dart';
+import '../../../../core/constants/string.dart';
+import '../../../../core/constants/style.dart';
 import '../../../common/screen/offline_screen.dart';
 import '../../provider/forgot_password_provider.dart';
 

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/utils/url_generate.dart';
+import 'package:musiq/src/core/utils/url_generate.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/container/custom_color_container.dart';
 import '../../../../common_widgets/image/no_artist.dart';
-import '../../../../constants/color.dart';
-import '../../../../constants/style.dart';
+import '../../../../core/constants/color.dart';
+import '../../../../core/constants/style.dart';
 import '../../provider/artist_provider.dart';
 
 class ArtistPreferenceScreenBody extends StatelessWidget {

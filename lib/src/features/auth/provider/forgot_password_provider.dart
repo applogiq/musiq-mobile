@@ -7,12 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:musiq/src/features/auth/domain/repository/auth_repo.dart';
 import 'package:musiq/src/features/auth/provider/login_provider.dart';
 import 'package:musiq/src/features/auth/screens/login_screen.dart';
-import 'package:musiq/src/routing/route_name.dart';
-import 'package:musiq/src/utils/navigation.dart';
-import 'package:musiq/src/utils/validation.dart';
+import 'package:musiq/src/core/routing/route_name.dart';
+import 'package:musiq/src/core/utils/navigation.dart';
+import 'package:musiq/src/core/utils/validation.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants/string.dart';
+import '../../../core/constants/string.dart';
 
 class ForgotPasswordProvider extends ChangeNotifier with InputValidationMixin {
   String confirmPassword = "";

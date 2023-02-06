@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/routing/route.dart';
-import 'package:musiq/src/routing/route_name.dart';
+import 'package:musiq/src/core/routing/route.dart';
+import 'package:musiq/src/core/routing/route_name.dart';
 import 'package:provider/provider.dart';
 
-import 'config/theme.dart';
+import 'core/config/theme.dart';
 import 'core/provider_list.dart';
 
 class MyApp extends StatelessWidget {

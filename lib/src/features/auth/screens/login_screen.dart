@@ -3,7 +3,7 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/image/auth_background.dart';
-import '../../../utils/size_config.dart';
+import '../../../core/utils/size_config.dart';
 import '../../common/screen/offline_screen.dart';
 import '../provider/login_provider.dart';
 import '../widgets/login/login_form.dart';

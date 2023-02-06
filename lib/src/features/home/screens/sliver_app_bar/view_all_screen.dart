@@ -3,11 +3,11 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/loader.dart';
-import '../../../../constants/color.dart';
-import '../../../../utils/url_generate.dart';
+import '../../../../core/constants/color.dart';
+import '../../../../core/utils/url_generate.dart';
 import '../../../common/screen/offline_screen.dart';
 import '../../provider/view_all_provider.dart';
-import '../../../../enums/view_all_status.dart';
+import '../../../../core/enums/view_all_status.dart';
 import 'widgets/album_song_list.dart';
 import 'widgets/sliver_app_bar.dart';
 

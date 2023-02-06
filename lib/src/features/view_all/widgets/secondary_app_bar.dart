@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants/color.dart';
-import '../../../utils/url_generate.dart';
+import '../../../core/constants/color.dart';
+import '../../../core/utils/url_generate.dart';
 import '../../home/provider/artist_view_all_provider.dart';
 import '../../player/domain/model/player_song_list_model.dart';
 import '../../player/provider/player_provider.dart';
@@ -110,7 +110,8 @@ class FixedAppBar extends StatelessWidget {
                               imageUrl: generateSongImageUrl(
                                   record.albumName, record.albumId),
                               musicDirectorName:
-                                  record.musicDirectorName![0].toString()));
+                                  record.musicDirectorName![0].toString(),
+                              duration: record.duration));
                         }
                         context
                             .read<PlayerProvider>()

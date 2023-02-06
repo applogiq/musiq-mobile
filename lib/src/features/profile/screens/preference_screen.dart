@@ -5,8 +5,8 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/app_bar.dart';
-import '../../../constants/color.dart';
-import '../../../routing/route_name.dart';
+import '../../../core/constants/color.dart';
+import '../../../core/routing/route_name.dart';
 import '../../common/screen/offline_screen.dart';
 
 class PreferenceScreen extends StatelessWidget {

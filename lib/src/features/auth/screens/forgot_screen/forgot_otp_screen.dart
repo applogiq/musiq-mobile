@@ -5,11 +5,11 @@ import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/box/vertical_box.dart';
 import '../../../../common_widgets/buttons/custom_button.dart';
-import '../../../../constants/color.dart';
-import '../../../../constants/string.dart';
-import '../../../../constants/style.dart';
+import '../../../../core/constants/color.dart';
+import '../../../../core/constants/string.dart';
+import '../../../../core/constants/style.dart';
 import '../../../../core/package/otp_package/pinput.dart';
-import '../../../../utils/size_config.dart';
+import '../../../../core/utils/size_config.dart';
 import '../../../common/screen/offline_screen.dart';
 import '../../provider/forgot_password_provider.dart';
 

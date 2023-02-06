@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/container/custom_color_container.dart';
 import '../../../../common_widgets/image/no_artist.dart';
-import '../../../../constants/constant.dart';
-import '../../../../utils/url_generate.dart';
+import '../../../../core/constants/constant.dart';
+import '../../../../core/utils/url_generate.dart';
 import '../../provider/player_provider.dart';
 
 class SongInfoArtistListView extends StatelessWidget {

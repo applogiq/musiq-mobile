@@ -5,18 +5,18 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:musiq/src/core/utils/url_generate.dart';
 import 'package:musiq/src/features/library/domain/library_repo.dart';
 import 'package:musiq/src/features/library/domain/models/favourite_model.dart';
 import 'package:musiq/src/features/library/domain/models/playlist_model.dart';
 import 'package:musiq/src/features/library/domain/models/playlist_song_list_model.dart';
 import 'package:musiq/src/features/player/domain/model/player_song_list_model.dart';
 import 'package:musiq/src/features/player/provider/player_provider.dart';
-import 'package:musiq/src/utils/url_generate.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants/string.dart';
-import '../../../routing/route_name.dart';
-import '../../../utils/navigation.dart';
+import '../../../core/constants/string.dart';
+import '../../../core/routing/route_name.dart';
+import '../../../core/utils/navigation.dart';
 
 class LibraryProvider extends ChangeNotifier {
   bool isFavouriteLoad = true;
@@ -175,7 +175,8 @@ class LibraryProvider extends ChangeNotifier {
             albumName: element.albumName,
             title: element.songName,
             imageUrl: generateSongImageUrl(element.albumName, element.albumId),
-            musicDirectorName: element.musicDirectorName[0]));
+            musicDirectorName: element.musicDirectorName[0],
+            duration: element.duration));
       }
       context.read<PlayerProvider>().addSongToQueueSongList(playSongListModel);
     }
@@ -210,7 +211,8 @@ class LibraryProvider extends ChangeNotifier {
             albumName: element.albumName,
             title: element.songName,
             imageUrl: generateSongImageUrl(element.albumName, element.albumId),
-            musicDirectorName: element.musicDirectorName[0]));
+            musicDirectorName: element.musicDirectorName[0],
+            duration: element.duration));
       }
       context
           .read<PlayerProvider>()
@@ -227,7 +229,8 @@ class LibraryProvider extends ChangeNotifier {
           albumName: element.albumName,
           title: element.songName,
           imageUrl: generateSongImageUrl(element.albumName, element.albumId),
-          musicDirectorName: element.musicDirectorName[0]));
+          musicDirectorName: element.musicDirectorName[0],
+          duration: element.duration));
       context
           .read<PlayerProvider>()
           .goToPlayer(context, playSongListModel, index);

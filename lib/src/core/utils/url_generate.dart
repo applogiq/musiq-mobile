@@ -1,4 +1,4 @@
-import '../constants/api.dart';
+import 'package:musiq/src/core/constants/api.dart';
 
 //?Generate artist image url using artist id
 generateArtistImageUrl(artistId) {

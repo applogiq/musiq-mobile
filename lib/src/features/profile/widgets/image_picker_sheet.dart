@@ -3,8 +3,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/empty_box.dart';
-import '../../../constants/color.dart';
-import '../../../constants/style.dart';
+import '../../../core/constants/color.dart';
+import '../../../core/constants/style.dart';
 import '../provider/profile_provider.dart';
 
 class ImagePickerSheet extends StatelessWidget {

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../constants/color.dart';
-import '../../../constants/images.dart';
-import '../../../constants/style.dart';
+import '../../../core/constants/color.dart';
+import '../../../core/constants/images.dart';
+import '../../../core/constants/style.dart';
 
 class NoSongScreen extends StatelessWidget {
   const NoSongScreen({

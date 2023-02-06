@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/buttons/custom_button.dart';
 import '../../../../common_widgets/container/empty_box.dart';
-import '../../../../constants/constant.dart';
-import '../../../../utils/size_config.dart';
+import '../../../../core/constants/constant.dart';
+import '../../../../core/utils/size_config.dart';
 import '../../provider/login_provider.dart';
 
 class LoginButton extends StatelessWidget {

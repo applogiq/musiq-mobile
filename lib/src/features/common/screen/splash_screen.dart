@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../../common_widgets/image/logo_image.dart';
-import '../../../constants/images.dart';
-import '../../../routing/route_name.dart';
-import '../../../utils/navigation.dart';
+import '../../../core/constants/images.dart';
+import '../../../core/routing/route_name.dart';
+import '../../../core/utils/navigation.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);

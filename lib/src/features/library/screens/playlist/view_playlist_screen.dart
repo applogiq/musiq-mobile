@@ -3,10 +3,10 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/loader.dart';
-import '../../../../constants/color.dart';
-import '../../../../utils/url_generate.dart';
+import '../../../../core/constants/color.dart';
+import '../../../../core/utils/url_generate.dart';
 import '../../../common/screen/offline_screen.dart';
-import '../../../home/screens/sliver_app_bar/widgets/album_song_list.dart';
+import '../../../home/screens/sliver_app_bar/widgets/playlist_song_tile.dart';
 import '../../../home/screens/sliver_app_bar/widgets/sliver_app_bar.dart';
 import '../../provider/library_provider.dart';
 import '../../widgets/playlist/no_song_playlist.dart';
@@ -144,6 +144,8 @@ class _ViewPlaylistSongScreenState extends State<ViewPlaylistSongScreen> {
                                                 playlistSongId: records[index]
                                                     .playlistSongs
                                                     .id,
+                                                duration:
+                                                    records[index].duration,
                                               ),
                                             );
                                           },
@@ -154,125 +156,6 @@ class _ViewPlaylistSongScreenState extends State<ViewPlaylistSongScreen> {
                                 ],
                               ),
                             );
-
-                  // return FutureBuilder(
-                  //     future: pro.getPlayListSongList(widget.id!),
-                  //     builder: (context, snapshot) {
-                  //       if (snapshot.connectionState ==
-                  //           ConnectionState.waiting) {
-                  //         return const LoaderScreen();
-                  //       } else {
-                  //         return pro.playlistSongListModel.records.isEmpty
-                  //             ? NoPlaylistSong(
-                  //                 appBarTitle: widget.title!,
-                  //                 playListId: widget.id.toString(),
-                  //                 popUpMenu: ViewAllPlaylistPopUpMenu(
-                  //                   id: widget.id!,
-                  //                   title: widget.title!,
-                  //                 ),
-                  //               )
-                  //             : DecoratedBox(
-                  //                 decoration: const BoxDecoration(
-                  //                   gradient: LinearGradient(
-                  //                       begin: Alignment.topCenter,
-                  //                       end: Alignment.bottomCenter,
-                  //                       colors: [
-                  //                         Colors.black,
-                  //                         Colors.black,
-                  //                       ],
-                  //                       stops: [
-                  //                         0,
-                  //                         0.7
-                  //                       ]),
-                  //                 ),
-                  //                 child: Stack(
-                  //                   children: [
-                  //                     CustomScrollView(
-                  //                       controller: scrollController,
-                  //                       slivers: [
-                  //                         SliverCustomAppBar(
-                  //                             popUpMenu:
-                  //                                 ViewAllPlaylistPopUpMenu(
-                  //                               id: widget.id!,
-                  //                               title: widget.title!,
-                  //                             ),
-                  //                             maxAppBarHeight: maxAppBarHeight,
-                  //                             minAppBarHeight: minAppBarHeight,
-                  //                             title: widget.title!,
-                  //                             songCounts: pro
-                  //                                 .playlistSongListModel
-                  //                                 .records
-                  //                                 .length,
-                  //                             callback: () {
-                  //                               context
-                  //                                   .read<LibraryProvider>()
-                  //                                   .navigateToPlayerScreen(
-                  //                                       context, widget.id!);
-                  //                             },
-                  //                             imageUrl: generateSongImageUrl(
-                  //                                     pro.playlistSongListModel
-                  //                                         .records[0].albumName,
-                  //                                     pro
-                  //                                         .playlistSongListModel
-                  //                                         .records[0]
-                  //                                         .albumId) ??
-                  //                                 "",
-                  //                             addToQueue: () {}),
-                  //                         SliverList(
-                  //                           delegate:
-                  //                               SliverChildBuilderDelegate(
-                  //                             childCount: pro
-                  //                                 .playlistSongListModel
-                  //                                 .records
-                  //                                 .length,
-                  //                             (context, index) {
-                  //                               var records = pro
-                  //                                   .playlistSongListModel
-                  //                                   .records;
-                  //                               return InkWell(
-                  //                                 onTap: () {
-                  //                                   context
-                  //                                       .read<LibraryProvider>()
-                  //                                       .navigateToPlayerScreen(
-                  //                                           context, widget.id!,
-                  //                                           index: index);
-                  //                                 },
-                  //                                 child: PlaylistSongListTile(
-                  //                                   playlistId: records[index]
-                  //                                       .playlistSongs
-                  //                                       .playlistId,
-                  //                                   albumName: records[index]
-                  //                                       .albumName,
-                  //                                   imageUrl:
-                  //                                       generateSongImageUrl(
-                  //                                           records[index]
-                  //                                               .albumName,
-                  //                                           records[index]
-                  //                                               .albumId),
-                  //                                   musicDirectorName: records[
-                  //                                           index]
-                  //                                       .musicDirectorName[0],
-                  //                                   songName:
-                  //                                       records[index].songName,
-                  //                                   songId: records[index]
-                  //                                       .playlistSongs
-                  //                                       .songId,
-                  //                                   playlistSongId:
-                  //                                       records[index]
-                  //                                           .playlistSongs
-                  //                                           .id,
-                  //                                 ),
-                  //                               );
-                  //                             },
-                  //                           ),
-                  //                         ),
-                  //                       ],
-                  //                     ),
-                  //                   ],
-                  //                 ),
-                  //               );
-                  //       }
-                  //     });
                 },
               ),
             ),

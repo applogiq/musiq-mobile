@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants/constant.dart';
-import '../../../utils/url_generate.dart';
+import '../../../core/constants/constant.dart';
+import '../../../core/utils/url_generate.dart';
 import '../../player/widget/player/player_widgets.dart';
 import '../domain/model/trending_hits_model.dart';
 import '../provider/view_all_provider.dart';
 import '../screens/sliver_app_bar/view_all_screen.dart';
-import '../../../enums/view_all_status.dart';
+import '../../../core/enums/view_all_status.dart';
 
 class TrendingHitsWidget extends StatelessWidget {
   const TrendingHitsWidget({

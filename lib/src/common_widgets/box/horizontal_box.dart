@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/size_config.dart';
+import '../../core/utils/size_config.dart';
 
 class HorizontalBox extends StatelessWidget {
   const HorizontalBox({

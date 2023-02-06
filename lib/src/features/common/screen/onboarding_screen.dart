@@ -5,11 +5,11 @@ import '../../../common_widgets/buttons/text_with_button.dart';
 import '../../../common_widgets/image/auth_background.dart';
 import '../../../common_widgets/image/logo_image.dart';
 import '../../../common_widgets/text/center_text.dart';
-import '../../../constants/color.dart';
-import '../../../constants/images.dart';
-import '../../../constants/string.dart';
-import '../../../routing/route_name.dart';
-import '../../../utils/navigation.dart';
+import '../../../core/constants/color.dart';
+import '../../../core/constants/images.dart';
+import '../../../core/constants/string.dart';
+import '../../../core/routing/route_name.dart';
+import '../../../core/utils/navigation.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({Key? key}) : super(key: key);

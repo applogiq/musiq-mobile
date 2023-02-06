@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../constants/color.dart';
+import '../../../core/constants/color.dart';
 import '../provider/home_provider.dart';
 import '../../search/provider/search_provider.dart';
-import '../../../enums/search_status.dart';
+import '../../../core/enums/search_status.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';

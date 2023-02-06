@@ -11,3 +11,15 @@ String detailedDuration(String duration) {
     return "";
   }
 }
+
+int totalDuration(String time) {
+  List durationList = time.split(":");
+
+  Duration duration = Duration(
+    hours: int.parse(durationList[0]),
+    minutes: int.parse(durationList[1]),
+    seconds: int.parse(durationList[2]),
+  );
+  int milliseconds = duration.inMilliseconds;
+  return milliseconds;
+}

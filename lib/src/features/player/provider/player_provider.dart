@@ -7,6 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musiq/main.dart';
+import 'package:musiq/src/core/local/model/favourite_model.dart';
+import 'package:musiq/src/core/local/model/queue_model.dart';
+import 'package:musiq/src/core/routing/route_name.dart';
+import 'package:musiq/src/core/utils/navigation.dart';
+import 'package:musiq/src/core/utils/toast_message.dart';
+import 'package:musiq/src/core/utils/url_generate.dart';
 import 'package:musiq/src/features/library/domain/models/favourite_model.dart';
 import 'package:musiq/src/features/library/provider/library_provider.dart';
 import 'package:musiq/src/features/player/domain/model/player_song_list_model.dart';
@@ -14,18 +20,12 @@ import 'package:musiq/src/features/player/domain/model/song_info_model.dart';
 import 'package:musiq/src/features/player/domain/repo/player_repo.dart';
 import 'package:musiq/src/features/player/provider/player_provider.dart';
 import 'package:musiq/src/features/view_all/domain/model/player_model.dart';
-import 'package:musiq/src/local/model/favourite_model.dart';
-import 'package:musiq/src/local/model/queue_model.dart';
-import 'package:musiq/src/routing/route_name.dart';
-import 'package:musiq/src/utils/navigation.dart';
-import 'package:musiq/src/utils/toast_message.dart';
-import 'package:musiq/src/utils/url_generate.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../objectbox.g.dart';
 import '../../../core/package/miniplayer/miniplayer.dart';
-import '../../../utils/audio_player_handler.dart';
+import '../../../core/utils/audio_player_handler.dart';
 import '../../home/provider/home_provider.dart';
 import '../../library/domain/library_repo.dart';
 import '../../library/domain/models/playlist_model.dart';
@@ -122,7 +122,8 @@ class PlayerProvider extends ChangeNotifier {
                   title: playerSongList[index].title,
                   musicDirectorName:
                       playerSongList[index].musicDirectorName.toString(),
-                  imageUrl: playerSongList[index].imageUrl)),
+                  imageUrl: playerSongList[index].imageUrl,
+                  duration: playerSongList[index].duration)),
         ),
       );
       await player.setAudioSource(
@@ -163,7 +164,8 @@ class PlayerProvider extends ChangeNotifier {
                 albumName: playerSongList.albumName,
                 title: playerSongList.title,
                 musicDirectorName: playerSongList.musicDirectorName.toString(),
-                imageUrl: playerSongList.imageUrl)),
+                imageUrl: playerSongList.imageUrl,
+                duration: playerSongList.duration)),
       ),
     );
     await player.setAudioSource(
@@ -209,7 +211,9 @@ class PlayerProvider extends ChangeNotifier {
                       playerModel
                           .collectionViewAllModel.records[index]!.albumName,
                       playerModel
-                          .collectionViewAllModel.records[index]!.albumId))),
+                          .collectionViewAllModel.records[index]!.albumId),
+                  duration: playerModel
+                      .collectionViewAllModel.records[index]!.duration)),
         ),
       ),
       initialIndex: playerModel.selectedSongIndex,
@@ -261,7 +265,8 @@ class PlayerProvider extends ChangeNotifier {
                   albumName: playerSongListModel.albumName,
                   title: playerSongListModel.title,
                   musicDirectorName: playerSongListModel.musicDirectorName,
-                  imageUrl: playerSongListModel.imageUrl)));
+                  imageUrl: playerSongListModel.imageUrl,
+                  duration: playerSongListModel.duration)));
     }
   }
 
@@ -275,7 +280,8 @@ class PlayerProvider extends ChangeNotifier {
             albumName: playerSongListModel.albumName,
             title: playerSongListModel.title,
             musicDirectorName: playerSongListModel.musicDirectorName,
-            imageUrl: playerSongListModel.imageUrl),
+            imageUrl: playerSongListModel.imageUrl,
+            duration: playerSongListModel.duration),
       ),
     );
   }
@@ -314,7 +320,7 @@ class PlayerProvider extends ChangeNotifier {
         }
       }
     });
-    player.setPreferredPeakBitRate(96);
+    player.setPreferredPeakBitRate(360);
   }
 
   seekDuration(value) {
@@ -379,7 +385,8 @@ class PlayerProvider extends ChangeNotifier {
           musicDirectorName: playerSongListModel.musicDirectorName,
           imageUrl: playerSongListModel.imageUrl,
           songUrl:
-              "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongListModel.id.toString()}");
+              "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongListModel.id.toString()}",
+          duration: playerSongListModel.duration);
       final box = store.box<SongListModel>();
 
       var res = box.getAll();
@@ -481,6 +488,7 @@ class PlayerProvider extends ChangeNotifier {
     List<SongListModel> songlist = [];
     for (var e in playerSongListModel) {
       songlist.add(SongListModel(
+          duration: e.duration,
           songId: e.id,
           albumName: e.albumName,
           title: e.title,
@@ -512,7 +520,8 @@ class PlayerProvider extends ChangeNotifier {
                 albumName: e.albumName,
                 title: e.title,
                 musicDirectorName: e.musicDirectorName,
-                imageUrl: e.imageUrl)));
+                imageUrl: e.imageUrl,
+                duration: e.duration)));
         songlist.add(SongListModel(
             songId: e.id,
             albumName: e.albumName,
@@ -520,7 +529,8 @@ class PlayerProvider extends ChangeNotifier {
             musicDirectorName: e.musicDirectorName,
             imageUrl: e.imageUrl,
             songUrl:
-                "https://api-musiq.applogiq.org/api/v1/audio?song_id=${e.id.toString()}"));
+                "https://api-musiq.applogiq.org/api/v1/audio?song_id=${e.id.toString()}",
+            duration: e.duration));
       }
       queueBox.putMany(songlist);
 
@@ -550,7 +560,8 @@ class PlayerProvider extends ChangeNotifier {
                   albumName: e.albumName,
                   title: e.title,
                   imageUrl: e.imageUrl,
-                  musicDirectorName: e.musicDirectorName));
+                  musicDirectorName: e.musicDirectorName,
+                  duration: e.duration));
             }
             playlist = ConcatenatingAudioSource(
               useLazyPreparation: true,
@@ -565,7 +576,8 @@ class PlayerProvider extends ChangeNotifier {
                         title: playerSongList[index].title,
                         musicDirectorName:
                             playerSongList[index].musicDirectorName.toString(),
-                        imageUrl: playerSongList[index].imageUrl)),
+                        imageUrl: playerSongList[index].imageUrl,
+                        duration: playerSongList[index].duration)),
               ),
             );
             await player.setAudioSource(
@@ -619,7 +631,8 @@ class PlayerProvider extends ChangeNotifier {
           albumName: e.albumName,
           title: e.title,
           imageUrl: e.imageUrl,
-          musicDirectorName: e.musicDirectorName));
+          musicDirectorName: e.musicDirectorName,
+          duration: e.duration));
       AudioPlayerHandler playerHandler = AudioPlayerHandler();
       playerHandler.setSongToPlayer(playerSongList.first);
     }

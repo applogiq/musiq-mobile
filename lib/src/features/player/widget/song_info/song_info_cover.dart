@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../constants/constant.dart';
-import '../../../../utils/url_generate.dart';
-import '../../../../utils/size_config.dart';
+import '../../../../core/constants/constant.dart';
+import '../../../../core/utils/url_generate.dart';
+import '../../../../core/utils/size_config.dart';
 import '../../provider/player_provider.dart';
 
 class SongInfoCover extends StatelessWidget {

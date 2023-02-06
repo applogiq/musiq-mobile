@@ -41,6 +41,7 @@ class Record {
     required this.albumName,
     required this.musicDirectorName,
     required this.isImage,
+    required this.duration,
   });
 
   final AuraSongs auraSongs;
@@ -50,12 +51,14 @@ class Record {
   final String albumName;
   final List<String> musicDirectorName;
   final bool isImage;
+  final String duration;
 
   factory Record.fromMap(Map<String, dynamic> json) => Record(
         auraSongs: AuraSongs.fromMap(json["aura_songs"]),
         songId: json["song_id"],
         songName: json["song_name"],
         albumId: json["album_id"],
+        duration: json["duration"],
         albumName: json["album_name"],
         musicDirectorName:
             List<String>.from(json["music_director_name"].map((x) => x)),
@@ -68,6 +71,7 @@ class Record {
         "song_name": songName,
         "album_id": albumId,
         "album_name": albumName,
+        "duration": duration,
         "music_director_name":
             List<dynamic>.from(musicDirectorName.map((x) => x)),
         "is_image": isImage,

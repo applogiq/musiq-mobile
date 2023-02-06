@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/box/vertical_box.dart';
-import '../../../../constants/constant.dart';
-import '../../../../utils/time.dart';
+import '../../../../core/constants/constant.dart';
+import '../../../../core/utils/time.dart';
 import '../../provider/player_provider.dart';
 import 'song_info.dart';
 

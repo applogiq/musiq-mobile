@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../constants/color.dart';
-import '../../constants/images.dart';
+import '../../core/constants/color.dart';
+import '../../core/constants/images.dart';
 
 class NoArtist extends StatelessWidget {
   const NoArtist({Key? key, this.height = 240, this.width = 200})

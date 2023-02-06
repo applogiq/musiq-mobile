@@ -7,7 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musiq/src/features/search/provider/search_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../../utils/navigation.dart';
+import '../../../core/utils/navigation.dart';
 import '../../auth/domain/models/user_model.dart';
 import '../../auth/domain/repository/auth_repo.dart';
 import '../../common/provider/bottom_navigation_bar_provider.dart';

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../utils/url_generate.dart';
+import '../../../core/utils/url_generate.dart';
 import '../../home/domain/model/song_search_model.dart';
-import '../../home/screens/sliver_app_bar/widgets/album_song_list.dart';
+import '../../home/screens/sliver_app_bar/widgets/song_list_tile.dart';
 import '../../player/domain/model/player_song_list_model.dart';
 import '../../player/provider/player_provider.dart';
 import '../provider/search_provider.dart';
@@ -30,43 +30,50 @@ class SearchArtistPreference extends StatelessWidget {
                 albumName: rec.albumName,
                 title: rec.songName,
                 imageUrl: generateSongImageUrl(rec.albumName, rec.albumId),
-                musicDirectorName: rec.musicDirectorName[0]);
+                musicDirectorName: rec.musicDirectorName[0],
+                duration: rec.duration);
             context
                 .read<PlayerProvider>()
                 .playSingleSong(context, playerSongListModel);
           },
           child: SongListTile(
-              albumName: context
-                  .read<SearchProvider>()
-                  .searchSongModel
-                  .records[index]
-                  .albumName,
-              imageUrl: generateSongImageUrl(
-                  context
-                      .read<SearchProvider>()
-                      .searchSongModel
-                      .records[index]
-                      .albumName,
-                  context
-                      .read<SearchProvider>()
-                      .searchSongModel
-                      .records[index]
-                      .albumId),
-              musicDirectorName: context
-                  .read<SearchProvider>()
-                  .searchSongModel
-                  .records[index]
-                  .musicDirectorName[0],
-              songName: context
-                  .read<SearchProvider>()
-                  .searchSongModel
-                  .records[index]
-                  .songName,
-              songId: context
-                  .read<SearchProvider>()
-                  .searchSongModel
-                  .records[index]
-                  .id),
+            albumName: context
+                .read<SearchProvider>()
+                .searchSongModel
+                .records[index]
+                .albumName,
+            imageUrl: generateSongImageUrl(
+                context
+                    .read<SearchProvider>()
+                    .searchSongModel
+                    .records[index]
+                    .albumName,
+                context
+                    .read<SearchProvider>()
+                    .searchSongModel
+                    .records[index]
+                    .albumId),
+            musicDirectorName: context
+                .read<SearchProvider>()
+                .searchSongModel
+                .records[index]
+                .musicDirectorName[0],
+            songName: context
+                .read<SearchProvider>()
+                .searchSongModel
+                .records[index]
+                .songName,
+            songId: context
+                .read<SearchProvider>()
+                .searchSongModel
+                .records[index]
+                .id,
+            duration: context
+                .read<SearchProvider>()
+                .searchSongModel
+                .records[index]
+                .duration,
+          ),
         ),
       ),
     );

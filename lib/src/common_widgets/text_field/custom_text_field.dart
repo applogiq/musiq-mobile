@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../constants/color.dart';
-import '../../constants/style.dart';
-import '../../utils/size_config.dart';
+import '../../core/constants/color.dart';
+import '../../core/constants/style.dart';
+import '../../core/utils/size_config.dart';
 import '../container/custom_color_container.dart';
 
 class TextFieldWithError extends StatelessWidget {
