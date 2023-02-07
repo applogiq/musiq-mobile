@@ -13,9 +13,10 @@ class NetworkApiService extends BaseApiServices {
     'Content-type': 'application/json',
     'Accept': 'application/json',
   };
-
+  // Secure storage object creation
   var storage = const FlutterSecureStorage();
 
+  // Defination for delete authentication API
   @override
   Future getDeleteAuthApiResponse(String url) async {
     dynamic responseJson;
@@ -37,6 +38,7 @@ class NetworkApiService extends BaseApiServices {
     return responseJson;
   }
 
+  // Defination for delete authentication API with request body
   @override
   Future getDeleteAuthWithDataApiResponse(String url, data) async {
     dynamic responseJson;
@@ -56,6 +58,7 @@ class NetworkApiService extends BaseApiServices {
     return responseJson;
   }
 
+  // Defination for get API
   @override
   Future getGetApiResponse(String url) async {
     dynamic responseJson;
@@ -70,6 +73,7 @@ class NetworkApiService extends BaseApiServices {
     return responseJson;
   }
 
+  //Defination for get authentication API
   @override
   Future getGetAuthApiResponse(String url) async {
     dynamic responseJson;
@@ -81,7 +85,7 @@ class NetworkApiService extends BaseApiServices {
       Response response = await get(
         Uri.parse(url),
         headers: header,
-      ).timeout(const Duration(seconds: 30));
+      ).timeout(const Duration(seconds: 90));
 
       responseJson = returnResponse(response);
     } on SocketException {
@@ -91,6 +95,7 @@ class NetworkApiService extends BaseApiServices {
     return responseJson;
   }
 
+  //Defination for post API
   @override
   Future getPostApiResponse(String url, dynamic data) async {
     dynamic responseJson;
@@ -106,6 +111,7 @@ class NetworkApiService extends BaseApiServices {
     return responseJson;
   }
 
+  //Defination for post authentication API
   @override
   Future getPostAuthApiResponse(String url, dynamic data) async {
     dynamic responseJson;
@@ -126,6 +132,7 @@ class NetworkApiService extends BaseApiServices {
     return responseJson;
   }
 
+  //Defination for put authentication API
   @override
   Future getPutAuthApiResponse(String url, data) async {
     dynamic responseJson;
@@ -146,8 +153,9 @@ class NetworkApiService extends BaseApiServices {
     return responseJson;
   }
 
+  //Defination for put API
   @override
-  Future getPuthtApiResponse(String url, data) async {
+  Future getPutApiResponse(String url, data) async {
     dynamic responseJson;
     try {
       Response response =

@@ -2,7 +2,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:musiq/src/core/utils/url_generate.dart';
 
-import '../../../../main.dart';
+import '../../../main.dart';
 import '../../features/player/domain/model/player_song_list_model.dart';
 import '../../features/player/provider/player_provider.dart';
 
@@ -22,6 +22,7 @@ init() async {
 
 class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   final _player = AudioPlayer();
+  final _playlist = ConcatenatingAudioSource(children: []);
   static final _item = MediaItem(
     id: generateSongUrl(1),
     album: "Matinee",
@@ -32,14 +33,33 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   );
   AudioPlayerHandler() {
     // getDataFromQueue();
-    // // PlayerProvider().loadSingleQueueSong();
-    _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
-    mediaItem.add(_item);
+    // PlayerProvider().loadSingleQueueSong();
+    // _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
+    // mediaItem.add(_item);
 
-    _player.setAudioSource(AudioSource.uri(Uri.parse(_item.id)));
-    play();
-    load();
+    // _player.setAudioSource(AudioSource.uri(Uri.parse(_item.id)));
+    // play();
+    // load();
     // // // loadQueueSong();
+  }
+
+  getDataFromPlayerProvider(
+      List<PlayerSongListModel> playerSongListModel) async {
+    _playlist.clear();
+    var element = playerSongListModel.first;
+    // for (var element in playerSongListModel) {
+    var mediaItemsData = MediaItem(
+      id: generateSongUrl(element.id),
+      album: element.albumName,
+      title: element.title,
+      artist: element.musicDirectorName,
+      duration: const Duration(milliseconds: 12445),
+      artUri: Uri.parse(element.imageUrl),
+    );
+    mediaItem.add(mediaItemsData);
+    _player.setAudioSource(AudioSource.uri(Uri.parse(mediaItemsData.id)));
+    // }
+    init();
   }
 
   getDataFromQueue() async {
@@ -65,20 +85,20 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   }
 
   setSongToPlayer(PlayerSongListModel playerSongListModel) {
-    _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
+    // _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
 
-    var mediaItemData = MediaItem(
-      id: generateSongUrl(playerSongListModel.id),
-      album: playerSongListModel.albumName,
-      title: playerSongListModel.title,
-      artist: playerSongListModel.musicDirectorName,
-      duration: const Duration(milliseconds: 12445),
-      artUri: Uri.parse(playerSongListModel.imageUrl),
-    );
-    mediaItem.add(mediaItemData);
-    _player.setAudioSource(AudioSource.uri(Uri.parse(mediaItemData.id)));
-    play();
-    // print(playerSongListModel.albumName);
+    // var mediaItemData = MediaItem(
+    //   id: generateSongUrl(playerSongListModel.id),
+    //   album: playerSongListModel.albumName,
+    //   title: playerSongListModel.title,
+    //   artist: playerSongListModel.musicDirectorName,
+    //   duration: const Duration(milliseconds: 12445),
+    //   artUri: Uri.parse(playerSongListModel.imageUrl),
+    // );
+    // mediaItem.add(mediaItemData);
+    // _player.setAudioSource(AudioSource.uri(Uri.parse(mediaItemData.id)));
+    // play();
+    print(playerSongListModel.albumName);
   }
 
   // load() {
@@ -93,13 +113,19 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   Future<void> play() => _player.play();
 
   @override
-  Future<void> pause() => _player.pause();
+  Future<void> pause() {
+    print(_player.currentIndex);
+    print("DDD");
+    return _player.pause();
+  }
 
   @override
   Future<void> seek(Duration position) => _player.seek(position);
 
   @override
-  Future<void> stop() => _player.stop();
+  Future<void> stop() {
+    return _player.stop();
+  }
 
   PlaybackState _transformEvent(PlaybackEvent event) {
     return PlaybackState(
@@ -128,5 +154,9 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
       speed: _player.speed,
       queueIndex: event.currentIndex,
     );
+  }
+
+  loadSong() {
+    print("Load song");
   }
 }

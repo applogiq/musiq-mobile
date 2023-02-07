@@ -1,0 +1,56 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../core/utils/url_generate.dart';
+import '../../home/domain/model/song_search_model.dart';
+import '../../home/screens/sliver_app_bar/widgets/song_list_tile.dart';
+import '../../player/domain/model/player_song_list_model.dart';
+import '../../player/provider/player_provider.dart';
+import '../provider/search_provider.dart';
+
+class SongSearchListView extends StatelessWidget {
+  const SongSearchListView({
+    Key? key,
+    required this.provider,
+  }) : super(key: key);
+  final SearchProvider provider;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: provider.searchSongModel.records.length,
+        itemBuilder: (context, index) {
+          var rec = provider.searchSongModel.records[index];
+
+          return InkWell(
+            onTap: () {
+              context.read<SearchProvider>().searchSongStore();
+              Record rec =
+                  context.read<SearchProvider>().searchSongModel.records[index];
+              PlayerSongListModel playerSongListModel = PlayerSongListModel(
+                  id: rec.id,
+                  albumName: rec.albumName,
+                  title: rec.songName,
+                  imageUrl: generateSongImageUrl(rec.albumName, rec.albumId),
+                  musicDirectorName: rec.musicDirectorName[0],
+                  duration: rec.duration);
+              context
+                  .read<PlayerProvider>()
+                  .playSingleSong(context, playerSongListModel);
+            },
+            child: SongListTile(
+              albumName: rec.albumName,
+              imageUrl: generateSongImageUrl(rec.albumName, rec.albumId),
+              musicDirectorName: rec.musicDirectorName[0],
+              songName: rec.songName,
+              songId: rec.id,
+              duration: rec.duration,
+            ),
+          );
+        },
+      ),
+    );
+  }
+}

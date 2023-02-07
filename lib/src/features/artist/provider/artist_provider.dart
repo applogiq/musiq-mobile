@@ -20,7 +20,7 @@ class ArtistPreferenceProvider extends ChangeNotifier {
   var isLoaded = false;
   FlutterSecureStorage storage = const FlutterSecureStorage();
   var userFollowedArtist = [];
-
+  // Get the current user followed artist details
   getUserFollowDatas() async {
     Map<String, String> allValues = await storage.readAll();
 
@@ -54,6 +54,7 @@ class ArtistPreferenceProvider extends ChangeNotifier {
     }
   }
 
+  // Get the all artist details
   void loadData(List datas) async {
     isLoaded = false;
     notifyListeners();
@@ -73,10 +74,12 @@ class ArtistPreferenceProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Method for follow and unfollow the artist API call
   void followAndUnfollow(Map params) async {
     await ArtistRepo().followAndUnfollow(params);
   }
 
+  // Method for check user already followed or not and call the method followAndUnfollow method
   void checkFollow(Record record, int index, BuildContext context) async {
     var userId = await storage.read(key: "register_id");
     if (userFollowedArtist.contains(record.artistId)) {
@@ -107,11 +110,12 @@ class ArtistPreferenceProvider extends ChangeNotifier {
         "user_id": userId
       };
       followAndUnfollow(params);
-      // context.read<SearchProvider>().getUserFollowedList();
+
       notifyListeners();
     }
   }
 
+  // Method for navigate artist preference select screen to home screen
   navigateToHome(BuildContext context) {
     storage.write(key: "is_preference", value: "true");
     context.read<BottomNavigationBarProvider>().selectedBottomIndex = 0;

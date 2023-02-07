@@ -79,4 +79,7 @@ class ConstantText {
   static const String remove = "Remove";
 
   static const String loginSuccess = "Login Success";
+
+  static const String unFollow = "Unfollow";
+  static const String follow = "Follow";
 }

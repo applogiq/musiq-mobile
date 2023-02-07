@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../constants/color.dart';
 
+// App theme
 ThemeData themeData(BuildContext context) {
   return ThemeData(
     appBarTheme: const AppBarTheme(

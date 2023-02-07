@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/core/constants/images.dart';
 
 class Background extends StatelessWidget {
   const Background({
@@ -40,7 +41,7 @@ class BackgroundImageWidget extends StatelessWidget {
       decoration: BoxDecoration(
           image: DecorationImage(
               image: const AssetImage(
-                "assets/icons/bg.jpg",
+                Images.backgroundImage,
               ),
               colorFilter: ColorFilter.mode(
                   Colors.black.withOpacity(0.8), BlendMode.dstATop),

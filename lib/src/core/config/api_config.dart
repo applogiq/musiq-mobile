@@ -1,7 +1,7 @@
 Map environmentList = {
-  'local': 'http://192.168.29.50:4020/',
-  'develop': 'https://api-musiq.applogiq.org/',
-  'production': 'http://192.168.29.50:4020/'
+  'local': 'http://192.168.29.50:4020/', //Local base url
+  'develop': 'https://api-musiq.applogiq.org/', //Develop base url
+  'production': 'http://192.168.29.50:4020/' //Production base url
 };
 String environment = "develop";
 

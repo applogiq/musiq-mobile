@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import '../../../search/screens/search_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/app_bar.dart';
 import '../../../../common_widgets/container/custom_color_container.dart';
 import '../../../../common_widgets/loader.dart';
 import '../../../../core/constants/color.dart';
+import '../../../../core/enums/search_status.dart';
+import '../../../../core/enums/view_all_status.dart';
 import '../../../../core/routing/route_name.dart';
-import '../../../../core/utils/url_generate.dart';
 import '../../../../core/utils/navigation.dart';
+import '../../../../core/utils/url_generate.dart';
 import '../../../artist/domain/models/artist_model.dart';
 import '../../../common/screen/offline_screen.dart';
-import '../../../../core/enums/search_status.dart';
-import '../../provider/artist_view_all_provider.dart';
 import '../../../search/provider/search_provider.dart';
+import '../../../search/screens/search_screen.dart';
+import '../../provider/artist_view_all_provider.dart';
 import '../../provider/view_all_provider.dart';
-import '../../../../core/enums/view_all_status.dart';
 import '../../widgets/search_notifications.dart';
 import '../sliver_app_bar/view_all_screen.dart';
 
@@ -171,6 +171,7 @@ class SearchSection extends StatelessWidget {
         textEditingController: null,
         isReadOnly: true,
         onTap: () {
+          context.read<SearchProvider>().resetState();
           Navigation.navigateToScreen(context, RouteName.search,
               args: SearchRequestModel(searchStatus: SearchStatus.artist));
         },

@@ -25,6 +25,7 @@ class ArtistImageModel {
 }
 
 class Images {
+  static const String backgroundImage = "assets/images/bg.png";
   static String heroImage = "logo";
   static String loaderImage = "assets/gifs/loader.gif";
   static String logoImage = "assets/icons/logo.png";

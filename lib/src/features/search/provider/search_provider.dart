@@ -262,4 +262,6 @@ class SearchProvider extends ChangeNotifier {
   }
 
   void searchArtistPreference() {}
+
+  void getSongSearchHistory() {}
 }

@@ -32,23 +32,6 @@ class ObjectBox {
 
   void saveFavourite(FavouriteSong favouriteSong) {
     favouriteBox.put(favouriteSong);
-    // if (text.isEmpty) {
-    //   // Do not allow an empty task text.
-    //   // A real app might want to display an UI hint about that.
-    //   return;
-    // }
-    // if (task == null) {
-    //   // Add a new task (task id is 0).
-    //   task = Task(text: text, dateCreated: DateTime.now());
-    // } else {
-    //   // Update an existing task (task id is > 0).
-    //   task.text = text;
-    //   task.dateCreated = DateTime.now();
-    // }
-    // // Set or update the target of the to-one relation to Tag.
-    // task.tag.target = tag;
-    // taskBox.put(task);
-    // debugPrint('Saved task ${task.text} with tag ${task.tag.target!.tag}');
   }
 
   void addQueue(SongListModel songListModel) {
@@ -57,6 +40,11 @@ class ObjectBox {
 
   void addNewSongListQueue(List<SongListModel> songListModels) {
     removeAllQueueSong();
+    songListBox.putMany(songListModels);
+    getAllQueueSong();
+  }
+
+  void addSongListQueue(List<SongListModel> songListModels) {
     songListBox.putMany(songListModels);
     getAllQueueSong();
   }

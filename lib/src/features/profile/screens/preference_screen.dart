@@ -24,38 +24,38 @@ class PreferenceScreen extends StatelessWidget {
                 title: "Preferences",
               ),
             ),
-            body: ListView(children: [
-              const Padding(
-                padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-                child: PreferenceMainHeaderWidget(
-                  mainTitle: "Music Preference",
-                  subTitle1: "Artist Preference",
-                  navigationScreen1: RouteName.profileArtistPreference,
-                  subTitle2: "Audio Quality",
-                  navigationScreen2: "audioQuality",
+            body: SizedBox(
+              child: ListView(shrinkWrap: true, children: const [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+                  child: PreferenceMainHeaderWidget(
+                    mainTitle: "Music Preference",
+                    subTitle1: "Artist Preference",
+                    navigationScreen1: RouteName.profileArtistPreference,
+                    subTitle2: "Audio Quality",
+                    navigationScreen2: "audioQuality",
+                  ),
                 ),
-              ),
-              const Padding(
-                padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
-                child: PreferenceMainHeaderWidget(
-                  mainTitle: "Podcast Preference",
-                  subTitle1: "Artist Preference",
-                  navigationScreen1: "artistPreference",
-                  subTitle2: "Audio Quality",
-                  navigationScreen2: "audioQuality",
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
+                  child: PreferenceMainHeaderWidget(
+                    mainTitle: "Podcast Preference",
+                    subTitle1: "Artist Preference",
+                    navigationScreen1: "artistPreference",
+                    subTitle2: "Audio Quality",
+                    navigationScreen2: "audioQuality",
+                  ),
                 ),
-              ),
-              Positioned.fill(
-                  child: ColoredBox(color: Colors.white.withOpacity(0.7))),
-              const Padding(
-                padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
-                child: NotificationPreferenceHeaderWidget(
-                  mainTitle: "Notification Preference",
-                  subTitle1: "New Releases",
-                  subTitle2: "Artist Updates",
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
+                  child: NotificationPreferenceHeaderWidget(
+                    mainTitle: "Notification Preference",
+                    subTitle1: "New Releases",
+                    subTitle2: "Artist Updates",
+                  ),
                 ),
-              ),
-            ]),
+              ]),
+            ),
           );
   }
 }
@@ -87,22 +87,18 @@ class PreferenceMainHeaderWidget extends StatelessWidget {
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 21.0),
+          padding: const EdgeInsets.only(top: 12.0),
           child: PreferenceListTile(
             label: subTitle1,
             navigationRoute: navigationScreen1,
           ),
         ),
-        Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 24.0),
-              child: PreferenceListTile(
-                label: subTitle2,
-                navigationRoute: navigationScreen2,
-              ),
-            ),
-          ],
+        Padding(
+          padding: const EdgeInsets.only(top: 12.0),
+          child: PreferenceListTile(
+            label: subTitle2,
+            navigationRoute: navigationScreen2,
+          ),
         ),
       ],
     );
@@ -204,18 +200,21 @@ class PreferenceListTile extends StatelessWidget {
       onTap: () {
         Navigator.of(context).pushNamed(navigationRoute);
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-          ),
-          const Icon(
-            Icons.arrow_forward_ios_rounded,
-            size: 20,
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              label,
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+            ),
+            const Icon(
+              Icons.arrow_forward_ios_rounded,
+              size: 20,
+            ),
+          ],
+        ),
       ),
     );
     // return ListTile(

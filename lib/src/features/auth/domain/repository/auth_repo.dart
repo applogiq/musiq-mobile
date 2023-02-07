@@ -58,7 +58,7 @@ class AuthRepository {
 
   passwordChanged(Map params) async {
     try {
-      dynamic response = await apiServices.getPuthtApiResponse(
+      dynamic response = await apiServices.getPutApiResponse(
           APIConstants.kPasswordChangeEndPoint, params);
       return response;
     } catch (e) {
