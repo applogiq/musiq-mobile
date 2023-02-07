@@ -26,31 +26,34 @@ class _PlaylistsScreenState extends State<PlaylistsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LibraryProvider>(builder: (context, pro, _) {
-      return pro.isPlayListLoad
-          ? const LoaderScreen()
-          : Scaffold(
-              floatingActionButton: const PlayListAddButton(),
-              body: pro.playListModel.records.isEmpty
-                  ? NoSongScreen(
-                      mainTitle: ConstantText.noPlaylistHere,
-                      subTitle: ConstantText.yourPlaylistNoAvailable)
-                  : ListView.builder(
-                      itemCount: pro.playListModel.records.length,
-                      itemBuilder: (context, index) {
-                        var record = pro.playListModel.records;
-                        return PlaylistTile(
-                          record: record,
-                          index: index,
-                          callBack: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ViewPlaylistSongScreen(
-                                    id: record[index].id,
-                                    title: record[index].playlistName)));
-                          },
-                        );
-                      }),
-            );
-    });
+    return Consumer<LibraryProvider>(
+      builder: (context, pro, _) {
+        return pro.isPlayListLoad
+            ? const LoaderScreen()
+            : Scaffold(
+                floatingActionButton: const PlayListAddButton(),
+                body: pro.playListModel.records.isEmpty
+                    ? NoSongScreen(
+                        mainTitle: ConstantText.noPlaylistHere,
+                        subTitle: ConstantText.yourPlaylistNoAvailable)
+                    : ListView.builder(
+                        itemCount: pro.playListModel.records.length,
+                        itemBuilder: (context, index) {
+                          var record = pro.playListModel.records;
+                          return PlaylistTile(
+                            record: record,
+                            index: index,
+                            callBack: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => ViewPlaylistSongScreen(
+                                      id: record[index].id,
+                                      title: record[index].playlistName)));
+                            },
+                          );
+                        },
+                      ),
+              );
+      },
+    );
   }
 }

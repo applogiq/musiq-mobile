@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musiq/src/core/local/model/favourite_model.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../main.dart';
 import '../../../../core/constants/constant.dart';
 import '../../../../core/routing/route_name.dart';
 import '../../../../core/utils/navigation.dart';
@@ -63,13 +65,23 @@ class PlayerControllerWidget extends StatelessWidget {
                                         .read<PlayerProvider>()
                                         .addFavourite(metadata.id);
                               },
-                              child: Icon(
-                                Icons.favorite_rounded,
-                                color: playerProvider.favouritesList
-                                        .contains(metadata.id)
-                                    ? CustomColor.secondaryColor
-                                    : Colors.white,
-                              )),
+                              child: StreamBuilder<List<FavouriteSong>>(
+                                  stream: objectbox.getFavourites(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasError) {
+                                      return const SizedBox.shrink();
+                                    }
+                                    var list3 = snapshot.data;
+
+                                    return Icon(
+                                      Icons.favorite_rounded,
+                                      color: list3 == null
+                                          ? Colors.white
+                                          : list3.contains(metadata.id)
+                                              ? CustomColor.secondaryColor
+                                              : Colors.white,
+                                    );
+                                  })),
                         ],
                       );
                     }),

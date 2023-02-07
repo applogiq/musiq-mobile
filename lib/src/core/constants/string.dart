@@ -66,8 +66,7 @@ class ConstantText {
   static String save = 'Save';
   static String sendOTPSuccessfully = 'OTP send successfully';
   static String slogan = "Queue your favourite music";
-  static String subSlogan =
-      "All your latest songs and podacasts\n in one palce";
+  static String subSlogan = "All your latest songs and podcasts\n in one place";
   static String trendingHitsText = 'Trending Hits';
   static String userName = "Username";
   static String welcomeBack = "Welcome Back";
@@ -78,7 +77,7 @@ class ConstantText {
 
   static const String remove = "Remove";
 
-  static const String loginSuccess = "Login Success";
+  static const String loginSuccess = "Login Successfully";
 
   static const String unFollow = "Unfollow";
   static const String follow = "Follow";

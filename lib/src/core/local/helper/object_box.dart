@@ -34,6 +34,14 @@ class ObjectBox {
     favouriteBox.put(favouriteSong);
   }
 
+  Stream<List<FavouriteSong>> getFavourites() {
+    final qFavourite = favouriteBox.query();
+
+    return qFavourite
+        .watch(triggerImmediately: true)
+        .map((query) => query.find());
+  }
+
   void addQueue(SongListModel songListModel) {
     songListBox.put(songListModel);
   }

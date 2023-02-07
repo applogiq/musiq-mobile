@@ -22,7 +22,6 @@ import 'package:musiq/src/features/view_all/domain/model/player_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/package/miniplayer/miniplayer.dart';
-import '../../../core/utils/audio_player_handler.dart';
 import '../../home/provider/home_provider.dart';
 import '../../library/domain/library_repo.dart';
 import '../../library/domain/models/playlist_model.dart';
@@ -548,36 +547,36 @@ class PlayerProvider extends ChangeNotifier {
                 musicDirectorName: e.musicDirectorName,
                 duration: e.duration));
           }
-          playlist = ConcatenatingAudioSource(
-            useLazyPreparation: true,
-            children: List.generate(
-              playerSongList.length,
-              (index) => AudioSource.uri(
-                  Uri.parse(
-                      "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongList[index].id.toString()}"),
-                  tag: PlayerSongListModel(
-                      id: playerSongList[index].id,
-                      albumName: playerSongList[index].albumName,
-                      title: playerSongList[index].title,
-                      musicDirectorName:
-                          playerSongList[index].musicDirectorName.toString(),
-                      imageUrl: playerSongList[index].imageUrl,
-                      duration: playerSongList[index].duration)),
-            ),
-          );
-          AudioPlayerHandler audioPlayerHandler = AudioPlayerHandler();
-          audioPlayerHandler.getDataFromPlayerProvider(playerSongList);
-          await player.setAudioSource(
-            playlist,
-            initialIndex: 0,
-            initialPosition: Duration.zero,
-          );
-          player.stop();
-          isPlay = true;
-          isPlaying = true;
+          // playlist = ConcatenatingAudioSource(
+          //   useLazyPreparation: true,
+          //   children: List.generate(
+          //     playerSongList.length,
+          //     (index) => AudioSource.uri(
+          //         Uri.parse(
+          //             "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongList[index].id.toString()}"),
+          //         tag: PlayerSongListModel(
+          //             id: playerSongList[index].id,
+          //             albumName: playerSongList[index].albumName,
+          //             title: playerSongList[index].title,
+          //             musicDirectorName:
+          //                 playerSongList[index].musicDirectorName.toString(),
+          //             imageUrl: playerSongList[index].imageUrl,
+          //             duration: playerSongList[index].duration)),
+          //   ),
+          // );
+          // AudioPlayerHandler audioPlayerHandler = AudioPlayerHandler();
+          // audioPlayerHandler.getDataFromPlayerProvider(playerSongList);
+          // await player.setAudioSource(
+          //   playlist,
+          //   initialIndex: 0,
+          //   initialPosition: Duration.zero,
+          // );
+          // player.stop();
+          // isPlay = true;
+          // isPlaying = true;
 
-          playOrPause();
-          // store.close();
+          // playOrPause();
+          // // store.close();
         }
         inQueue = true;
         // init();
@@ -612,8 +611,8 @@ class PlayerProvider extends ChangeNotifier {
           imageUrl: e.imageUrl,
           musicDirectorName: e.musicDirectorName,
           duration: e.duration));
-      AudioPlayerHandler playerHandler = AudioPlayerHandler();
-      playerHandler.setSongToPlayer(playerSongList.first);
+      // AudioPlayerHandler playerHandler = AudioPlayerHandler();
+      // playerHandler.setSongToPlayer(playerSongList.first);
     }
     //     // AudioPlayerHandler().setSongToPlayer(playerSongList.first);
     //     // }

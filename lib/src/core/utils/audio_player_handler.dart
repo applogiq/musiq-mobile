@@ -3,8 +3,6 @@ import 'package:just_audio/just_audio.dart';
 import 'package:musiq/src/core/utils/url_generate.dart';
 
 import '../../../main.dart';
-import '../../features/player/domain/model/player_song_list_model.dart';
-import '../../features/player/provider/player_provider.dart';
 
 init() async {
   audioHandler = await AudioService.init(
@@ -32,131 +30,142 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
     artUri: Uri.parse(generateSongImageUrl("Matinee", "AL006")),
   );
   AudioPlayerHandler() {
-    // getDataFromQueue();
-    // PlayerProvider().loadSingleQueueSong();
-    // _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
-    // mediaItem.add(_item);
-
-    // _player.setAudioSource(AudioSource.uri(Uri.parse(_item.id)));
-    // play();
-    // load();
-    // // // loadQueueSong();
+    print("created");
   }
-
-  getDataFromPlayerProvider(
-      List<PlayerSongListModel> playerSongListModel) async {
-    _playlist.clear();
-    var element = playerSongListModel.first;
-    // for (var element in playerSongListModel) {
-    var mediaItemsData = MediaItem(
-      id: generateSongUrl(element.id),
-      album: element.albumName,
-      title: element.title,
-      artist: element.musicDirectorName,
-      duration: const Duration(milliseconds: 12445),
-      artUri: Uri.parse(element.imageUrl),
-    );
-    mediaItem.add(mediaItemsData);
-    _player.setAudioSource(AudioSource.uri(Uri.parse(mediaItemsData.id)));
-    // }
-    init();
-  }
-
-  getDataFromQueue() async {
-    await PlayerProvider().loadSingleQueueSong();
-  }
-
-  load() async {
-    // _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
-
-    var res = objectbox.getAllQueueSong();
-    var e = res.first;
-    var mediaItemData = MediaItem(
-      id: generateSongUrl(e.songId),
-      album: e.albumName,
-      title: e.title,
-      artist: e.musicDirectorName,
-      duration: const Duration(milliseconds: 124445),
-      artUri: Uri.parse(e.imageUrl),
-    );
-    mediaItem.add(mediaItemData);
-    _player.setAudioSource(AudioSource.uri(Uri.parse(mediaItemData.id)));
-    play();
-  }
-
-  setSongToPlayer(PlayerSongListModel playerSongListModel) {
-    // _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
-
-    // var mediaItemData = MediaItem(
-    //   id: generateSongUrl(playerSongListModel.id),
-    //   album: playerSongListModel.albumName,
-    //   title: playerSongListModel.title,
-    //   artist: playerSongListModel.musicDirectorName,
-    //   duration: const Duration(milliseconds: 12445),
-    //   artUri: Uri.parse(playerSongListModel.imageUrl),
-    // );
-    // mediaItem.add(mediaItemData);
-    // _player.setAudioSource(AudioSource.uri(Uri.parse(mediaItemData.id)));
-    // play();
-    print(playerSongListModel.albumName);
-  }
-
-  // load() {
+  // AudioPlayerHandler() {
+  //   // getDataFromQueue();
+  //   // PlayerProvider().loadSingleQueueSong();
   //   _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
-  //   mediaItem.add(_item);
+  //   // mediaItem.add(_item);
 
-  //   _player.setAudioSource(AudioSource.uri(Uri.parse(_item.id)));
+  //   // _player.setAudioSource(AudioSource.uri(Uri.parse(_item.id)));
+  //   // play();
+  //   // load();
+  //   // // // loadQueueSong();
+  // }
+
+  // getDataFromPlayerProvider(
+  //     List<PlayerSongListModel> playerSongListModel) async {
+  //   // init();
+  //   // _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
+  //   _playlist.clear();
+  //   var element = playerSongListModel.first;
+  //   // for (var element in playerSongListModel) {
+  //   // var mediaItemsData = MediaItem(
+  //   //   id: generateSongUrl(element.id),
+  //   //   album: element.albumName,
+  //   //   title: element.title,
+  //   //   artist: element.musicDirectorName,
+  //   //   duration: const Duration(milliseconds: 12445),
+  //   //   artUri: Uri.parse(element.imageUrl),
+  //   // );
+  //   var mediaItemsData = MediaItem(
+  //     id: generateSongUrl(1),
+  //     album: "Matinee",
+  //     title: "Ayalthe Vettil",
+  //     artist: "AR Rahman",
+  //     duration: const Duration(milliseconds: 12445),
+  //     artUri: Uri.parse(generateSongImageUrl("Matinee", "AL006")),
+  //   );
+  //   mediaItem.add(mediaItemsData);
+  //   _player.setAudioSource(AudioSource.uri(Uri.parse(mediaItemsData.id)));
+  //   play();
+  //   // }
+  //   // init();
+  // }
+
+  // getDataFromQueue() async {
+  //   await PlayerProvider().loadSingleQueueSong();
+  // }
+
+  // load() async {
+  //   // _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
+
+  //   var res = objectbox.getAllQueueSong();
+  //   var e = res.first;
+  //   var mediaItemData = MediaItem(
+  //     id: generateSongUrl(e.songId),
+  //     album: e.albumName,
+  //     title: e.title,
+  //     artist: e.musicDirectorName,
+  //     duration: const Duration(milliseconds: 124445),
+  //     artUri: Uri.parse(e.imageUrl),
+  //   );
+  //   mediaItem.add(mediaItemData);
+  //   _player.setAudioSource(AudioSource.uri(Uri.parse(mediaItemData.id)));
   //   play();
   // }
 
-  @override
-  Future<void> play() => _player.play();
+  // setSongToPlayer(PlayerSongListModel playerSongListModel) {
+  //   // _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
 
-  @override
-  Future<void> pause() {
-    print(_player.currentIndex);
-    print("DDD");
-    return _player.pause();
-  }
+  //   // var mediaItemData = MediaItem(
+  //   //   id: generateSongUrl(playerSongListModel.id),
+  //   //   album: playerSongListModel.albumName,
+  //   //   title: playerSongListModel.title,
+  //   //   artist: playerSongListModel.musicDirectorName,
+  //   //   duration: const Duration(milliseconds: 12445),
+  //   //   artUri: Uri.parse(playerSongListModel.imageUrl),
+  //   // );
+  //   // mediaItem.add(mediaItemData);
+  //   // _player.setAudioSource(AudioSource.uri(Uri.parse(mediaItemData.id)));
+  //   // play();
+  //   print(playerSongListModel.albumName);
+  // }
 
-  @override
-  Future<void> seek(Duration position) => _player.seek(position);
+  // // load() {
+  // //   _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
+  // //   mediaItem.add(_item);
 
-  @override
-  Future<void> stop() {
-    return _player.stop();
-  }
+  // //   _player.setAudioSource(AudioSource.uri(Uri.parse(_item.id)));
+  // //   play();
+  // // }
 
-  PlaybackState _transformEvent(PlaybackEvent event) {
-    return PlaybackState(
-      controls: [
-        MediaControl.rewind,
-        if (_player.playing) MediaControl.pause else MediaControl.play,
-        MediaControl.stop,
-        MediaControl.fastForward,
-      ],
-      systemActions: const {
-        MediaAction.seek,
-        MediaAction.seekForward,
-        MediaAction.seekBackward,
-      },
-      androidCompactActionIndices: const [0, 1, 3],
-      processingState: {
-        ProcessingState.idle: AudioProcessingState.idle,
-        ProcessingState.loading: AudioProcessingState.loading,
-        ProcessingState.buffering: AudioProcessingState.buffering,
-        ProcessingState.ready: AudioProcessingState.ready,
-        ProcessingState.completed: AudioProcessingState.completed,
-      }[_player.processingState]!,
-      playing: _player.playing,
-      updatePosition: _player.position,
-      bufferedPosition: _player.bufferedPosition,
-      speed: _player.speed,
-      queueIndex: event.currentIndex,
-    );
-  }
+  // @override
+  // Future<void> play() => _player.play();
 
-  loadSong() {
-    print("Load song");
-  }
+  // @override
+  // Future<void> pause() {
+  //   print(_player.currentIndex);
+  //   print("DDD");
+  //   return _player.pause();
+  // }
+
+  // @override
+  // Future<void> seek(Duration position) => _player.seek(position);
+
+  // @override
+  // Future<void> stop() {
+  //   return _player.stop();
+  // }
+
+  // PlaybackState _transformEvent(PlaybackEvent event) {
+  //   return PlaybackState(
+  //     controls: [
+  //       MediaControl.rewind,
+  //       if (_player.playing) MediaControl.pause else MediaControl.play,
+  //       MediaControl.stop,
+  //       MediaControl.fastForward,
+  //     ],
+  //     systemActions: const {
+  //       MediaAction.seek,
+  //       MediaAction.seekForward,
+  //       MediaAction.seekBackward,
+  //     },
+  //     androidCompactActionIndices: const [0, 1, 3],
+  //     processingState: {
+  //       ProcessingState.idle: AudioProcessingState.idle,
+  //       ProcessingState.loading: AudioProcessingState.loading,
+  //       ProcessingState.buffering: AudioProcessingState.buffering,
+  //       ProcessingState.ready: AudioProcessingState.ready,
+  //       ProcessingState.completed: AudioProcessingState.completed,
+  //     }[_player.processingState]!,
+  //     playing: _player.playing,
+  //     updatePosition: _player.position,
+  //     bufferedPosition: _player.bufferedPosition,
+  //     speed: _player.speed,
+  //     queueIndex: event.currentIndex,
+  //   );
+  // }
+
 }

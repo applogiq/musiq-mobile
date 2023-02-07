@@ -65,17 +65,4 @@ class AuthRepository {
       rethrow;
     }
   }
-
-  //  Future<ArtistModel> getArtist({int limit = 100}) async {
-  //   var artistUrl = apiConstants.getArtistUrl(0, limit);
-
-  //   var res = await apiCall.getRequestWithAuth(
-  //     APIConstants.BASE_URL + artistUrl,
-  //   );
-  //   var data = jsonDecode(res.body);
-  //
-  //   ArtistModel artistModel = ArtistModel.fromMap(data);
-
-  //   return artistModel;
-  // }
 }
