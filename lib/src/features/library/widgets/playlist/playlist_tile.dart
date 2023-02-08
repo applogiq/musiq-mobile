@@ -40,6 +40,7 @@ class PlaylistTile extends StatelessWidget {
                     decoration: playListNoImageDecoration(),
                     child: Center(
                       child: Text(
+                        // "S",
                         record[index].playlistName[0].toString().toUpperCase(),
                         style: fontWeight600(),
                       ),

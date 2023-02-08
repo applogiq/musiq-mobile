@@ -1,15 +1,13 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/bottom_navigation_bar/bottom_navigation_bar.dart';
 import '../../../common_widgets/box/horizontal_box.dart';
 import '../../../common_widgets/box/vertical_box.dart';
-import '../../../core/package/miniplayer/miniplayer.dart';
-import '../../player/domain/model/player_song_list_model.dart';
+import '../../../core/constants/constant.dart';
 import '../../player/provider/player_provider.dart';
-import '../../player/screen/player_screen/player_screen.dart';
 import '../../player/widget/player/player_widgets.dart';
 import '../provider/bottom_navigation_bar_provider.dart';
 import 'offline_screen.dart';
@@ -25,7 +23,13 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<PlayerProvider>().loadQueueSong();
+    load();
+  }
+
+  load() async {
+    await context.read<PlayerProvider>().setUpAudio();
+    await context.read<PlayerProvider>().loadQueueSong();
+    // await context.read<PlayerAudioProvider>().loadQueueSong();
   }
 
   @override
@@ -63,181 +67,233 @@ class _MainScreenState extends State<MainScreen> {
                       })
                     ],
                   ),
-            // SizedBox(
-            //   height: 60,
-            //   child: ColoredBox(
-            //     color: CustomColor.bg,
-            //     child: StreamBuilder<SequenceState?>(
-            //         stream: context
-            //             .read<PlayerProvider>()
-            //             .player
-            //             .sequenceStateStream,
-            //         builder: (context, snapshot) {
-            //           final state = snapshot.data;
-            //           if (state?.sequence.isEmpty ?? true) {
-            //             return const ColoredBox(
-            //               color: Colors.black,
-            //             );
-            //           }
-            //           final metadata =
-            //               state!.currentSource!.tag as PlayerSongListModel;
-            //           return Row(
-            //             children: [
-            //               GestureDetector(
-            //                 onTap: () {
-            //                   print("tapped");
-            //                 },
-            //                 child: SizedBox(
-            //                   height: 60,
-            //                   width: 60,
-            //                   child: Image.network(
-            //                     metadata.imageUrl,
-            //                     fit: BoxFit.cover,
-            //                   ),
-            //                 ),
-            //               ),
-            //               const HorizontalBox(width: 10),
-            //               Expanded(
-            //                 child: GestureDetector(
-            //                   onTap: () {
-            //                     print("tapped");
-            //                   },
-            //                   child: Column(
-            //                     mainAxisSize: MainAxisSize.max,
-            //                     crossAxisAlignment: CrossAxisAlignment.start,
-            //                     mainAxisAlignment: MainAxisAlignment.center,
-            //                     children: [
-            //                       Text(metadata.title),
-            //                       Text(metadata.albumName),
-            //                     ],
-            //                   ),
-            //                 ),
-            //               ),
-            //               IconButton(
-            //                 padding: const EdgeInsets.all(0),
-            //                 onPressed: () {
-            //                   context.read<PlayerProvider>().playPrev();
-            //                 },
-            //                 icon: const Icon(Icons.skip_previous_rounded),
-            //               ),
-            //               InkWell(
-            //                 onTap: () {
-            //                   context.read<PlayerProvider>().playOrPause();
-            //                 },
-            //                 child: PlayButtonWidget(
-            //                   size: 24.0,
-            //                   padding: 4.0,
-            //                   iconColor:
-            //                       const Color.fromRGBO(255, 255, 255, 0.8),
-            //                   bgColor: const Color.fromRGBO(254, 86, 49, 1),
-            //                   icon: !context.read<PlayerProvider>().isPlay
-            //                       ? Icons.play_arrow
-            //                       : Icons.pause_circle_filled_rounded,
-            //                 ),
-            //               ),
-            //               IconButton(
-            //                 padding: const EdgeInsets.all(0),
-            //                 onPressed: () {
-            //                   context.read<PlayerProvider>().playNext();
-            //                 },
-            //                 icon: const Icon(Icons.skip_next_rounded),
-            //               ),
-            //             ],
-            //           );
-            //         }),
-            //   ),
-            // )
+            SizedBox(
+              height: 60,
+              child: Consumer<PlayerProvider>(builder: (context, pro, _) {
+                return ColoredBox(
+                    color: CustomColor.bg,
+                    child:
 
-            Consumer<PlayerProvider>(builder: (context, provider, _) {
-              print(provider.controller.value);
-              return provider.isPlaying
-                  ? Miniplayer(
-                      controller: context.read<PlayerProvider>().controller,
-                      minHeight: 60.0,
-                      maxHeight: MediaQuery.of(context).size.height,
-                      builder: (h, p) => h > 120
-                          ? const PlayerScreen()
-                          : StreamBuilder<SequenceState?>(
-                              stream: context
-                                  .read<PlayerProvider>()
-                                  .player
-                                  .sequenceStateStream,
-                              builder: (context, snapshot) {
-                                final state = snapshot.data;
-                                if (state?.sequence.isEmpty ?? true) {
-                                  return const ColoredBox(
-                                    color: Colors.black,
+                        // Row(
+                        //   children: [
+                        //     StreamBuilder<MediaItem?>(
+                        // stream: context
+                        //     .read<PlayerProvider>()
+                        //     .audioHandler!
+                        //     .mediaItem,
+                        //         builder: (context, snapshot) {
+                        // MediaItem? mediaItem = snapshot.data;
+                        // if (mediaItem == null) return const SizedBox();
+                        //           return Text(mediaItem.title);
+                        //         }),
+                        //     IconButton(
+                        //         onPressed: () {
+                        //           context.read<PlayerProvider>().audioHandler!.play();
+                        //         },
+                        //         icon: const Icon(Icons.play_arrow)),
+                        //     IconButton(
+                        //         onPressed: () {
+                        //           context
+                        //               .read<PlayerProvider>()
+                        //               .audioHandler!
+                        //               .pause();
+                        //         },
+                        //         icon: const Icon(Icons.play_arrow)),
+                        //   ],
+                        // )
+
+                        context.read<PlayerProvider>().audioHandler != null
+                            ? StreamBuilder<MediaItem?>(
+                                stream: context
+                                    .read<PlayerProvider>()
+                                    .audioHandler!
+                                    .mediaItem,
+                                builder: (context, snapshot) {
+                                  MediaItem? mediaItem = snapshot.data;
+                                  if (mediaItem == null) {
+                                    return const SizedBox();
+                                  }
+                                  // final metadata =
+                                  //     state!.currentSource!.tag as PlayerSongListModel;
+                                  return Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {},
+                                        child: SizedBox(
+                                          height: 60,
+                                          width: 60,
+                                          child: Image.network(
+                                            mediaItem.artUri.toString(),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      const HorizontalBox(width: 10),
+                                      Expanded(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            print("tapped");
+                                          },
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(mediaItem.title),
+                                              Text(mediaItem.album!),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      IconButton(
+                                        padding: const EdgeInsets.all(0),
+                                        onPressed: () {
+                                          context
+                                              .read<PlayerProvider>()
+                                              .playPrev();
+                                        },
+                                        icon: const Icon(
+                                            Icons.skip_previous_rounded),
+                                      ),
+                                      StreamBuilder<PlaybackState>(
+                                          stream: context
+                                              .read<PlayerProvider>()
+                                              .audioHandler!
+                                              .playbackState,
+                                          builder: (context, snapshot) {
+                                            final playbackState = snapshot.data;
+                                            final playing =
+                                                playbackState?.playing ?? true;
+
+                                            return InkWell(
+                                              onTap: () {
+                                                context
+                                                    .read<PlayerProvider>()
+                                                    .playOrPause();
+                                              },
+                                              child: PlayButtonWidget(
+                                                size: 24.0,
+                                                padding: 4.0,
+                                                iconColor: const Color.fromRGBO(
+                                                    255, 255, 255, 0.8),
+                                                bgColor: const Color.fromRGBO(
+                                                    254, 86, 49, 1),
+                                                icon: !playing
+                                                    ? Icons.play_arrow
+                                                    : Icons
+                                                        .pause_circle_filled_rounded,
+                                              ),
+                                            );
+                                          }),
+                                      IconButton(
+                                        padding: const EdgeInsets.all(0),
+                                        onPressed: () {
+                                          context
+                                              .read<PlayerProvider>()
+                                              .playNext();
+                                        },
+                                        icon:
+                                            const Icon(Icons.skip_next_rounded),
+                                      ),
+                                    ],
                                   );
-                                }
-                                final metadata = state!.currentSource!.tag
-                                    as PlayerSongListModel;
-                                return Row(
-                                  children: [
-                                    SizedBox(
-                                      height: 60,
-                                      width: 60,
-                                      child: Image.network(
-                                        metadata.imageUrl,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                    const HorizontalBox(width: 10),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(metadata.title),
-                                          Text(metadata.albumName),
-                                        ],
-                                      ),
-                                    ),
-                                    IconButton(
-                                      padding: const EdgeInsets.all(0),
-                                      onPressed: () {
-                                        context
-                                            .read<PlayerProvider>()
-                                            .playPrev();
-                                      },
-                                      icon: const Icon(
-                                          Icons.skip_previous_rounded),
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        context
-                                            .read<PlayerProvider>()
-                                            .playOrPause();
-                                      },
-                                      child: PlayButtonWidget(
-                                        size: 24.0,
-                                        padding: 4.0,
-                                        iconColor: const Color.fromRGBO(
-                                            255, 255, 255, 0.8),
-                                        bgColor: const Color.fromRGBO(
-                                            254, 86, 49, 1),
-                                        icon: !context
-                                                .read<PlayerProvider>()
-                                                .isPlay
-                                            ? Icons.play_arrow
-                                            : Icons.pause_circle_filled_rounded,
-                                      ),
-                                    ),
-                                    IconButton(
-                                      padding: const EdgeInsets.all(0),
-                                      onPressed: () {
-                                        context
-                                            .read<PlayerProvider>()
-                                            .playNext();
-                                      },
-                                      icon: const Icon(Icons.skip_next_rounded),
-                                    ),
-                                  ],
-                                );
-                              }))
-                  : const SizedBox.shrink();
-            }),
+                                })
+                            : const SizedBox.shrink());
+              }),
+            )
+
+            // Consumer<PlayerProvider>(builder: (context, provider, _) {
+            //   print(provider.controller.value);
+            //   return provider.isPlaying
+            //       ? Miniplayer(
+            //           controller: context.read<PlayerProvider>().controller,
+            //           minHeight: 60.0,
+            //           maxHeight: MediaQuery.of(context).size.height,
+            //           builder: (h, p) => h > 120
+            //               ? const PlayerScreen()
+            //               : StreamBuilder<SequenceState?>(
+            //                   stream: context
+            //                       .read<PlayerProvider>()
+            //                       .player
+            //                       .sequenceStateStream,
+            //                   builder: (context, snapshot) {
+            //                     final state = snapshot.data;
+            //                     if (state?.sequence.isEmpty ?? true) {
+            //                       return const ColoredBox(
+            //                         color: Colors.black,
+            //                       );
+            //                     }
+            //                     final metadata = state!.currentSource!.tag
+            //                         as PlayerSongListModel;
+            //                     return Row(
+            //                       children: [
+            //                         SizedBox(
+            //                           height: 60,
+            //                           width: 60,
+            //                           child: Image.network(
+            //                             metadata.imageUrl,
+            //                             fit: BoxFit.cover,
+            //                           ),
+            //                         ),
+            //                         const HorizontalBox(width: 10),
+            //                         Expanded(
+            //                           child: Column(
+            //                             crossAxisAlignment:
+            //                                 CrossAxisAlignment.start,
+            //                             mainAxisAlignment:
+            //                                 MainAxisAlignment.center,
+            //                             children: [
+            //                               Text(metadata.title),
+            //                               Text(metadata.albumName),
+            //                             ],
+            //                           ),
+            //                         ),
+            //                         IconButton(
+            //                           padding: const EdgeInsets.all(0),
+            //                           onPressed: () {
+            //                             context
+            //                                 .read<PlayerProvider>()
+            //                                 .playPrev();
+            //                           },
+            //                           icon: const Icon(
+            //                               Icons.skip_previous_rounded),
+            //                         ),
+            //                         InkWell(
+            //                           onTap: () {
+            //                             context
+            //                                 .read<PlayerProvider>()
+            //                                 .playOrPause();
+            //                           },
+            //                           child: PlayButtonWidget(
+            //                             size: 24.0,
+            //                             padding: 4.0,
+            //                             iconColor: const Color.fromRGBO(
+            //                                 255, 255, 255, 0.8),
+            //                             bgColor: const Color.fromRGBO(
+            //                                 254, 86, 49, 1),
+            //                             icon: !context
+            //                                     .read<PlayerProvider>()
+            //                                     .isPlay
+            //                                 ? Icons.play_arrow
+            //                                 : Icons.pause_circle_filled_rounded,
+            //                           ),
+            //                         ),
+            //                         IconButton(
+            //                           padding: const EdgeInsets.all(0),
+            //                           onPressed: () {
+            //                             context
+            //                                 .read<PlayerProvider>()
+            //                                 .playNext();
+            //                           },
+            //                           icon: const Icon(Icons.skip_next_rounded),
+            //                         ),
+            //                       ],
+            //                     );
+            //                   }))
+            //       : const SizedBox.shrink();
+            // }),
           ],
         ),
         bottomNavigationBar:

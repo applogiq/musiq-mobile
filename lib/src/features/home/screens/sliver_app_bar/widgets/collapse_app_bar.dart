@@ -37,7 +37,7 @@ class CollapsedAppBar extends StatelessWidget {
                     Navigator.of(context).pop();
                   },
                   child: Container(
-                    padding: const EdgeInsets.all(24),
+                    padding: const EdgeInsets.all(8),
                     // color: Colors.amber,
                     child: const Icon(
                       Icons.arrow_back_ios_rounded,

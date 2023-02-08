@@ -54,34 +54,36 @@ class PlayerControllerWidget extends StatelessWidget {
                                     ? CustomColor.secondaryColor
                                     : Colors.white,
                               )),
-                          InkWell(
-                              onTap: () {
-                                playerProvider.favouritesList
-                                        .contains(metadata.id)
-                                    ? context
-                                        .read<PlayerProvider>()
-                                        .deleteFavourite(metadata.id)
-                                    : context
-                                        .read<PlayerProvider>()
-                                        .addFavourite(metadata.id);
-                              },
-                              child: StreamBuilder<List<FavouriteSong>>(
-                                  stream: objectbox.getFavourites(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasError) {
-                                      return const SizedBox.shrink();
-                                    }
-                                    var list3 = snapshot.data;
+                          StreamBuilder<List<FavouriteSong>>(
+                              stream: objectbox.getFavourites(),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return const SizedBox.shrink();
+                                } else if (snapshot.data == null) {
+                                  return const SizedBox.shrink();
+                                }
+                                var list3 =
+                                    snapshot.data!.map((e) => e.songUniqueId);
 
-                                    return Icon(
+                                return GestureDetector(
+                                    onTap: () {
+                                      list3.contains(metadata.id)
+                                          ? context
+                                              .read<PlayerProvider>()
+                                              .deleteFavourite(metadata.id)
+                                          : context
+                                              .read<PlayerProvider>()
+                                              .addFavourite(metadata.id);
+                                    },
+                                    child: Icon(
                                       Icons.favorite_rounded,
                                       color: list3 == null
                                           ? Colors.white
                                           : list3.contains(metadata.id)
                                               ? CustomColor.secondaryColor
                                               : Colors.white,
-                                    );
-                                  })),
+                                    ));
+                              }),
                         ],
                       );
                     }),

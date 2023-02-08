@@ -13,11 +13,11 @@ import '../features/common/provider/internet_connectivity_provider.dart';
 import '../features/common/provider/splash_provider.dart';
 import '../features/home/provider/artist_view_all_provider.dart';
 import '../features/home/provider/home_provider.dart';
-import '../features/search/provider/search_provider.dart';
 import '../features/home/provider/view_all_provider.dart';
 import '../features/library/provider/library_provider.dart';
 import '../features/player/provider/player_provider.dart';
 import '../features/profile/provider/profile_provider.dart';
+import '../features/search/provider/search_provider.dart';
 
 List<SingleChildWidget> providersList = [
   StreamProvider(

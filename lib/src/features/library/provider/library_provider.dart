@@ -37,19 +37,25 @@ class LibraryProvider extends ChangeNotifier {
       success: false, message: "No records", records: [], totalRecords: 0);
 
   createPlayList(BuildContext context, {bool isAddPlaylist = false}) async {
-    var id = await secureStorage.read(key: "id");
-    Map params = {"user_id": id, "playlist_name": playListName};
-    var response = await LibraryRepository().createPlaylist(params);
-    if (response.statusCode == 200) {
-      playListNameExistList.add(playListName);
-
-      if (isAddPlaylist) {
-        context.read<PlayerProvider>().getPlayListsList();
-      }
-      playListModel = PlayListModel.fromMap(jsonDecode(response.body));
-
+    if (playListName.isEmpty) {
+      isPlayListError = true;
+      playListError = ConstantText.fieldRequired;
       notifyListeners();
-      Navigator.of(context).pop();
+    } else {
+      var id = await secureStorage.read(key: "id");
+      Map params = {"user_id": id, "playlist_name": playListName};
+      var response = await LibraryRepository().createPlaylist(params);
+      if (response.statusCode == 200) {
+        playListNameExistList.add(playListName);
+
+        if (isAddPlaylist) {
+          context.read<PlayerProvider>().getPlayListsList();
+        }
+        playListModel = PlayListModel.fromMap(jsonDecode(response.body));
+
+        notifyListeners();
+        Navigator.of(context).pop();
+      }
     }
   }
 

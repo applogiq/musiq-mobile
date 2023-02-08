@@ -34,7 +34,7 @@ class ExpandedAppBar extends StatelessWidget {
                   : 1,
           child: Container(
             height: albumImageSize,
-            width: albumImageSize,
+            width: double.infinity,
             decoration: BoxDecoration(
               color: imageUrl != ""
                   ? Colors.deepPurpleAccent
@@ -42,11 +42,11 @@ class ExpandedAppBar extends StatelessWidget {
               image: imageUrl != ""
                   ? DecorationImage(
                       image: NetworkImage(imageUrl),
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                     )
                   : DecorationImage(
                       image: AssetImage(Images.noArtist),
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                     ),
               boxShadow: const [
                 BoxShadow(

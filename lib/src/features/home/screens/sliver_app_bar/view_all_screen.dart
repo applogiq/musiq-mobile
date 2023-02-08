@@ -4,10 +4,10 @@ import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/loader.dart';
 import '../../../../core/constants/color.dart';
+import '../../../../core/enums/view_all_status.dart';
 import '../../../../core/utils/url_generate.dart';
 import '../../../common/screen/offline_screen.dart';
 import '../../provider/view_all_provider.dart';
-import '../../../../core/enums/view_all_status.dart';
 import 'widgets/album_song_list.dart';
 import 'widgets/sliver_app_bar.dart';
 
@@ -130,7 +130,7 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
   Widget build(BuildContext context) {
     maxAppBarHeight = MediaQuery.of(context).size.height * 0.5;
     minAppBarHeight = MediaQuery.of(context).padding.top +
-        MediaQuery.of(context).size.height * 0.06;
+        MediaQuery.of(context).size.height * 0.08;
 
     return SafeArea(
       child: Provider.of<InternetConnectionStatus>(context) ==

@@ -42,6 +42,10 @@ class ObjectBox {
         .map((query) => query.find());
   }
 
+  getFavouriteList() async {
+    return favouriteBox.getAll();
+  }
+
   void addQueue(SongListModel songListModel) {
     songListBox.put(songListModel);
   }
@@ -61,7 +65,7 @@ class ObjectBox {
     songListBox.removeAll();
   }
 
-  getAllQueueSong() {
+  List<SongListModel> getAllQueueSong() {
     var songList = songListBox.getAll();
     return songList;
     // for (var e in songList) {
@@ -117,5 +121,9 @@ class ObjectBox {
     return qBuilderArtistSearch
         .watch(triggerImmediately: true)
         .map((query) => query.find());
+  }
+
+  void removeFavourite(int songId) {
+    favouriteBox.remove(songId);
   }
 }

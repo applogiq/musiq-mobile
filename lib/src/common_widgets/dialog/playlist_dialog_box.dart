@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:musiq/src/features/library/provider/library_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -80,6 +81,10 @@ class PlaylistDialogBox extends StatelessWidget {
                               child: TextFormField(
                                 initialValue: initialText,
                                 cursorColor: Colors.white,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r"^[A-Za-z]+[A-Za-z ]*$"))
+                                ],
                                 onChanged: (value) {
                                   pro.checkPlayListName(value);
                                 },

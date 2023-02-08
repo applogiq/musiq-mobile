@@ -16,6 +16,7 @@ class PlayListAddButton extends StatelessWidget {
       return FloatingActionButton(
         onPressed: () {
           pro.isPlayListError = false;
+          pro.playListName = "";
           showDialog(
               context: context,
               barrierDismissible: false,
