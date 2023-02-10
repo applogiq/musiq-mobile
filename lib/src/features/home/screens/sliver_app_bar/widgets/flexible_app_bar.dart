@@ -34,7 +34,7 @@ class ExpandedAppBar extends StatelessWidget {
                   : 1,
           child: Container(
             height: albumImageSize,
-            width: double.infinity,
+            width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               color: imageUrl != ""
                   ? Colors.deepPurpleAccent

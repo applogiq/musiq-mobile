@@ -1,10 +1,12 @@
 import 'package:audio_service/audio_service.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:just_audio/just_audio.dart';
 
 enum PlayerState { stopped, playing, paused }
 
-class AudioPlayerHandler extends BaseAudioHandler {
+class AudioPlayerHandler extends BaseAudioHandler
+    with QueueHandler, SeekHandler {
   final _player = AudioPlayer();
   FlutterSecureStorage storage = const FlutterSecureStorage();
   final _playlist = ConcatenatingAudioSource(children: []);
@@ -86,7 +88,13 @@ class AudioPlayerHandler extends BaseAudioHandler {
       if (_player.shuffleModeEnabled) {
         index = _player.shuffleIndices![index];
       }
-      mediaItem.add(playlist[index]);
+      try {
+        print("----------------->");
+        print(index.toString());
+        mediaItem.add(playlist[index]);
+      } catch (e) {
+        debugPrint(e.toString());
+      }
     });
   }
 
@@ -97,6 +105,37 @@ class AudioPlayerHandler extends BaseAudioHandler {
       final items = sequence.map((source) => source.tag as MediaItem);
       queue.add(items.toList());
     });
+  }
+
+  clearPlaylist() {
+    print(_playlist.length);
+    _playlist.clear();
+    print(_playlist.length);
+  }
+
+  @override
+  Future<void> updateQueue(List<MediaItem> mediaItems) async {
+    await _playlist.clear();
+    await _player.setAudioSource(ConcatenatingAudioSource(children: []));
+    // await addQueueItems(mediaItems);
+    // final audioSource = mediaItems.map(_createAudioSource);
+    // _playlist.addAll(audioSource.toList());
+    // print(_playlist.length);
+
+    // notify system
+    final newQueue = queue.value..addAll(mediaItems);
+    queue.add(newQueue);
+    // print(queue.value.length);
+  }
+
+  @override
+  Future<void> insertQueueItem(int index, MediaItem mediaItem) async {
+    final audioSource = _createAudioSource(mediaItem);
+    try {
+      _playlist.insert(index + 1, audioSource);
+    } catch (e) {
+      _playlist.add(audioSource);
+    }
   }
 
   @override
@@ -207,6 +246,14 @@ class AudioPlayerHandler extends BaseAudioHandler {
         break;
       case 'positionStream':
         return _player.positionStream;
+
+      case 'currentIndex':
+        return _player.currentIndexStream;
+      case 'hasNext':
+        return _player.hasNext;
+      case 'clearPlaylist':
+        _playlist.clear();
+        break;
       default:
     }
   }

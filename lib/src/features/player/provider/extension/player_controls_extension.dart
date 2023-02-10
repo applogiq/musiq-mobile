@@ -47,10 +47,10 @@ extension PlayerControllerExtension on PlayerProvider {
   }
 
   void playNext() {
-    player.seekToNext();
+    audioHandler!.skipToNext();
   }
 
   void playPrev() {
-    player.seekToPrevious();
+    audioHandler!.skipToPrevious();
   }
 }

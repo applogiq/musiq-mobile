@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/container/empty_box.dart';
 import '../../../../core/constants/constant.dart';
-import '../../domain/model/player_song_list_model.dart';
 import '../../provider/player_provider.dart';
 import '../../screen/player_screen/player_screen.dart';
 import '../../screen/player_screen/up_next.dart';
@@ -31,31 +29,32 @@ class UpNextController extends StatelessWidget {
                       const UpNext(),
                       Consumer<PlayerProvider>(
                         builder: (context, playerProvider, _) {
-                          return StreamBuilder<SequenceState?>(
-                            stream: playerProvider.player.sequenceStateStream,
-                            builder: (context, snapshot) {
-                              final state = snapshot.data;
-                              if (state?.sequence.isEmpty ?? true) {
-                                return const ColoredBox(
-                                  color: Colors.black,
-                                );
-                              }
-                              PlayerSongListModel? metadata;
-                              try {
-                                metadata = state!
-                                    .effectiveSequence[state.currentIndex + 1]
-                                    .tag as PlayerSongListModel;
-                              } catch (e) {
-                                metadata = null;
-                              }
-                              return Text(
-                                metadata != null
-                                    ? metadata.title.toString()
-                                    : "",
-                                style: fontWeight400(size: 14.0),
-                              );
-                            },
-                          );
+                          print(playerProvider.selectedIndex);
+                          return const Text("S");
+                          // return StreamBuilder<int?>(
+                          //   stream: context.read<PlayerProvider>().currentIndex,
+                          //   builder: (context, snapshot) {
+                          //     print(snapshot.data);
+
+                          //     // if (mediaItem == null) {
+                          //     return const SizedBox.shrink();
+                          //     // }
+                          //     // PlayerSongListModel? metadata;
+                          //     // // try {
+                          //     // //   metadata = mediaItem!
+                          //     // //       .effectiveSequence[state.currentIndex + 1]
+                          //     // //       .tag as PlayerSongListModel;
+                          //     // // } catch (e) {
+                          //     // //   metadata = null;
+                          //     // // }
+                          //     // return Text(
+                          //     //   metadata != null
+                          //     //       ? mediaItem.title.toString()
+                          //     //       : "",
+                          //     //   style: fontWeight400(size: 14.0),
+                          //     // );
+                          //   },
+                          // );
                         },
                       )
                     ],

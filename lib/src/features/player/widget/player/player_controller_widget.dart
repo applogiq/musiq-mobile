@@ -1,14 +1,13 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:musiq/src/core/local/model/favourite_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../main.dart';
 import '../../../../core/constants/constant.dart';
+import '../../../../core/local/model/favourite_model.dart';
 import '../../../../core/routing/route_name.dart';
 import '../../../../core/utils/navigation.dart';
 import '../../../home/provider/artist_view_all_provider.dart';
-import '../../domain/model/player_song_list_model.dart';
 import '../../provider/player_provider.dart';
 import 'player_widgets.dart';
 
@@ -21,19 +20,19 @@ class PlayerControllerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ArtistViewAllProvider>(
       builder: (context, pro, _) {
-        return StreamBuilder<SequenceState?>(
-            stream: context.read<PlayerProvider>().player.sequenceStateStream,
+        return StreamBuilder<MediaItem?>(
+            stream: context.read<PlayerProvider>().audioHandler!.mediaItem,
             builder: (context, snapshot) {
-              final state = snapshot.data;
-              if (state?.sequence.isEmpty ?? true) {
-                return const SizedBox();
+              MediaItem? mediaItem = snapshot.data;
+
+              if (mediaItem == null) {
+                return const SizedBox.shrink();
               }
-              final metadata = state!.currentSource!.tag as PlayerSongListModel;
               return Column(
                 children: [
-                  Text(metadata.title, style: fontWeight500(size: 16.0)),
+                  Text(mediaItem.title, style: fontWeight500(size: 16.0)),
                   Text(
-                    metadata.musicDirectorName,
+                    mediaItem.album!,
                     style:
                         fontWeight400(size: 14.0, color: CustomColor.subTitle),
                   ),
@@ -67,19 +66,23 @@ class PlayerControllerWidget extends StatelessWidget {
 
                                 return GestureDetector(
                                     onTap: () {
-                                      list3.contains(metadata.id)
+                                      list3.contains(
+                                              mediaItem.extras!["song_id"])
                                           ? context
                                               .read<PlayerProvider>()
-                                              .deleteFavourite(metadata.id)
+                                              .deleteFavourite(
+                                                  mediaItem.extras!["song_id"])
                                           : context
                                               .read<PlayerProvider>()
-                                              .addFavourite(metadata.id);
+                                              .addFavourite(
+                                                  mediaItem.extras!["song_id"]);
                                     },
                                     child: Icon(
                                       Icons.favorite_rounded,
                                       color: list3 == null
                                           ? Colors.white
-                                          : list3.contains(metadata.id)
+                                          : list3.contains(
+                                                  mediaItem.extras!["song_id"])
                                               ? CustomColor.secondaryColor
                                               : Colors.white,
                                     ));
@@ -96,7 +99,7 @@ class PlayerControllerWidget extends StatelessWidget {
                           onTap: () {
                             Navigation.navigateToScreen(
                                 context, RouteName.addPlaylist,
-                                args: metadata.id.toString());
+                                args: mediaItem.extras!["song_id"].toString());
                           },
                           child:
                               const Icon(Icons.playlist_add_rounded, size: 34)),

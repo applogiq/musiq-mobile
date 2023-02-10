@@ -131,12 +131,15 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
     maxAppBarHeight = MediaQuery.of(context).size.height * 0.5;
     minAppBarHeight = MediaQuery.of(context).padding.top +
         MediaQuery.of(context).size.height * 0.08;
-
+    double width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Provider.of<InternetConnectionStatus>(context) ==
               InternetConnectionStatus.disconnected
           ? const OfflineScreen()
           : Scaffold(
+              // bottomNavigationBar: BottomNavigationBarWithMiniPlayer(
+              //   width: width,
+              // ),
               body: Consumer<ViewAllProvider>(
                 builder: (context, pro, _) {
                   return pro.isLoad

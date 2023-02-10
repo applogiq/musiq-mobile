@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import '../../../common_widgets/box/vertical_box.dart';
-import '../../../common_widgets/loader.dart';
-import '../provider/home_provider.dart';
-import '../widgets/current_mood.dart';
-import '../widgets/top_album_list.dart';
-import '../widgets/trending_hits.dart';
-import '../../../core/enums/search_status.dart';
-import '../../../core/utils/size_config.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common_widgets/box/vertical_box.dart';
+import '../../../common_widgets/loader.dart';
+import '../../../core/enums/search_status.dart';
+import '../../../core/utils/size_config.dart';
+import '../provider/home_provider.dart';
 import '../widgets/artist_list_view.dart';
+import '../widgets/current_mood.dart';
 import '../widgets/home_screen_song_list.dart';
 import '../widgets/search_notifications.dart';
+import '../widgets/top_album_list.dart';
+import '../widgets/trending_hits.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

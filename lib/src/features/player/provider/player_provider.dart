@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -12,7 +14,9 @@ import 'package:musiq/src/features/player/provider/player_audio_provider.dart';
 import '../../../../main.dart';
 import '../../../core/package/miniplayer/miniplayer.dart';
 import '../../../core/utils/time.dart';
+import '../../../core/utils/toast_message.dart';
 import '../../../core/utils/url_generate.dart';
+import '../../library/domain/library_repo.dart';
 import '../../library/domain/models/playlist_model.dart';
 
 export "extension/player_controls_extension.dart";
@@ -20,7 +24,7 @@ export "extension/player_local_db_controller_extension.dart";
 
 class PlayerProvider extends ChangeNotifier {
   final MiniplayerController controller = MiniplayerController();
-  // AudioPlayerHandler audioPlayerHandler = AudioPlayerHandler();
+  AudioPlayerHandler audioPlayerHandler = AudioPlayerHandler();
   bool isPlay = false;
   bool isPlaying = false;
   bool isShuffle = false;
@@ -53,6 +57,7 @@ class PlayerProvider extends ChangeNotifier {
   List<MediaItem> globalQueue = [];
   int? globalIndex;
   Stream<Duration>? positionStream = const Stream.empty();
+  Stream<int>? currentIndex = const Stream.empty();
 
   AudioHandler? get audioHandler => _audioHandler;
   Future<void> setUpAudio() async {
@@ -87,13 +92,13 @@ class PlayerProvider extends ChangeNotifier {
                 musicDirectorName: e.musicDirectorName,
                 duration: e.duration));
             final item = MediaItem(
-              id: generateSongUrl(e.songId),
-              album: e.albumName,
-              title: e.title,
-              artist: e.musicDirectorName,
-              duration: Duration(milliseconds: totalDuration(e.duration)),
-              artUri: Uri.parse(e.imageUrl),
-            );
+                id: generateSongUrl(e.songId),
+                album: e.albumName,
+                title: e.title,
+                artist: e.musicDirectorName,
+                duration: Duration(milliseconds: totalDuration(e.duration)),
+                artUri: Uri.parse(e.imageUrl),
+                extras: {"song_id": e.songId});
             await _audioHandler!.addQueueItem(item);
           }
           // await _audioHandler!.play();
@@ -149,31 +154,176 @@ class PlayerProvider extends ChangeNotifier {
 
   deleteFavourite(int id, {bool isFromFav = false, BuildContext? ctx}) {}
 
-  addFavourite(int id) {}
+  addFavourite(int id) async {
+    Map params = {"song_id": id};
+    var res = await playerRepo.addToFavourite(params);
 
-  void loopSong() {}
+    if (res.statusCode == 200) {
+      toastMessage("Song added to favourite list", Colors.grey, Colors.white);
+      // addFavouriteSongToLocalDb(songId);
+      // await favouriteSongBox.add(song);
+    } else if (res.statusCode == 400) {
+      // loadFavourites();
 
-  void shuffleSong() {}
+      toastMessage("Song already in favourite list", Colors.grey, Colors.white);
+    }
+  }
 
-  void seekDuration(Duration duration) {}
+  void loopSong() async {
+    if (loopStatus == 0) {
+      loopStatus = 1;
+      await _audioHandler!.setRepeatMode(AudioServiceRepeatMode.all);
+    } else if (loopStatus == 1) {
+      loopStatus = 2;
+      await _audioHandler!.setRepeatMode(AudioServiceRepeatMode.one);
+    } else {
+      loopStatus = 0;
+
+      await _audioHandler!.setRepeatMode(AudioServiceRepeatMode.none);
+    }
+    notifyListeners();
+  }
+
+  void shuffleSong() async {
+    if (isShuffle == false) {
+      await _audioHandler!.setShuffleMode(AudioServiceShuffleMode.all);
+    } else {
+      await _audioHandler!.setShuffleMode(AudioServiceShuffleMode.none);
+    }
+    isShuffle = !isShuffle;
+    notifyListeners();
+    // _audioHandler!.setShuffleMode(AudioServiceShuffleMode.all);
+  }
+
+  void seekDuration(Duration duration) {
+    _audioHandler!.seek(duration);
+  }
 
   void playSingleSong(
       BuildContext context, PlayerSongListModel playerSongListModel) {}
 
-  void goToPlayer(
-      BuildContext context, List<PlayerSongListModel> playerSongList, int i) {}
+  void getPlayListsList() async {
+    isPlayListLoad = true;
+    notifyListeners();
 
-  void getPlayListsList() {}
+    try {
+      var id = await secureStorage.read(key: "id");
 
-  void songInfo(String string) {}
+      var response = await LibraryRepository().getPlayListdata(id!);
 
-  void addSongToQueueSongList(List<PlayerSongListModel> playSongListModel) {}
+      if (response.statusCode == 200) {
+        playListModel =
+            PlayListModel.fromMap(jsonDecode(response.body.toString()));
+        // playListNameExistList.clear();
+        if (playListModel.success == true) {
+          for (int i = 0; i < playListModel.totalRecords; i++) {
+            // playListNameExistList.add(playListModel.records[i].playlistName);
+          }
+        }
+      } else {
+        playListModel = PlayListModel(
+            success: false,
+            message: "No records",
+            records: [],
+            totalRecords: 0);
+      }
+    } catch (e) {
+      playListModel = PlayListModel(
+          success: false, message: "No records", records: [], totalRecords: 0);
+    }
+    isPlayListLoad = false;
+
+    notifyListeners();
+  }
+
+  void songInfo(String songId) async {
+    issongInfoDetailsLoad = true;
+    notifyListeners();
+    songInfoModel = null;
+    var res = await playerRepo.songInfo(songId);
+
+    if (res.statusCode == 200) {
+      songInfoModel = SongInfoModel.fromMap(jsonDecode(res.body));
+    }
+    issongInfoDetailsLoad = false;
+    notifyListeners();
+  }
+
+  void addSongToQueueSongList(
+      List<PlayerSongListModel> playSongListModel) async {
+    print("Queue");
+    for (var e in playSongListModel) {
+      // playerSongList.add(PlayerSongListModel(
+      //     id: e.id,
+      //     albumName: e.albumName,
+      //     title: e.title,
+      //     imageUrl: e.imageUrl,
+      //     musicDirectorName: e.musicDirectorName,
+      //     duration: e.duration));
+
+      final item = MediaItem(
+        id: generateSongUrl(e.id),
+        album: e.albumName,
+        title: e.title,
+        artist: e.musicDirectorName,
+        duration: Duration(milliseconds: totalDuration(e.duration)),
+        artUri: Uri.parse(e.imageUrl),
+      );
+      await _audioHandler!.addQueueItem(item);
+    }
+  }
 
   void addQueueToLocalDb(PlayerSongListModel playerSongListModel) {}
 
-  void queuePlayNext(PlayerSongListModel playerSongListModel) {}
+  void queuePlayNext(PlayerSongListModel playerSongListModel) async {
+    final item = MediaItem(
+      id: generateSongUrl(playerSongListModel.id),
+      album: playerSongListModel.albumName,
+      title: playerSongListModel.title,
+      artist: playerSongListModel.musicDirectorName,
+      duration:
+          Duration(milliseconds: totalDuration(playerSongListModel.duration)),
+      artUri: Uri.parse(playerSongListModel.imageUrl),
+    );
+    await _audioHandler?.insertQueueItem(1, item);
+  }
 
   void queueSong(PlayerSongListModel playerSongListModel) {}
+  void goToPlayer(BuildContext context,
+      List<PlayerSongListModel> playerSongList, int i) async {
+    isPlaying = false;
+    // _audioHandler!.stop();
+    notifyListeners();
+    // // await _audioHandler!.customAction("clearPlaylist");
+    List<MediaItem> mediaItems = [];
+    for (var e in playerSongList) {
+      print("----->");
+      print(e.albumName);
+      // playerSongList.add(PlayerSongListModel(
+      //     id: e.id,
+      //     albumName: e.albumName,
+      //     title: e.title,
+      //     imageUrl: e.imageUrl,
+      //     musicDirectorName: e.musicDirectorName,
+      //     duration: e.duration));
+
+      final item = MediaItem(
+        id: generateSongUrl(e.id),
+        album: e.albumName,
+        title: e.title,
+        artist: e.musicDirectorName,
+        duration: Duration(milliseconds: totalDuration(e.duration)),
+        artUri: Uri.parse(e.imageUrl),
+      );
+      mediaItems.add(item);
+    }
+    for (var element in mediaItems) {
+      print(element.album);
+    }
+    await _audioHandler!.updateQueue(mediaItems);
+    isPlaying = true;
+    notifyListeners();
+  }
 
   // // This function controller repeated queue, repeated specific song multiple times and cancel repeation
   // loopSong() async {
