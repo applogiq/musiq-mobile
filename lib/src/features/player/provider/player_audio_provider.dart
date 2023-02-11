@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:just_audio/just_audio.dart';
 
-enum PlayerState { stopped, playing, paused }
+// enum PlayerState { stopped, playing, paused }
 
 class AudioPlayerHandler extends BaseAudioHandler
     with QueueHandler, SeekHandler {
@@ -17,12 +17,13 @@ class AudioPlayerHandler extends BaseAudioHandler
     _listenForDurationChanges();
     _listenForCurrentSongIndexChanges();
     _listenForSequenceStateChanges();
+    _loadProgress();
   }
   Future<void> _loadEmptyPlaylist() async {
     try {
       await _player.setAudioSource(_playlist);
     } catch (e) {
-      print("Error: $e");
+      debugPrint("Error: ${e.toString()}");
     }
   }
 
@@ -64,8 +65,21 @@ class AudioPlayerHandler extends BaseAudioHandler
     });
   }
 
+  void _loadProgress() {
+    _player.positionStream.listen((event) {
+      if (event.toString().trim() != " 0:00:00.000000".toString().trim()) {
+        print("event");
+        storage.write(key: "lastPosition", value: event.toString());
+      }
+      print(event);
+    });
+  }
+
   void _listenForDurationChanges() {
     _player.durationStream.listen((duration) {
+      print("FOOO:LLFKOJMTgj");
+
+      print(duration);
       var index = _player.currentIndex;
       final List<MediaItem?> newQueue = queue.value;
       if (index == null || newQueue.isEmpty) return;
@@ -78,6 +92,7 @@ class AudioPlayerHandler extends BaseAudioHandler
       newQueue[index] = newMediaItem;
       queue.add(newQueue as List<MediaItem>);
       mediaItem.add(newMediaItem);
+      print("FOOO:LLFKOJMTgj");
     });
   }
 
@@ -87,12 +102,18 @@ class AudioPlayerHandler extends BaseAudioHandler
       if (index == null || playlist.isEmpty) return;
       if (_player.shuffleModeEnabled) {
         index = _player.shuffleIndices![index];
+        print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+        print(index);
+        storage.write(key: "currentIndex", value: index.toString());
       }
+      print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+      print(index);
+      storage.write(key: "currentIndex", value: index.toString());
+
       try {
-        print("----------------->");
-        print(index.toString());
         mediaItem.add(playlist[index]);
       } catch (e) {
+        debugPrint("####################");
         debugPrint(e.toString());
       }
     });
@@ -107,24 +128,32 @@ class AudioPlayerHandler extends BaseAudioHandler
     });
   }
 
-  clearPlaylist() {
-    print(_playlist.length);
-    _playlist.clear();
-    print(_playlist.length);
+  void remove() async {
+    final lastIndex = queue.value.length - 1;
+    if (lastIndex < 0) return;
+    removeQueueItemAt(lastIndex);
   }
 
   @override
-  Future<void> updateQueue(List<MediaItem> mediaItems) async {
-    await _playlist.clear();
-    await _player.setAudioSource(ConcatenatingAudioSource(children: []));
-    // await addQueueItems(mediaItems);
-    // final audioSource = mediaItems.map(_createAudioSource);
-    // _playlist.addAll(audioSource.toList());
-    // print(_playlist.length);
+  Future<void> updateQueue(List<MediaItem> newQueue) async {
+    debugPrint(newQueue.toString());
+    debugPrint(_playlist.length.toString());
+    while (_playlist.length != 0) {
+      for (int i = 0; i < _playlist.length; i++) {
+        remove();
+      }
+    }
+    debugPrint(_playlist.length.toString());
 
-    // notify system
-    final newQueue = queue.value..addAll(mediaItems);
-    queue.add(newQueue);
+    // await _player.setAudioSource(ConcatenatingAudioSource(children: []));
+    // // await addQueueItems(mediaItems);
+    // // final audioSource = mediaItems.map(_createAudioSource);
+    // // _playlist.addAll(audioSource.toList());
+    // // print(_playlist.length);
+
+    // // notify system
+    // final newQueue = queue.value..addAll(mediaItems);
+    // queue.add(newQueue);
     // print(queue.value.length);
   }
 
@@ -178,6 +207,12 @@ class AudioPlayerHandler extends BaseAudioHandler
   }
 
   @override
+  Future<void> removeQueueItem(MediaItem mediaItem) async {
+    final index = queue.value.indexOf(mediaItem);
+    await _playlist.removeAt(index);
+  }
+
+  @override
   Future<void> play() async {
     _player.setPreferredPeakBitRate(360);
     _player.play();
@@ -185,16 +220,20 @@ class AudioPlayerHandler extends BaseAudioHandler
 
   @override
   Future<void> pause() async {
-    _player.pause();
+    print("dfdffdg");
     storage.write(key: "currentIndex", value: _player.currentIndex.toString());
     storage.write(
         key: "lastPosition", value: _player.position.inSeconds.toString());
-    print(_player.currentIndex);
+    _player.pause();
+    // print(_player.currentIndex);
     print(await storage.read(key: "lastPosition"));
   }
 
   @override
-  Future<void> seek(Duration position) => _player.seek(position);
+  Future<void> seek(Duration position) async {
+    print(position);
+    _player.seek(position);
+  }
 
   @override
   Future<void> skipToQueueItem(int index) async {
@@ -260,9 +299,10 @@ class AudioPlayerHandler extends BaseAudioHandler
 
   @override
   Future<void> stop() async {
-    print("ssss");
+    print("TTTTTTTTTTTTTTTTTTTTT");
     await _player.pause();
     await _player.seek(Duration.zero);
+    print("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
     return super.stop();
   }
 }

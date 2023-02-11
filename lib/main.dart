@@ -9,9 +9,6 @@ import 'package:musiq/src/core/utils/my_http_overrides.dart';
 // Object box instance
 late ObjectBox objectbox;
 
-// Audio player instance
-late AudioHandler audioHandler;
-
 Future<void> main() async {
   // This instance for handshaking error fix
   HttpOverrides.global = MyHttpOverrides();

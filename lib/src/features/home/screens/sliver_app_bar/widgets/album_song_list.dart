@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/core/constants/constant.dart';
 import 'package:musiq/src/features/home/screens/sliver_app_bar/widgets/song_list_tile.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../common_widgets/container/custom_color_container.dart';
 import '../../../../../core/enums/view_all_status.dart';
-import '../../../../../core/routing/route_name.dart';
-import '../../../../../core/utils/navigation.dart';
 import '../../../../../core/utils/url_generate.dart';
-import '../../../../player/domain/model/player_song_list_model.dart';
-import '../../../../player/provider/player_provider.dart';
-import '../../../../search/provider/search_provider.dart';
 import '../../../domain/model/album_song_list_model.dart';
 import '../../../domain/model/aura_song_list_model.dart';
 import '../../../domain/model/collection_view_all_model.dart';

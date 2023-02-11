@@ -5,7 +5,6 @@ import 'package:musiq/src/features/player/widget/player/player_pop_up_menu.dart'
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/constant.dart';
-import '../../../../core/package/miniplayer/miniplayer.dart';
 import '../../../home/provider/artist_view_all_provider.dart';
 import '../../domain/model/player_song_list_model.dart';
 import '../../provider/player_provider.dart';
@@ -94,12 +93,12 @@ class PlayerBackground extends StatelessWidget {
     bool canPop = Navigator.of(context).canPop();
 
     if (!canPop) {
-      if (context.read<PlayerProvider>().isPlaying) {
-        context
-            .read<PlayerProvider>()
-            .controller
-            .animateToHeight(state: PanelState.MIN);
-      }
+      // if (context.read<PlayerProvider>().isPlaying) {
+      //   context
+      //       .read<PlayerProvider>()
+      //       .controller
+      //       .animateToHeight(state: PanelState.MIN);
+      // }
     } else {
       Navigator.of(context).pop();
     }

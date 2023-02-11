@@ -20,7 +20,6 @@ class ProgressBarWidget extends StatelessWidget {
         return StreamBuilder<MediaItem?>(
             stream: context.read<PlayerProvider>().audioHandler!.mediaItem,
             builder: (context, snapshot) {
-              final state = snapshot.data;
               MediaItem? mediaItem = snapshot.data;
 
               if (mediaItem == null) {

@@ -12,7 +12,6 @@ import 'package:musiq/src/features/player/domain/repo/player_repo.dart';
 import 'package:musiq/src/features/player/provider/player_audio_provider.dart';
 
 import '../../../../main.dart';
-import '../../../core/package/miniplayer/miniplayer.dart';
 import '../../../core/utils/time.dart';
 import '../../../core/utils/toast_message.dart';
 import '../../../core/utils/url_generate.dart';
@@ -23,13 +22,14 @@ export "extension/player_controls_extension.dart";
 export "extension/player_local_db_controller_extension.dart";
 
 class PlayerProvider extends ChangeNotifier {
-  final MiniplayerController controller = MiniplayerController();
+  // final MiniplayerController controller = MiniplayerController();
   AudioPlayerHandler audioPlayerHandler = AudioPlayerHandler();
   bool isPlay = false;
   bool isPlaying = false;
   bool isShuffle = false;
   bool issongInfoDetailsLoad = true;
   int loopStatus = 0;
+  int index = 2;
   bool inQueue = false;
   bool isUpNextShow = false;
   void toggleUpNext() {
@@ -40,6 +40,7 @@ class PlayerProvider extends ChangeNotifier {
   // late Store store;
   List<int> favouritesList = [];
   List<int> queueIdList = [];
+  List songPosition = [];
   ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: []);
 
   AudioPlayer player = AudioPlayer();
@@ -76,9 +77,24 @@ class PlayerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  loadSongIndex() async {
+    var currentIndex = await secureStorage.read(key: "currentIndex");
+    index = int.parse(currentIndex.toString());
+    var last = await secureStorage.read(key: "lastPosition");
+    songPosition = last!.split(":");
+    // print(songPosition[2]);
+    debugPrint(last.toString());
+    // print(await secureStorage.read(key: "lastPosition "));
+    notifyListeners();
+    debugPrint(index.toString());
+  }
+
   loadQueueSong() async {
+    // await loadSongIndex();
     if (!inQueue) {
       try {
+        // var index = await secureStorage.read(key: "currentIndex");
+        // print(index);
         var res = objectbox.getAllQueueSong();
         if (res.isNotEmpty) {
           queueIdList.clear();
@@ -100,6 +116,15 @@ class PlayerProvider extends ChangeNotifier {
                 artUri: Uri.parse(e.imageUrl),
                 extras: {"song_id": e.songId});
             await _audioHandler!.addQueueItem(item);
+
+            await _audioHandler!.skipToQueueItem(index);
+            // print(await secureStorage.read(key: "lastPosition "));
+            List sec = songPosition[2].toString().split(".");
+            await _audioHandler!.seek(Duration(
+                hours: int.parse(songPosition[0]),
+                minutes: int.parse(songPosition[1]),
+                seconds: int.parse(sec[0])));
+            // await _audioHandler!.seek(const Duration(milliseconds: 12345));
           }
           // await _audioHandler!.play();
           // playlist = ConcatenatingAudioSource(
@@ -139,6 +164,7 @@ class PlayerProvider extends ChangeNotifier {
         debugPrint(e.toString());
       }
     }
+    notifyListeners();
   }
 
   void playOrPause() {
@@ -251,7 +277,7 @@ class PlayerProvider extends ChangeNotifier {
 
   void addSongToQueueSongList(
       List<PlayerSongListModel> playSongListModel) async {
-    print("Queue");
+    debugPrint("Queue");
     for (var e in playSongListModel) {
       // playerSongList.add(PlayerSongListModel(
       //     id: e.id,
@@ -291,36 +317,31 @@ class PlayerProvider extends ChangeNotifier {
   void queueSong(PlayerSongListModel playerSongListModel) {}
   void goToPlayer(BuildContext context,
       List<PlayerSongListModel> playerSongList, int i) async {
+    print(i);
     isPlaying = false;
     // _audioHandler!.stop();
     notifyListeners();
     // // await _audioHandler!.customAction("clearPlaylist");
     List<MediaItem> mediaItems = [];
     for (var e in playerSongList) {
-      print("----->");
-      print(e.albumName);
-      // playerSongList.add(PlayerSongListModel(
-      //     id: e.id,
-      //     albumName: e.albumName,
-      //     title: e.title,
-      //     imageUrl: e.imageUrl,
-      //     musicDirectorName: e.musicDirectorName,
-      //     duration: e.duration));
-
       final item = MediaItem(
-        id: generateSongUrl(e.id),
-        album: e.albumName,
-        title: e.title,
-        artist: e.musicDirectorName,
-        duration: Duration(milliseconds: totalDuration(e.duration)),
-        artUri: Uri.parse(e.imageUrl),
-      );
+          id: generateSongUrl(e.id),
+          album: e.albumName,
+          title: e.title,
+          artist: e.musicDirectorName,
+          duration: Duration(milliseconds: totalDuration(e.duration)),
+          artUri: Uri.parse(e.imageUrl),
+          extras: {"song_id": e.id});
       mediaItems.add(item);
     }
     for (var element in mediaItems) {
       print(element.album);
     }
+    await _audioHandler!.stop();
     await _audioHandler!.updateQueue(mediaItems);
+    await _audioHandler!.addQueueItems(mediaItems);
+    await _audioHandler!.skipToQueueItem(i);
+    await _audioHandler!.play();
     isPlaying = true;
     notifyListeners();
   }

@@ -22,6 +22,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   load() async {
+    await context.read<PlayerProvider>().loadSongIndex();
     await context.read<PlayerProvider>().setUpAudio();
     await context.read<PlayerProvider>().loadQueueSong();
     // await context.read<PlayerAudioProvider>().loadQueueSong();

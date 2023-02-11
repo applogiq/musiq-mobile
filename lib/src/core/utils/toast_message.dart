@@ -14,18 +14,18 @@ toastMessage(String messageContent, Color backgroundColor, Color textColor) {
       fontSize: 16.0);
 }
 
-errorToastMessage(
-  String messageContent,
-) {
-  Fluttertoast.showToast(
-      msg: messageContent,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 5,
-      backgroundColor: CustomColor.errorStatusColor,
-      textColor: Colors.white,
-      fontSize: 16.0);
-}
+// errorToastMessage(
+//   String messageContent,
+// ) {
+//   Fluttertoast.showToast(
+//       msg: messageContent,
+//       toastLength: Toast.LENGTH_SHORT,
+//       gravity: ToastGravity.BOTTOM,
+//       timeInSecForIosWeb: 5,
+//       backgroundColor: CustomColor.errorStatusColor,
+//       textColor: Colors.white,
+//       fontSize: 16.0);
+// }
 
 successToastMessage(
   String messageContent,
@@ -40,15 +40,15 @@ successToastMessage(
       fontSize: 16.0);
 }
 
-normalToastMessage(
-  String messageContent,
-) {
-  Fluttertoast.showToast(
-      msg: messageContent,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 5,
-      backgroundColor: Colors.grey,
-      textColor: Colors.black,
-      fontSize: 16.0);
-}
+// normalToastMessage(
+//   String messageContent,
+// ) {
+//   Fluttertoast.showToast(
+//       msg: messageContent,
+//       toastLength: Toast.LENGTH_SHORT,
+//       gravity: ToastGravity.BOTTOM,
+//       timeInSecForIosWeb: 5,
+//       backgroundColor: Colors.grey,
+//       textColor: Colors.black,
+//       fontSize: 16.0);
+// }

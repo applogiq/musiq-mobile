@@ -29,7 +29,6 @@ class UpNextController extends StatelessWidget {
                       const UpNext(),
                       Consumer<PlayerProvider>(
                         builder: (context, playerProvider, _) {
-                          print(playerProvider.selectedIndex);
                           return const Text("S");
                           // return StreamBuilder<int?>(
                           //   stream: context.read<PlayerProvider>().currentIndex,

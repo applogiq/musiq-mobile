@@ -79,12 +79,10 @@ class PlayerControllerWidget extends StatelessWidget {
                                     },
                                     child: Icon(
                                       Icons.favorite_rounded,
-                                      color: list3 == null
-                                          ? Colors.white
-                                          : list3.contains(
-                                                  mediaItem.extras!["song_id"])
-                                              ? CustomColor.secondaryColor
-                                              : Colors.white,
+                                      color: list3.contains(
+                                              mediaItem.extras!["song_id"])
+                                          ? CustomColor.secondaryColor
+                                          : Colors.white,
                                     ));
                               }),
                         ],
