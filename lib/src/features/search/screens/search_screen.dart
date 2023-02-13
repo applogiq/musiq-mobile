@@ -69,11 +69,13 @@ class _SearchScreenState extends State<SearchScreen> {
   void _onSearchChange() {
     debouncing(
       fn: () {
-        context.read<SearchProvider>().getSearch(
-            _controller.text,
-            widget.searchRequestModel.searchStatus,
-            widget.searchRequestModel.playlistId,
-            context);
+        if (mounted) {
+          context.read<SearchProvider>().getSearch(
+              _controller.text,
+              widget.searchRequestModel.searchStatus,
+              widget.searchRequestModel.playlistId,
+              context);
+        }
       },
     );
   }

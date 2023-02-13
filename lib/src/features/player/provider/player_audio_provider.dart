@@ -2,6 +2,8 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musiq/src/features/player/provider/player_provider.dart';
+import 'package:rxdart/rxdart.dart';
 
 // enum PlayerState { stopped, playing, paused }
 
@@ -10,7 +12,7 @@ class AudioPlayerHandler extends BaseAudioHandler
   final _player = AudioPlayer();
   FlutterSecureStorage storage = const FlutterSecureStorage();
   final _playlist = ConcatenatingAudioSource(children: []);
-
+  AudioPlayer get player => _player;
   AudioPlayerHandler() {
     _loadEmptyPlaylist();
     _notifyAudioHandlerAboutPlaybackEvents();
@@ -68,18 +70,13 @@ class AudioPlayerHandler extends BaseAudioHandler
   void _loadProgress() {
     _player.positionStream.listen((event) {
       if (event.toString().trim() != " 0:00:00.000000".toString().trim()) {
-        print("event");
         storage.write(key: "lastPosition", value: event.toString());
       }
-      print(event);
     });
   }
 
   void _listenForDurationChanges() {
     _player.durationStream.listen((duration) {
-      print("FOOO:LLFKOJMTgj");
-
-      print(duration);
       var index = _player.currentIndex;
       final List<MediaItem?> newQueue = queue.value;
       if (index == null || newQueue.isEmpty) return;
@@ -92,7 +89,6 @@ class AudioPlayerHandler extends BaseAudioHandler
       newQueue[index] = newMediaItem;
       queue.add(newQueue as List<MediaItem>);
       mediaItem.add(newMediaItem);
-      print("FOOO:LLFKOJMTgj");
     });
   }
 
@@ -102,12 +98,8 @@ class AudioPlayerHandler extends BaseAudioHandler
       if (index == null || playlist.isEmpty) return;
       if (_player.shuffleModeEnabled) {
         index = _player.shuffleIndices![index];
-        print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
-        print(index);
         storage.write(key: "currentIndex", value: index.toString());
       }
-      print("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
-      print(index);
       storage.write(key: "currentIndex", value: index.toString());
 
       try {
@@ -235,9 +227,28 @@ class AudioPlayerHandler extends BaseAudioHandler
     _player.seek(position);
   }
 
+  Stream<QueueState> get queueState =>
+      Rx.combineLatest3<List<MediaItem>, PlaybackState, List<int>, QueueState>(
+          queue,
+          playbackState,
+          _player.shuffleIndicesStream.whereType<List<int>>(),
+          (queue, playbackState, shuffleIndices) => QueueState(
+                queue,
+                playbackState.queueIndex,
+                playbackState.shuffleMode == AudioServiceShuffleMode.all
+                    ? shuffleIndices
+                    : null,
+                playbackState.repeatMode,
+              )).where((state) =>
+          state.shuffleIndices == null ||
+          state.queue.length == state.shuffleIndices!.length);
+
   @override
   Future<void> skipToQueueItem(int index) async {
-    if (index < 0 || index >= queue.value.length) return;
+    print("innnn");
+    print(index);
+    print(queue.value.length);
+    if (index < 0 || index > queue.value.length) return;
     if (_player.shuffleModeEnabled) {
       index = _player.shuffleIndices![index];
     }
@@ -273,7 +284,11 @@ class AudioPlayerHandler extends BaseAudioHandler
     } else {
       await _player.shuffle();
       _player.setShuffleModeEnabled(true);
+      for (var element in _player.sequence!) {
+        print(element.shuffleIndices.toString());
+      }
     }
+    playbackState.add(playbackState.value.copyWith(shuffleMode: shuffleMode));
   }
 
   @override

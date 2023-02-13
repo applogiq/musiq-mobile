@@ -101,12 +101,24 @@ class PlayerControllerWidget extends StatelessWidget {
                           },
                           child:
                               const Icon(Icons.playlist_add_rounded, size: 34)),
-                      PlayNextPrev(
-                        onTap: () {
-                          context.read<PlayerProvider>().playPrev();
-                        },
-                        iconData: Icons.skip_previous_rounded,
-                      ),
+                      StreamBuilder<List<MediaItem>>(
+                          stream: context
+                              .read<PlayerProvider>()
+                              .audioHandler!
+                              .queue,
+                          builder: (context, snapshot) {
+                            List<MediaItem>? mediaItem = snapshot.data;
+
+                            return PlayNextPrev(
+                              onTap: () {
+                                for (var element in mediaItem!) {
+                                  print(element.album);
+                                }
+                                context.read<PlayerProvider>().playPrev();
+                              },
+                              iconData: Icons.skip_previous_rounded,
+                            );
+                          }),
                       const PlayPauseController(),
                       PlayNextPrev(
                         onTap: () {

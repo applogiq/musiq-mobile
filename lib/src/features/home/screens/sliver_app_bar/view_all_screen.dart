@@ -138,9 +138,7 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
               InternetConnectionStatus.disconnected
           ? const OfflineScreen()
           : Scaffold(
-              bottomNavigationBar: BottomNavigationBarWithMiniPlayer(
-                width: width,
-              ),
+              bottomNavigationBar: const MiniPlayer(),
               body: Consumer<ViewAllProvider>(
                 builder: (context, pro, _) {
                   return pro.isLoad

@@ -25,37 +25,45 @@ class UpNextController extends StatelessWidget {
                   title: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const UpNext(),
-                      Consumer<PlayerProvider>(
-                        builder: (context, playerProvider, _) {
-                          return const Text("S");
-                          // return StreamBuilder<int?>(
-                          //   stream: context.read<PlayerProvider>().currentIndex,
-                          //   builder: (context, snapshot) {
-                          //     print(snapshot.data);
+                    children: const [
+                      UpNext(),
+                      // Consumer<PlayerProvider>(
+                      //   builder: (context, playerProvider, _) {
+                      //     return StreamBuilder<PlaybackState?>(
+                      //       stream: context
+                      //           .read<PlayerProvider>()
+                      //           .audioPlayerHandler
+                      //           .playbackState,
+                      //       builder: (context, snapshot) {
+                      //         final state = snapshot.data;
+                      //         print("state");
+                      //         final playbackState = snapshot.data;
+                      //         final playing = playbackState?.playing ?? true;
 
-                          //     // if (mediaItem == null) {
-                          //     return const SizedBox.shrink();
-                          //     // }
-                          //     // PlayerSongListModel? metadata;
-                          //     // // try {
-                          //     // //   metadata = mediaItem!
-                          //     // //       .effectiveSequence[state.currentIndex + 1]
-                          //     // //       .tag as PlayerSongListModel;
-                          //     // // } catch (e) {
-                          //     // //   metadata = null;
-                          //     // // }
-                          //     // return Text(
-                          //     //   metadata != null
-                          //     //       ? mediaItem.title.toString()
-                          //     //       : "",
-                          //     //   style: fontWeight400(size: 14.0),
-                          //     // );
-                          //   },
-                          // );
-                        },
-                      )
+                      //         // if (state!.sequence.isEmpty ?? true) {
+                      //         //   return const ColoredBox(
+                      //         //     color: Colors.black,
+                      //         //   );
+                      //         // }
+                      //         // PlayerSongListModel? metadata;
+                      //         // try {
+                      //         //   metadata = state!
+                      //         //       .effectiveSe8888quence[state.currentIndex + 1]
+                      //         //       .tag as PlayerSongListModel;
+                      //         // } catch (e) {
+                      //         //   metadata = null;
+                      //         // }
+                      //         if (playbackState != null) {
+                      //           print("sdd");
+                      //         }
+                      //         return Text(
+                      //           "playbackState!.queueIndex.toString()",
+                      //           style: fontWeight400(size: 14.0),
+                      //         );
+                      //       },
+                      //     );
+                      //   },
+                      // )
                     ],
                   ),
                   trailing: const Icon(Icons.keyboard_arrow_up),

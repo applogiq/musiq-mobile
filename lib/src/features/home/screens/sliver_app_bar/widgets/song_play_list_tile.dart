@@ -40,11 +40,18 @@ class SongPlayListTile extends StatelessWidget {
                 child: CustomColorContainer(
                   child: Stack(
                     children: [
-                      Image.network(
-                        imageUrl,
-                        height: 70,
-                        width: 70,
-                        fit: BoxFit.cover,
+                      GestureDetector(
+                        onTap: () {
+                          context
+                              .read<SearchProvider>()
+                              .addSongToPlaylist(songId, playlistId);
+                        },
+                        child: Image.network(
+                          imageUrl,
+                          height: 70,
+                          width: 70,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                       isAdded
                           ? Positioned.fill(
@@ -57,7 +64,13 @@ class SongPlayListTile extends StatelessWidget {
                 ),
               ),
               Expanded(
-                  flex: 8,
+                flex: 8,
+                child: GestureDetector(
+                  onTap: () {
+                    context
+                        .read<SearchProvider>()
+                        .addSongToPlaylist(songId, playlistId);
+                  },
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Column(
@@ -77,7 +90,9 @@ class SongPlayListTile extends StatelessWidget {
                         ),
                       ],
                     ),
-                  )),
+                  ),
+                ),
+              ),
               isAdded
                   ? const SizedBox.shrink()
                   : Expanded(

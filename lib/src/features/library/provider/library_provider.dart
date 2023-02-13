@@ -48,9 +48,9 @@ class LibraryProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         playListNameExistList.add(playListName);
 
-        if (isAddPlaylist) {
-          context.read<PlayerProvider>().getPlayListsList();
-        }
+        // if (isAddPlaylist) {
+        context.read<PlayerProvider>().getPlayListsList();
+        // }
         playListModel = PlayListModel.fromMap(jsonDecode(response.body));
 
         notifyListeners();

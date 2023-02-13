@@ -26,20 +26,6 @@ class PlaylistSearchSongTile extends StatelessWidget {
         shrinkWrap: true,
         itemCount: pro.searchSongModel.records.length,
         itemBuilder: (context, index) => InkWell(
-          onTap: () {
-            context.read<SearchProvider>().searchSongStore();
-            Record rec = pro.searchSongModel.records[index];
-            PlayerSongListModel playerSongListModel = PlayerSongListModel(
-                id: rec.id,
-                albumName: rec.albumName,
-                title: rec.songName,
-                imageUrl: generateSongImageUrl(rec.albumName, rec.albumId),
-                musicDirectorName: rec.musicDirectorName[0],
-                duration: rec.duration);
-            context
-                .read<PlayerProvider>()
-                .playSingleSong(context, playerSongListModel);
-          },
           child: SongPlayListTile(
             playlistId: searchRequestModel.playlistId!,
             albumName: pro.searchSongModel.records[index].albumName,
