@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/constant.dart';
 import '../../../common/provider/pop_up_provider.dart';
-import '../../domain/model/player_song_list_model.dart';
 
 class ReorderableSongListPopUpMenu extends StatelessWidget {
   const ReorderableSongListPopUpMenu({
@@ -12,7 +12,7 @@ class ReorderableSongListPopUpMenu extends StatelessWidget {
     required this.index,
   }) : super(key: key);
 
-  final PlayerSongListModel metadata;
+  final MediaItem metadata;
   final int index;
 
   @override
@@ -30,14 +30,18 @@ class ReorderableSongListPopUpMenu extends StatelessWidget {
             case PopUpConstants.addToFavourites:
               context
                   .read<PopUpProvider>()
-                  .addToFavourites(metadata.id, context);
+                  .addToFavourites(int.parse(metadata.id), context);
               break;
             case PopUpConstants.addToPlaylist:
-              context.read<PopUpProvider>().goToPlaylist(metadata.id, context);
+              context
+                  .read<PopUpProvider>()
+                  .goToPlaylist(int.parse(metadata.id), context);
 
               break;
             case PopUpConstants.songInfo:
-              context.read<PopUpProvider>().goToSongInfo(metadata.id, context);
+              context
+                  .read<PopUpProvider>()
+                  .goToSongInfo(int.parse(metadata.id), context);
 
               break;
           }

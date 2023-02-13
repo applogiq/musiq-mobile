@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/container/empty_box.dart';
@@ -25,45 +27,38 @@ class UpNextController extends StatelessWidget {
                   title: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      UpNext(),
-                      // Consumer<PlayerProvider>(
-                      //   builder: (context, playerProvider, _) {
-                      //     return StreamBuilder<PlaybackState?>(
-                      //       stream: context
-                      //           .read<PlayerProvider>()
-                      //           .audioPlayerHandler
-                      //           .playbackState,
-                      //       builder: (context, snapshot) {
-                      //         final state = snapshot.data;
-                      //         print("state");
-                      //         final playbackState = snapshot.data;
-                      //         final playing = playbackState?.playing ?? true;
-
-                      //         // if (state!.sequence.isEmpty ?? true) {
-                      //         //   return const ColoredBox(
-                      //         //     color: Colors.black,
-                      //         //   );
-                      //         // }
-                      //         // PlayerSongListModel? metadata;
-                      //         // try {
-                      //         //   metadata = state!
-                      //         //       .effectiveSe8888quence[state.currentIndex + 1]
-                      //         //       .tag as PlayerSongListModel;
-                      //         // } catch (e) {
-                      //         //   metadata = null;
-                      //         // }
-                      //         if (playbackState != null) {
-                      //           print("sdd");
-                      //         }
-                      //         return Text(
-                      //           "playbackState!.queueIndex.toString()",
-                      //           style: fontWeight400(size: 14.0),
-                      //         );
-                      //       },
-                      //     );
-                      //   },
-                      // )
+                    children: [
+                      const UpNext(),
+                      Consumer<PlayerProvider>(
+                        builder: (context, playerProvider, _) {
+                          return StreamBuilder<SequenceState?>(
+                            stream: playerProvider.player.sequenceStateStream,
+                            builder: (context, snapshot) {
+                              final state = snapshot.data;
+                              if (state?.sequence.isEmpty ?? true) {
+                                return const ColoredBox(
+                                  color: Colors.black,
+                                );
+                              }
+                              MediaItem? metadata;
+                              try {
+                                metadata = state!
+                                    .effectiveSequence[state.currentIndex + 1]
+                                    .tag as MediaItem;
+                              } catch (e) {
+                                print(e.toString());
+                                metadata = null;
+                              }
+                              return Text(
+                                metadata != null
+                                    ? metadata.title.toString()
+                                    : "",
+                                style: fontWeight400(size: 14.0),
+                              );
+                            },
+                          );
+                        },
+                      ),
                     ],
                   ),
                   trailing: const Icon(Icons.keyboard_arrow_up),

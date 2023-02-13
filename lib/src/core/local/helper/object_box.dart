@@ -126,4 +126,16 @@ class ObjectBox {
   void removeFavourite(int songId) {
     favouriteBox.remove(songId);
   }
+
+  void removeAllFavourite() {
+    favouriteBox.removeAll();
+  }
+
+  void addFavouritesSongList(List<FavouriteSong> list) {
+    favouriteBox.putMany(list);
+  }
+
+  void addFavouritesSong(FavouriteSong song) {
+    favouriteBox.put(song);
+  }
 }

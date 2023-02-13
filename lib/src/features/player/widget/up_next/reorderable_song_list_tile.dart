@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 
 import '../../../../common_widgets/container/custom_color_container.dart';
 import '../../../../core/constants/constant.dart';
@@ -16,7 +17,7 @@ class ReorderableSongListTile extends StatelessWidget {
   }) : super(key: key);
 
   final SequenceState? state;
-  final PlayerSongListModel metadata;
+  final MediaItem metadata;
   final int index;
   final int currentIndex;
 
@@ -48,7 +49,7 @@ class ReorderableSongListTile extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: CustomColorContainer(
               child: Image.network(
-                metadata.imageUrl,
+                metadata.artUri.toString(),
                 height: 70,
                 width: 70,
                 fit: BoxFit.fill,
@@ -71,7 +72,7 @@ class ReorderableSongListTile extends StatelessWidget {
                             : Colors.white),
                   ),
                   Text(
-                    metadata.musicDirectorName,
+                    metadata.artist.toString(),
                     style: fontWeight400(
                         size: 12.0,
                         color: index == currentIndex

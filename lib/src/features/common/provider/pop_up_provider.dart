@@ -44,6 +44,7 @@ class PopUpProvider extends ChangeNotifier {
   }
 
   removeFromFavourites(int id, BuildContext context) {
+    print(id);
     context
         .read<PlayerProvider>()
         .deleteFavourite(id, isFromFav: true, ctx: context);

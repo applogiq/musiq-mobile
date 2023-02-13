@@ -1,6 +1,6 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
-import 'package:musiq/src/common_widgets/loader.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:musiq/src/features/player/widget/player/player_pop_up_menu.dart';
 import 'package:provider/provider.dart';
 
@@ -22,26 +22,31 @@ class PlayerBackground extends StatelessWidget {
         builder: (context, pro, _) {
           return Consumer<PlayerProvider>(
             builder: (context, playerProvider, _) {
-              return StreamBuilder<MediaItem?>(
-                stream: context.read<PlayerProvider>().audioHandler!.mediaItem,
+              return StreamBuilder<SequenceState?>(
+                stream:
+                    context.read<PlayerProvider>().player.sequenceStateStream,
                 builder: (context, snapshot) {
-                  MediaItem? mediaItem = snapshot.data;
-
-                  if (mediaItem == null) {
-                    return const LoaderScreen();
+                  final state = snapshot.data;
+                  if (state?.sequence.isEmpty ?? true) {
+                    return const SizedBox();
                   }
+                  final metadata = state!.currentSource!.tag as MediaItem;
+
+                  // if (mediaItem == null) {
+                  //   return const LoaderScreen();
+                  // }
                   PlayerSongListModel playerSongListModel = PlayerSongListModel(
-                      id: mediaItem.extras!["song_id"],
-                      duration: mediaItem.duration.toString(),
-                      albumName: mediaItem.album.toString(),
-                      title: mediaItem.title,
-                      imageUrl: mediaItem.artUri.toString(),
-                      musicDirectorName: mediaItem.artist!);
+                      id: metadata.extras!["song_id"],
+                      duration: metadata.duration.toString(),
+                      albumName: metadata.album.toString(),
+                      title: metadata.title,
+                      imageUrl: metadata.artUri.toString(),
+                      musicDirectorName: metadata.artist!);
                   return Container(
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             image: NetworkImage(
-                              mediaItem.artUri.toString(),
+                              metadata.artUri.toString(),
                             ),
                             fit: BoxFit.cover)),
                     child: Stack(

@@ -6,9 +6,17 @@ import 'package:musiq/src/features/player/provider/player_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 // enum PlayerState { stopped, playing, paused }
+abstract class AudioPlayerHandlerInterface implements AudioHandler {
+  Stream<QueueState> get queueState;
+  // Future<void> moveQueueItem(int currentIndex, int newIndex);
+  // ValueStream<double> get volume;
+  // Future<void> setVolume(double volume);
+  // ValueStream<double> get speed;
+}
 
 class AudioPlayerHandler extends BaseAudioHandler
-    with QueueHandler, SeekHandler {
+    with QueueHandler, SeekHandler
+    implements AudioPlayerHandlerInterface {
   final _player = AudioPlayer();
   FlutterSecureStorage storage = const FlutterSecureStorage();
   final _playlist = ConcatenatingAudioSource(children: []);
@@ -19,6 +27,7 @@ class AudioPlayerHandler extends BaseAudioHandler
     _listenForDurationChanges();
     _listenForCurrentSongIndexChanges();
     _listenForSequenceStateChanges();
+    _listenForShuffleChanges();
     _loadProgress();
   }
   Future<void> _loadEmptyPlaylist() async {
@@ -227,6 +236,7 @@ class AudioPlayerHandler extends BaseAudioHandler
     _player.seek(position);
   }
 
+  @override
   Stream<QueueState> get queueState =>
       Rx.combineLatest3<List<MediaItem>, PlaybackState, List<int>, QueueState>(
           queue,
@@ -279,17 +289,42 @@ class AudioPlayerHandler extends BaseAudioHandler
 
   @override
   Future<void> setShuffleMode(AudioServiceShuffleMode shuffleMode) async {
-    if (shuffleMode == AudioServiceShuffleMode.none) {
-      _player.setShuffleModeEnabled(false);
-    } else {
-      await _player.shuffle();
-      _player.setShuffleModeEnabled(true);
-      for (var element in _player.sequence!) {
-        print(element.shuffleIndices.toString());
-      }
+    final enabled = shuffleMode == AudioServiceShuffleMode.all;
+
+    if (enabled) {
+      _player.shuffle();
     }
     playbackState.add(playbackState.value.copyWith(shuffleMode: shuffleMode));
+    await _player.setShuffleModeEnabled(enabled);
   }
+
+  int? getQueueIndex(
+      int? currentIndex, bool shuffleModeEnabled, List<int>? shuffleIndices) {
+    final effectiveIndices = _player.effectiveIndices ?? [];
+    final shuffleIndicesInv = List.filled(effectiveIndices.length, 0);
+    for (var i = 0; i < effectiveIndices.length; i++) {
+      shuffleIndicesInv[effectiveIndices[i]] = i;
+    }
+    return (shuffleModeEnabled &&
+            ((currentIndex ?? 0) < shuffleIndicesInv.length))
+        ? shuffleIndicesInv[currentIndex ?? 0]
+        : currentIndex;
+  }
+
+  /// A stream of the current effective sequence from just_audio.
+  Stream<List<IndexedAudioSource>> get _effectiveSequence => Rx.combineLatest3<
+              List<IndexedAudioSource>?,
+              List<int>?,
+              bool,
+              List<IndexedAudioSource>?>(_player.sequenceStream,
+          _player.shuffleIndicesStream, _player.shuffleModeEnabledStream,
+          (sequence, shuffleIndices, shuffleModeEnabled) {
+        if (sequence == null) return [];
+        if (!shuffleModeEnabled) return sequence;
+        if (shuffleIndices == null) return null;
+        if (shuffleIndices.length != sequence.length) return null;
+        return shuffleIndices.map((i) => sequence[i]).toList();
+      }).whereType<List<IndexedAudioSource>>();
 
   @override
   customAction(String name, [Map<String, dynamic>? extras]) async {
@@ -314,10 +349,21 @@ class AudioPlayerHandler extends BaseAudioHandler
 
   @override
   Future<void> stop() async {
-    print("TTTTTTTTTTTTTTTTTTTTT");
     await _player.pause();
     await _player.seek(Duration.zero);
-    print("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
     return super.stop();
+  }
+
+  Future<void> _listenForShuffleChanges() async {
+    //  _player.playbackEventStream.listen(_notifyAudioHandlerAboutPlaybackEvents());
+    _player.shuffleModeEnabledStream
+        .listen((enabled) => _notifyAudioHandlerAboutPlaybackEvents());
+    _player.processingStateStream.listen((state) {
+      if (state == ProcessingState.completed) {
+        stop();
+
+        _player.seek(Duration.zero, index: 0);
+      }
+    });
   }
 }
