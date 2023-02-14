@@ -1,11 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:musiq/src/core/utils/image_utils.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../core/constants/color.dart';
 import '../../../core/constants/images.dart';
 import '../../../core/constants/style.dart';
-import '../../../core/utils/url_generate.dart';
 import '../../../core/utils/size_config.dart';
 import '../provider/profile_provider.dart';
 import '../widgets/logout_dialog.dart';
@@ -18,10 +20,14 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  String imageUrl = "";
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<ProfileProvider>(context, listen: false).getProfileDetails();
+      await Provider.of<ProfileProvider>(context, listen: false)
+          .getProfileDetails();
+      imageUrl = getImage();
+      setState(() {});
     });
     super.initState();
   }
@@ -59,16 +65,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     radius: 65,
                                     backgroundImage: const AssetImage(
                                         'assets/gifs/image_loader2.gif'),
-                                    child: CircleAvatar(
-                                      radius: 65,
-                                      backgroundColor: Colors.transparent,
-                                      backgroundImage: NetworkImage(
-                                        generateProfileImageUrl(pro
-                                            .profileAPIModel
-                                            .records!
-                                            .registerId),
-                                      ),
-                                    ),
+                                    child: imageUrl != ""
+                                        ? CircleAvatar(
+                                            radius: 65,
+                                            backgroundColor: Colors.transparent,
+                                            backgroundImage: FileImage(
+                                              File(imageUrl),
+                                            ),
+                                          )
+                                        : const CircleAvatar(
+                                            radius: 65,
+                                            backgroundColor: Colors.white,
+                                          ),
                                   )
                                 : Image.asset(Images.userDefault));
                   }),

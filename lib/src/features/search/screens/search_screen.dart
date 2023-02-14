@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:musiq/src/features/home/widgets/bottom_navigation_bar_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/enums/search_status.dart';
@@ -89,6 +90,7 @@ class _SearchScreenState extends State<SearchScreen> {
           : Scaffold(
               backgroundColor: const Color(0xFF16151C),
               resizeToAvoidBottomInset: false,
+              bottomNavigationBar: const MiniPlayer(),
               body: Column(
                 children: [
                   SearchFieldWidget(

@@ -21,7 +21,7 @@ class BottomNavigationBarWithMiniPlayer extends StatelessWidget {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const MiniPlayer(),
+          pro.isPlaying ? const MiniPlayer() : const SizedBox.shrink(),
           BottomNavigationBarWidget(
             width: width,
           ),
@@ -51,7 +51,10 @@ class MiniPlayer extends StatelessWidget {
                 return Row(
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        context.read<PlayerProvider>().isUpNextShow = false;
+                        Navigation.navigateToScreen(context, RouteName.player);
+                      },
                       child: SizedBox(
                         height: 60,
                         width: 60,
@@ -64,18 +67,22 @@ class MiniPlayer extends StatelessWidget {
                     const HorizontalBox(width: 10),
                     Expanded(
                       child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
                         onTap: () {
+                          context.read<PlayerProvider>().isUpNextShow = false;
                           Navigation.navigateToScreen(
                               context, RouteName.player);
                         },
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(metadata.title),
-                            Text(metadata.album!),
-                          ],
+                        child: SizedBox(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(metadata.title),
+                              Text(metadata.album!),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -122,7 +129,7 @@ class MiniPlayer extends StatelessWidget {
                                         ? Icons.play_arrow
                                         : processingState !=
                                                 ProcessingState.completed
-                                            ? Icons.pause_circle_filled_rounded
+                                            ? Icons.pause_rounded
                                             : Icons.replay,
                                   ),
                           );

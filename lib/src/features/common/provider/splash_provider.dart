@@ -15,11 +15,14 @@ class SplashProvider extends ChangeNotifier {
   // APICall apiCall = APICall();
   checkLogged() async {
     Map<String, String> localData = await storage.readAll();
+    print("SSS");
     if (localData["access_token"] != null) {
       if (localData["is_preference"] == "true") {
         isArtistPreference = true;
       }
-
+      print("IS image");
+      print(localData["is_image"]);
+      print(localData["register_id"]);
       isLogged = true;
     } else {
       isLogged = false;
@@ -29,52 +32,4 @@ class SplashProvider extends ChangeNotifier {
     });
     notifyListeners();
   }
-
-  // checkLogged() async {
-  //   Map<String, String> allValues = await storage.readAll();
-
-  //   if (allValues["access_token"] != null) {
-  //     Map<String, dynamic> params = {
-  //       "email": allValues["email"],
-  //       "password": allValues["password_cred"]
-  //     };
-  //     var url = Uri.parse(
-  //         APIConstants.BASE_URL.toString() + APIConstants.LOGIN.toString());
-
-  //     var res = await apiCall.postRequestWithoutAuth(url, params);
-
-  //     var data = jsonDecode(res.body.toString());
-  //     User user = User.fromMap(data);
-  //     await storage.deleteAll();
-
-  //     var userData = user.records.toMap();
-  //     for (final name in userData.keys) {
-  //       final value = userData[name];
-  //
-  //       await storage.write(
-  //         key: name,
-  //         value: value.toString(),
-  //       );
-  //     }
-  //     await storage.write(
-  //         key: "artist_list",
-  //         value: jsonEncode(user.records.preference.artist));
-  //     await storage.write(key: "password_cred", value: params["password"]);
-  //     var list1 = await storage.read(key: "artist_list");
-  //     isLogged=true;
-  //     // if (user.records.isPreference == false) {
-  //     //   // Navigator.of(context).pushReplacement(MaterialPageRoute(
-  //     //   //     builder: (context) => ArtistPreferenceMain(
-  //     //   //           artist_list: user.records.preference.artist,
-  //     //   //         )));
-  //     // } else {
-  //     //   // Navigation.navigateReplaceToScreen(context, "bottom/");
-  //     // }
-  //   } else {
-  //     isLogged=false;
-  //     // Navigation.navigateReplaceToScreen(context, 'onboarding/');
-  //   }
-  //   notifyListeners();
-  // }
-
 }

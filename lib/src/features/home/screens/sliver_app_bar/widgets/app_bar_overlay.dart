@@ -28,7 +28,7 @@ class AppBarOverlayContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+        padding: const EdgeInsets.fromLTRB(16.0, 16.0, 0.0, 0),
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +77,7 @@ class AppBarOverlayContent extends StatelessWidget {
                     opacity: (size - 1.0).abs(),
                     duration: const Duration(milliseconds: 100),
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 24),
+                      padding: const EdgeInsets.only(top: 24, right: 16),
                       child: Consumer<ArtistViewAllProvider>(
                           builder: (context, pro, _) {
                         return InkWell(
@@ -105,7 +105,7 @@ class AppBarOverlayContent extends StatelessWidget {
                               label: "Play All",
                               horizontalMargin: 0.0,
                               height: size < 0.3
-                                  ? 52
+                                  ? 48
                                   : size < 0.4
                                       ? 48
                                       : size < 0.6

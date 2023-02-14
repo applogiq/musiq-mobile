@@ -15,6 +15,7 @@ class ObjectBox {
   late final Box<SearchArtistLocalModel> searchArtistBox;
   late final Box<SearchSongLocalModel> searchSongBox;
   late final Box<User> userBox;
+  late final Box<ProfileImage> profileBox;
 
   ObjectBox._create(this.store) {
     favouriteBox = Box<FavouriteSong>(store);
@@ -22,6 +23,7 @@ class ObjectBox {
     searchSongBox = Box<SearchSongLocalModel>(store);
     searchArtistBox = Box<SearchArtistLocalModel>(store);
     userBox = Box<User>(store);
+    profileBox = Box<ProfileImage>(store);
   }
   static Future<ObjectBox> create() async {
     final documentsDirectory = await getApplicationDocumentsDirectory();
@@ -32,6 +34,22 @@ class ObjectBox {
 
   void saveFavourite(FavouriteSong favouriteSong) {
     favouriteBox.put(favouriteSong);
+  }
+
+  void deleteImage() {
+    profileBox.removeAll();
+  }
+
+  getImage() {
+    return profileBox.getAll();
+  }
+
+  void saveImage(ProfileImage profileImage) {
+    deleteImage();
+    print(profileImage.isImage);
+    print(profileImage.profileImageString);
+    print(profileImage.registerId);
+    profileBox.put(profileImage);
   }
 
   Stream<List<FavouriteSong>> getFavourites() {

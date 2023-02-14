@@ -36,6 +36,8 @@ class Routes {
         return MaterialPageRoute(
             builder: (BuildContext context) => const LoginScreen());
       case RouteName.splash:
+        // return MaterialPageRoute(
+        //     builder: (BuildContext context) => const ProfileImageScreen());
         return MaterialPageRoute(
             builder: (BuildContext context) => const SplashScreen());
       case RouteName.mainScreen:

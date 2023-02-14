@@ -17,12 +17,14 @@ class SongListTile extends StatelessWidget {
     required this.songId,
     required this.albumName,
     required this.duration,
+    required this.isPlay,
   });
 
   final String albumName;
   final String imageUrl;
   final String musicDirectorName;
   final int songId;
+  final bool isPlay;
   final String songName;
   final String duration;
 
@@ -57,14 +59,20 @@ class SongListTile extends StatelessWidget {
                     children: [
                       Text(
                         songName,
-                        style: fontWeight400(),
+                        style: fontWeight400(
+                            color: isPlay
+                                ? CustomColor.secondaryColor
+                                : Colors.white),
                       ),
                       Text(
                         musicDirectorName,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: fontWeight400(
-                            size: 12.0, color: CustomColor.subTitle),
+                            size: 12.0,
+                            color: isPlay
+                                ? CustomColor.secondaryColor
+                                : Colors.white),
                       ),
                     ],
                   ),

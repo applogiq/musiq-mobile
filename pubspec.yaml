@@ -61,13 +61,11 @@ flutter:
   assets:
     - assets/images/
     - assets/gifs/
-    - assets/images/fav/
-    - assets/images/artist/
+
     - assets/images/default/
-    - assets/images/artistList/
-    - assets/images/playlist/
+
     - assets/icons/
-    - assets/images/homepage/
+
     - assets/song/
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see

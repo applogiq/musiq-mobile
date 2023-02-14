@@ -42,7 +42,10 @@ class UpNextController extends StatelessWidget {
                               }
                               MediaItem? metadata;
                               try {
-                                metadata = state!
+                                print("DDD");
+                                print(state!
+                                    .sequence[state.currentIndex + 1].tag);
+                                metadata = state
                                     .effectiveSequence[state.currentIndex + 1]
                                     .tag as MediaItem;
                               } catch (e) {

@@ -21,13 +21,13 @@ extension PlayerControllerExtension on PlayerProvider {
     }
   }
 
-  shuffleSongController() async {
-    if (isShuffle == false) {
+  shuffleSongController(bool shuffleStatus) async {
+    if (shuffleStatus) {
       await player.setShuffleModeEnabled(true);
     } else {
       await player.setShuffleModeEnabled(false);
     }
-    isShuffle = !isShuffle;
+    // isShuffle = !isShuffle;
   }
 
   void deleteSongInQueue(int index) {

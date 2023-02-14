@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart ' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:musiq/src/core/utils/image_utils.dart';
 
 import '../../../../objectbox.g.dart';
 import '../../../common_widgets/model/profile_model.dart';
@@ -101,6 +101,9 @@ class ProfileProvider extends ChangeNotifier {
         var jsonData = jsonDecode(res.body);
         log(jsonData.toString());
         profileAPIModel = ProfileAPIModel.fromJson(jsonData);
+        if (profileAPI!.records!.isImage == true) {
+          loadImage(profileAPI!.records!.id.toString());
+        }
       } else {
         profileAPIModel =
             ProfileAPIModel(status: false, message: "No data", records: null);
@@ -158,56 +161,56 @@ class ProfileProvider extends ChangeNotifier {
     debugPrint(res.body);
     debugPrint(res.statusCode.toString());
     if (res.statusCode == 200) {
-      if (fileImage != null) {
-        await getApplicationDocumentsDirectory().then((Directory dir) {
-          store =
-              Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/1');
-          final ProfileImage profileImage = ProfileImage(
-              isImage: true,
-              registerId: id,
-              profileImageString: uint8ListTob64(memoryImage!));
-          // final SongListModel queueSongModel = SongListModel(
-          //     songId: playerSongListModel.id,
-          //     albumName: playerSongListModel.albumName,
-          //     title: playerSongListModel.title,
-          //     musicDirectorName: playerSongListModel.musicDirectorName,
-          //     imageUrl: playerSongListModel.imageUrl,
-          //     songUrl:
-          //         "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongListModel.id.toString()}");
-          final box = store.box<ProfileImage>();
+      // if (fileImage != null) {
+      //   await getApplicationDocumentsDirectory().then((Directory dir) {
+      //     store =
+      //         Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/1');
+      //     final ProfileImage profileImage = ProfileImage(
+      //         isImage: true,
+      //         registerId: id,
+      //         profileImageString: uint8ListTob64(memoryImage!));
+      //     // final SongListModel queueSongModel = SongListModel(
+      //     //     songId: playerSongListModel.id,
+      //     //     albumName: playerSongListModel.albumName,
+      //     //     title: playerSongListModel.title,
+      //     //     musicDirectorName: playerSongListModel.musicDirectorName,
+      //     //     imageUrl: playerSongListModel.imageUrl,
+      //     //     songUrl:
+      //     //         "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongListModel.id.toString()}");
+      //     final box = store.box<ProfileImage>();
 
-          var res = box.getAll();
+      //     var res = box.getAll();
 
-          if (res.isEmpty) {
-            box.put(profileImage);
-            var res = box.getAll();
-            for (var element in res) {
-              log(element.profileImageString);
-              log(element.registerId);
-              log(element.id.toString());
-            }
-          } else {
-            for (var element in res) {
-              if (element.registerId == id) {
-                element.profileImageString = uint8ListTob64(memoryImage!);
-                box.put(element);
-              }
-            }
-          }
-          // queueIdList.clear();
-          // for (var e in res) {
-          //   queueIdList.add(e.songId);
-          // }
-          // if (queueIdList.contains(playerSongListModel.id)) {
-          //   normalToastMessage("Song already in queue ");
-          // } else {
-          //   box.put(queueSongModel);
-          //   normalToastMessage("Song added to queue ");
-          // }
+      //     if (res.isEmpty) {
+      //       box.put(profileImage);
+      //       var res = box.getAll();
+      //       for (var element in res) {
+      //         log(element.profileImageString);
+      //         log(element.registerId);
+      //         log(element.id.toString());
+      //       }
+      //     } else {
+      //       for (var element in res) {
+      //         if (element.registerId == id) {
+      //           element.profileImageString = uint8ListTob64(memoryImage!);
+      //           box.put(element);
+      //         }
+      //       }
+      //     }
+      //     // queueIdList.clear();
+      //     // for (var e in res) {
+      //     //   queueIdList.add(e.songId);
+      //     // }
+      //     // if (queueIdList.contains(playerSongListModel.id)) {
+      //     //   normalToastMessage("Song already in queue ");
+      //     // } else {
+      //     //   box.put(queueSongModel);
+      //     //   normalToastMessage("Song added to queue ");
+      //     // }
 
-          store.close();
-        });
-      }
+      //     store.close();
+      //   });
+      // }
       userNameErrorMessage = "";
       ProfileAPIModel profileAPIModel =
           ProfileAPIModel.fromJson(jsonDecode(res.body.toString()));

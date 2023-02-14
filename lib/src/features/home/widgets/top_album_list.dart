@@ -4,11 +4,11 @@ import 'package:provider/provider.dart';
 import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../core/constants/color.dart';
 import '../../../core/constants/style.dart';
+import '../../../core/enums/view_all_status.dart';
 import '../../../core/utils/url_generate.dart';
 import '../domain/model/album_model.dart';
 import '../provider/view_all_provider.dart';
 import '../screens/sliver_app_bar/view_all_screen.dart';
-import '../../../core/enums/view_all_status.dart';
 
 class TopAlbum extends StatelessWidget {
   const TopAlbum({super.key, required this.album});
@@ -56,18 +56,22 @@ class TopAlbum extends StatelessWidget {
                             InkWell(
                               onTap: () {
                                 context.read<ViewAllProvider>().loaderEnable();
-
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => ViewAllScreen(
-                                          status: ViewAllStatus.album,
-                                          id: album.records[index].id,
-                                        )));
+                                if (album.records[index].noOfSongs <= 0) {
+                                } else {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => ViewAllScreen(
+                                            status: ViewAllStatus.album,
+                                            id: album.records[index].id,
+                                          )));
+                                }
                               },
                               child: CustomColorContainer(
                                 child: Image.network(
-                                  generateSongImageUrl(
-                                      album.records[index].albumName,
-                                      album.records[index].albumId),
+                                  album.records[index].id == 7
+                                      ? "https://images.indianexpress.com/2023/01/Thunivu-review-1200.jpg?w=414"
+                                      : generateSongImageUrl(
+                                          album.records[index].albumName,
+                                          album.records[index].albumId),
                                   height: 125,
                                   width: 135,
                                   fit: BoxFit.cover,

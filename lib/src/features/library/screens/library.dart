@@ -64,7 +64,7 @@ class FavouritesAndPlaylistsTab extends StatelessWidget {
       tabs: const [
         Tab(
             icon: Text(
-          "Favourites",
+          "Favorites",
           style: TextStyle(fontWeight: FontWeight.w400),
         )),
         Tab(

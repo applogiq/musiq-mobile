@@ -38,7 +38,7 @@ class PlayPauseController extends StatelessWidget {
                         icon: playing != true
                             ? Icons.play_arrow
                             : processingState != ProcessingState.completed
-                                ? Icons.pause_circle_filled_rounded
+                                ? Icons.pause_rounded
                                 : Icons.replay,
                       ));
           });

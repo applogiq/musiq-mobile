@@ -28,20 +28,18 @@ class ReorderableSongListPopUpMenu extends StatelessWidget {
               context.read<PopUpProvider>().deleteInQueue(index, context);
               break;
             case PopUpConstants.addToFavourites:
-              context
-                  .read<PopUpProvider>()
-                  .addToFavourites(int.parse(metadata.id), context);
+              context.read<PopUpProvider>().addToFavourites(
+                  int.parse(metadata.extras!["song_id"].toString()), context);
               break;
             case PopUpConstants.addToPlaylist:
-              context
-                  .read<PopUpProvider>()
-                  .goToPlaylist(int.parse(metadata.id), context);
+              context.read<PopUpProvider>().goToPlaylist(
+                  int.parse(metadata.extras!["song_id"].toString()), context);
 
               break;
             case PopUpConstants.songInfo:
-              context
-                  .read<PopUpProvider>()
-                  .goToSongInfo(int.parse(metadata.id), context);
+              print(metadata.extras!["song_id"]);
+              context.read<PopUpProvider>().goToSongInfo(
+                  int.parse(metadata.extras!["song_id"].toString()), context);
 
               break;
           }

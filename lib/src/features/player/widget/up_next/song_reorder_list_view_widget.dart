@@ -3,7 +3,6 @@ import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:provider/provider.dart';
 
-import '../../domain/model/player_song_list_model.dart';
 import '../../provider/player_provider.dart';
 import 'reorderable_song_list_tile.dart';
 

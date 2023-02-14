@@ -200,6 +200,7 @@ class AlbumSongsList extends StatelessWidget {
             songName: getSongName(status, index),
             songId: getSongId(status, index),
             duration: getDuration(status, index),
+            isPlay: false,
           ),
         );
       }),

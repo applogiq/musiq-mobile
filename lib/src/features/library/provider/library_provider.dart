@@ -230,17 +230,20 @@ class LibraryProvider extends ChangeNotifier {
     List<PlayerSongListModel> playSongListModel = [];
 
     for (var element in favouriteModel.records) {
-      playSongListModel.add(PlayerSongListModel(
-          id: element.id,
-          albumName: element.albumName,
-          title: element.songName,
-          imageUrl: generateSongImageUrl(element.albumName, element.albumId),
-          musicDirectorName: element.musicDirectorName[0],
-          duration: element.duration));
-      context
-          .read<PlayerProvider>()
-          .goToPlayer(context, playSongListModel, index);
+      playSongListModel.add(
+        PlayerSongListModel(
+            id: element.id,
+            albumName: element.albumName,
+            title: element.songName,
+            imageUrl: generateSongImageUrl(element.albumName, element.albumId),
+            musicDirectorName: element.musicDirectorName[0],
+            duration: element.duration),
+      );
     }
+
+    context
+        .read<PlayerProvider>()
+        .goToPlayer(context, playSongListModel, index);
   }
 
   void navigateToPlayerScreen(BuildContext context, int id, {int index = 0}) {
