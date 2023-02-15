@@ -71,6 +71,7 @@ class _SearchScreenState extends State<SearchScreen> {
     debouncing(
       fn: () {
         if (mounted) {
+          print("Flick");
           context.read<SearchProvider>().getSearch(
               _controller.text,
               widget.searchRequestModel.searchStatus,
