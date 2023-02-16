@@ -193,8 +193,9 @@ class ProfileListTile extends StatelessWidget {
     return ListTile(
       onTap: () async {
         context.read<ProfileProvider>().removeMyProfileState();
-        Navigator.of(context)
-            .pushNamed(ProfileProvider().profileContent[index].navigateScreen);
+        Navigator.of(
+          context,
+        ).pushNamed(ProfileProvider().profileContent[index].navigateScreen);
       },
       trailing: const Icon(
         Icons.arrow_forward_ios_rounded,

@@ -1,8 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:musiq/src/core/routing/route_name.dart';
-import 'package:musiq/src/core/utils/navigation.dart';
+import 'package:musiq/src/features/player/screen/player_screen/player_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/bottom_navigation_bar/bottom_navigation_bar.dart';
@@ -53,7 +52,10 @@ class MiniPlayer extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         context.read<PlayerProvider>().isUpNextShow = false;
-                        Navigation.navigateToScreen(context, RouteName.player);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const PlayerScreen()));
                       },
                       child: SizedBox(
                         height: 60,
@@ -70,8 +72,10 @@ class MiniPlayer extends StatelessWidget {
                         behavior: HitTestBehavior.opaque,
                         onTap: () {
                           context.read<PlayerProvider>().isUpNextShow = false;
-                          Navigation.navigateToScreen(
-                              context, RouteName.player);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const PlayerScreen()));
                         },
                         child: SizedBox(
                           child: Column(

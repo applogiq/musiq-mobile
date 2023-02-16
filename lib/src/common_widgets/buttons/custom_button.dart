@@ -35,7 +35,7 @@ class CustomButton extends StatelessWidget {
       decoration: BoxDecoration(
         color: isValid
             ? CustomColor.secondaryColor
-            : const Color.fromRGBO(96, 20, 20, 1),
+            : const Color.fromRGBO(153, 52, 30, 1),
         borderRadius: BorderRadius.circular(radius),
       ),
       child: Center(

@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
@@ -73,6 +74,7 @@ class PlayerProvider extends ChangeNotifier {
   ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: []);
 
   AudioPlayer player = AudioPlayer();
+
   var selectedIndex = 0;
   var progressDurationValue = 0;
   var totalDurationValue = 0;
@@ -90,7 +92,13 @@ class PlayerProvider extends ChangeNotifier {
   Stream<int>? currentIndex = const Stream.empty();
 
   AudioHandler? get audioHandler => _audioHandler;
+
+  iscurrentIndex() {
+    return player.currentIndex.toString();
+  }
+
   void queuePlayNext(PlayerSongListModel playerSongListModel) {
+    // player.currentIndex
     if (player.currentIndex != null) {
       final item = MediaItem(
           id: generateSongUrl(playerSongListModel.id),
@@ -107,6 +115,7 @@ class PlayerProvider extends ChangeNotifier {
   }
 
   getFavourites() async {
+    log(player.currentIndex.toString());
     objectbox.removeAllFavourite();
     var id = await secureStorage.read(key: "id");
 

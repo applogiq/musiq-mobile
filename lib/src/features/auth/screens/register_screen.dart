@@ -102,7 +102,7 @@ class RegisterScreen extends StatelessWidget {
                       },
                     ),
                     SizedBox(
-                      height: getProportionateScreenHeight(15),
+                      height: getProportionateScreenHeight(16),
                     ),
                     registerProvider.isButtonEnable
                         ? Container(
@@ -110,7 +110,7 @@ class RegisterScreen extends StatelessWidget {
                             width: double.maxFinite,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
-                              color: const Color.fromRGBO(96, 20, 20, 1),
+                              color: const Color.fromRGBO(153, 52, 30, 1),
                             ),
                             child: Center(
                               child: Text(

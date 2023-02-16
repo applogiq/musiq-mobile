@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -34,6 +36,12 @@ class _SongReorderListViewWidgetState extends State<SongReorderListViewWidget> {
           itemCount: state!.effectiveSequence.length,
           itemBuilder: (context, index) {
             var metadata = state.effectiveSequence[index].tag as MediaItem;
+            print("object");
+            log(metadata.album.toString());
+            print("index");
+            print(index);
+            print("currentIndex");
+            print(state.currentIndex);
             return ReorderableSongListTile(
               key: Key(index.toString()),
               state: state,
@@ -44,6 +52,7 @@ class _SongReorderListViewWidgetState extends State<SongReorderListViewWidget> {
           },
           shrinkWrap: true,
           onReorder: (oldIndex, newIndex) {
+            log(newIndex.toString());
             if (newIndex != state.currentIndex &&
                 oldIndex != state.currentIndex) {
               setState(() {

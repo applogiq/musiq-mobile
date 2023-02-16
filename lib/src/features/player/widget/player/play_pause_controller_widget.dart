@@ -36,7 +36,7 @@ class PlayPauseController extends StatelessWidget {
                         size: 34.0,
                         padding: 8.0,
                         icon: playing != true
-                            ? Icons.play_arrow
+                            ? Icons.play_arrow_rounded
                             : processingState != ProcessingState.completed
                                 ? Icons.pause_rounded
                                 : Icons.replay,

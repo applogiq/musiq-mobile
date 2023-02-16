@@ -75,13 +75,16 @@ class LoginForm extends StatelessWidget {
                 });
           }),
           Consumer<LoginProvider>(builder: (context, pro, child) {
-            return InkWell(
-                onTap: () {
-                  Navigation.navigateToScreen(
-                      context, RouteName.forgotPassword);
-                  pro.isErr();
-                },
-                child: const ForgotPassword());
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: InkWell(
+                  onTap: () {
+                    Navigation.navigateToScreen(
+                        context, RouteName.forgotPassword);
+                    pro.isErr();
+                  },
+                  child: const ForgotPassword()),
+            );
           }),
           const PasswordChangeSuccessWidget(),
           const StatusContainer(),

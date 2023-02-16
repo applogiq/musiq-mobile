@@ -51,8 +51,13 @@ class PlayerControllerWidget extends StatelessWidget {
                               builder: (context, snapshot) {
                                 final shuffleModeEnabled =
                                     snapshot.data ?? false;
+                                print(
+                                    "123              ${playerProvider.iscurrentIndex()}");
+
+                                // log(shuffleModeEnabled.);
                                 return InkWell(
                                     onTap: () async {
+                                      print("10");
                                       final enable = !shuffleModeEnabled;
                                       playerProvider.shuffleSong(enable);
                                     },
@@ -102,81 +107,90 @@ class PlayerControllerWidget extends StatelessWidget {
                     }),
                   ),
                   const ProgressBarWidget(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      InkWell(
-                          onTap: () {
-                            Navigation.navigateToScreen(
-                                context, RouteName.addPlaylist,
-                                args: metadata.extras!["song_id"].toString());
-                          },
-                          child:
-                              const Icon(Icons.playlist_add_rounded, size: 34)),
-                      StreamBuilder<SequenceState?>(
-                          stream: context
-                              .read<PlayerProvider>()
-                              .player
-                              .sequenceStateStream,
-                          builder: (context, snapshot) {
-                            return PlayNextPrev(
-                              onTap: () {
-                                context.read<PlayerProvider>().playPrev();
-                              },
-                              iconData: Icons.skip_previous_rounded,
-                              isEnable: context
-                                  .read<PlayerProvider>()
-                                  .player
-                                  .hasPrevious,
-                            );
-                          }),
-                      const PlayPauseController(),
-                      StreamBuilder<SequenceState?>(
-                          stream: context
-                              .read<PlayerProvider>()
-                              .player
-                              .sequenceStateStream,
-                          builder: (context, snapshot) {
-                            return PlayNextPrev(
-                              onTap: () {
-                                context.read<PlayerProvider>().playNext();
-                              },
-                              iconData: Icons.skip_next_rounded,
-                              isEnable:
-                                  context.read<PlayerProvider>().player.hasNext,
-                            );
-                          }),
-                      Consumer<PlayerProvider>(builder: (context, pro, _) {
-                        return StreamBuilder<LoopMode>(
-                            stream: pro.player.loopModeStream,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                            onTap: () {
+                              Navigation.navigateToScreen(
+                                  context, RouteName.addPlaylist,
+                                  args: metadata.extras!["song_id"].toString());
+                            },
+                            child: const Icon(Icons.playlist_add_rounded,
+                                size: 34)),
+                        StreamBuilder<SequenceState?>(
+                            stream: context
+                                .read<PlayerProvider>()
+                                .player
+                                .sequenceStateStream,
                             builder: (context, snapshot) {
-                              return Consumer<PlayerProvider>(
-                                  builder: (context, pro, _) {
-                                final loopMode = snapshot.data ?? LoopMode.off;
-                                const icons = [
-                                  Icon(Icons.repeat, color: Colors.grey),
-                                  Icon(Icons.repeat, color: Colors.orange),
-                                  Icon(Icons.repeat_one, color: Colors.orange),
-                                ];
-                                const cycleModes = [
-                                  LoopMode.off,
-                                  LoopMode.all,
-                                  LoopMode.one,
-                                ];
-                                final index = cycleModes.indexOf(loopMode);
-                                return IconButton(
-                                  icon: icons[index],
-                                  iconSize: 34,
-                                  onPressed: () {
-                                    pro.player.setLoopMode(cycleModes[
-                                        (cycleModes.indexOf(loopMode) + 1) %
-                                            cycleModes.length]);
-                                  },
-                                );
+                              return PlayNextPrev(
+                                onTap: () {
+                                  context.read<PlayerProvider>().playPrev();
+                                },
+                                iconData: Icons.skip_previous_rounded,
+                                isEnable: context
+                                    .read<PlayerProvider>()
+                                    .player
+                                    .hasPrevious,
+                              );
+                            }),
+                        const PlayPauseController(),
+                        StreamBuilder<SequenceState?>(
+                            stream: context
+                                .read<PlayerProvider>()
+                                .player
+                                .sequenceStateStream,
+                            builder: (context, snapshot) {
+                              return PlayNextPrev(
+                                onTap: () {
+                                  context.read<PlayerProvider>().playNext();
+                                },
+                                iconData: Icons.skip_next_rounded,
+                                isEnable: context
+                                    .read<PlayerProvider>()
+                                    .player
+                                    .hasNext,
+                              );
+                            }),
+                        Consumer<PlayerProvider>(builder: (context, pro, _) {
+                          return StreamBuilder<LoopMode>(
+                              stream: pro.player.loopModeStream,
+                              builder: (context, snapshot) {
+                                return Consumer<PlayerProvider>(
+                                    builder: (context, pro, _) {
+                                  final loopMode =
+                                      snapshot.data ?? LoopMode.off;
+                                  const icons = [
+                                    Icon(Icons.repeat, color: Colors.grey),
+                                    Icon(Icons.repeat, color: Colors.orange),
+                                    Icon(Icons.repeat_one,
+                                        color: Colors.orange),
+                                  ];
+                                  const cycleModes = [
+                                    LoopMode.off,
+                                    LoopMode.all,
+                                    LoopMode.one,
+                                  ];
+                                  final index = cycleModes.indexOf(loopMode);
+                                  return InkWell(
+                                      onTap: () {
+                                        pro.player.setLoopMode(cycleModes[
+                                            (cycleModes.indexOf(loopMode) + 1) %
+                                                cycleModes.length]);
+                                      },
+                                      child: Icon(
+                                        icons[index].icon,
+                                        color: icons[index].color,
+                                        size: 30,
+                                      ));
+                                });
                               });
-                            });
-                      })
-                    ],
+                        }),
+                      ],
+                    ),
                   )
                 ],
               );

@@ -17,7 +17,7 @@ class ForgotPassword extends StatelessWidget {
         alignment: Alignment.centerRight,
         child: Text(
           ConstantText.forgotPassword,
-          style: fontWeight500(color: CustomColor.subTitle2, size: 14.0),
+          style: fontWeight500(color: CustomColor.subTitle2, size: 13.0),
         ),
       ),
     );

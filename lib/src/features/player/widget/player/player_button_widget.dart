@@ -19,7 +19,7 @@ class PlayButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(8),
+      // margin: const EdgeInsets.all(8),
       padding: EdgeInsets.all(padding),
       decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
       child: Icon(
