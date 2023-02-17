@@ -81,4 +81,19 @@ class ConstantText {
 
   static const String unFollow = "Unfollow";
   static const String follow = "Follow";
+
+  static const String subscription = "Subscription";
+  static const String getExclusiveContent = "Get Exclusive content";
+  static const String getExclusiveSubTopic =
+      "Enjoy immediate access to exclusive content deepen your connection with your favourite music and discover new artists without any delay.";
+
+  static const String free = "Free";
+  static const String rupee = "₹";
+  static const String freePlanPrice = "0";
+  static const String threeMonthsPlanPrice = "200";
+  static const String sixMonthsPlanPrice = "699";
+  static const String threeMonthsPlan = "3 months";
+  static const String sixMonthsPlan = "6 months";
+  static const String bestSeller = "Bestseller";
+  static const String currentPlan = "Current plan";
 }

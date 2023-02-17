@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/features/player/screen/add_playlist_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../common_widgets/container/custom_color_container.dart';
@@ -94,9 +95,14 @@ class SongListTile extends StatelessWidget {
                       context.read<PlayerProvider>().addFavourite(songId);
                       break;
                     case 2:
-                      Navigation.navigateToScreen(
-                          context, RouteName.addPlaylist,
-                          args: songId.toString());
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  AddToPlaylistScreen(songId: songId)));
+                      // Navigation.navigateToScreen(
+                      //     context, RouteName.addPlaylist,
+                      //     args: songId.toString());
                       break;
 
                     case 3:

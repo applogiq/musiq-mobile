@@ -60,6 +60,8 @@ class ProfileProvider extends ChangeNotifier {
         title: "My Profile", isArrow: true, navigateScreen: "myProfile"),
     ProfileModel(
         title: "Preferences", isArrow: true, navigateScreen: "preferences"),
+    ProfileModel(
+        title: "Subscription", isArrow: true, navigateScreen: "subscription"),
   ];
 
   var profileImage = "";

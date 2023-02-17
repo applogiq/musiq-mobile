@@ -29,6 +29,10 @@ class Images {
   static String heroImage = "logo";
   static String loaderImage = "assets/gifs/loader.gif";
   static String logoImage = "assets/icons/logo.png";
+  static String flashImage = "assets/icons/flash.png";
+  static String chartImage = "assets/icons/graph.png";
+  static String starImage = "assets/icons/star.png";
+  static String medalStarImage = "assets/icons/medal-star.png";
   static String logoImageWithName = "assets/icons/logowithname.png";
   static String noArtist = "assets/images/default/no_artist.png";
   static String noFav = "assets/images/un_happy.png";

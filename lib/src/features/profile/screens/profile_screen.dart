@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/features/payment/screen/subscription_screen.dart';
 import 'package:musiq/src/features/profile/screens/my_profile_screen.dart';
 import 'package:musiq/src/features/profile/screens/preference_screen.dart';
 import 'package:provider/provider.dart';
@@ -85,11 +86,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Padding(
                 padding: EdgeInsets.only(top: getProportionateScreenHeight(48)),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: List.generate(
                       ProfileProvider().profileContent.length,
                       (index) => ProfileListTile(
                             index: index,
-                          )),
+                          ))
+                    ..add(
+                      const Padding(
+                        padding: EdgeInsets.only(left: 23),
+                        child: AboutUsTextWidget(
+                          title: "Free plan",
+                        ),
+                      ),
+                    ),
                 ),
               ),
               Consumer<ProfileProvider>(builder: (context, provider, _) {
@@ -193,11 +203,16 @@ class ProfileListTile extends StatelessWidget {
         if (index == 0) {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const MyProfile()));
-        } else {
+        } else if (index == 1) {
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => const PreferenceScreen()));
+        } else {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const SubscriptionsScreen()));
         }
         // Navigation.navigateToScreen(context, "myProfile");
       },
