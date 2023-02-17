@@ -8,7 +8,6 @@ import '../../../../core/enums/view_all_status.dart';
 import '../../../../core/utils/url_generate.dart';
 import '../../../common/screen/offline_screen.dart';
 import '../../provider/view_all_provider.dart';
-import '../../widgets/bottom_navigation_bar_widget.dart';
 import 'widgets/album_song_list.dart';
 import 'widgets/sliver_app_bar.dart';
 
@@ -138,7 +137,6 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
               InternetConnectionStatus.disconnected
           ? const OfflineScreen()
           : Scaffold(
-              bottomNavigationBar: const MiniPlayer(),
               body: Consumer<ViewAllProvider>(
                 builder: (context, pro, _) {
                   return pro.isLoad

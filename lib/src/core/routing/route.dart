@@ -28,128 +28,126 @@ import '../../features/search/screens/search_screen.dart';
 import '../enums/view_all_status.dart';
 import 'route_name.dart';
 
-class Routes {
-  static Route<dynamic> generateRoute(RouteSettings settings) {
-    final args = settings.arguments;
-    switch (settings.name) {
-      case RouteName.login:
-        return MaterialPageRoute(
-            builder: (BuildContext context) => const LoginScreen());
-      case RouteName.splash:
-        // return MaterialPageRoute(
-        //     builder: (BuildContext context) => const ProfileImageScreen());
-        return MaterialPageRoute(
-            builder: (BuildContext context) => const SplashScreen());
-      case RouteName.mainScreen:
-        return MaterialPageRoute(
-            builder: (BuildContext context) => const MainScreen());
-      case RouteName.artistPreference:
-        return MaterialPageRoute(
-            builder: (BuildContext context) => const ArtistPreferenceScreen());
-      case RouteName.forgotPassword:
-        return MaterialPageRoute(
-            builder: (BuildContext context) =>
-                const ForgotPasswordMainScreen());
-      case RouteName.onboarding:
-        return MaterialPageRoute(
-            builder: (BuildContext context) => const OnboardingScreen());
-      case RouteName.register:
-        return MaterialPageRoute(
-            builder: (BuildContext context) => const RegisterScreen());
-      case RouteName.home:
-        return MaterialPageRoute(
-            builder: (BuildContext context) => const HomeScreen());
-      case RouteName.myProfile:
-        return MaterialPageRoute(
-            builder: (BuildContext context) => const MyProfile());
-      case RouteName.preference:
-        return MaterialPageRoute(
-            builder: (BuildContext context) => const PreferenceScreen());
-      case RouteName.library:
-        return MaterialPageRoute(
-            builder: (BuildContext context) => const LibraryScreen());
-      case RouteName.addPlaylist:
-        if (args is String) {
-          return MaterialPageRoute(
-              builder: (BuildContext context) => AddToPlaylistScreen(
-                    songId: int.parse(args),
-                  ));
-        }
-        return MaterialPageRoute(
-            builder: (BuildContext context) => const ErrorScreen());
-
-      case RouteName.forgotPasswordOTP:
-        return MaterialPageRoute(
-            builder: (BuildContext context) => const OTPScreen());
-      case RouteName.forgotPasswordChangePassword:
-        return MaterialPageRoute(
-            builder: (BuildContext context) => const NewPasswordScreen());
-      case RouteName.crop:
-        return MaterialPageRoute(
-            builder: (BuildContext context) => const ImageCrop());
-      case RouteName.search:
-        if (args is SearchRequestModel) {
-          return MaterialPageRoute(
-              builder: (BuildContext context) => SearchScreen(
-                    searchRequestModel: args,
-                  ));
-        }
-        return MaterialPageRoute(
-            builder: (BuildContext context) => const ErrorScreen());
-      case RouteName.profile:
-        return MaterialPageRoute(
-            builder: (BuildContext context) => const ProfileScreen());
-      case RouteName.profileArtistPreference:
-        return MaterialPageRoute(
-            builder: (BuildContext context) =>
-                const ProfileArtistPreferenceScreen());
-      case RouteName.artistViewAllScreen:
-        return MaterialPageRoute(
-            builder: (BuildContext context) => const ArtistViewAllScreen());
-      case RouteName.player:
-        // if (args is PlayerModel) {
-        return MaterialPageRoute(
-            builder: (BuildContext context) => const PlayerScreen(
-                // playerModel: args,
-                ));
-      // }
+Route<dynamic> generateRoute(RouteSettings settings) {
+  final args = settings.arguments;
+  switch (settings.name) {
+    case RouteName.login:
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const LoginScreen());
+    case RouteName.splash:
       // return MaterialPageRoute(
-      //     builder: (BuildContext context) => const ErrorScreen());
-
-      case RouteName.songInfo:
-        if (args is int) {
-          return MaterialPageRoute(
-              builder: (BuildContext context) => SongInfoScreen(
-                    id: args,
-                  ));
-        }
+      //     builder: (BuildContext context) => const ProfileImageScreen());
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const SplashScreen());
+    case RouteName.mainScreen:
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const MainScreen());
+    case RouteName.artistPreference:
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const ArtistPreferenceScreen());
+    case RouteName.forgotPassword:
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const ForgotPasswordMainScreen());
+    case RouteName.onboarding:
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const OnboardingScreen());
+    case RouteName.register:
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const RegisterScreen());
+    case RouteName.home:
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const HomeScreen());
+    case RouteName.myProfile:
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const MyProfile());
+    case RouteName.preference:
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const PreferenceScreen());
+    case RouteName.library:
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const LibraryScreen());
+    case RouteName.addPlaylist:
+      if (args is String) {
         return MaterialPageRoute(
-            builder: (BuildContext context) => const ErrorScreen());
+            builder: (BuildContext context) => AddToPlaylistScreen(
+                  songId: int.parse(args),
+                ));
+      }
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const ErrorScreen());
 
-      case RouteName.artistViewAllSongListScreen:
-        if (args is ArtistViewAllModel) {
-          return MaterialPageRoute(
-              builder: (BuildContext context) => ArtistViewAllSongListScreen(
-                    artistViewAllModel: args,
-                  ));
-        }
-
+    case RouteName.forgotPasswordOTP:
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const OTPScreen());
+    case RouteName.forgotPasswordChangePassword:
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const NewPasswordScreen());
+    case RouteName.crop:
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const ImageCrop());
+    case RouteName.search:
+      if (args is SearchRequestModel) {
         return MaterialPageRoute(
-            builder: (BuildContext context) => const ErrorScreen());
-      case RouteName.viewAllScreen:
-        if (args is ViewAllStatus) {
-          return MaterialPageRoute(
-              builder: (BuildContext context) => ViewAllSongListScreen(
-                    status: args,
-                  ));
-        }
+            builder: (BuildContext context) => SearchScreen(
+                  searchRequestModel: args,
+                ));
+      }
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const ErrorScreen());
+    case RouteName.profile:
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const ProfileScreen());
+    case "profile_artist_preference":
+      print("UUU");
+      return MaterialPageRoute(
+          builder: (BuildContext context) =>
+              const ProfileArtistPreferenceScreen());
+    case RouteName.artistViewAllScreen:
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const ArtistViewAllScreen());
+    case RouteName.player:
+      // if (args is PlayerModel) {
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const PlayerScreen(
+              // playerModel: args,
+              ));
+    // }
+    // return MaterialPageRoute(
+    //     builder: (BuildContext context) => const ErrorScreen());
 
+    case RouteName.songInfo:
+      if (args is int) {
         return MaterialPageRoute(
-            builder: (BuildContext context) => const ErrorScreen());
+            builder: (BuildContext context) => SongInfoScreen(
+                  id: args,
+                ));
+      }
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const ErrorScreen());
 
-      default:
+    case RouteName.artistViewAllSongListScreen:
+      if (args is ArtistViewAllModel) {
         return MaterialPageRoute(
-            builder: (BuildContext context) => const ErrorScreen());
-    }
+            builder: (BuildContext context) => ArtistViewAllSongListScreen(
+                  artistViewAllModel: args,
+                ));
+      }
+
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const ErrorScreen());
+    case RouteName.viewAllScreen:
+      if (args is ViewAllStatus) {
+        return MaterialPageRoute(
+            builder: (BuildContext context) => ViewAllSongListScreen(
+                  status: args,
+                ));
+      }
+
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const ErrorScreen());
+
+    default:
+      return MaterialPageRoute(
+          builder: (BuildContext context) => const ErrorScreen());
   }
 }

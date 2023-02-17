@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:musiq/src/core/utils/image_utils.dart';
+import 'package:musiq/src/features/profile/screens/my_profile_screen.dart';
+import 'package:musiq/src/features/profile/screens/preference_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/buttons/custom_button.dart';
@@ -26,7 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Provider.of<ProfileProvider>(context, listen: false)
           .getProfileDetails();
-      imageUrl = getImage();
+      // imageUrl = getImage();
       setState(() {});
     });
     super.initState();
@@ -51,34 +50,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: 120,
                   decoration: const BoxDecoration(shape: BoxShape.circle),
                   child: Consumer<ProfileProvider>(builder: (context, pro, _) {
-                    return pro.myProfileLoading
-                        ? Center(
-                            child: Image.asset(
-                            'assets/gifs/image_loader2.gif',
-                            height: 90,
-                          ))
-                        : pro.profileAPIModel.records == null
-                            ? Image.asset(Images.userDefault)
-                            : (pro.profileAPIModel.records!.isImage == true
-                                ? CircleAvatar(
-                                    backgroundColor: Colors.black,
-                                    radius: 65,
-                                    backgroundImage: const AssetImage(
-                                        'assets/gifs/image_loader2.gif'),
-                                    child: imageUrl != ""
-                                        ? CircleAvatar(
-                                            radius: 65,
-                                            backgroundColor: Colors.transparent,
-                                            backgroundImage: FileImage(
-                                              File(imageUrl),
-                                            ),
-                                          )
-                                        : const CircleAvatar(
-                                            radius: 65,
-                                            backgroundColor: Colors.white,
-                                          ),
-                                  )
-                                : Image.asset(Images.userDefault));
+                    return Image.asset(Images.userDefault);
+                    //  pro.myProfileLoading
+                    //     ? Center(
+                    //         child: Image.asset(
+                    //         'assets/gifs/image_loader2.gif',
+                    //         height: 90,
+                    //       ))
+                    //     : pro.profileAPIModel.records == null
+                    //         ? Image.asset(Images.userDefault)
+                    //         : (pro.profileAPIModel.records!.isImage == true
+                    //             ? CircleAvatar(
+                    //                 backgroundColor: Colors.black,
+                    //                 radius: 65,
+                    //                 backgroundImage: const AssetImage(
+                    //                     'assets/gifs/image_loader2.gif'),
+                    //                 child: imageUrl != ""
+                    //                     ? CircleAvatar(
+                    //                         radius: 65,
+                    //                         backgroundColor: Colors.transparent,
+                    //                         backgroundImage: FileImage(
+                    //                           File(imageUrl),
+                    //                         ),
+                    //                       )
+                    //                     : const CircleAvatar(
+                    //                         radius: 65,
+                    //                         backgroundColor: Colors.white,
+                    //                       ),
+                    //               )
+                    //             : Image.asset(Images.userDefault));
                   }),
                 ),
               ),
@@ -102,12 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         title: const Text(
                           "About",
                           style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              color:
-                                  //  profileController.profileContent[index].isHighLight
-                                  //     ? CustomColor.secondaryColor
-                                  //     :
-                                  Colors.white),
+                              fontWeight: FontWeight.w500, color: Colors.white),
                         ),
                         trailing: provider.isAboutOpen
                             ? const RotatedBox(
@@ -192,10 +187,19 @@ class ProfileListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () async {
-        context.read<ProfileProvider>().removeMyProfileState();
-        Navigator.of(
-          context,
-        ).pushNamed(ProfileProvider().profileContent[index].navigateScreen);
+        var pro = context.read<ProfileProvider>();
+        pro.removeMyProfileState();
+        print(pro.profileContent[index].navigateScreen);
+        if (index == 0) {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const MyProfile()));
+        } else {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const PreferenceScreen()));
+        }
+        // Navigation.navigateToScreen(context, "myProfile");
       },
       trailing: const Icon(
         Icons.arrow_forward_ios_rounded,

@@ -7,6 +7,10 @@ import '../../library/screens/library.dart';
 import '../../profile/screens/profile_screen.dart';
 
 class BottomNavigationBarProvider extends ChangeNotifier {
+  final homeNavigatorKey = GlobalKey<NavigatorState>();
+  final libraryNavigatorKey = GlobalKey<NavigatorState>();
+  final profileNavigatorKey2 = GlobalKey<NavigatorState>();
+
   List<BottomNavBarModel> bottomItems = [
     BottomNavBarModel(iconData: Icons.home_rounded, labelData: "Home"),
     BottomNavBarModel(iconData: Icons.music_note_rounded, labelData: "Library"),
@@ -27,7 +31,19 @@ class BottomNavigationBarProvider extends ChangeNotifier {
 
   changeIndex(int index) {
     selectedBottomIndex = index;
-
+    if (index == selectedBottomIndex) {
+    } else {
+      if (index == 0) {}
+    }
+    //     if (index == _selectedTab) {
+    //       widget.items[index].navigatorkey?.currentState
+    //           ?.popUntil((route) => route.isFirst);
+    //     } else {
+    //       setState(() {
+    //         _selectedTab = index;
+    //       });
+    //     }
+    //   },
     notifyListeners();
   }
 

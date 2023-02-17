@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:musiq/src/features/common/screen/offline_screen.dart';
-import 'package:musiq/src/features/home/widgets/bottom_navigation_bar_widget.dart';
+import 'package:musiq/src/features/common/screen/persitent_bottom.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +14,10 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  // final _tab1navigatorKey = GlobalKey<NavigatorState>();
+  // final _tab2navigatorKey = GlobalKey<NavigatorState>();
+  // final _tab3navigatorKey = GlobalKey<NavigatorState>();
+
   int selectedIndex = 0;
   late final List<PersistentBottomNavBarItem>
       items; // NOTE: You CAN declare your own model here instead of `PersistentBottomNavBarItem`.
@@ -42,72 +44,31 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    return
-        //  CupertinoTabScaffold(
-        //     // ignore: prefer_const_literals_to_create_immutables
-        //     tabBar: CupertinoTabBar(items: <BottomNavigationBarItem>[
-        //       const  BottomNavigationBarItem(
-        //         icon: Icon(Icons.home),
-        //       ),
-        //       const BottomNavigationBarItem(
-        //         icon: Icon(Icons.home),
-        //       ),
-        //       const BottomNavigationBarItem(
-        //         icon: Icon(Icons.home),
-        //       ),
-        //     ]),
-        //     tabBuilder: (context, index) {
-        //       switch (index) {
-        //         case 0:
-        //           return CupertinoTabView(
-        //             builder: (context) {
-        //               return const CupertinoPageScaffold(
-        //                   child: Material(child: HomeScreen()));
-        //             },
-        //           );
-
-        //         case 1:
-        //           return CupertinoTabView(
-        //             builder: (context) {
-        //               return const CupertinoPageScaffold(child: LibraryScreen());
-        //             },
-        //           );
-
-        //         case 2:
-        //           return CupertinoTabView(
-        //             builder: (context) {
-        //               return const CupertinoPageScaffold(child: ProfileScreen());
-        //             },
-        //           );
-        //       }
-        //       return Container();
-        //     });
-
-        SafeArea(
-      child: Scaffold(
-        body: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            Provider.of<InternetConnectionStatus>(context) ==
-                    InternetConnectionStatus.disconnected
-                ? const OfflineScreen()
-                : Column(
-                    children: [
-                      Expanded(
-                        child: Consumer<BottomNavigationBarProvider>(
-                          builder: (context, provider, _) {
-                            return provider.pages[provider.selectedBottomIndex];
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
+    return Consumer<BottomNavigationBarProvider>(
+      builder: (context, pro, _) {
+        return PersistentBottomBarScaffold(
+          items: [
+            PersistentTabItem(
+              tab: pro.pages[0],
+              icon: Icons.home,
+              title: 'Home',
+              navigatorkey: pro.homeNavigatorKey,
+            ),
+            PersistentTabItem(
+              tab: pro.pages[1],
+              icon: Icons.music_note_rounded,
+              title: 'Library',
+              navigatorkey: pro.libraryNavigatorKey,
+            ),
+            PersistentTabItem(
+              tab: pro.pages[2],
+              icon: Icons.person_rounded,
+              title: 'Profile',
+              navigatorkey: pro.profileNavigatorKey2,
+            ),
           ],
-        ),
-        bottomNavigationBar: BottomNavigationBarWithMiniPlayer(
-          width: width,
-        ),
-      ),
+        );
+      },
     );
   }
 }

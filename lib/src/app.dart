@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: themeData(context),
           initialRoute: RouteName.splash,
-          onGenerateRoute: Routes.generateRoute,
+          onGenerateRoute: generateRoute,
         );
       },
     );

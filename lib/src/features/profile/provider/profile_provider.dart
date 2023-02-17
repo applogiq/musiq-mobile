@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart ' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:musiq/src/core/utils/image_utils.dart';
+import 'package:musiq/src/features/profile/screens/image_crop_screen.dart';
 
 import '../../../../objectbox.g.dart';
 import '../../../common_widgets/model/profile_model.dart';
@@ -17,7 +17,6 @@ import '../../../core/constants/color.dart';
 import '../../../core/constants/images.dart';
 import '../../../core/constants/string.dart';
 import '../../../core/local/model/user_model.dart';
-import '../../../core/routing/route_name.dart';
 import '../../../core/utils/navigation.dart';
 import '../../../core/utils/toast_message.dart';
 import '../../common/screen/main_screen.dart';
@@ -61,8 +60,6 @@ class ProfileProvider extends ChangeNotifier {
         title: "My Profile", isArrow: true, navigateScreen: "myProfile"),
     ProfileModel(
         title: "Preferences", isArrow: true, navigateScreen: "preferences"),
-    ProfileModel(
-        title: "Contact us", isArrow: true, navigateScreen: "contact_us"),
   ];
 
   var profileImage = "";
@@ -101,9 +98,9 @@ class ProfileProvider extends ChangeNotifier {
         var jsonData = jsonDecode(res.body);
         log(jsonData.toString());
         profileAPIModel = ProfileAPIModel.fromJson(jsonData);
-        if (profileAPI!.records!.isImage == true) {
-          loadImage(profileAPI!.records!.id.toString());
-        }
+        // if (profileAPI!.records!.isImage == true) {
+        //   loadImage(profileAPI!.records!.id.toString());
+        // }
       } else {
         profileAPIModel =
             ProfileAPIModel(status: false, message: "No data", records: null);
@@ -266,7 +263,9 @@ class ProfileProvider extends ChangeNotifier {
     fileImage = imageTemp;
     isCropSaveLoading = false;
 
-    Navigation.navigateToScreen(context, RouteName.crop);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const ImageCrop()));
+    // Navigation.navigateToScreen(context, RouteName.crop);
 
     // if (_pickedImage != null) {
     //   var image = File(_pickedImage.path.toString());

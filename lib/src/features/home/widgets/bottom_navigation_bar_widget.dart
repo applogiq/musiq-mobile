@@ -20,7 +20,6 @@ class BottomNavigationBarWithMiniPlayer extends StatelessWidget {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          pro.isPlaying ? const MiniPlayer() : const SizedBox.shrink(),
           BottomNavigationBarWidget(
             width: width,
           ),

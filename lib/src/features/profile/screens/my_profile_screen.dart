@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:musiq/src/common_widgets/box/vertical_box.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/buttons/custom_button.dart';
@@ -33,30 +34,32 @@ class _MyProfileState extends State<MyProfile> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          toolbarHeight: getProportionateScreenHeight(70),
-          title: Text(ConstantText.myProfile),
-          titleSpacing: 0.1,
-          leading: InkWell(
-              onTap: () {
-                Navigator.pop(context);
-                // pro.clearError();
-              },
-              child: const Icon(Icons.arrow_back_ios)),
-        ),
-        body: Provider.of<InternetConnectionStatus>(context) ==
-                InternetConnectionStatus.disconnected
-            ? const OfflineScreen()
-            : Consumer<ProfileProvider>(builder: (context, pro, _) {
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        toolbarHeight: getProportionateScreenHeight(70),
+        title: Text(ConstantText.myProfile),
+        titleSpacing: 0.1,
+        leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+              // pro.clearError();
+            },
+            child: const Icon(Icons.arrow_back_ios)),
+      ),
+      body: Provider.of<InternetConnectionStatus>(context) ==
+              InternetConnectionStatus.disconnected
+          ? const OfflineScreen()
+          : Consumer<ProfileProvider>(
+              builder: (context, pro, _) {
                 return pro.myProfileLoading
                     ? const LoaderScreen()
-                    : Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: SingleChildScrollView(
-                          child: SizedBox(
-                            height: size.height - 100,
-                            width: size.width,
+                    : ListView(
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Column(
                               children: [
                                 ProfileImageEdit(size: size),
@@ -95,7 +98,7 @@ class _MyProfileState extends State<MyProfile> {
                                         provider.profileUserNameChanged(text);
                                       });
                                 }),
-                                const Spacer(),
+                                const VerticalBox(height: 60),
                                 Consumer<ProfileProvider>(
                                     builder: (context, provider, _) {
                                   return GestureDetector(
@@ -115,10 +118,12 @@ class _MyProfileState extends State<MyProfile> {
                                 }),
                               ],
                             ),
-                          ),
-                        ),
+                          )
+                        ],
                       );
-              }));
+              },
+            ),
+    );
   }
 }
 

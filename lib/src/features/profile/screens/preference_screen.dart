@@ -2,11 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:musiq/src/core/utils/navigation.dart';
+import 'package:musiq/src/features/common/screen/coming_soon_screen.dart';
+import 'package:musiq/src/features/profile/screens/artist_preference.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/app_bar.dart';
 import '../../../core/constants/color.dart';
-import '../../../core/routing/route_name.dart';
 import '../../common/screen/offline_screen.dart';
 
 class PreferenceScreen extends StatelessWidget {
@@ -25,36 +27,39 @@ class PreferenceScreen extends StatelessWidget {
               ),
             ),
             body: SizedBox(
-              child: ListView(shrinkWrap: true, children: const [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-                  child: PreferenceMainHeaderWidget(
-                    mainTitle: "Music Preference",
-                    subTitle1: "Artist Preference",
-                    navigationScreen1: RouteName.profileArtistPreference,
-                    subTitle2: "Audio Quality",
-                    navigationScreen2: "audioQuality",
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
-                  child: PreferenceMainHeaderWidget(
-                    mainTitle: "Podcast Preference",
-                    subTitle1: "Artist Preference",
-                    navigationScreen1: "artistPreference",
-                    subTitle2: "Audio Quality",
-                    navigationScreen2: "audioQuality",
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
-                  child: NotificationPreferenceHeaderWidget(
-                    mainTitle: "Notification Preference",
-                    subTitle1: "New Releases",
-                    subTitle2: "Artist Updates",
-                  ),
-                ),
-              ]),
+              child: ListView(
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+                      child: PreferenceMainHeaderWidget(
+                        mainTitle: "Music Preference",
+                        subTitle1: "Artist Preference",
+                        navigationScreen1: ProfileArtistPreferenceScreen(),
+                        subTitle2: "Audio Quality",
+                        navigationScreen2: ComingSoonScreen(),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
+                      child: PreferenceMainHeaderWidget(
+                        mainTitle: "Podcast Preference",
+                        subTitle1: "Artist Preference",
+                        navigationScreen1: ComingSoonScreen(),
+                        subTitle2: "Audio Quality",
+                        navigationScreen2: ComingSoonScreen(),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
+                      child: NotificationPreferenceHeaderWidget(
+                        mainTitle: "Notification Preference",
+                        subTitle1: "New Releases",
+                        subTitle2: "Artist Updates",
+                      ),
+                    ),
+                  ]),
             ),
           );
   }
@@ -71,8 +76,8 @@ class PreferenceMainHeaderWidget extends StatelessWidget {
   }) : super(key: key);
 
   final String mainTitle;
-  final String navigationScreen1;
-  final String navigationScreen2;
+  final Widget navigationScreen1;
+  final Widget navigationScreen2;
   final String subTitle1;
   final String subTitle2;
 
@@ -192,13 +197,14 @@ class PreferenceListTile extends StatelessWidget {
   }) : super(key: key);
 
   final String label;
-  final String navigationRoute;
+  final Widget navigationRoute;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed(navigationRoute);
+        Navigation.navigateToScreenWithoutNamed(context, navigationRoute);
+        // Navigator.of(context).pushNamed(navigationRoute);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12.0),

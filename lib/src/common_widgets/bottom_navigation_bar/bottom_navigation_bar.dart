@@ -17,7 +17,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width,
-      height: 80,
+      height: 60,
       color: CustomColor.bottomNavBarColor,
       child: Consumer<BottomNavigationBarProvider>(
         builder: (context, provider, _) {

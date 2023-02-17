@@ -12,6 +12,16 @@ class Navigation {
     }
   }
 
+  static Future<dynamic> navigateToScreenWithoutNamed(
+    BuildContext context,
+    Widget screen,
+  ) async {
+    var value = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => screen));
+
+    return value;
+  }
+
   static navigateReplaceToScreen(BuildContext context, String screen) {
     Navigator.pushReplacementNamed(context, screen);
   }

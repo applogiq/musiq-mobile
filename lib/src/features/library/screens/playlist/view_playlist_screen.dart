@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:musiq/src/features/home/widgets/bottom_navigation_bar_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/loader.dart';
@@ -54,7 +53,6 @@ class _ViewPlaylistSongScreenState extends State<ViewPlaylistSongScreen> {
               InternetConnectionStatus.disconnected
           ? const OfflineScreen()
           : Scaffold(
-              bottomNavigationBar: const MiniPlayer(),
               backgroundColor: CustomColor.bg,
               body: Consumer<LibraryProvider>(
                 builder: (context, pro, _) {

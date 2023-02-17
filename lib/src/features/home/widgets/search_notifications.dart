@@ -5,7 +5,7 @@ import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../core/constants/color.dart';
 import '../../../core/enums/search_status.dart';
 import '../../search/provider/search_provider.dart';
-import '../provider/home_provider.dart';
+import '../../search/screens/search_screen.dart';
 
 class SearchAndNotifications extends StatelessWidget {
   const SearchAndNotifications({
@@ -28,9 +28,12 @@ class SearchAndNotifications extends StatelessWidget {
                 isReadOnly: true,
                 onTap: () {
                   context.read<SearchProvider>().resetState();
-                  context.read<HomeProvider>().goToSearch(context);
-                  // Navigator.of(context).push(
-                  //     MaterialPageRoute(builder: (context) => SearchScreen()));
+                  // context.read<HomeProvider>().goToSearch(context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => SearchScreen(
+                            searchRequestModel:
+                                SearchRequestModel(searchStatus: searchStatus),
+                          )));
                 },
                 hint: "Search Music and Podcasts",
                 searchStatus: searchStatus,

@@ -8,8 +8,6 @@ import '../../../../common_widgets/loader.dart';
 import '../../../../core/constants/color.dart';
 import '../../../../core/enums/search_status.dart';
 import '../../../../core/enums/view_all_status.dart';
-import '../../../../core/routing/route_name.dart';
-import '../../../../core/utils/navigation.dart';
 import '../../../../core/utils/url_generate.dart';
 import '../../../artist/domain/models/artist_model.dart';
 import '../../../common/screen/offline_screen.dart';
@@ -172,8 +170,12 @@ class SearchSection extends StatelessWidget {
         isReadOnly: true,
         onTap: () {
           context.read<SearchProvider>().resetState();
-          Navigation.navigateToScreen(context, RouteName.search,
-              args: SearchRequestModel(searchStatus: SearchStatus.artist));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => SearchScreen(
+                  searchRequestModel:
+                      SearchRequestModel(searchStatus: SearchStatus.artist))));
+          // Navigation.navigateToScreen(context, RouteName.search,
+          //     args: SearchRequestModel(searchStatus: SearchStatus.artist));
         },
         hint: "Search Artists",
         searchStatus: SearchStatus.artist,
