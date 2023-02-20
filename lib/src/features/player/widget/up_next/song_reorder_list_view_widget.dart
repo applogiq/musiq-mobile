@@ -62,8 +62,14 @@ class _SongReorderListViewWidgetState extends State<SongReorderListViewWidget> {
                 if (newIndex > oldIndex) {
                   newIndex = newIndex - 1;
                 }
-                final element = state.effectiveSequence.removeAt(oldIndex);
-                state.effectiveSequence.insert(newIndex, element);
+                if (context.read<PlayerProvider>().player.shuffleModeEnabled ==
+                    false) {
+                  final element = state.effectiveSequence.removeAt(oldIndex);
+                  state.effectiveSequence.insert(newIndex, element);
+                } else {
+                  final element = state.shuffleIndices.removeAt(oldIndex);
+                  state.shuffleIndices.insert(newIndex, element);
+                }
               });
             }
           },

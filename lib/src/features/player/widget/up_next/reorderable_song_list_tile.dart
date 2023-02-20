@@ -25,6 +25,7 @@ class ReorderableSongListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         print(index);
         if (context.read<PlayerProvider>().player.shuffleModeEnabled == true) {
