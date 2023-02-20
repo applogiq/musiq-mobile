@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/enums/search_status.dart';
+import '../../../core/enums/enums.dart';
 import '../../common/screen/offline_screen.dart';
 import '../../home/widgets/search_notifications.dart';
 import '../provider/search_provider.dart';

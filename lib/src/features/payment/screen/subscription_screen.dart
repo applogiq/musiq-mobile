@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/common_widgets/box/horizontal_box.dart';
+import 'package:musiq/src/common_widgets/box/vertical_box.dart';
 import 'package:musiq/src/core/constants/images.dart';
+import 'package:musiq/src/core/enums/enums.dart';
+import 'package:musiq/src/features/payment/provider/payment_provider.dart';
+import 'package:provider/provider.dart';
 
+import '../../../common_widgets/box/horizontal_box.dart';
+import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../core/constants/constant.dart';
 import '../../../core/utils/size_config.dart';
 
@@ -11,218 +16,334 @@ class SubscriptionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          toolbarHeight: getProportionateScreenHeight(70),
-          title: const Text(ConstantText.subscription),
-          titleSpacing: 0.1,
-          leading: InkWell(
-              onTap: () {
-                Navigator.pop(context);
-                // pro.clearError();
-              },
-              child: const Icon(Icons.arrow_back_ios)),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        toolbarHeight: getProportionateScreenHeight(70),
+        title: const Text(ConstantText.subscription),
+        titleSpacing: 0.1,
+        leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: const Icon(Icons.arrow_back_ios)),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: ListView(
+          shrinkWrap: true,
+          children: const [
+            VerticalBox(height: 12),
+            FlashImageWidget(),
+            VerticalBox(height: 8),
+            GetExclusiveContentWidget(),
+            VerticalBox(height: 8),
+            GetExclusiveSubtitleWidget(),
+            VerticalBox(height: 44),
+            SubscriptionCard(),
+            VerticalBox(height: 32),
+            PlanDescriptionWidget(),
+          ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: ListView(
-            shrinkWrap: true,
-            children: [
-              Center(
-                child: Container(
-                  padding: const EdgeInsets.all(8),
+      ),
+      bottomNavigationBar: GestureDetector(
+        onTap: () {
+          context.read<PaymentProvider>().pay(context);
+        },
+        child: const CustomButton(
+          label: ConstantText.payNow,
+          horizontalMargin: 0,
+        ),
+      ),
+    );
+  }
+}
+
+class SubscriptionCard extends StatelessWidget {
+  const SubscriptionCard({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<PaymentProvider>(builder: (context, pro, _) {
+      return Row(
+        children: [
+          SubscriptionPlanCard(
+              subscriptionPlan: SubscriptionPlan.free,
+              selectedSubscriptionPlan: SubscriptionPlan.free,
+              imageAsset: Images.chartImage,
+              planName: ConstantText.free,
+              planPrice: "0"),
+          const HorizontalBox(width: 4),
+          SubscriptionPlanCard(
+              subscriptionPlan: SubscriptionPlan.threeMonths,
+              selectedSubscriptionPlan: SubscriptionPlan.free,
+              imageAsset: Images.starImage,
+              planName: ConstantText.threeMonthsPlan,
+              planPrice: "200"),
+          const HorizontalBox(width: 4),
+          SubscriptionPlanCard(
+              selectedSubscriptionPlan: SubscriptionPlan.free,
+              subscriptionPlan: SubscriptionPlan.sixMonths,
+              imageAsset: Images.medalStarImage,
+              planName: ConstantText.sixMonthsPlan,
+              planPrice: "699")
+        ],
+      );
+    });
+  }
+}
+
+class SubscriptionPlanCard extends StatelessWidget {
+  const SubscriptionPlanCard({
+    Key? key,
+    required this.subscriptionPlan,
+    this.isBestSeller = false,
+    required this.imageAsset,
+    required this.planName,
+    required this.planPrice,
+    required this.selectedSubscriptionPlan,
+  }) : super(key: key);
+  final SubscriptionPlan subscriptionPlan;
+  final bool isBestSeller;
+  final String imageAsset;
+  final String planName;
+  final String planPrice;
+  final SubscriptionPlan selectedSubscriptionPlan;
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Consumer<PaymentProvider>(builder: (context, pro, _) {
+        return GestureDetector(
+          onTap: () {
+            pro.changeSubscription(subscriptionPlan);
+          },
+          child: SizedBox(
+            height: 190,
+            child: Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 12),
+                  height: 172,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF23232D),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Image.asset(
-                    Images.flashImage,
-                    height: 24,
-                    width: 24,
-                  ),
-                ),
-              ),
-              Center(
-                child: Text(
-                  ConstantText.getExclusiveContent,
-                  style: fontWeight600(size: 26.0),
-                ),
-              ),
-              Center(
-                child: Text(
-                  ConstantText.getExclusiveSubTopic,
-                  textAlign: TextAlign.center,
-                  style: fontWeight400(size: 12.0, color: CustomColor.subTitle),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 172,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF23232D),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      color: const Color(0xFF23232D),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                          color: pro.subscriptionPlan == subscriptionPlan
+                              ? CustomColor.secondaryColor
+                              : Colors.black,
+                          width: 1)),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF2E2E3D),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Image.asset(
+                            imageAsset,
+                            height: 24,
+                            width: 24,
+                          ),
+                        ),
+                        Text(planName),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF2E2E3D),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Image.asset(
-                                Images.chartImage,
-                                height: 24,
-                                width: 24,
-                              ),
+                            Text(
+                              ConstantText.rupee,
+                              style: fontWeight400(size: 18.0),
                             ),
-                            const Text(ConstantText.free),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  ConstantText.rupee,
-                                  style: fontWeight400(size: 18.0),
-                                ),
-                                Text(
-                                  ConstantText.freePlanPrice,
-                                  style: fontWeight600(size: 24.0),
-                                ),
-                              ],
+                            Text(
+                              planPrice,
+                              style: fontWeight600(size: 24.0),
                             ),
-                            1 == 1
-                                ? Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 6),
-                                    decoration: BoxDecoration(
-                                        color: const Color(0xFF2E2E3D),
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    child: const Text(ConstantText.currentPlan))
-                                : const SizedBox.shrink()
                           ],
                         ),
-                      ),
+                        selectedSubscriptionPlan == subscriptionPlan
+                            ? Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 6),
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFF2E2E3D),
+                                    borderRadius: BorderRadius.circular(12)),
+                                child: Text(
+                                  ConstantText.currentPlan,
+                                  style: fontWeight400(size: 12.0),
+                                ))
+                            : const SizedBox.shrink()
+                      ],
                     ),
                   ),
-                  const HorizontalBox(width: 12),
-                  Expanded(
-                    child: Container(
-                      height: 172,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF23232D),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF2E2E3D),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Image.asset(
-                                Images.starImage,
-                                height: 24,
-                                width: 24,
-                              ),
-                            ),
-                            const Text(ConstantText.threeMonthsPlan),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  ConstantText.rupee,
-                                  style: fontWeight400(size: 18.0),
-                                ),
-                                Text(
-                                  ConstantText.threeMonthsPlanPrice,
-                                  style: fontWeight600(size: 24.0),
-                                ),
-                              ],
-                            ),
-                            1 == 0
-                                ? Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 6),
-                                    decoration: BoxDecoration(
-                                        color: const Color(0xFF2E2E3D),
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    child: const Text(ConstantText.currentPlan))
-                                : const SizedBox.shrink()
-                          ],
+                ),
+                subscriptionPlan == SubscriptionPlan.threeMonths
+                    ? Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6),
+                        decoration: BoxDecoration(
+                            color: CustomColor.secondaryColor,
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Text(
+                          ConstantText.bestSeller,
+                          style: fontWeight400(size: 12.0),
                         ),
-                      ),
-                    ),
-                  ),
-                  const HorizontalBox(width: 12),
-                  Expanded(
-                    child: Container(
-                      height: 172,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF23232D),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF2E2E3D),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Image.asset(
-                                Images.medalStarImage,
-                                height: 24,
-                                width: 24,
-                              ),
-                            ),
-                            const Text(ConstantText.sixMonthsPlan),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  ConstantText.rupee,
-                                  style: fontWeight400(size: 18.0),
-                                ),
-                                Text(
-                                  ConstantText.sixMonthsPlanPrice,
-                                  style: fontWeight600(size: 24.0),
-                                ),
-                              ],
-                            ),
-                            1 == 0
-                                ? Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 6),
-                                    decoration: BoxDecoration(
-                                        color: const Color(0xFF2E2E3D),
-                                        borderRadius:
-                                            BorderRadius.circular(12)),
-                                    child: const Text(ConstantText.currentPlan))
-                                : const SizedBox.shrink()
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            ],
+                      )
+                    : const SizedBox.shrink()
+              ],
+            ),
           ),
-        ));
+        );
+      }),
+    );
+  }
+}
+
+class GetExclusiveSubtitleWidget extends StatelessWidget {
+  const GetExclusiveSubtitleWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        ConstantText.getExclusiveSubTopic,
+        textAlign: TextAlign.center,
+        style: fontWeight400(size: 12.0, color: CustomColor.subTitle),
+      ),
+    );
+  }
+}
+
+class GetExclusiveContentWidget extends StatelessWidget {
+  const GetExclusiveContentWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        ConstantText.getExclusiveContent,
+        style: fontWeight600(size: 26.0),
+      ),
+    );
+  }
+}
+
+class FlashImageWidget extends StatelessWidget {
+  const FlashImageWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: const Color(0xFF23232D),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Image.asset(
+          Images.flashImage,
+          height: 24,
+          width: 24,
+        ),
+      ),
+    );
+  }
+}
+
+class PlanDescriptionWidget extends StatelessWidget {
+  const PlanDescriptionWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: Text(
+                ConstantText.features,
+                style: fontWeight600(size: 14.0),
+              ),
+            ),
+            Expanded(
+              child: Center(
+                  child: Text(
+                ConstantText.free,
+                style: fontWeight600(size: 14.0),
+              )),
+            ),
+            Expanded(
+              child: Text(
+                ConstantText.premium,
+                style: fontWeight600(size: 14.0),
+              ),
+            ),
+          ],
+        ),
+        const VerticalBox(height: 12),
+        const FeatureRowWidget(
+            featureLabel: ConstantText.adFreeSong,
+            freeIcon: Icons.close,
+            premiumIcon: Icons.check),
+        const VerticalBox(height: 16),
+        const FeatureRowWidget(
+            featureLabel: ConstantText.unlimitedStreaming,
+            freeIcon: Icons.check,
+            premiumIcon: Icons.check),
+        const VerticalBox(height: 16),
+        const FeatureRowWidget(
+            featureLabel: ConstantText.access,
+            freeIcon: Icons.close,
+            premiumIcon: Icons.check),
+      ],
+    );
+  }
+}
+
+class FeatureRowWidget extends StatelessWidget {
+  const FeatureRowWidget({
+    Key? key,
+    required this.featureLabel,
+    required this.freeIcon,
+    required this.premiumIcon,
+  }) : super(key: key);
+  final String featureLabel;
+  final IconData freeIcon;
+  final IconData premiumIcon;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 3,
+          child: Text(
+            featureLabel,
+            style: fontWeight400(
+              color: CustomColor.subTitle,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Align(
+              alignment: Alignment.center,
+              child: Center(child: Icon(freeIcon))),
+        ),
+        Expanded(
+          child: Icon(premiumIcon),
+        ),
+      ],
+    );
   }
 }

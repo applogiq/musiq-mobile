@@ -12,7 +12,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../objectbox.g.dart';
-import '../../../core/enums/search_status.dart';
+import '../../../core/enums/enums.dart';
 import '../../../core/local/model/search_model.dart';
 import '../../artist/domain/models/artist_model.dart';
 import '../../home/domain/model/song_search_model.dart';

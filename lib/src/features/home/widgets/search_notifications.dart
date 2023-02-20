@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../core/constants/color.dart';
-import '../../../core/enums/search_status.dart';
+import '../../../core/enums/enums.dart';
+
 import '../../search/provider/search_provider.dart';
 import '../../search/screens/search_screen.dart';
 

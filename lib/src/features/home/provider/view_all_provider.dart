@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/enums/view_all_status.dart';
+import '../../../core/enums/enums.dart';
 import '../../../core/utils/url_generate.dart';
 import '../../player/domain/model/player_song_list_model.dart';
 import '../../player/provider/player_provider.dart';

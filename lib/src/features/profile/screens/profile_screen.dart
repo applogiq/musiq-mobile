@@ -209,6 +209,10 @@ class ProfileListTile extends StatelessWidget {
               MaterialPageRoute(
                   builder: (context) => const PreferenceScreen()));
         } else {
+          // Navigator.of(context, rootNavigator: true).pushReplacement(
+          //     MaterialPageRoute(
+          //         builder: (context) => const SubscriptionsScreen()));
+
           Navigator.push(
               context,
               MaterialPageRoute(

@@ -45,8 +45,19 @@ class UpNextController extends StatelessWidget {
                                 print("DDD");
                                 print(state!
                                     .sequence[state.currentIndex + 1].tag);
-                                metadata = state
-                                    .effectiveSequence[state.currentIndex + 1]
+
+                                int currentShuffleIndex = playerProvider
+                                    .player.shuffleIndices!
+                                    .indexOf(state.currentIndex);
+                                print(state
+                                    .effectiveSequence[currentShuffleIndex]
+                                    .tag);
+                                int index =
+                                    playerProvider.player.shuffleModeEnabled
+                                        ? playerProvider.player.shuffleIndices!
+                                            .indexOf(state.currentIndex)
+                                        : state.currentIndex;
+                                metadata = state.effectiveSequence[index + 1]
                                     .tag as MediaItem;
                               } catch (e) {
                                 print(e.toString());

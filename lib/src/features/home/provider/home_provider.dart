@@ -7,7 +7,7 @@ import '../../search/screens/search_screen.dart';
 import '../../../core/routing/route_name.dart';
 import '../../../core/utils/navigation.dart';
 import '../../artist/domain/models/artist_model.dart';
-import '../../../core/enums/search_status.dart';
+import '../../../core/enums/enums.dart';
 import '../domain/model/album_model.dart';
 import '../domain/model/aura_model.dart';
 import '../domain/model/new_release_model.dart';

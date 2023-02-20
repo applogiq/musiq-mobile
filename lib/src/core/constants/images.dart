@@ -39,6 +39,7 @@ class Images {
   static String noInternet = "assets/icons/internet.png";
   static String noSong = "assets/images/default/no_song.png";
   static String userDefault = "assets/images/no_user.png";
+  static String subscriptionSuccess = "assets/images/subscription_success.png";
 
   List<ImageModel> artistList = [
     ImageModel(

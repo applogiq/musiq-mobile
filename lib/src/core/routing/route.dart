@@ -25,7 +25,7 @@ import '../../features/profile/screens/my_profile_screen.dart';
 import '../../features/profile/screens/preference_screen.dart';
 import '../../features/profile/screens/profile_screen.dart';
 import '../../features/search/screens/search_screen.dart';
-import '../enums/view_all_status.dart';
+import '../enums/enums.dart';
 import 'route_name.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {

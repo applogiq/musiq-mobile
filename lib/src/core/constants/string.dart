@@ -96,4 +96,15 @@ class ConstantText {
   static const String sixMonthsPlan = "6 months";
   static const String bestSeller = "Bestseller";
   static const String currentPlan = "Current plan";
+  static const String features = "Features";
+
+  static const String premium = "Premium";
+  static const String adFreeSong = "Ad free songs";
+  static const String unlimitedStreaming = "Unlimited Streaming";
+  static const String access = "Access to new albums";
+  static const String payNow = "Pay now";
+  static const String listenNow = "Listen Now";
+  static const String enjoyPremium = "Enjoy Premium";
+  static const String enjoyPremiumContent =
+      "Enjoy immediate access to exclusive content deepen your connection with your favourite music and discover new artists without any delay.";
 }

@@ -47,7 +47,15 @@ class _SongReorderListViewWidgetState extends State<SongReorderListViewWidget> {
               state: state,
               metadata: metadata,
               index: index,
-              currentIndex: state.currentIndex,
+              currentIndex:
+                  context.read<PlayerProvider>().player.shuffleModeEnabled ==
+                          true
+                      ? context
+                          .read<PlayerProvider>()
+                          .player
+                          .shuffleIndices!
+                          .indexOf(state.currentIndex)
+                      : state.currentIndex,
             );
           },
           shrinkWrap: true,

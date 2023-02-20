@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/loader.dart';
 import '../../../../core/constants/color.dart';
-import '../../../../core/enums/view_all_status.dart';
+import '../../../../core/enums/enums.dart';
 import '../../../../core/utils/url_generate.dart';
 import '../../../common/screen/offline_screen.dart';
 import '../../provider/view_all_provider.dart';

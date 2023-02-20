@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:musiq/src/features/home/screens/sliver_app_bar/widgets/song_list_tile.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../core/enums/view_all_status.dart';
+import '../../../../../core/enums/enums.dart';
 import '../../../../../core/utils/url_generate.dart';
 import '../../../domain/model/album_song_list_model.dart';
 import '../../../domain/model/aura_song_list_model.dart';

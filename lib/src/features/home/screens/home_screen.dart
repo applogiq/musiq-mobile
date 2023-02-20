@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../common_widgets/box/vertical_box.dart';
 import '../../../common_widgets/loader.dart';
-import '../../../core/enums/search_status.dart';
+import '../../../core/enums/enums.dart';
 import '../../../core/utils/size_config.dart';
 import '../provider/home_provider.dart';
 import '../widgets/artist_list_view.dart';

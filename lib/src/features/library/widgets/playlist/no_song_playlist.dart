@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/buttons/custom_button.dart';
 import '../../../../core/constants/string.dart';
-import '../../../../core/enums/search_status.dart';
+import '../../../../core/enums/enums.dart';
 import '../../../../core/routing/route_name.dart';
 import '../../../../core/utils/navigation.dart';
 import '../../../common/screen/no_song_screen.dart';

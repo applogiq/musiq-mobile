@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../core/constants/color.dart';
 import '../../../core/constants/style.dart';
-import '../../../core/enums/view_all_status.dart';
+import '../../../core/enums/enums.dart';
 import '../../../core/utils/url_generate.dart';
 import '../domain/model/album_model.dart';
 import '../provider/view_all_provider.dart';

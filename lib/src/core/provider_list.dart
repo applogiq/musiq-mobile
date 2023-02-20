@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/features/common/provider/pop_up_provider.dart';
+import 'package:musiq/src/features/payment/provider/payment_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -65,6 +66,9 @@ List<SingleChildWidget> providersList = [
   ),
   ChangeNotifierProvider(
     create: (BuildContext context) => PlayerProvider(),
+  ),
+  ChangeNotifierProvider(
+    create: (BuildContext context) => PaymentProvider(),
   ),
   ChangeNotifierProvider(
     create: (BuildContext context) => ArtistViewAllProvider(),

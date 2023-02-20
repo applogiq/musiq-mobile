@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:musiq/main.dart';
-import 'package:musiq/src/core/utils/image_utils.dart';
 
 import '../../../common_widgets/image/logo_image.dart';
 import '../../../core/constants/images.dart';
@@ -32,11 +30,11 @@ class _SplashScreenState extends State<SplashScreen> {
         print("IS image");
         print(localData["is_image"]);
         print(localData["id"]);
-        if (localData["is_image"] == "true") {
-          await loadImage(localData["register_id"]!);
-        } else {
-          objectbox.deleteImage();
-        }
+        // if (localData["is_image"] == "true") {
+        //   // await loadImage(localData["register_id"]!);
+        // } else {
+        //   objectbox.deleteImage();
+        // }
         if (localData["is_preference"] == "true") {
           Navigation.navigateReplaceToScreen(context, RouteName.mainScreen);
         } else {

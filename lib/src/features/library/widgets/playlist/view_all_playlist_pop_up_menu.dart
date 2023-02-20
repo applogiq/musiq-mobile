@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/dialog/playlist_dialog_box.dart';
 import '../../../../core/constants/constant.dart';
-import '../../../../core/enums/search_status.dart';
+import '../../../../core/enums/enums.dart';
 import '../../../../core/routing/route_name.dart';
 import '../../../../core/utils/navigation.dart';
 import '../../../search/provider/search_provider.dart';

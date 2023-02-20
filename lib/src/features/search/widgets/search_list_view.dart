@@ -6,7 +6,7 @@ import 'package:musiq/src/features/search/widgets/search_song_history.dart';
 import 'package:musiq/src/features/search/widgets/song_search_list_view.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/enums/search_status.dart';
+import '../../../core/enums/enums.dart';
 import '../provider/search_provider.dart';
 import '../screens/search_screen.dart';
 import 'no_record_widget.dart';
