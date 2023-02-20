@@ -46,7 +46,7 @@ class ReorderableSongListTile extends StatelessWidget {
         child: Row(
           children: [
             ReorderableDragStartListener(
-              index: index,
+              index: 2,
               enabled: index != currentIndex,
               child: Padding(
                 padding: const EdgeInsets.only(right: 16.0),

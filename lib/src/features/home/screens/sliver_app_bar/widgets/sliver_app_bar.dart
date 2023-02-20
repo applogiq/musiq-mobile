@@ -43,7 +43,7 @@ class SliverCustomAppBar extends StatelessWidget {
         pinned: true,
         delegate: SliverAppBarDelegate(
             maxHeight: maxAppBarHeight,
-            minHeight: minAppBarHeight,
+            minHeight: 80,
             builder: (context, shrinkOffset) {
               final double shrinkToMaxAppBarHeightRatio =
                   shrinkOffset / maxAppBarHeight;
