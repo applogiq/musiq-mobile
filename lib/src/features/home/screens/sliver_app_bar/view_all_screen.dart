@@ -7,6 +7,7 @@ import '../../../../core/constants/color.dart';
 import '../../../../core/enums/enums.dart';
 import '../../../../core/utils/url_generate.dart';
 import '../../../common/screen/offline_screen.dart';
+import '../../../payment/screen/subscription_screen.dart';
 import '../../provider/view_all_provider.dart';
 import 'widgets/album_song_list.dart';
 import 'widgets/sliver_app_bar.dart';
@@ -177,10 +178,17 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                                         padding: const EdgeInsets.all(0.0),
                                         onSelected: (value) {
                                           if (value == 1) {
-                                            context
-                                                .read<ViewAllProvider>()
-                                                .addQueue(
-                                                    widget.status, context);
+                                            if (widget.isPremium) {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const SubscriptionsScreen()));
+                                            } else {
+                                              context
+                                                  .read<ViewAllProvider>()
+                                                  .addQueue(
+                                                      widget.status, context);
+                                            }
                                           }
                                         },
                                         itemBuilder: (ctx) => [
@@ -203,6 +211,7 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                                       imageUrl: getImageUrl(widget.status, pro),
                                       addToQueue: () {}),
                                   AlbumSongsList(
+                                    isPremium: widget.isPremium,
                                     status: widget.status,
                                     newReleaseModel: pro.newReleaseModel,
                                     recentlyPlayed: pro.recentlyPlayed,

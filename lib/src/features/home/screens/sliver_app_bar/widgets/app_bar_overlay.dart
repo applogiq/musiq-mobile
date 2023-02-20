@@ -4,6 +4,7 @@ import 'package:musiq/src/core/constants/images.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../common_widgets/buttons/custom_button.dart';
+import '../../../../payment/screen/subscription_screen.dart';
 import '../../../provider/artist_view_all_provider.dart';
 
 class AppBarOverlayContent extends StatelessWidget {
@@ -32,7 +33,6 @@ class AppBarOverlayContent extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16.0, 16.0, 0.0, 0),
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Spacer(),
@@ -95,34 +95,42 @@ class AppBarOverlayContent extends StatelessWidget {
                       child: Consumer<ArtistViewAllProvider>(
                           builder: (context, pro, _) {
                         return isPremium
-                            ? Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: size < 0.3
-                                    ? 48
-                                    : size < 0.4
-                                        ? 48
-                                        : size < 0.6
-                                            ? 38
-                                            : size < 0.65
-                                                ? 36
-                                                : 0,
-                                decoration: BoxDecoration(
-                                  color: CustomColor.secondaryColor,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Center(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Image.asset(
-                                        Images.crownImage,
-                                        height: 24,
-                                      ),
-                                      Text(
-                                        ConstantText.getPremium,
-                                        style: fontWeight500(size: 16.0),
-                                      ),
-                                    ],
+                            ? InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SubscriptionsScreen()));
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: size < 0.3
+                                      ? 48
+                                      : size < 0.4
+                                          ? 48
+                                          : size < 0.6
+                                              ? 38
+                                              : size < 0.65
+                                                  ? 36
+                                                  : 0,
+                                  decoration: BoxDecoration(
+                                    color: CustomColor.secondaryColor,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          Images.crownImage,
+                                          height: 24,
+                                        ),
+                                        Text(
+                                          ConstantText.getPremium,
+                                          style: fontWeight500(size: 16.0),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               )

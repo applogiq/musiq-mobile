@@ -7,6 +7,7 @@ import '../../../../../common_widgets/container/custom_color_container.dart';
 import '../../../../../core/constants/constant.dart';
 import '../../../../../core/routing/route_name.dart';
 import '../../../../../core/utils/navigation.dart';
+import '../../../../payment/screen/subscription_screen.dart';
 import '../../../../player/domain/model/player_song_list_model.dart';
 import '../../../../player/provider/player_provider.dart';
 
@@ -105,58 +106,82 @@ class SongListTile extends StatelessWidget {
                 onSelected: (value) {
                   switch (value) {
                     case 1:
-                      context.read<PlayerProvider>().addFavourite(songId);
+                      if (isPremium) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const SubscriptionsScreen()));
+                      } else {
+                        context.read<PlayerProvider>().addFavourite(songId);
+                      }
                       break;
+
                     case 2:
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  AddToPlaylistScreen(songId: songId)));
-                      // Navigation.navigateToScreen(
-                      //     context, RouteName.addPlaylist,
-                      //     args: songId.toString());
+                      if (isPremium) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const SubscriptionsScreen()));
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    AddToPlaylistScreen(songId: songId)));
+                      }
+
                       break;
 
                     case 3:
-                      PlayerSongListModel playerSongListModel =
-                          PlayerSongListModel(
-                              id: songId,
-                              albumName: albumName,
-                              title: songName,
-                              imageUrl: imageUrl,
-                              musicDirectorName: musicDirectorName,
-                              duration: duration);
-                      context
-                          .read<PlayerProvider>()
-                          .queuePlayNext(playerSongListModel);
+                      if (isPremium) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const SubscriptionsScreen()));
+                      } else {
+                        PlayerSongListModel playerSongListModel =
+                            PlayerSongListModel(
+                                id: songId,
+                                albumName: albumName,
+                                title: songName,
+                                imageUrl: imageUrl,
+                                musicDirectorName: musicDirectorName,
+                                duration: duration);
+                        context
+                            .read<PlayerProvider>()
+                            .queuePlayNext(playerSongListModel);
+                      }
                       break;
                     case 4:
-                      PlayerSongListModel playerSongListModel =
-                          PlayerSongListModel(
-                              id: songId,
-                              albumName: albumName,
-                              title: songName,
-                              imageUrl: imageUrl,
-                              musicDirectorName: musicDirectorName,
-                              duration: duration);
-                      Navigation.navigateToScreen(context, RouteName.songInfo,
-                          args: playerSongListModel);
+                      if (isPremium) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const SubscriptionsScreen()));
+                      } else {
+                        PlayerSongListModel playerSongListModel =
+                            PlayerSongListModel(
+                                id: songId,
+                                albumName: albumName,
+                                title: songName,
+                                imageUrl: imageUrl,
+                                musicDirectorName: musicDirectorName,
+                                duration: duration);
+                        Navigation.navigateToScreen(context, RouteName.songInfo,
+                            args: playerSongListModel);
+                      }
                       break;
                     case 5:
-                      PlayerSongListModel playerSongListModel =
-                          PlayerSongListModel(
-                              id: songId,
-                              albumName: albumName,
-                              title: songName,
-                              imageUrl: imageUrl,
-                              musicDirectorName: musicDirectorName,
-                              duration: duration);
-                      // Navigation.navigateToScreen(context, RouteName.songInfo,
-                      //     args: playerSongListModel);
-                      context.read<PlayerProvider>().addQueueToLocalDb(
-                            playerSongListModel,
-                          );
+                      if (isPremium) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const SubscriptionsScreen()));
+                      } else {
+                        PlayerSongListModel playerSongListModel =
+                            PlayerSongListModel(
+                                id: songId,
+                                albumName: albumName,
+                                title: songName,
+                                imageUrl: imageUrl,
+                                musicDirectorName: musicDirectorName,
+                                duration: duration);
+                        // Navigation.navigateToScreen(context, RouteName.songInfo,
+                        //     args: playerSongListModel);
+                        context.read<PlayerProvider>().addQueueToLocalDb(
+                              playerSongListModel,
+                            );
+                      }
                       break;
                   }
                 },

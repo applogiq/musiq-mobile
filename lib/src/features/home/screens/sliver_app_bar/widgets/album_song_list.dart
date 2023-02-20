@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/home/screens/sliver_app_bar/widgets/song_list_tile.dart';
+import 'package:musiq/src/features/payment/screen/subscription_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/enums/enums.dart';
@@ -22,6 +23,7 @@ class AlbumSongsList extends StatelessWidget {
     this.albumSongListModel,
     this.auraSongListModel,
     this.collectionViewAllModel,
+    this.isPremium = false,
   }) : super(key: key);
 
   final AlbumSongListModel? albumSongListModel;
@@ -31,6 +33,7 @@ class AlbumSongsList extends StatelessWidget {
   final RecentlyPlayed? recentlyPlayed;
   final ViewAllStatus status;
   final TrendingHitsModel? trendingHitsModel;
+  final bool isPremium;
 
   int getListCount(
     ViewAllStatus status,
@@ -191,12 +194,18 @@ class AlbumSongsList extends StatelessWidget {
           padding: const EdgeInsets.all(0.0),
           child: InkWell(
             onTap: () {
-              context
-                  .read<ViewAllProvider>()
-                  .navigateToPlayerScreen(context, status, index: index);
+              if (index == 1 || isPremium) {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const SubscriptionsScreen()));
+              } else {
+                context
+                    .read<ViewAllProvider>()
+                    .navigateToPlayerScreen(context, status, index: index);
+              }
             },
             child: SongListTile(
-              isPremium: index == 1 ? true : false,
+              isPremium:
+                  (index == 1 && status != ViewAllStatus.album) ? true : false,
               albumName: getAlbumName(status, index),
               imageUrl: getImageUrl(status, index),
               musicDirectorName: getMusicDirectorName(status, index),
