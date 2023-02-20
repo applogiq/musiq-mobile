@@ -36,12 +36,7 @@ class _SongReorderListViewWidgetState extends State<SongReorderListViewWidget> {
           itemCount: state!.effectiveSequence.length,
           itemBuilder: (context, index) {
             var metadata = state.effectiveSequence[index].tag as MediaItem;
-            print("object");
-            log(metadata.album.toString());
-            print("index");
-            print(index);
-            print("currentIndex");
-            print(state.currentIndex);
+
             return ReorderableSongListTile(
               key: Key(index.toString()),
               state: state,

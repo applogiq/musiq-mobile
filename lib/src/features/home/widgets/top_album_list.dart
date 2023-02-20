@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/core/constants/images.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';
@@ -56,25 +57,52 @@ class TopAlbum extends StatelessWidget {
                             InkWell(
                               onTap: () {
                                 context.read<ViewAllProvider>().loaderEnable();
-                                if (album.records[index].noOfSongs <= 0) {
+                                if (album.records[index].noOfSongs == 0) {
                                 } else {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => ViewAllScreen(
                                             status: ViewAllStatus.album,
                                             id: album.records[index].id,
+                                            isPremium:
+                                                index == 1 ? true : false,
                                           )));
                                 }
                               },
                               child: CustomColorContainer(
-                                child: Image.network(
-                                  album.records[index].id == 7
-                                      ? "https://images.indianexpress.com/2023/01/Thunivu-review-1200.jpg?w=414"
-                                      : generateSongImageUrl(
-                                          album.records[index].albumName,
-                                          album.records[index].albumId),
-                                  height: 125,
-                                  width: 135,
-                                  fit: BoxFit.cover,
+                                child: Stack(
+                                  alignment: Alignment.topRight,
+                                  children: [
+                                    album.records[index].isImage == 0
+                                        ? Image.asset(
+                                            Images.noArtist,
+                                            height: 125,
+                                            width: 135,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Image.network(
+                                            generateSongImageUrl(
+                                                album.records[index].albumName,
+                                                album.records[index].albumId),
+                                            height: 125,
+                                            width: 135,
+                                            fit: BoxFit.cover,
+                                          ),
+                                    index == 1
+                                        ? Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: CircleAvatar(
+                                              radius: 15,
+                                              backgroundColor: CustomColor.bg,
+                                              child: Image.asset(
+                                                Images.crownImage,
+                                                height: 21,
+                                                width: 21,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          )
+                                        : const SizedBox.shrink()
+                                  ],
                                 ),
                               ),
                             ),

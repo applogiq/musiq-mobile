@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/core/constants/images.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/constants/color.dart';
@@ -14,6 +15,7 @@ class CollapsedAppBar extends StatelessWidget {
     required this.callBack,
     required this.addToQueue,
     required this.popUpMenu,
+    required this.isPremium,
   }) : super(key: key);
 
   final double titleOpacity;
@@ -22,6 +24,7 @@ class CollapsedAppBar extends StatelessWidget {
   final Function callBack;
   final Function addToQueue;
   final Widget popUpMenu;
+  final bool isPremium;
 
   @override
   Widget build(BuildContext context) {
@@ -92,15 +95,26 @@ class CollapsedAppBar extends StatelessWidget {
                   ),
                   // const Spacer(),
                   Consumer<ViewAllProvider>(builder: (context, pro, _) {
-                    return InkWell(
-                      onTap: () {
-                        callBack();
-                      },
-                      child: PlayButtonWidget(
-                        bgColor: CustomColor.secondaryColor,
-                        iconColor: CustomColor.playIconBg,
-                      ),
-                    );
+                    return isPremium
+                        ? Container(
+                            margin: const EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(6),
+                            decoration: const BoxDecoration(
+                                color: Color.fromRGBO(254, 86, 49, 1),
+                                shape: BoxShape.circle),
+                            child: Image.asset(
+                              Images.crownImage,
+                              height: 18,
+                            ))
+                        : InkWell(
+                            onTap: () {
+                              callBack();
+                            },
+                            child: PlayButtonWidget(
+                              bgColor: CustomColor.secondaryColor,
+                              iconColor: CustomColor.playIconBg,
+                            ),
+                          );
                   }),
                   AnimatedOpacity(
                       opacity: 1,

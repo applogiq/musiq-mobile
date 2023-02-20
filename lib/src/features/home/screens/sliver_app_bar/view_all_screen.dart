@@ -18,12 +18,14 @@ class ViewAllScreen extends StatefulWidget {
       this.id,
       this.auraId,
       this.title,
-      this.isImage = true});
+      this.isImage = true,
+      this.isPremium = false});
   final ViewAllStatus status;
   final int? id;
   final String? auraId;
   final String? title;
   final bool isImage;
+  final bool isPremium;
 
   @override
   State<ViewAllScreen> createState() => _ViewAllScreenState();
@@ -161,6 +163,7 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                                 controller: scrollController,
                                 slivers: [
                                   SliverCustomAppBar(
+                                      isPremium: widget.isPremium,
                                       popUpMenu: PopupMenuButton(
                                         color: CustomColor.appBarColor,
                                         shape: const RoundedRectangleBorder(

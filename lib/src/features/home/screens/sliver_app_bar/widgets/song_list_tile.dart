@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/core/constants/images.dart';
 import 'package:musiq/src/features/player/screen/add_playlist_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +20,7 @@ class SongListTile extends StatelessWidget {
     required this.albumName,
     required this.duration,
     required this.isPlay,
+    this.isPremium = false,
   });
 
   final String albumName;
@@ -28,6 +30,7 @@ class SongListTile extends StatelessWidget {
   final bool isPlay;
   final String songName;
   final String duration;
+  final bool isPremium;
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +61,22 @@ class SongListTile extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        songName,
-                        style: fontWeight400(
-                            color: isPlay
-                                ? CustomColor.secondaryColor
-                                : Colors.white),
+                      Row(
+                        children: [
+                          Text(
+                            songName,
+                            style: fontWeight400(
+                                color: isPlay
+                                    ? CustomColor.secondaryColor
+                                    : Colors.white),
+                          ),
+                          isPremium
+                              ? Image.asset(
+                                  Images.crownImage,
+                                  height: 18,
+                                )
+                              : const SizedBox.shrink()
+                        ],
                       ),
                       Text(
                         musicDirectorName,

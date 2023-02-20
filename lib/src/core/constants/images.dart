@@ -32,6 +32,7 @@ class Images {
   static String flashImage = "assets/icons/flash.png";
   static String chartImage = "assets/icons/graph.png";
   static String starImage = "assets/icons/star.png";
+  static String crownImage = "assets/icons/crown.png";
   static String medalStarImage = "assets/icons/medal-star.png";
   static String logoImageWithName = "assets/icons/logowithname.png";
   static String noArtist = "assets/images/default/no_artist.png";

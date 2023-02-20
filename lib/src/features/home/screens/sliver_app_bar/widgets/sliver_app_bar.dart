@@ -17,6 +17,7 @@ class SliverCustomAppBar extends StatelessWidget {
     required this.imageUrl,
     required this.addToQueue,
     required this.popUpMenu,
+    this.isPremium = false,
   }) : super(key: key);
 
   final double maxAppBarHeight;
@@ -27,6 +28,7 @@ class SliverCustomAppBar extends StatelessWidget {
   final Function callback;
   final Function addToQueue;
   final Widget popUpMenu;
+  final bool isPremium;
 
   @override
   Widget build(BuildContext context) {
@@ -109,6 +111,7 @@ class SliverCustomAppBar extends StatelessWidget {
                           addToQueue: () {
                             addToQueue();
                           },
+                          isPremium: isPremium,
                         ),
                       ),
                     ),
@@ -126,6 +129,7 @@ class SliverCustomAppBar extends StatelessWidget {
                           addQueue: () {
                             addToQueue();
                           },
+                          isPremium: isPremium,
                         ),
                 ],
               );

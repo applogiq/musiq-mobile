@@ -104,6 +104,7 @@ class ConstantText {
   static const String access = "Access to new albums";
   static const String payNow = "Pay now";
   static const String listenNow = "Listen Now";
+  static const String getPremium = "Get Premium";
   static const String enjoyPremium = "Enjoy Premium";
   static const String enjoyPremiumContent =
       "Enjoy immediate access to exclusive content deepen your connection with your favourite music and discover new artists without any delay.";

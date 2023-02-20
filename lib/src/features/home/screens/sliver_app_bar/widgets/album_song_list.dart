@@ -187,20 +187,24 @@ class AlbumSongsList extends StatelessWidget {
     return SliverList(
       delegate: SliverChildBuilderDelegate(childCount: getListCount(status),
           (context, index) {
-        return InkWell(
-          onTap: () {
-            context
-                .read<ViewAllProvider>()
-                .navigateToPlayerScreen(context, status, index: index);
-          },
-          child: SongListTile(
-            albumName: getAlbumName(status, index),
-            imageUrl: getImageUrl(status, index),
-            musicDirectorName: getMusicDirectorName(status, index),
-            songName: getSongName(status, index),
-            songId: getSongId(status, index),
-            duration: getDuration(status, index),
-            isPlay: false,
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: InkWell(
+            onTap: () {
+              context
+                  .read<ViewAllProvider>()
+                  .navigateToPlayerScreen(context, status, index: index);
+            },
+            child: SongListTile(
+              isPremium: index == 1 ? true : false,
+              albumName: getAlbumName(status, index),
+              imageUrl: getImageUrl(status, index),
+              musicDirectorName: getMusicDirectorName(status, index),
+              songName: getSongName(status, index),
+              songId: getSongId(status, index),
+              duration: getDuration(status, index),
+              isPlay: false,
+            ),
           ),
         );
       }),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:musiq/src/features/player/provider/player_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/container/custom_color_container.dart';
 import '../../../../core/constants/constant.dart';
-import '../../provider/player_provider.dart';
 import 'up_next_widgets.dart';
 
 class ReorderableSongListTile extends StatelessWidget {
@@ -26,7 +26,17 @@ class ReorderableSongListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.read<PlayerProvider>().seekToIndex(index);
+        print(index);
+        if (context.read<PlayerProvider>().player.shuffleModeEnabled == true) {
+          int selectedIndex = context
+              .read<PlayerProvider>()
+              .player
+              .shuffleIndices!
+              .elementAt(index);
+          context.read<PlayerProvider>().seekToIndex(selectedIndex);
+        } else {
+          context.read<PlayerProvider>().seekToIndex(index);
+        }
       },
       child: Container(
         key: Key(index.toString()),
