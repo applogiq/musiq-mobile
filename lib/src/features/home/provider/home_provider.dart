@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
-import '../../search/screens/search_screen.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../../../core/enums/enums.dart';
 import '../../../core/routing/route_name.dart';
 import '../../../core/utils/navigation.dart';
 import '../../artist/domain/models/artist_model.dart';
-import '../../../core/enums/enums.dart';
+import '../../search/screens/search_screen.dart';
 import '../domain/model/album_model.dart';
 import '../domain/model/aura_model.dart';
 import '../domain/model/new_release_model.dart';
@@ -17,6 +19,8 @@ import '../domain/model/trending_hits_model.dart';
 import '../domain/repository/home_repo.dart';
 
 class HomeProvider extends ChangeNotifier {
+  String premiumStatus = "free";
+  FlutterSecureStorage storage = const FlutterSecureStorage();
   bool isLoad = true;
   RecentlyPlayed recentlyPlayed = RecentlyPlayed(
       success: false, message: "No records", records: [], totalrecords: 0);
@@ -39,7 +43,9 @@ class HomeProvider extends ChangeNotifier {
   );
   HomeRepository homeRepository = HomeRepository();
   getSongData() async {
-    changeLoadState(true);
+    premiumStatus = await storage.read(key: "premier_status") ?? "free";
+
+    await changeLoadState(true);
     await recentSongList();
     await artistList();
     await trendingHitsSongList();
@@ -47,6 +53,10 @@ class HomeProvider extends ChangeNotifier {
     await auraSongList();
     await albumList();
     changeLoadState(false);
+  }
+
+  refreshPremiumStatus() async {
+    premiumStatus = await storage.read(key: "premier_status") ?? "free";
   }
 
   albumList() async {
@@ -165,5 +175,20 @@ class HomeProvider extends ChangeNotifier {
       }
       log(newReleaseListModel.toString());
     }
+  }
+
+  SubscriptionPlan getPremierStatus() {
+    // premiumStatus = await storage.read(key: "premier_status") ?? "free";
+    if (premiumStatus == "free") {
+      return SubscriptionPlan.free;
+    } else if (premiumStatus == "L1") {
+      return SubscriptionPlan.threeMonths;
+    } else {
+      return SubscriptionPlan.sixMonths;
+    }
+  }
+
+  void goToHome(BuildContext context) {
+    refreshPremiumStatus();
   }
 }

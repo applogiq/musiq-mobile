@@ -36,6 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
         //   objectbox.deleteImage();
         // }
         if (localData["is_preference"] == "true") {
+          print(localData["premier_status"]);
           Navigation.navigateReplaceToScreen(context, RouteName.mainScreen);
         } else {
           Navigation.navigateReplaceToScreen(

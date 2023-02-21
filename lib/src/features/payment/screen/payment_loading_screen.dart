@@ -1,0 +1,86 @@
+import 'package:flutter/cupertino.dart';
+import 'package:musiq/src/common_widgets/loader.dart';
+import 'package:musiq/src/features/payment/provider/payment_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
+
+class PaymentLoadingScreen extends StatefulWidget {
+  const PaymentLoadingScreen({super.key});
+
+  @override
+  State<PaymentLoadingScreen> createState() => _PaymentLoadingScreenState();
+}
+
+class _PaymentLoadingScreenState extends State<PaymentLoadingScreen> {
+  late Razorpay _razorpay;
+  @override
+  void initState() {
+    super.initState();
+    _razorpay = Razorpay();
+    paymentProcess();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+  }
+
+  paymentProcess() {
+    var options = {
+      'key': 'rzp_test_0Soma3GGNGgA8f',
+      'amount': 100,
+      'name': 'MusiQ',
+      'description': 'Monthly subscription',
+      'retry': {'enabled': true, 'max_count': 1},
+      'external': {
+        'wallets': ['paytm']
+      },
+      'theme': {
+        'hide_topbar': true,
+        'backdrop_color': "#16151C",
+        "color": "#16151C"
+      },
+      'send_sms_hash': true,
+    };
+    _razorpay.open(options);
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) async {
+    print("Success");
+    print(response.toString());
+    print(response.orderId.toString());
+    print(response.paymentId.toString());
+    print(response.signature.toString());
+    await Future.delayed(const Duration(seconds: 3), () {});
+    context.read<PaymentProvider>().paymentSuccess(context);
+    // Do something when payment succeeds
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    // Do something when payment fails
+    print("Error");
+    print(response.toString());
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    // Do something when an external wallet was selected
+    print("External");
+    print(response.toString());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _razorpay.clear();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: const Center(
+        child: LoaderScreen(),
+      ),
+    );
+  }
+}

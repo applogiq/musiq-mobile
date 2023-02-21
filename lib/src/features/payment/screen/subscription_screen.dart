@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:musiq/src/common_widgets/box/vertical_box.dart';
 import 'package:musiq/src/core/constants/images.dart';
 import 'package:musiq/src/core/enums/enums.dart';
+import 'package:musiq/src/features/home/provider/home_provider.dart';
 import 'package:musiq/src/features/payment/provider/payment_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -70,7 +71,8 @@ class SubscriptionCard extends StatelessWidget {
         children: [
           SubscriptionPlanCard(
               subscriptionPlan: SubscriptionPlan.free,
-              selectedSubscriptionPlan: SubscriptionPlan.free,
+              selectedSubscriptionPlan:
+                  context.read<HomeProvider>().getPremierStatus(),
               imageAsset: Images.chartImage,
               planName: ConstantText.free,
               planPrice: "0"),

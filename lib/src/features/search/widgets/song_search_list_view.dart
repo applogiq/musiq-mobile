@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:musiq/src/features/home/provider/home_provider.dart';
+import 'package:musiq/src/features/payment/screen/subscription_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/utils/url_generate.dart';
@@ -41,29 +43,42 @@ class SongSearchListView extends StatelessWidget {
 
                     return InkWell(
                       onTap: () {
-                        if (s.extras!["song_id"] ==
-                            provider.searchSongModel.records[index].id) {
+                        if ((index == 1 &&
+                            context.read<HomeProvider>().premiumStatus ==
+                                "free")) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  const SubscriptionsScreen()));
                         } else {
-                          context.read<SearchProvider>().searchSongStore();
-                          Record rec = context
-                              .read<SearchProvider>()
-                              .searchSongModel
-                              .records[index];
-                          PlayerSongListModel playerSongListModel =
-                              PlayerSongListModel(
-                                  id: rec.id,
-                                  albumName: rec.albumName,
-                                  title: rec.songName,
-                                  imageUrl: generateSongImageUrl(
-                                      rec.albumName, rec.albumId),
-                                  musicDirectorName: rec.musicDirectorName[0],
-                                  duration: rec.duration);
-                          context
-                              .read<PlayerProvider>()
-                              .playSingleSong(context, playerSongListModel);
+                          if (s.extras!["song_id"] ==
+                              provider.searchSongModel.records[index].id) {
+                          } else {
+                            context.read<SearchProvider>().searchSongStore();
+                            Record rec = context
+                                .read<SearchProvider>()
+                                .searchSongModel
+                                .records[index];
+                            PlayerSongListModel playerSongListModel =
+                                PlayerSongListModel(
+                                    id: rec.id,
+                                    albumName: rec.albumName,
+                                    title: rec.songName,
+                                    imageUrl: generateSongImageUrl(
+                                        rec.albumName, rec.albumId),
+                                    musicDirectorName: rec.musicDirectorName[0],
+                                    duration: rec.duration);
+                            context
+                                .read<PlayerProvider>()
+                                .playSingleSong(context, playerSongListModel);
+                          }
                         }
                       },
                       child: SongListTile(
+                        isPremium: (index == 1 &&
+                                context.read<HomeProvider>().premiumStatus ==
+                                    "free")
+                            ? true
+                            : false,
                         albumName: rec.albumName,
                         imageUrl:
                             generateSongImageUrl(rec.albumName, rec.albumId),

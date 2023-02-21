@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:musiq/src/core/enums/enums.dart';
+import 'package:musiq/src/features/payment/screen/payment_loading_screen.dart';
 import 'package:musiq/src/features/payment/screen/subscription_success.dart';
 
 class PaymentProvider extends ChangeNotifier {
@@ -11,6 +11,11 @@ class PaymentProvider extends ChangeNotifier {
   }
 
   void pay(BuildContext context) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const PaymentLoadingScreen()));
+  }
+
+  void paymentSuccess(BuildContext context) {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const SubscriptionSuccess()));
   }

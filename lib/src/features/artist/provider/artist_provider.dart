@@ -4,14 +4,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:musiq/src/features/common/screen/subscription_onboard.dart';
 import 'package:musiq/src/features/search/provider/search_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/utils/navigation.dart';
 import '../../auth/domain/models/user_model.dart';
 import '../../auth/domain/repository/auth_repo.dart';
 import '../../common/provider/bottom_navigation_bar_provider.dart';
-import '../../common/screen/main_screen.dart';
 import '../domain/models/artist_model.dart';
 import '../domain/repository/artist_repo.dart';
 
@@ -119,6 +118,8 @@ class ArtistPreferenceProvider extends ChangeNotifier {
   navigateToHome(BuildContext context) {
     storage.write(key: "is_preference", value: "true");
     context.read<BottomNavigationBarProvider>().selectedBottomIndex = 0;
-    Navigation.removeAllScreenFromStack(context, const MainScreen());
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => const SubscriptionOnboard()));
+    // Navigation.removeAllScreenFromStack(context, const MainScreen());
   }
 }

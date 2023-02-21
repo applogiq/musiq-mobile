@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/core/constants/images.dart';
+import 'package:musiq/src/features/home/provider/home_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';
@@ -87,7 +88,11 @@ class TopAlbum extends StatelessWidget {
                                             width: 135,
                                             fit: BoxFit.cover,
                                           ),
-                                    index == 1
+                                    (context
+                                                    .read<HomeProvider>()
+                                                    .premiumStatus ==
+                                                "free" &&
+                                            index == 1)
                                         ? Padding(
                                             padding: const EdgeInsets.all(4.0),
                                             child: CircleAvatar(
