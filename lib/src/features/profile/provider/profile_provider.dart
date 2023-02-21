@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -9,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart ' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:musiq/src/core/constants/local_storage_constants.dart';
+import 'package:musiq/src/core/utils/image_utils.dart';
 import 'package:musiq/src/features/profile/screens/image_crop_screen.dart';
 
 import '../../../../objectbox.g.dart';
@@ -16,10 +17,7 @@ import '../../../common_widgets/model/profile_model.dart';
 import '../../../core/constants/color.dart';
 import '../../../core/constants/images.dart';
 import '../../../core/constants/string.dart';
-import '../../../core/local/model/user_model.dart';
-import '../../../core/utils/navigation.dart';
 import '../../../core/utils/toast_message.dart';
-import '../../common/screen/main_screen.dart';
 import '../domain/api_models/profile_update_api_model.dart';
 import '../domain/repository/profile_repo.dart';
 
@@ -42,6 +40,7 @@ class ProfileProvider extends ChangeNotifier {
   bool isProfileSaveLoading = false;
   Uint8List? memoryImage;
   bool myProfileLoading = true;
+  String? imageUrl;
   String name = "";
   // String name = "";
   String nameError = "";
@@ -97,12 +96,23 @@ class ProfileProvider extends ChangeNotifier {
       var res = await ProfileRepository().getProfile();
       debugPrint(res.body);
       if (res.statusCode == 200) {
+        print("SFFSDF");
         var jsonData = jsonDecode(res.body);
-        log(jsonData.toString());
+
         profileAPIModel = ProfileAPIModel.fromJson(jsonData);
-        // if (profileAPI!.records!.isImage == true) {
-        //   loadImage(profileAPI!.records!.id.toString());
-        // }
+        print(profileAPIModel.records!.isImage);
+        if (profileAPIModel.records!.isImage == true) {
+          print(await secureStorage.read(key: LocalStorageConstant.profileUrl));
+          print("1");
+          imageUrl =
+              await secureStorage.read(key: LocalStorageConstant.profileUrl);
+          notifyListeners();
+          print(imageUrl);
+          print("2");
+        } else {
+          print("gdgf");
+          imageUrl = null;
+        }
       } else {
         profileAPIModel =
             ProfileAPIModel(status: false, message: "No data", records: null);
@@ -160,70 +170,29 @@ class ProfileProvider extends ChangeNotifier {
     debugPrint(res.body);
     debugPrint(res.statusCode.toString());
     if (res.statusCode == 200) {
-      // if (fileImage != null) {
-      //   await getApplicationDocumentsDirectory().then((Directory dir) {
-      //     store =
-      //         Store(getObjectBoxModel(), directory: '${dir.path}/musiq/db/1');
-      //     final ProfileImage profileImage = ProfileImage(
-      //         isImage: true,
-      //         registerId: id,
-      //         profileImageString: uint8ListTob64(memoryImage!));
-      //     // final SongListModel queueSongModel = SongListModel(
-      //     //     songId: playerSongListModel.id,
-      //     //     albumName: playerSongListModel.albumName,
-      //     //     title: playerSongListModel.title,
-      //     //     musicDirectorName: playerSongListModel.musicDirectorName,
-      //     //     imageUrl: playerSongListModel.imageUrl,
-      //     //     songUrl:
-      //     //         "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongListModel.id.toString()}");
-      //     final box = store.box<ProfileImage>();
-
-      //     var res = box.getAll();
-
-      //     if (res.isEmpty) {
-      //       box.put(profileImage);
-      //       var res = box.getAll();
-      //       for (var element in res) {
-      //         log(element.profileImageString);
-      //         log(element.registerId);
-      //         log(element.id.toString());
-      //       }
-      //     } else {
-      //       for (var element in res) {
-      //         if (element.registerId == id) {
-      //           element.profileImageString = uint8ListTob64(memoryImage!);
-      //           box.put(element);
-      //         }
-      //       }
-      //     }
-      //     // queueIdList.clear();
-      //     // for (var e in res) {
-      //     //   queueIdList.add(e.songId);
-      //     // }
-      //     // if (queueIdList.contains(playerSongListModel.id)) {
-      //     //   normalToastMessage("Song already in queue ");
-      //     // } else {
-      //     //   box.put(queueSongModel);
-      //     //   normalToastMessage("Song added to queue ");
-      //     // }
-
-      //     store.close();
-      //   });
-      // }
       userNameErrorMessage = "";
       ProfileAPIModel profileAPIModel =
           ProfileAPIModel.fromJson(jsonDecode(res.body.toString()));
+      print(profileAPIModel.records?.isImage);
+      if (profileAPIModel.records!.isImage == true) {
+        print("11212");
+        await loadImage(profileAPIModel.records!.registerId.toString());
+        imageUrl =
+            await secureStorage.read(key: LocalStorageConstant.profileUrl);
+        print("#%#%%#%@");
+        notifyListeners();
+      } else {
+        imageUrl = null;
+        notifyListeners();
+      }
 
-      User(
-          fullName: profileAPIModel.records!.fullname.toString(),
-          email: profileAPIModel.records!.email.toString(),
-          registerId: profileAPIModel.records!.registerId.toString(),
-          userName: profileAPIModel.records!.username.toString());
       // objectBox.insertUser(user);
       successToastMessage(
         "Profile update successfully",
       );
-      Navigation.removeAllScreenFromStack(context, const MainScreen());
+      Navigator.pop(context);
+      // Navigator.pushAndRemoveUntil(context, M, (route) => false)
+      // Navigation.removeAllScreenFromStack(context, const MainScreen());
     } else if (res.statusCode == 400) {
       var jsonData = json.decode(res.body);
       if (jsonData["detail"] == "Username already exist") {

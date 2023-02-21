@@ -4,7 +4,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:musiq/main.dart';
+import 'package:musiq/src/core/constants/local_storage_constants.dart';
 import 'package:musiq/src/core/constants/string.dart';
+import 'package:musiq/src/core/utils/image_utils.dart';
 import 'package:musiq/src/features/common/screen/main_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -96,57 +99,10 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
       var data = jsonDecode(response.body.toString());
       UserModel user = UserModel.fromMap(data);
       if (user.records.isImage == true) {
-        //    if (fileImage != null && fileImage != "") {
-        // await getApplicationDocumentsDirectory().then((Directory dir) {
-        //   store = Store(getObjectBoxModel(), directory: '${dir.path}/musiq');
-        //   final ProfileImage profileImage = ProfileImage(
-        //       isImage: true,
-        //       registerId: id,
-        //       profileImageString: uint8ListTob64(memoryImage!));
-        //   // final SongListModel queueSongModel = SongListModel(
-        //   //     songId: playerSongListModel.id,
-        //   //     albumName: playerSongListModel.albumName,
-        //   //     title: playerSongListModel.title,
-        //   //     musicDirectorName: playerSongListModel.musicDirectorName,
-        //   //     imageUrl: playerSongListModel.imageUrl,
-        //   //     songUrl:
-        //   //         "https://api-musiq.applogiq.org/api/v1/audio?song_id=${playerSongListModel.id.toString()}");
-        //   final box = store.box<ProfileImage>();
-
-        //   var res = box.getAll();
-        //   print("res.length");
-        //   print(res.length);
-        //   if (res.isEmpty) {
-        //     box.put(profileImage);
-        //     var res = box.getAll();
-        //     for (var element in res) {
-        //       log(element.profileImageString);
-        //       log(element.registerId);
-        //       log(element.id.toString());
-        //     }
-        //   } else {
-        //     final myObject = box.getAll();
-        //     for (var element in res) {
-        //       if (element.registerId == id) {
-        //         element.profileImageString = uint8ListTob64(memoryImage!);
-        //         box.put(element);
-        //       }
-        //     }
-        //   }
-        //   // queueIdList.clear();
-        //   // for (var e in res) {
-        //   //   queueIdList.add(e.songId);
-        //   // }
-        //   // if (queueIdList.contains(playerSongListModel.id)) {
-        //   //   normalToastMessage("Song already in queue ");
-        //   // } else {
-        //   //   box.put(queueSongModel);
-        //   //   normalToastMessage("Song added to queue ");
-        //   // }
-
-        //   store.close();
-        // });
-
+        objectbox.deleteImage();
+        loadImage(user.records.registerId.toString());
+      } else {
+        objectbox.deleteImage();
       }
       await storeResponseData(user);
 
@@ -184,8 +140,11 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
   }
 
   storeResponseData(UserModel userModel) async {
+    var isOnboardFree =
+        await storage.read(key: LocalStorageConstant.isOnboardFree);
     await storage.deleteAll();
-
+    await storage.write(
+        key: LocalStorageConstant.isOnboardFree, value: isOnboardFree);
     var userData = userModel.records.toMap();
     for (final name in userData.keys) {
       final value = userData[name];

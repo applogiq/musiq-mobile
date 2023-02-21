@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:musiq/src/features/auth/provider/login_provider.dart';
+import 'package:provider/provider.dart';
 
 class SplashProvider extends ChangeNotifier {
-  SplashProvider() {
-    checkLogged();
-  }
   String status = "splash";
   bool isLoading = true;
   bool isLogged = false;
@@ -13,23 +12,17 @@ class SplashProvider extends ChangeNotifier {
 
   final storage = const FlutterSecureStorage();
   // APICall apiCall = APICall();
-  checkLogged() async {
+  checkLogged(BuildContext context) async {
     Map<String, String> localData = await storage.readAll();
-    print("SSS");
-    if (localData["access_token"] != null) {
-      if (localData["is_preference"] == "true") {
-        isArtistPreference = true;
-      }
-      print("IS image");
-      print(localData["is_image"]);
-      print(localData["register_id"]);
-      isLogged = true;
-    } else {
-      isLogged = false;
+
+    print(localData["email"]);
+    print(localData["password_cred"]);
+    context.read<LoginProvider>().emailAddress = localData["email"] ?? "";
+    context.read<LoginProvider>().password = localData["password_cred"] ?? "";
+    if (localData["email"] != null) {
+      context.read<LoginProvider>().login(context);
     }
-    await Future.delayed(const Duration(seconds: 3), () {
-      isLoading = false;
-    });
+
     notifyListeners();
   }
 }

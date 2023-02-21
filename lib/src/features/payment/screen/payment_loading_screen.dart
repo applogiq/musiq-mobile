@@ -31,7 +31,7 @@ class _PaymentLoadingScreenState extends State<PaymentLoadingScreen> {
       'description': 'Monthly subscription',
       'retry': {'enabled': true, 'max_count': 1},
       'external': {
-        'wallets': ['paytm']
+        'wallets': ['gpay', 'paytm']
       },
       'theme': {
         'hide_topbar': true,
@@ -57,13 +57,17 @@ class _PaymentLoadingScreenState extends State<PaymentLoadingScreen> {
   void _handlePaymentError(PaymentFailureResponse response) {
     // Do something when payment fails
     print("Error");
+    Navigator.pop(context);
     print(response.toString());
   }
 
-  void _handleExternalWallet(ExternalWalletResponse response) {
+  void _handleExternalWallet(ExternalWalletResponse response) async {
     // Do something when an external wallet was selected
     print("External");
+    print(response.walletName);
     print(response.toString());
+    await Future.delayed(const Duration(seconds: 3), () {});
+    context.read<PaymentProvider>().paymentSuccess(context);
   }
 
   @override

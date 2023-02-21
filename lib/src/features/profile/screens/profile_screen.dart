@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/payment/screen/subscription_screen.dart';
 import 'package:musiq/src/features/profile/screens/my_profile_screen.dart';
@@ -26,7 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Provider.of<ProfileProvider>(context, listen: false)
           .getProfileDetails();
-      // imageUrl = getImage();
+
       setState(() {});
     });
     super.initState();
@@ -51,35 +53,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: 120,
                   decoration: const BoxDecoration(shape: BoxShape.circle),
                   child: Consumer<ProfileProvider>(builder: (context, pro, _) {
-                    return Image.asset(Images.userDefault);
-                    //  pro.myProfileLoading
-                    //     ? Center(
-                    //         child: Image.asset(
-                    //         'assets/gifs/image_loader2.gif',
-                    //         height: 90,
-                    //       ))
-                    //     : pro.profileAPIModel.records == null
-                    //         ? Image.asset(Images.userDefault)
-                    //         : (pro.profileAPIModel.records!.isImage == true
-                    //             ? CircleAvatar(
-                    //                 backgroundColor: Colors.black,
-                    //                 radius: 65,
-                    //                 backgroundImage: const AssetImage(
-                    //                     'assets/gifs/image_loader2.gif'),
-                    //                 child: imageUrl != ""
-                    //                     ? CircleAvatar(
-                    //                         radius: 65,
-                    //                         backgroundColor: Colors.transparent,
-                    //                         backgroundImage: FileImage(
-                    //                           File(imageUrl),
-                    //                         ),
-                    //                       )
-                    //                     : const CircleAvatar(
-                    //                         radius: 65,
-                    //                         backgroundColor: Colors.white,
-                    //                       ),
-                    //               )
-                    //             : Image.asset(Images.userDefault));
+                    print("-------------->");
+                    print(pro.imageUrl);
+                    return pro.myProfileLoading
+                        ? Center(
+                            child: Image.asset(
+                            'assets/gifs/image_loader2.gif',
+                            height: 90,
+                          ))
+                        : pro.profileAPIModel.records == null
+                            ? Image.asset(Images.userDefault)
+                            : (pro.profileAPIModel.records!.isImage == true
+                                ? CircleAvatar(
+                                    backgroundColor: Colors.black,
+                                    radius: 65,
+                                    backgroundImage: const AssetImage(
+                                        'assets/gifs/image_loader2.gif'),
+                                    child: pro.imageUrl != null
+                                        ? CircleAvatar(
+                                            radius: 65,
+                                            backgroundColor: Colors.transparent,
+                                            backgroundImage: FileImage(
+                                              File(pro.imageUrl!),
+                                            ),
+                                          )
+                                        : const CircleAvatar(
+                                            radius: 65,
+                                            backgroundColor: Colors.white,
+                                          ),
+                                  )
+                                : Image.asset(Images.userDefault));
                   }),
                 ),
               ),

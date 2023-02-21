@@ -1,23 +1,28 @@
 import 'dart:io';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:musiq/main.dart';
+import 'package:musiq/src/core/constants/local_storage_constants.dart';
 import 'package:musiq/src/core/local/model/user_model.dart';
 import 'package:musiq/src/core/utils/url_generate.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 loadImage(String userId) async {
-  print("profile");
-  print(Uri.parse(generateProfileImageUrl(userId)));
+  FlutterSecureStorage secureStorage = const FlutterSecureStorage();
+
   var response = await http.get(Uri.parse(generateProfileImageUrl(userId)));
   Directory documentDirectory = await getApplicationDocumentsDirectory();
   print(documentDirectory.absolute.toString());
-  File file = File(join(documentDirectory.path, 'profile.png'));
+  int timestamp = DateTime.now().millisecondsSinceEpoch;
+  File file = File(join(documentDirectory.path, '${timestamp.toString()}.png'));
   file.writeAsBytesSync(response.bodyBytes);
   print(file.path);
-  objectbox.saveImage(ProfileImage(
-      isImage: true, registerId: userId, profileImageString: file.path));
+  await secureStorage.write(
+      key: LocalStorageConstant.profileUrl, value: file.path);
+  // objectbox.saveImage(ProfileImage(
+  //     isImage: true, registerId: userId, profileImageString: file.path));
 }
 
 String getImage() {

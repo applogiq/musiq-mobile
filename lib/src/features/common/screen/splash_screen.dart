@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:musiq/src/features/common/screen/subscription_onboard.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common_widgets/image/logo_image.dart';
 import '../../../core/constants/images.dart';
+import '../../../core/constants/local_storage_constants.dart';
 import '../../../core/routing/route_name.dart';
 import '../../../core/utils/navigation.dart';
+import '../provider/splash_provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -18,34 +22,50 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    checkLogged();
+    checkLogged(context);
   }
 
-  checkLogged() async {
+  checkLogged(BuildContext context) async {
     Map<String, String> localData = await storage.readAll();
-
-    await Future.delayed(const Duration(seconds: 1), () async {
-      if (localData["access_token"] != null) {
-        print(localData);
-        print("IS image");
-        print(localData["is_image"]);
-        print(localData["id"]);
-        // if (localData["is_image"] == "true") {
-        //   // await loadImage(localData["register_id"]!);
-        // } else {
-        //   objectbox.deleteImage();
-        // }
-        if (localData["is_preference"] == "true") {
-          print(localData["premier_status"]);
-          Navigation.navigateReplaceToScreen(context, RouteName.mainScreen);
-        } else {
-          Navigation.navigateReplaceToScreen(
-              context, RouteName.artistPreference);
-        }
+    if (localData["access_token"] != null) {
+      if (localData[LocalStorageConstant.isOnboardFree] == "true") {
+        await context.read<SplashProvider>().checkLogged(context);
       } else {
-        Navigation.navigateReplaceToScreen(context, RouteName.onboarding);
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => const SubscriptionOnboard()));
       }
-    });
+    } else {
+      Navigation.navigateReplaceToScreen(context, RouteName.onboarding);
+    }
+
+    // await context.read<SplashProvider>().checkLogged(context);
+    // Map<String, String> localData = await storage.readAll();
+    // print("SPLASH");
+    // await Future.delayed(const Duration(seconds: 2), () async {
+    //   if (localData["access_token"] != null) {
+    //     if (localData["is_image"] == "true") {
+    //       objectbox.deleteImage();
+
+    //       await loadImage(localData["register_id"]!);
+    //     } else {
+    //       objectbox.deleteImage();
+    //     }
+
+    //     if (localData["is_preference"] == "true") {
+    //       if (localData[LocalStorageConstant.isOnboardFree] == "true") {
+    //         Navigation.navigateReplaceToScreen(context, RouteName.mainScreen);
+    //       } else {
+    //         Navigator.of(context).push(MaterialPageRoute(
+    //             builder: (context) => const SubscriptionOnboard()));
+    //       }
+    //     } else {
+    //       Navigation.navigateReplaceToScreen(
+    //           context, RouteName.artistPreference);
+    //     }
+    //   } else {
+    //     Navigation.navigateReplaceToScreen(context, RouteName.onboarding);
+    //   }
+    // });
   }
 
   @override

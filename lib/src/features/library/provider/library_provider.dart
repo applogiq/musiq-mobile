@@ -80,8 +80,9 @@ class LibraryProvider extends ChangeNotifier {
   }
 
   getFavouritesList() async {
-    isFavouriteLoad = true;
-    notifyListeners();
+    print("Load me");
+    // isFavouriteLoad = true;
+    // notifyListeners();
 
     try {
       var id = await secureStorage.read(key: "id");
@@ -102,9 +103,9 @@ class LibraryProvider extends ChangeNotifier {
       favouriteModel = FavouriteModel(
           success: false, message: "No records", records: [], totalRecords: 0);
     }
-    isFavouriteLoad = false;
+    // isFavouriteLoad = false;
 
-    notifyListeners();
+    // notifyListeners();
   }
 
   getPlayListsList() async {

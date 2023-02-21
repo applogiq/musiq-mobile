@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:musiq/src/core/constants/local_storage_constants.dart';
+import 'package:musiq/src/features/common/screen/main_screen.dart';
 
 import '../../../core/enums/enums.dart';
 import '../../../core/routing/route_name.dart';
@@ -188,7 +189,10 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
-  void goToHome(BuildContext context) {
+  void goToHome(BuildContext context) async {
+    await storage.write(key: LocalStorageConstant.isOnboardFree, value: "true");
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const MainScreen()));
     refreshPremiumStatus();
   }
 }

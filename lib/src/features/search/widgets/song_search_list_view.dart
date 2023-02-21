@@ -92,7 +92,57 @@ class SongSearchListView extends StatelessWidget {
                   },
                 );
               }
-              return const SizedBox.shrink();
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: provider.searchSongModel.records.length,
+                itemBuilder: (context, index) {
+                  var rec = provider.searchSongModel.records[index];
+
+                  return InkWell(
+                    onTap: () {
+                      if ((index == 1 &&
+                          context.read<HomeProvider>().premiumStatus ==
+                              "free")) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const SubscriptionsScreen()));
+                      } else {
+                        context.read<SearchProvider>().searchSongStore();
+                        Record rec = context
+                            .read<SearchProvider>()
+                            .searchSongModel
+                            .records[index];
+                        PlayerSongListModel playerSongListModel =
+                            PlayerSongListModel(
+                                id: rec.id,
+                                albumName: rec.albumName,
+                                title: rec.songName,
+                                imageUrl: generateSongImageUrl(
+                                    rec.albumName, rec.albumId),
+                                musicDirectorName: rec.musicDirectorName[0],
+                                duration: rec.duration);
+                        context
+                            .read<PlayerProvider>()
+                            .playSingleSong(context, playerSongListModel);
+                      }
+                    },
+                    child: SongListTile(
+                      isPremium: (index == 1 &&
+                              context.read<HomeProvider>().premiumStatus ==
+                                  "free")
+                          ? true
+                          : false,
+                      albumName: rec.albumName,
+                      imageUrl:
+                          generateSongImageUrl(rec.albumName, rec.albumId),
+                      musicDirectorName: rec.musicDirectorName[0],
+                      songName: rec.songName,
+                      songId: rec.id,
+                      duration: rec.duration,
+                      isPlay: false,
+                    ),
+                  );
+                },
+              );
             });
       }),
     );

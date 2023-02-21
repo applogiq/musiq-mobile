@@ -22,6 +22,15 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
     super.initState();
     // loadImage();
     getImage();
+    loadData();
+  }
+
+  loadData() async {
+    if (objectbox.getImage().isNotEmpty) {
+      objectbox.getImage().forEach((element) {
+        print(element.profileImageString);
+      });
+    }
   }
 
   getImage() async {
@@ -53,7 +62,8 @@ class _ProfileImageScreenState extends State<ProfileImageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: imageUrl != null
-          ? Image.file(File(imageUrl!))
+          ? Image.file(
+              File("/data/user/0/org.applogiq.musiq/app_flutter/profile.png"))
           : const Center(child: CircularProgressIndicator()),
     );
   }

@@ -40,7 +40,7 @@ class ObjectBox {
     profileBox.removeAll();
   }
 
-  getImage() {
+  List<ProfileImage> getImage() {
     return profileBox.getAll();
   }
 
