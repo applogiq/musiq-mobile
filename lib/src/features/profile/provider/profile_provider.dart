@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart ' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:musiq/src/features/profile/screens/image_crop_screen.dart';
 
 import '../../../../objectbox.g.dart';
 import '../../../common_widgets/model/profile_model.dart';
@@ -258,15 +257,16 @@ class ProfileProvider extends ChangeNotifier {
       {required ImageSource source, required BuildContext context}) async {
     ImagePicker picker = ImagePicker();
 
-    final pickedImage =
-        await picker.pickImage(source: source, imageQuality: 100);
+    final pickedImage = await picker.pickImage(
+      source: source,
+    );
     if (pickedImage == null) return;
     final imageTemp = File(pickedImage.path);
     fileImage = imageTemp;
     isCropSaveLoading = false;
 
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const ImageCrop()));
+    // Navigator.push(
+    //     context, MaterialPageRoute(builder: (context) => const ImageCrop()));
     // Navigation.navigateToScreen(context, RouteName.crop);
 
     // if (_pickedImage != null) {
