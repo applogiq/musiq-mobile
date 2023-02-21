@@ -45,7 +45,7 @@ class _SearchScreenState extends State<SearchScreen> {
   void initState() {
     // context.read<SearchProvider>().init();
     _controller = TextEditingController();
-    _controller.addListener(_onSearchChange);
+    // _controller.addListener(_onSearchChange);
 
     if (widget.searchRequestModel.searchStatus == SearchStatus.artist) {
       // context.read<SearchProvider>().getArtistSearchHistory();
@@ -92,6 +92,9 @@ class _SearchScreenState extends State<SearchScreen> {
               body: Column(
                 children: [
                   SearchFieldWidget(
+                    onChanged: (value) {
+                      _onSearchChange();
+                    },
                     controller: _controller,
                     searchRequestModel: widget.searchRequestModel,
                   ),
@@ -111,11 +114,13 @@ class SearchFieldWidget extends StatelessWidget {
     Key? key,
     required TextEditingController controller,
     required this.searchRequestModel,
+    this.onChanged,
   })  : _controller = controller,
         super(key: key);
 
   final TextEditingController _controller;
   final SearchRequestModel searchRequestModel;
+  final ValueSetter<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -133,6 +138,7 @@ class SearchFieldWidget extends StatelessWidget {
           ),
           Expanded(
             child: SearchTextWidget(
+              onChange: onChanged,
               textEditingController: _controller,
               onTap: () {
                 // context.read<SearchProvider>().searchFieldTap();

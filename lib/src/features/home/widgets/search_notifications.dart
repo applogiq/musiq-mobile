@@ -72,7 +72,7 @@ class SearchAndNotifications extends StatelessWidget {
   }
 }
 
-class SearchTextWidget extends StatefulWidget {
+class SearchTextWidget extends StatelessWidget {
   const SearchTextWidget({
     Key? key,
     required this.hint,
@@ -80,65 +80,17 @@ class SearchTextWidget extends StatefulWidget {
     required this.onTap,
     required this.searchStatus,
     required this.textEditingController,
+    this.onChange,
   }) : super(key: key);
   final String hint;
   final bool isReadOnly;
 
   final VoidCallback onTap;
+  final ValueSetter<String>? onChange;
   final SearchStatus searchStatus;
   final TextEditingController? textEditingController;
 
-  @override
-  State<SearchTextWidget> createState() => _SearchTextWidgetState();
-}
-
-class _SearchTextWidgetState extends State<SearchTextWidget> {
   // late TextEditingController _controller;
-  // Timer? _debounceTimer;
-  // void debouncing({required Function() fn, int waitForMs = 500}) {
-  //   _debounceTimer?.cancel();
-
-  //   _debounceTimer = Timer(Duration(milliseconds: waitForMs), fn);
-  // }
-
-  // @override
-  // void initState() {
-  //   context.read<SearchProvider>().init();
-  //   // _controller = TextEditingController();
-  //   context
-  //       .read<SearchProvider>()
-  //       .searchEditingController
-  //       .addListener(_onSearchChange);
-  //   super.initState();
-  // }
-
-  // void _onSearchChange() {
-  //   debouncing(
-  //     fn: () {
-  //       // context.read<SearchProvider>().artistSearch(_controller.text);
-  //       context.read<SearchProvider>().getSearch(
-  //           context.read<SearchProvider>().searchEditingController.text,
-  //           widget.searchStatus);
-  //     },
-  //   );
-  // }
-
-  // destroy(BuildContext context) async {
-  //   _debounceTimer?.cancel();
-  //   // context
-  //   //     .read<SearchProvider>()
-  //   //     .searchEditingController
-  //   //     .removeListener(_onSearchChange);
-  //   await context.read<SearchProvider>().destroy();
-  // }
-
-  // @override
-  // void dispose() {
-  //   destroy(context);
-
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return CustomColorContainer(
@@ -150,10 +102,10 @@ class _SearchTextWidgetState extends State<SearchTextWidget> {
             const BoxConstraints.expand(height: 40, width: double.maxFinite),
         child: TextField(
           autofocus: true,
-          controller: widget.textEditingController,
-          onTap: widget.onTap,
-          readOnly: widget.isReadOnly,
-          onChanged: (val) {},
+          controller: textEditingController,
+          onTap: onTap,
+          readOnly: isReadOnly,
+          onChanged: onChange,
           cursorColor: Colors.white,
           decoration: InputDecoration(
               prefixIcon: Container(
@@ -167,7 +119,7 @@ class _SearchTextWidgetState extends State<SearchTextWidget> {
               ),
               border: InputBorder.none,
               hintStyle: const TextStyle(fontSize: 14),
-              hintText: widget.hint),
+              hintText: hint),
         ),
       ),
     );

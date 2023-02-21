@@ -123,6 +123,7 @@ class SearchProvider extends ChangeNotifier {
       if (status == SearchStatus.artist ||
           status == SearchStatus.artistPreference) {
         var res = await searchRepository.getArtistSearch(data.trim());
+        // log(res.body.toString());
         if (res.statusCode == 200) {
           artistModel = ArtistModel.fromMap(jsonDecode(res.body.toString()));
         } else {
@@ -137,6 +138,7 @@ class SearchProvider extends ChangeNotifier {
         log(res.body.toString());
       } else {
         var res = await searchRepository.getSongSearch(data.trim());
+        log(res.body.toString());
 
         if (res.statusCode == 200) {
           searchSongModel =

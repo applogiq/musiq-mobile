@@ -46,13 +46,22 @@ class SongSearchListView extends StatelessWidget {
                         if ((index == 1 &&
                             context.read<HomeProvider>().premiumStatus ==
                                 "free")) {
+                          FocusScope.of(context).unfocus();
+
+                          print("1");
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>
                                   const SubscriptionsScreen()));
                         } else {
                           if (s.extras!["song_id"] ==
                               provider.searchSongModel.records[index].id) {
+                            FocusScope.of(context).unfocus();
+                            print("2");
                           } else {
+                            FocusScope.of(context).unfocus();
+
+                            print("3");
+
                             context.read<SearchProvider>().searchSongStore();
                             Record rec = context
                                 .read<SearchProvider>()
@@ -67,6 +76,7 @@ class SongSearchListView extends StatelessWidget {
                                         rec.albumName, rec.albumId),
                                     musicDirectorName: rec.musicDirectorName[0],
                                     duration: rec.duration);
+
                             context
                                 .read<PlayerProvider>()
                                 .playSingleSong(context, playerSongListModel);
