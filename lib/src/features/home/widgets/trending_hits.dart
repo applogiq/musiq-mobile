@@ -69,26 +69,24 @@ class TrendingHitsWidget extends StatelessWidget {
                   ),
                   Align(
                     alignment: Alignment.centerRight,
-                    child: Expanded(
-                      child: Column(
-                        children: [
-                          TrendingHitsHomeContainer(
-                            height: 120,
-                            width: 120,
-                            trendingHitsModel: trendingHitsModel,
-                            index: 2,
-                          ),
-                          const SizedBox(
-                            height: 12,
-                          ),
-                          TrendingHitsHomeContainer(
-                            height: 120,
-                            width: 120,
-                            trendingHitsModel: trendingHitsModel,
-                            index: 5,
-                          ),
-                        ],
-                      ),
+                    child: Column(
+                      children: [
+                        TrendingHitsHomeContainer(
+                          height: 120,
+                          width: 120,
+                          trendingHitsModel: trendingHitsModel,
+                          index: 2,
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        TrendingHitsHomeContainer(
+                          height: 120,
+                          width: 120,
+                          trendingHitsModel: trendingHitsModel,
+                          index: 5,
+                        ),
+                      ],
                     ),
                   ),
                 ],

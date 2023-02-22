@@ -30,18 +30,21 @@ class _ImageCropState extends State<ImageCrop> {
 
   @override
   void initState() {
+    print("object");
     super.initState();
     convertImageToByte();
   }
 
   convertImageToByte() async {
     Uint8List imagebytes =
-        await context.read<ProfileProvider>().fileImage!.readAsBytes();
+        await context.read<ProfileProvider>().compressedFile!.readAsBytes();
     image = imagebytes;
 
     setState(() {
+      print("crop");
       image;
       isLoad = false;
+      print("crops");
     });
   }
 

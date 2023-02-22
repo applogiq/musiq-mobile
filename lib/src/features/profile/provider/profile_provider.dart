@@ -6,9 +6,11 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart ' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:musiq/src/features/profile/screens/image_crop_screen.dart';
 
 import '../../../../objectbox.g.dart';
 import '../../../common_widgets/model/profile_model.dart';
@@ -31,6 +33,7 @@ class ProfileProvider extends ChangeNotifier {
   String base64Value = "";
 //! Start
   File? fileImage;
+  File? compressedFile;
 
   String getImageValue = "";
   var isAboutOpen = false;
@@ -255,6 +258,7 @@ class ProfileProvider extends ChangeNotifier {
 
   getImageFrom(
       {required ImageSource source, required BuildContext context}) async {
+    log("1");
     ImagePicker picker = ImagePicker();
 
     final pickedImage = await picker.pickImage(
@@ -263,10 +267,25 @@ class ProfileProvider extends ChangeNotifier {
     if (pickedImage == null) return;
     final imageTemp = File(pickedImage.path);
     fileImage = imageTemp;
-    isCropSaveLoading = false;
+    notifyListeners();
+    var result = await FlutterImageCompress.compressWithFile(
+      fileImage!.absolute.path,
+      quality: 20,
+      rotate: 0,
+    );
+    compressedFile = await fileImage!.writeAsBytes(result!);
+    // fileImage = result;
+    // notifyListeners();
+    // return result;
 
-    // Navigator.push(
-    //     context, MaterialPageRoute(builder: (context) => const ImageCrop()));
+    // imageTemp = result
+    // isCropSaveLoading = false;
+    log("2");
+
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const ImageCrop()));
+    log("3");
+
     // Navigation.navigateToScreen(context, RouteName.crop);
 
     // if (_pickedImage != null) {
@@ -313,6 +332,7 @@ class ProfileProvider extends ChangeNotifier {
   //   }
   //   notifyListeners();
   // }
+
   String uint8ListTob64(Uint8List uint8list) {
     String base64String = base64Encode(uint8list);
 

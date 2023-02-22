@@ -19,6 +19,9 @@ Future<void> main() async {
   // Objectbox crearte
   objectbox = await ObjectBox.create();
   await JustAudioBackground.init(
+    androidNotificationIcon:
+        // 'mipmap/background',
+        "assets/icons/background_player_logo",
     androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
     androidNotificationChannelName: 'Audio playback',
     androidNotificationOngoing: true,

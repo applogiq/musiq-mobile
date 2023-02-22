@@ -7,7 +7,7 @@
         android:label="musiq"
         android:name="${applicationName}"
         android:usesCleartextTraffic="true"
-        android:icon="@mipmap/launcher_icon">
+        android:icon="@mipmap/background">
         <activity
             android:name="com.ryanheise.audioservice.AudioServiceActivity"
             android:exported="true"
