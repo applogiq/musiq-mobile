@@ -44,7 +44,7 @@ class _PasswordTextFieldWithErrorState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 8),
+          padding: const EdgeInsets.only(left: 0),
           child: Text(
             widget.label,
             style: fontWeight500(size: 14.0),

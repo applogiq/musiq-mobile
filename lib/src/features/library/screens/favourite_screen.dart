@@ -31,7 +31,11 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const LoaderScreen();
         } else {
-          if (snapshot.hasData) {
+          if (snapshot.error != null) {
+            return const Center(
+              child: Text("Something occur wrong,Please try again"),
+            );
+          } else {
             return Consumer<LibraryProvider>(
               builder: (context, pro, _) {
                 return pro.favouriteModel.records.isEmpty
@@ -46,10 +50,6 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                         },
                       );
               },
-            );
-          } else {
-            return const Center(
-              child: Text("Something occur wrong,Please try again"),
             );
           }
         }

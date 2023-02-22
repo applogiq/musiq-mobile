@@ -49,7 +49,9 @@ class SongSearchListView extends StatelessWidget {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>
                                   const SubscriptionsScreen()));
+                          FocusScope.of(context).unfocus();
                         } else {
+                          FocusScope.of(context).unfocus();
                           if (s.extras!["song_id"] ==
                               provider.searchSongModel.records[index].id) {
                           } else {

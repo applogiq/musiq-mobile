@@ -51,32 +51,40 @@ class TrendingHitsWidget extends StatelessWidget {
           ),
           Container(
             padding: const EdgeInsets.only(top: 16, right: 12, left: 12),
-            height: 240,
+            height: 260,
+            width: double.maxFinite,
             child: IntrinsicHeight(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TrendingHitsHomeContainer(
+                    height: 0,
+                    width: 0,
                     trendingHitsModel: trendingHitsModel,
                     index: 0,
                   ),
                   const SizedBox(
-                    width: 12,
+                    width: 20,
                   ),
-                  Expanded(
+                  Align(
+                    alignment: Alignment.centerRight,
                     child: Column(
                       children: [
                         TrendingHitsHomeContainer(
+                          height: 120,
+                          width: 120,
                           trendingHitsModel: trendingHitsModel,
-                          index: 1,
+                          index: 2,
                         ),
                         const SizedBox(
                           height: 12,
                         ),
                         TrendingHitsHomeContainer(
+                          height: 120,
+                          width: 120,
                           trendingHitsModel: trendingHitsModel,
-                          index: 2,
+                          index: 5,
                         ),
                       ],
                     ),
@@ -96,16 +104,22 @@ class TrendingHitsHomeContainer extends StatelessWidget {
     Key? key,
     required this.trendingHitsModel,
     required this.index,
+    required this.height,
+    required this.width,
   }) : super(key: key);
 
   final TrendingHitsModel trendingHitsModel;
   final int index;
+  final double height;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: InkWell(
         child: Container(
+          height: height,
+          width: width,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             image: DecorationImage(
@@ -123,9 +137,12 @@ class TrendingHitsHomeContainer extends StatelessWidget {
                   goToNextfunction: true,
                   index: index);
             },
-            child: const Align(
-              alignment: Alignment.bottomRight,
-              child: PlayButtonWidget(),
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: PlayButtonWidget(),
+              ),
             ),
           ),
         ),
