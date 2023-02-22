@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:musiq/src/core/constants/local_storage_constants.dart';
 import 'package:musiq/src/features/library/provider/library_provider.dart';
 import 'package:musiq/src/features/player/domain/model/player_song_list_model.dart';
+import 'package:musiq/src/features/profile/widgets/logout_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -44,7 +47,6 @@ class PopUpProvider extends ChangeNotifier {
   }
 
   removeFromFavourites(int id, BuildContext context) {
-    print(id);
     context
         .read<PlayerProvider>()
         .deleteFavourite(id, isFromFav: true, ctx: context);
@@ -67,5 +69,20 @@ class PopUpProvider extends ChangeNotifier {
     context
         .read<LibraryProvider>()
         .removeSongFromPlayLlist(playlistSongId, playlistId);
+  }
+
+  subscriptionCheck(BuildContext context) async {
+    FlutterSecureStorage secureStorage = const FlutterSecureStorage();
+    var subscriptionEndDate =
+        await secureStorage.read(key: LocalStorageConstant.subscriptionEndDate);
+    if (subscriptionEndDate != null) {
+      DateTime endDate = DateTime.parse(subscriptionEndDate);
+      DateTime now = DateTime.now();
+      if (endDate.compareTo(now) < 0) {
+        showSubscriptionDialog(context);
+      }
+    }
+    // await secureStorage.write(
+    //     key: LocalStorageConstant.subscriptionEndDate, value: "2023-02-21");
   }
 }

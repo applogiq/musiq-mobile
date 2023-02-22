@@ -36,6 +36,7 @@ class Images {
   static String medalStarImage = "assets/icons/medal-star.png";
   static String logoImageWithName = "assets/icons/logowithname.png";
   static String noArtist = "assets/images/default/no_artist.png";
+  static String subscription = "assets/images/subscription.png";
   static String noFav = "assets/images/un_happy.png";
   static String noInternet = "assets/icons/internet.png";
   static String noSong = "assets/images/default/no_song.png";

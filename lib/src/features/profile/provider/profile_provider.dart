@@ -96,21 +96,14 @@ class ProfileProvider extends ChangeNotifier {
       var res = await ProfileRepository().getProfile();
       debugPrint(res.body);
       if (res.statusCode == 200) {
-        print("SFFSDF");
         var jsonData = jsonDecode(res.body);
 
         profileAPIModel = ProfileAPIModel.fromJson(jsonData);
-        print(profileAPIModel.records!.isImage);
         if (profileAPIModel.records!.isImage == true) {
-          print(await secureStorage.read(key: LocalStorageConstant.profileUrl));
-          print("1");
           imageUrl =
               await secureStorage.read(key: LocalStorageConstant.profileUrl);
           notifyListeners();
-          print(imageUrl);
-          print("2");
         } else {
-          print("gdgf");
           imageUrl = null;
         }
       } else {
@@ -173,13 +166,10 @@ class ProfileProvider extends ChangeNotifier {
       userNameErrorMessage = "";
       ProfileAPIModel profileAPIModel =
           ProfileAPIModel.fromJson(jsonDecode(res.body.toString()));
-      print(profileAPIModel.records?.isImage);
       if (profileAPIModel.records!.isImage == true) {
-        print("11212");
         await loadImage(profileAPIModel.records!.registerId.toString());
         imageUrl =
             await secureStorage.read(key: LocalStorageConstant.profileUrl);
-        print("#%#%%#%@");
         notifyListeners();
       } else {
         imageUrl = null;

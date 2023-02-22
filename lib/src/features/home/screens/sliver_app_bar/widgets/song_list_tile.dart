@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/core/constants/images.dart';
 import 'package:musiq/src/features/player/screen/add_playlist_screen.dart';
+import 'package:musiq/src/features/player/screen/song_info_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../common_widgets/container/custom_color_container.dart';
 import '../../../../../core/constants/constant.dart';
-import '../../../../../core/routing/route_name.dart';
-import '../../../../../core/utils/navigation.dart';
 import '../../../../payment/screen/subscription_screen.dart';
 import '../../../../player/domain/model/player_song_list_model.dart';
 import '../../../../player/provider/player_provider.dart';
@@ -159,8 +158,10 @@ class SongListTile extends StatelessWidget {
                                 imageUrl: imageUrl,
                                 musicDirectorName: musicDirectorName,
                                 duration: duration);
-                        Navigation.navigateToScreen(context, RouteName.songInfo,
-                            args: playerSongListModel);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => SongInfoScreen(id: songId)));
+                        // Navigation.navigateToScreen(context, RouteName.songInfo,
+                        //     args: playerSongListModel);
                       }
                       break;
                     case 5:

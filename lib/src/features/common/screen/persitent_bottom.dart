@@ -35,9 +35,7 @@ class _PersistentBottomBarScaffoldState
     return WillPopScope(
       onWillPop: () async {
         var pro = context.read<BottomNavigationBarProvider>();
-        // print(pro.homeNavigatorKey.currentState?.canPop() ?? false);
         if (pro.selectedBottomIndex == 0) {
-          print(pro.homeNavigatorKey.currentState?.canPop() ?? false);
           if (pro.homeNavigatorKey.currentState?.canPop() ?? false) {
             pro.homeNavigatorKey.currentState?.pop();
           }
@@ -46,19 +44,11 @@ class _PersistentBottomBarScaffoldState
             pro.libraryNavigatorKey.currentState?.pop();
           }
         } else {
-          print(pro.profileNavigatorKey2.currentState?.canPop() ?? false);
           if (pro.profileNavigatorKey2.currentState?.canPop() ?? false) {
             pro.profileNavigatorKey2.currentState?.pop();
           }
         }
         return false;
-        // if (widget.items[_selectedTab].navigatorkey?.currentState?.canPop() ??
-        //     false) {
-        //   widget.items[_selectedTab].navigatorkey?.currentState?.pop();
-        //   return false;
-        // } else {
-        //   return true;
-        // }
       },
       child: Scaffold(
         body: Consumer<PlayerProvider>(builder: (context, playerProvider, _) {

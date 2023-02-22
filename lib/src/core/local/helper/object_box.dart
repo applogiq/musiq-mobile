@@ -46,9 +46,7 @@ class ObjectBox {
 
   void saveImage(ProfileImage profileImage) {
     deleteImage();
-    print(profileImage.isImage);
-    print(profileImage.profileImageString);
-    print(profileImage.registerId);
+
     profileBox.put(profileImage);
   }
 
@@ -86,9 +84,6 @@ class ObjectBox {
   List<SongListModel> getAllQueueSong() {
     var songList = songListBox.getAll();
     return songList;
-    // for (var e in songList) {
-    //   debugPrint(e.title);
-    // }
   }
 
   addSongSearch(String searchData) {

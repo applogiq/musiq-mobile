@@ -84,43 +84,6 @@ class _PinputState extends State<Pinput>
     _ambiguate(WidgetsBinding.instance)!.addObserver(this);
   }
 
-  // void _maybeInitSmartAuth() async {
-  //   final isAndroid = defaultTargetPlatform == TargetPlatform.android;
-  //   final isAutofillEnabled =
-  //       widget.androidSmsAutofillMethod != AndroidSmsAutofillMethod.none;
-
-  //   if (isAndroid && isAutofillEnabled) {
-  //     // _smartAuth = SmartAuth();
-  //     _maybePrintAppSignature();
-  //     _listenForSmsCode();
-  //   }
-  // }
-
-  // void _maybePrintAppSignature() async {
-  //   if (widget.androidSmsAutofillMethod ==
-  //       AndroidSmsAutofillMethod.smsRetrieverApi) {
-  //     // final res = await _smartAuth!.getAppSignature();
-  //
-  //   }
-  // }
-
-  // void _listenForSmsCode() async {
-  //   final useUserConsentApi = widget.androidSmsAutofillMethod ==
-  //       AndroidSmsAutofillMethod.smsUserConsentApi;
-  //   final res = await _smartAuth!.getSmsCode(
-  //     useUserConsentApi: useUserConsentApi,
-  //     matcher: widget.smsCodeMatcher,
-  //     senderPhoneNumber: widget.senderPhoneNumber,
-  //   );
-  //   if (res.succeed && res.codeFound && res.code!.length == widget.length) {
-  //     _effectiveController.setText(res.code!);
-  //   }
-
-  //   if (widget.listenForMultipleSmsOnAndroid) {
-  //     _listenForSmsCode();
-  //   }
-  // }
-
   void _handleTextEditingControllerChanges() {
     final textChanged =
         _recentControllerValue.text != _effectiveController.value.text;

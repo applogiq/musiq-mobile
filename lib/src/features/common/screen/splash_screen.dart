@@ -38,34 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigation.navigateReplaceToScreen(context, RouteName.onboarding);
     }
 
-    // await context.read<SplashProvider>().checkLogged(context);
-    // Map<String, String> localData = await storage.readAll();
-    // print("SPLASH");
-    // await Future.delayed(const Duration(seconds: 2), () async {
-    //   if (localData["access_token"] != null) {
-    //     if (localData["is_image"] == "true") {
-    //       objectbox.deleteImage();
-
-    //       await loadImage(localData["register_id"]!);
-    //     } else {
-    //       objectbox.deleteImage();
-    //     }
-
-    //     if (localData["is_preference"] == "true") {
-    //       if (localData[LocalStorageConstant.isOnboardFree] == "true") {
-    //         Navigation.navigateReplaceToScreen(context, RouteName.mainScreen);
-    //       } else {
-    //         Navigator.of(context).push(MaterialPageRoute(
-    //             builder: (context) => const SubscriptionOnboard()));
-    //       }
-    //     } else {
-    //       Navigation.navigateReplaceToScreen(
-    //           context, RouteName.artistPreference);
-    //     }
-    //   } else {
-    //     Navigation.navigateReplaceToScreen(context, RouteName.onboarding);
-    //   }
-    // });
+  
   }
 
   @override

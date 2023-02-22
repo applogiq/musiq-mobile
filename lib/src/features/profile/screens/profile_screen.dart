@@ -53,8 +53,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: 120,
                   decoration: const BoxDecoration(shape: BoxShape.circle),
                   child: Consumer<ProfileProvider>(builder: (context, pro, _) {
-                    print("-------------->");
-                    print(pro.imageUrl);
                     return pro.myProfileLoading
                         ? Center(
                             child: Image.asset(
@@ -96,10 +94,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             index: index,
                           ))
                     ..add(
-                      const Padding(
-                        padding: EdgeInsets.only(left: 23),
-                        child: AboutUsTextWidget(
-                          title: "Free plan",
+                      Padding(
+                        padding: const EdgeInsets.only(left: 23),
+                        child: InkWell(
+                          onTap: () {
+                            showSubscriptionDialog(context);
+                          },
+                          child: const AboutUsTextWidget(
+                            title: "Free plan",
+                          ),
                         ),
                       ),
                     ),

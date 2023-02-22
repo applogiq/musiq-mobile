@@ -98,7 +98,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
           builder: (BuildContext context) => const ProfileScreen());
     case "profile_artist_preference":
-      print("UUU");
       return MaterialPageRoute(
           builder: (BuildContext context) =>
               const ProfileArtistPreferenceScreen());

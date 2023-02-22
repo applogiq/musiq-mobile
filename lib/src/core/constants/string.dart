@@ -106,6 +106,10 @@ class ConstantText {
   static const String listenNow = "Listen Now";
   static const String getPremium = "Get Premium";
   static const String enjoyPremium = "Enjoy Premium";
+  static const String subscriptionExpired = "Subscription Expired";
+  static const String viewPlans = "View ";
+  static const String subscriptionExpiredContent =
+      "Your last subscription has been expired. Your plan will now change to free plan. Subscribe now to continue listening to our premium content.";
   static const String continueWithFreePlan = "Continue With Free Plan";
 
   static const String enjoyPremiumContent =

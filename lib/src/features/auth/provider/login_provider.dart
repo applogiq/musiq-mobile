@@ -142,9 +142,14 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
   storeResponseData(UserModel userModel) async {
     var isOnboardFree =
         await storage.read(key: LocalStorageConstant.isOnboardFree);
+    var subscriptionEndDate =
+        await storage.read(key: LocalStorageConstant.subscriptionEndDate);
     await storage.deleteAll();
     await storage.write(
         key: LocalStorageConstant.isOnboardFree, value: isOnboardFree);
+    await storage.write(
+        key: LocalStorageConstant.subscriptionEndDate,
+        value: subscriptionEndDate);
     var userData = userModel.records.toMap();
     for (final name in userData.keys) {
       final value = userData[name];
@@ -157,12 +162,7 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
     await storage.write(
         key: "artist_list",
         value: jsonEncode(userModel.records.preference.artist));
-    //  await storage.write(
-    // key: "access_token",
-    // value: jsonEncode(userModel.records.accessToken.toString()));
-    //   await storage.write(
-    // key: "id",
-    // value: jsonEncode(userModel.records.id.toString()));
+
     await storage.write(key: "password_cred", value: password);
     await storage.write(key: "isLogged", value: "true");
   }
@@ -170,13 +170,7 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
   navigateToNextPage(UserModel userModel, context) {
     Future.delayed(const Duration(milliseconds: 600), () {
       if (userModel.records.isPreference == false) {
-        // Navigator.of(context).pushReplacement(MaterialPageRoute(
-        //     builder: (context) => ArtistPreferenceMain(
-        //           artist_list: userModel.records.preference.artist,
-        //         )));
       } else {
-        // Navigation.navigateReplaceToScreen(context, RouteName.mainScreen);
-
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const MainScreen()),

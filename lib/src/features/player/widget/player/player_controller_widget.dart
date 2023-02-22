@@ -51,13 +51,9 @@ class PlayerControllerWidget extends StatelessWidget {
                               builder: (context, snapshot) {
                                 final shuffleModeEnabled =
                                     snapshot.data ?? false;
-                                print(
-                                    "123              ${playerProvider.iscurrentIndex()}");
-
                                 // log(shuffleModeEnabled.);
                                 return InkWell(
                                     onTap: () async {
-                                      print("10");
                                       final enable = !shuffleModeEnabled;
                                       playerProvider.shuffleSong(enable);
                                     },

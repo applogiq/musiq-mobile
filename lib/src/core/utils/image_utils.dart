@@ -14,11 +14,10 @@ loadImage(String userId) async {
 
   var response = await http.get(Uri.parse(generateProfileImageUrl(userId)));
   Directory documentDirectory = await getApplicationDocumentsDirectory();
-  print(documentDirectory.absolute.toString());
+ 
   int timestamp = DateTime.now().millisecondsSinceEpoch;
   File file = File(join(documentDirectory.path, '${timestamp.toString()}.png'));
   file.writeAsBytesSync(response.bodyBytes);
-  print(file.path);
   await secureStorage.write(
       key: LocalStorageConstant.profileUrl, value: file.path);
   // objectbox.saveImage(ProfileImage(
@@ -29,10 +28,7 @@ String getImage() {
   List<ProfileImage> r = objectbox.getImage();
   if (r.isNotEmpty) {
     ProfileImage res = r.first;
-    print(res.id);
-    print(res.isImage);
-    print(res.profileImageString);
-    print(res.registerId);
+   
     return res.profileImageString;
   }
   return "";

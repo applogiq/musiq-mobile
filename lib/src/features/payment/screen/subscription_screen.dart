@@ -46,15 +46,20 @@ class SubscriptionsScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: GestureDetector(
-        onTap: () {
-          context.read<PaymentProvider>().pay(context);
-        },
-        child: const CustomButton(
-          label: ConstantText.payNow,
-          horizontalMargin: 0,
-        ),
-      ),
+      bottomNavigationBar:
+          Consumer<PaymentProvider>(builder: (context, pro, _) {
+        return GestureDetector(
+          onTap: () {
+            context.read<PaymentProvider>().pay(context);
+          },
+          child: CustomButton(
+            isValid:
+                pro.subscriptionPlan != SubscriptionPlan.free ? true : false,
+            label: ConstantText.payNow,
+            horizontalMargin: 0,
+          ),
+        );
+      }),
     );
   }
 }

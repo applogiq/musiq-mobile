@@ -80,10 +80,7 @@ class LibraryProvider extends ChangeNotifier {
   }
 
   getFavouritesList() async {
-    print("Load me");
-    // isFavouriteLoad = true;
-    // notifyListeners();
-
+  
     try {
       var id = await secureStorage.read(key: "id");
 

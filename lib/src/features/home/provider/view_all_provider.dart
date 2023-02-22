@@ -250,12 +250,6 @@ class ViewAllProvider extends ChangeNotifier {
         break;
       case ViewAllStatus.artist:
         for (var record in collectionViewAllModel.records) {
-          // print("Id${record!.id}");
-          // print("albumName${record.albumName}");
-          // print("title${record.songName}");
-          // print(generateSongImageUrl(record.albumName, record.albumId));
-          // print(record.musicDirectorName![0]);
-
           playerSongList.add(PlayerSongListModel(
               id: record!.id,
               albumName: record.albumName.toString(),

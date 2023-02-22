@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/features/common/provider/pop_up_provider.dart';
 import 'package:musiq/src/features/common/screen/persitent_bottom.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +31,7 @@ class _MainScreenState extends State<MainScreen> {
 
   load() async {
     await context.read<PlayerProvider>().loadQueueSong();
+    await context.read<PopUpProvider>().subscriptionCheck(context);
     // await context.read<PlayerAudioProvider>().loadQueueSong();
   }
 

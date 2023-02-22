@@ -10,7 +10,6 @@ import '../features/auth/provider/forgot_password_provider.dart';
 import '../features/auth/provider/login_provider.dart';
 import '../features/auth/provider/register_provider.dart';
 import '../features/common/provider/bottom_navigation_bar_provider.dart';
-import '../features/common/provider/internet_connectivity_provider.dart';
 import '../features/common/provider/splash_provider.dart';
 import '../features/home/provider/artist_view_all_provider.dart';
 import '../features/home/provider/home_provider.dart';
@@ -37,9 +36,9 @@ List<SingleChildWidget> providersList = [
   ChangeNotifierProvider(
     create: (BuildContext context) => PopUpProvider(),
   ),
-  ChangeNotifierProvider(
-    create: (BuildContext context) => InternetConnectivityProvider(),
-  ),
+  // ChangeNotifierProvider(
+  //   create: (BuildContext context) => InternetConnectivityProvider(),
+  // ),
   ChangeNotifierProvider(
     create: (BuildContext context) => RegisterProvider(),
   ),

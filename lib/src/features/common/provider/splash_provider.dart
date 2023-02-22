@@ -15,8 +15,6 @@ class SplashProvider extends ChangeNotifier {
   checkLogged(BuildContext context) async {
     Map<String, String> localData = await storage.readAll();
 
-    print(localData["email"]);
-    print(localData["password_cred"]);
     context.read<LoginProvider>().emailAddress = localData["email"] ?? "";
     context.read<LoginProvider>().password = localData["password_cred"] ?? "";
     if (localData["email"] != null) {
