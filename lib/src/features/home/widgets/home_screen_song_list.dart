@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 import '../../../common_widgets/container/custom_color_container.dart';
 import '../../../core/constants/api.dart';
 import '../../../core/constants/color.dart';
+import '../../../core/constants/images.dart';
 import '../../../core/enums/enums.dart';
+import '../../payment/screen/subscription_screen.dart';
 import '../domain/model/song_list_model.dart';
 import '../provider/view_all_provider.dart';
 import '../screens/sliver_app_bar/view_all_screen.dart';
@@ -78,13 +80,19 @@ class HomeScreenSongList extends StatelessWidget {
                           : const SizedBox(),
                       InkWell(
                         onTap: () {
-                          context.read<ViewAllProvider>().getViewAll(
-                              title == "New Releases"
-                                  ? ViewAllStatus.newRelease
-                                  : ViewAllStatus.recentlyPlayed,
-                              context: context,
-                              goToNextfunction: true,
-                              index: index);
+                          if (songList[index].premiumStatus == "free") {
+                            context.read<ViewAllProvider>().getViewAll(
+                                title == "New Releases"
+                                    ? ViewAllStatus.newRelease
+                                    : ViewAllStatus.recentlyPlayed,
+                                context: context,
+                                goToNextfunction: true,
+                                index: index);
+                          } else {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    const SubscriptionsScreen()));
+                          }
                         },
                         child: Container(
                           padding: const EdgeInsets.fromLTRB(6, 8, 6, 0),
@@ -93,13 +101,33 @@ class HomeScreenSongList extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              CustomColorContainer(
-                                child: Image.network(
-                                  "${APIConstants.baseUrl}public/music/tamil/${songList[index].albumName[0].toUpperCase()}/${songList[index].albumName}/image/${songList[index].albumId.toString()}.png",
-                                  height: 125,
-                                  width: 135,
-                                  fit: BoxFit.cover,
-                                ),
+                              Stack(
+                                alignment: Alignment.topRight,
+                                children: [
+                                  CustomColorContainer(
+                                    child: Image.network(
+                                      "${APIConstants.baseUrl}public/music/tamil/${songList[index].albumName[0].toUpperCase()}/${songList[index].albumName}/image/${songList[index].albumId.toString()}.png",
+                                      height: 125,
+                                      width: 135,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  (songList[index].premiumStatus != "free")
+                                      ? Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: CircleAvatar(
+                                            radius: 15,
+                                            backgroundColor: CustomColor.bg,
+                                            child: Image.asset(
+                                              Images.crownImage,
+                                              height: 21,
+                                              width: 21,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        )
+                                      : const SizedBox.shrink()
+                                ],
                               ),
                               const SizedBox(
                                 height: 6,

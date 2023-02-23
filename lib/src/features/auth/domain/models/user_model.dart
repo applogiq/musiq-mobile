@@ -16,6 +16,8 @@ class UserModel {
 
 class Records {
   Records({
+    required this.premiumStatus,
+    required this.subscriptionEndDate,
     required this.registerId,
     required this.id,
     required this.isDelete,
@@ -45,12 +47,16 @@ class Records {
         isPreference: json["is_preference"],
         accessToken: json["access_token"],
         refreshToken: json["refresh_token"],
+        premiumStatus: json["premium_status"],
+        subscriptionEndDate: json["subscription_end_date"],
       );
 
   String accessToken;
   String email;
   String fullname;
   int id;
+  final String premiumStatus;
+  final dynamic subscriptionEndDate;
   bool isActive;
   bool isDelete;
   bool? isImage;

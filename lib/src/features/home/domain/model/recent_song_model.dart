@@ -35,6 +35,7 @@ class Record {
     required this.albumId,
     required this.albumName,
     required this.duration,
+    required this.premiumStatus,
     required this.musicDirectorName,
   });
 
@@ -43,6 +44,7 @@ class Record {
         songName: json["song_name"],
         albumId: json["album_id"],
         albumName: json["album_name"],
+        premiumStatus: json["premium_status"],
         musicDirectorName:
             List<String>.from(json["music_director_name"].map((x) => x)),
         duration: json["duration"],
@@ -53,6 +55,7 @@ class Record {
   int id;
   String duration;
   List<String> musicDirectorName;
+  String premiumStatus;
   String songName;
 
   Map<String, dynamic> toMap() => {

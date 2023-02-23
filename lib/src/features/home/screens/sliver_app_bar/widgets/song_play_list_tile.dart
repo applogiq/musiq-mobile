@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../common_widgets/container/custom_color_container.dart';
 import '../../../../../core/constants/constant.dart';
+import '../../../../../core/constants/images.dart';
 import '../../../../search/provider/search_provider.dart';
 
 class SongPlayListTile extends StatelessWidget {
@@ -15,6 +16,7 @@ class SongPlayListTile extends StatelessWidget {
     required this.albumName,
     required this.isAdded,
     required this.playlistId,
+    required this.isPremium,
   });
 
   final String albumName;
@@ -24,6 +26,7 @@ class SongPlayListTile extends StatelessWidget {
   final int songId;
   final int playlistId;
   final String songName;
+  final bool isPremium;
 
   @override
   Widget build(BuildContext context) {
@@ -77,9 +80,19 @@ class SongPlayListTile extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          songName,
-                          style: fontWeight400(),
+                        Row(
+                          children: [
+                            Text(
+                              songName,
+                              style: fontWeight400(),
+                            ),
+                            isPremium
+                                ? Image.asset(
+                                    Images.crownImage,
+                                    height: 18,
+                                  )
+                                : const SizedBox.shrink()
+                          ],
                         ),
                         Text(
                           musicDirectorName,

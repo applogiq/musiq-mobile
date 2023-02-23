@@ -62,7 +62,8 @@ class AlbumSongsList extends StatelessWidget {
                     imageUrl:
                         generateSongImageUrl(record.albumName, record.albumId),
                     musicDirectorName: record.musicDirectorName![0].toString(),
-                    duration: record.duration));
+                    duration: record.duration,
+                    premium: record.premiumStatus));
               }
               context
                   .read<PlayerProvider>()
@@ -140,7 +141,8 @@ class AlbumSongsList extends StatelessWidget {
                                       musicDirectorName: record[index]!
                                           .musicDirectorName![0]
                                           .toString(),
-                                      duration: record[index]!.duration);
+                                      duration: record[index]!.duration,
+                                      premium: record[index]!.premiumStatus);
                               return [
                                 _buildPopupMenuItem('Add to Favourites',
                                     playerSongListModel, context),

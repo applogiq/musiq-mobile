@@ -38,9 +38,18 @@ class ViewAllPlaylistPopUpMenu extends StatelessWidget {
       onSelected: (value) async {
         if (value == 1) {
           context.read<SearchProvider>().resetState();
-          Navigation.navigateToScreen(context, RouteName.search,
-              args: SearchRequestModel(
-                  searchStatus: SearchStatus.playlist, playlistId: id));
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SearchScreen(
+                searchRequestModel: SearchRequestModel(
+                    searchStatus: SearchStatus.playlist, playlistId: id),
+              ),
+            ),
+          );
+          // Navigation.navigateToScreen(context, RouteName.search,
+          //     args: SearchRequestModel(
+          //         searchStatus: SearchStatus.playlist, playlistId: id));
         } else if (value == 2) {
           showDialog(
               context: context,

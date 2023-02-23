@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 
 import '../../../../../common_widgets/container/custom_color_container.dart';
 import '../../../../../core/constants/constant.dart';
+import '../../../../../core/constants/images.dart';
 import '../../../../common/provider/pop_up_provider.dart';
+import '../../../../payment/screen/subscription_screen.dart';
 import '../../../../player/domain/model/player_song_list_model.dart';
 
 class PlaylistSongListTile extends StatelessWidget {
@@ -17,6 +19,7 @@ class PlaylistSongListTile extends StatelessWidget {
     required this.playlistSongId,
     required this.playlistId,
     required this.duration,
+    required this.isPremium,
   });
 
   final String albumName;
@@ -27,6 +30,7 @@ class PlaylistSongListTile extends StatelessWidget {
   final int playlistSongId;
   final int playlistId;
   final String duration;
+  final bool isPremium;
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +61,19 @@ class PlaylistSongListTile extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      songName,
-                      style: fontWeight400(),
+                    Row(
+                      children: [
+                        Text(
+                          songName,
+                          style: fontWeight400(),
+                        ),
+                        isPremium
+                            ? Image.asset(
+                                Images.crownImage,
+                                height: 18,
+                              )
+                            : const SizedBox.shrink()
+                      ],
                     ),
                     Text(
                       musicDirectorName,
@@ -86,39 +100,73 @@ class PlaylistSongListTile extends StatelessWidget {
                 onSelected: (value) {
                   switch (value) {
                     case PopUpConstants.addToFavourites:
-                      context
-                          .read<PopUpProvider>()
-                          .addToFavourites(songId, context);
+                      if (isPremium) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const SubscriptionsScreen()));
+                      } else {
+                        context
+                            .read<PopUpProvider>()
+                            .addToFavourites(songId, context);
+                      }
                       break;
                     case PopUpConstants.playNext:
-                      PlayerSongListModel playerSongListModel =
-                          PlayerSongListModel(
-                              id: songId,
-                              albumName: albumName,
-                              title: songName,
-                              imageUrl: imageUrl,
-                              musicDirectorName: musicDirectorName,
-                              duration: '');
-                      context
-                          .read<PopUpProvider>()
-                          .playNext(playerSongListModel, context);
+                      if (isPremium) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const SubscriptionsScreen()));
+                      } else {
+                        PlayerSongListModel playerSongListModel =
+                            PlayerSongListModel(
+                                id: songId,
+                                albumName: albumName,
+                                title: songName,
+                                imageUrl: imageUrl,
+                                musicDirectorName: musicDirectorName,
+                                duration: '',
+                                premium: '');
+                        context
+                            .read<PopUpProvider>()
+                            .playNext(playerSongListModel, context);
+                      }
                       break;
                     case PopUpConstants.addToQueue:
-                      PlayerSongListModel playerSongListModel =
-                          PlayerSongListModel(
-                              id: songId,
-                              albumName: albumName,
-                              title: songName,
-                              imageUrl: imageUrl,
-                              musicDirectorName: musicDirectorName,
-                              duration: duration);
-                      context
-                          .read<PopUpProvider>()
-                          .addToQueue(playerSongListModel, context);
+                      if (isPremium) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const SubscriptionsScreen()));
+                      } else {
+                        PlayerSongListModel playerSongListModel =
+                            PlayerSongListModel(
+                                id: songId,
+                                albumName: albumName,
+                                title: songName,
+                                imageUrl: imageUrl,
+                                musicDirectorName: musicDirectorName,
+                                duration: duration,
+                                premium: '');
+                        context
+                            .read<PopUpProvider>()
+                            .addToQueue(playerSongListModel, context);
+                      }
                       break;
                     case PopUpConstants.removePlaylist:
-                      context.read<PopUpProvider>().removeSongFromPlaylist(
-                          playlistSongId, context, playlistId);
+                      if (isPremium) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const SubscriptionsScreen()));
+                      } else {
+                        context.read<PopUpProvider>().removeSongFromPlaylist(
+                            playlistSongId, context, playlistId);
+                      }
                       break;
                     case PopUpConstants.songInfo:
                       context

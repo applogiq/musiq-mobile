@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:musiq/src/common_widgets/box/vertical_box.dart';
+import 'package:musiq/src/common_widgets/loader.dart';
 import 'package:musiq/src/core/constants/images.dart';
 import 'package:musiq/src/core/enums/enums.dart';
 import 'package:musiq/src/features/home/provider/home_provider.dart';
@@ -11,8 +13,21 @@ import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../core/constants/constant.dart';
 import '../../../core/utils/size_config.dart';
 
-class SubscriptionsScreen extends StatelessWidget {
+class SubscriptionsScreen extends StatefulWidget {
   const SubscriptionsScreen({super.key});
+
+  @override
+  State<SubscriptionsScreen> createState() => _SubscriptionsScreenState();
+}
+
+class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      context.read<PaymentProvider>().getSubscriptionList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,24 +43,28 @@ class SubscriptionsScreen extends StatelessWidget {
             },
             child: const Icon(Icons.arrow_back_ios)),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: ListView(
-          shrinkWrap: true,
-          children: const [
-            VerticalBox(height: 12),
-            FlashImageWidget(),
-            VerticalBox(height: 8),
-            GetExclusiveContentWidget(),
-            VerticalBox(height: 8),
-            GetExclusiveSubtitleWidget(),
-            VerticalBox(height: 44),
-            SubscriptionCard(),
-            VerticalBox(height: 32),
-            PlanDescriptionWidget(),
-          ],
-        ),
-      ),
+      body: Consumer<PaymentProvider>(builder: (context, pro, _) {
+        return pro.isSubsciptionLoad
+            ? const LoaderScreen()
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: ListView(
+                  shrinkWrap: true,
+                  children: const [
+                    VerticalBox(height: 12),
+                    FlashImageWidget(),
+                    VerticalBox(height: 8),
+                    GetExclusiveContentWidget(),
+                    VerticalBox(height: 8),
+                    GetExclusiveSubtitleWidget(),
+                    VerticalBox(height: 44),
+                    SubscriptionCard(),
+                    VerticalBox(height: 32),
+                    PlanDescriptionWidget(),
+                  ],
+                ),
+              );
+      }),
       bottomNavigationBar:
           Consumer<PaymentProvider>(builder: (context, pro, _) {
         return GestureDetector(
@@ -53,8 +72,10 @@ class SubscriptionsScreen extends StatelessWidget {
             context.read<PaymentProvider>().pay(context);
           },
           child: CustomButton(
-            isValid:
-                pro.subscriptionPlan != SubscriptionPlan.free ? true : false,
+            isValid: (pro.subscriptionPlan != SubscriptionPlan.free &&
+                    pro.isSubsciptionLoad == false)
+                ? true
+                : false,
             label: ConstantText.payNow,
             horizontalMargin: 0,
           ),
@@ -75,26 +96,34 @@ class SubscriptionCard extends StatelessWidget {
       return Row(
         children: [
           SubscriptionPlanCard(
-              subscriptionPlan: SubscriptionPlan.free,
-              selectedSubscriptionPlan:
-                  context.read<HomeProvider>().getPremierStatus(),
-              imageAsset: Images.chartImage,
-              planName: ConstantText.free,
-              planPrice: "0"),
+            subscriptionPlan: SubscriptionPlan.free,
+            selectedSubscriptionPlan:
+                context.read<HomeProvider>().getPremierStatus(),
+            imageAsset: Images.chartImage,
+            planName: ConstantText.free,
+            planPrice: "0",
+            comparedPrice: '0',
+          ),
           const HorizontalBox(width: 4),
           SubscriptionPlanCard(
-              subscriptionPlan: SubscriptionPlan.threeMonths,
-              selectedSubscriptionPlan: SubscriptionPlan.free,
-              imageAsset: Images.starImage,
-              planName: ConstantText.threeMonthsPlan,
-              planPrice: "200"),
+            subscriptionPlan: SubscriptionPlan.threeMonths,
+            selectedSubscriptionPlan: SubscriptionPlan.free,
+            imageAsset: Images.starImage,
+            planName: pro.premiumPriceModel.records[0].title,
+            planPrice: pro.premiumPriceModel.records[0].price.toString(),
+            comparedPrice:
+                pro.premiumPriceModel.records[0].comparePrice.toString(),
+          ),
           const HorizontalBox(width: 4),
           SubscriptionPlanCard(
-              selectedSubscriptionPlan: SubscriptionPlan.free,
-              subscriptionPlan: SubscriptionPlan.sixMonths,
-              imageAsset: Images.medalStarImage,
-              planName: ConstantText.sixMonthsPlan,
-              planPrice: "699")
+            selectedSubscriptionPlan: SubscriptionPlan.free,
+            subscriptionPlan: SubscriptionPlan.sixMonths,
+            imageAsset: Images.medalStarImage,
+            planName: pro.premiumPriceModel.records[1].title,
+            planPrice: pro.premiumPriceModel.records[1].price.toString(),
+            comparedPrice:
+                pro.premiumPriceModel.records[1].comparePrice.toString(),
+          )
         ],
       );
     });
@@ -110,12 +139,14 @@ class SubscriptionPlanCard extends StatelessWidget {
     required this.planName,
     required this.planPrice,
     required this.selectedSubscriptionPlan,
+    required this.comparedPrice,
   }) : super(key: key);
   final SubscriptionPlan subscriptionPlan;
   final bool isBestSeller;
   final String imageAsset;
   final String planName;
   final String planPrice;
+  final String comparedPrice;
   final SubscriptionPlan selectedSubscriptionPlan;
   @override
   Widget build(BuildContext context) {
@@ -159,17 +190,48 @@ class SubscriptionPlanCard extends StatelessWidget {
                           ),
                         ),
                         Text(planName),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        Column(
                           children: [
-                            Text(
-                              ConstantText.rupee,
-                              style: fontWeight400(size: 18.0),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(ConstantText.rupee,
+                                    style: GoogleFonts.portLligatSans(
+                                        textStyle: const TextStyle(
+                                      fontSize: 18.0,
+                                    ))
+                                    // style: fontWeight400(size: 18.0),
+                                    ),
+                                Text(
+                                  planPrice,
+                                  style: fontWeight600(size: 24.0),
+                                ),
+                              ],
                             ),
-                            Text(
-                              planPrice,
-                              style: fontWeight600(size: 24.0),
-                            ),
+                            subscriptionPlan != SubscriptionPlan.free
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(ConstantText.rupee,
+                                          style: GoogleFonts.portLligatSans(
+                                            textStyle: fontWeight400(
+                                                size: 14.0,
+                                                color: CustomColor.subTitle),
+                                          )
+                                          // style: fontWeight400(size: 18.0),
+                                          ),
+                                      Text(
+                                        comparedPrice,
+                                        style: TextStyle(
+                                          color: CustomColor.subTitle,
+                                          fontSize: 14.0,
+                                          decoration:
+                                              TextDecoration.lineThrough,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : const SizedBox.shrink(),
                           ],
                         ),
                         selectedSubscriptionPlan == subscriptionPlan

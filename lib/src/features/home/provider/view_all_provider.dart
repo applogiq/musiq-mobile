@@ -117,7 +117,8 @@ class ViewAllProvider extends ChangeNotifier {
               title: record.songName.toString(),
               imageUrl: generateSongImageUrl(record.albumName, record.albumId),
               musicDirectorName: record.musicDirectorName[0].toString(),
-              duration: record.duration));
+              duration: record.duration,
+              premium: record.premiumStatus));
         }
         break;
       case ViewAllStatus.recentlyPlayed:
@@ -129,7 +130,8 @@ class ViewAllProvider extends ChangeNotifier {
               imageUrl:
                   generateSongImageUrl(record[0].albumName, record[0].albumId),
               musicDirectorName: record[0].musicDirectorName[0].toString(),
-              duration: record[0].duration));
+              duration: record[0].duration,
+              premium: record[0].premiumStatus));
         }
         break;
       case ViewAllStatus.trendingHits:
@@ -140,7 +142,8 @@ class ViewAllProvider extends ChangeNotifier {
               title: record.songName.toString(),
               imageUrl: generateSongImageUrl(record.albumName, record.albumId),
               musicDirectorName: record.musicDirectorName[0].toString(),
-              duration: record.duration));
+              duration: record.duration,
+              premium: record.premiumStatus));
         }
         break;
 
@@ -152,7 +155,8 @@ class ViewAllProvider extends ChangeNotifier {
               title: record.songName.toString(),
               imageUrl: generateSongImageUrl(record.albumName, record.albumId),
               musicDirectorName: record.musicDirectorName[0].toString(),
-              duration: record.duration));
+              duration: record.duration,
+              premium: record.premiumStatus));
         }
         break;
       case ViewAllStatus.aura:
@@ -163,7 +167,8 @@ class ViewAllProvider extends ChangeNotifier {
               title: record.songName.toString(),
               imageUrl: generateSongImageUrl(record.albumName, record.albumId),
               musicDirectorName: record.musicDirectorName[0].toString(),
-              duration: record.duration));
+              duration: record.duration,
+              premium: record.premiumStatus));
         }
         break;
       case ViewAllStatus.artist:
@@ -174,7 +179,8 @@ class ViewAllProvider extends ChangeNotifier {
               title: record.songName.toString(),
               imageUrl: generateSongImageUrl(record.albumName, record.albumId),
               musicDirectorName: record.musicDirectorName![0].toString(),
-              duration: record.duration));
+              duration: record.duration,
+              premium: record.premiumStatus));
         }
         break;
       default:
@@ -199,7 +205,8 @@ class ViewAllProvider extends ChangeNotifier {
               title: record.songName.toString(),
               imageUrl: generateSongImageUrl(record.albumName, record.albumId),
               musicDirectorName: record.musicDirectorName[0].toString(),
-              duration: record.duration));
+              duration: record.duration,
+              premium: record.premiumStatus));
         }
         break;
       case ViewAllStatus.recentlyPlayed:
@@ -211,7 +218,8 @@ class ViewAllProvider extends ChangeNotifier {
               imageUrl:
                   generateSongImageUrl(record[0].albumName, record[0].albumId),
               musicDirectorName: record[0].musicDirectorName[0].toString(),
-              duration: record[0].duration));
+              duration: record[0].duration,
+              premium: record[0].premiumStatus));
         }
         break;
       case ViewAllStatus.trendingHits:
@@ -222,7 +230,8 @@ class ViewAllProvider extends ChangeNotifier {
               title: record.songName.toString(),
               imageUrl: generateSongImageUrl(record.albumName, record.albumId),
               musicDirectorName: record.musicDirectorName[0].toString(),
-              duration: record.duration));
+              duration: record.duration,
+              premium: record.premiumStatus));
         }
         break;
 
@@ -234,7 +243,8 @@ class ViewAllProvider extends ChangeNotifier {
               title: record.songName.toString(),
               imageUrl: generateSongImageUrl(record.albumName, record.albumId),
               musicDirectorName: record.musicDirectorName[0].toString(),
-              duration: record.duration));
+              duration: record.duration,
+              premium: record.premiumStatus));
         }
         break;
       case ViewAllStatus.aura:
@@ -245,7 +255,8 @@ class ViewAllProvider extends ChangeNotifier {
               title: record.songName.toString(),
               imageUrl: generateSongImageUrl(record.albumName, record.albumId),
               musicDirectorName: record.musicDirectorName[0].toString(),
-              duration: record.duration));
+              duration: record.duration,
+              premium: record.premiumStatus));
         }
         break;
       case ViewAllStatus.artist:
@@ -256,7 +267,8 @@ class ViewAllProvider extends ChangeNotifier {
               title: record.songName.toString(),
               imageUrl: generateSongImageUrl(record.albumName, record.albumId),
               musicDirectorName: record.musicDirectorName![0].toString(),
-              duration: record.duration));
+              duration: record.duration,
+              premium: record.premiumStatus));
         }
         break;
       default:

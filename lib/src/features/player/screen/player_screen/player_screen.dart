@@ -9,7 +9,9 @@ import '../../widget/player/player_widgets.dart';
 class PlayerScreen extends StatefulWidget {
   const PlayerScreen({
     super.key,
+    required this.onTap,
   });
+  final Function onTap;
 
   @override
   State<PlayerScreen> createState() => _PlayerScreenState();

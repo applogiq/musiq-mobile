@@ -111,7 +111,8 @@ class FixedAppBar extends StatelessWidget {
                                   record.albumName, record.albumId),
                               musicDirectorName:
                                   record.musicDirectorName![0].toString(),
-                              duration: record.duration));
+                              duration: record.duration,
+                              premium: record.premiumStatus));
                         }
                         context
                             .read<PlayerProvider>()

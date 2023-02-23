@@ -34,8 +34,13 @@ class APIConstants {
   static String kSearchSong = "$baseUrl${versionUrl}search?data=";
   static String kSongs = "$baseUrl${versionUrl}songs/";
   static String kTrendingHits = "$baseUrl${versionUrl}trending-hits";
+  static String paymentCreateEndpoint =
+      "$baseUrl${versionUrl}users-payment/create";
+
   static String kUpdateProfileEndPoint = "$baseUrl${versionUrl}users/";
   static String searchArtist = "$baseUrl${versionUrl}artist/list/search?data=";
+  static String subscriptionListEndPoint =
+      "$baseUrl${versionUrl}premium?limit=100";
   static String versionUrl = "api/v1/";
 
 // https://api-musiq.applogiq.org/api/v1/playlist-song/40

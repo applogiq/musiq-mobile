@@ -91,6 +91,7 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
     var response = await AuthRepository().login(params);
     isLoading = false;
     notifyListeners();
+    print(response.body);
     if (response.statusCode == 200) {
       context.read<BottomNavigationBarProvider>().selectedBottomIndex = 0;
       isShowStatus = true;

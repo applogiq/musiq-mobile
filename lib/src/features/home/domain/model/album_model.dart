@@ -50,7 +50,7 @@ class Record {
   int releasedYear;
   List<int> musicDirector;
   List<String> musicDirectorName;
-  int isImage;
+  bool isImage;
 
   factory Record.fromMap(Map<String, dynamic> json) => Record(
         id: json["id"],

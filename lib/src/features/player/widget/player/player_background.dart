@@ -41,7 +41,8 @@ class PlayerBackground extends StatelessWidget {
                       albumName: metadata.album.toString(),
                       title: metadata.title,
                       imageUrl: metadata.artUri.toString(),
-                      musicDirectorName: metadata.artist!);
+                      musicDirectorName: metadata.artist!,
+                      premium: 'free');
                   return Container(
                     decoration: BoxDecoration(
                         image: DecorationImage(

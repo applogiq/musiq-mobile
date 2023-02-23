@@ -50,36 +50,43 @@ class _PersistentBottomBarScaffoldState
         }
         return false;
       },
-      child: Scaffold(
-        body: Consumer<PlayerProvider>(builder: (context, playerProvider, _) {
-          return WeSlide(
-            panelMinSize: playerProvider.isPlaying ? panelMinSize : 60,
-            panelMaxSize: panelMaxSize,
-            body: Consumer<BottomNavigationBarProvider>(
-                builder: (context, pro, _) {
-              return IndexedStack(
-                index: pro.selectedBottomIndex,
-                children: widget.items
-                    .map((page) => Navigator(
-                          key: page.navigatorkey,
-                          onGenerateInitialRoutes: (navigator, initialRoute) {
-                            return [
-                              MaterialPageRoute(builder: (context) => page.tab)
-                            ];
-                          },
-                        ))
-                    .toList(),
-              );
-            }),
-            panelHeader: playerProvider.isPlaying
-                ? const MiniPlayer()
-                : const SizedBox.shrink(),
-            panel: const PlayerScreen(),
-            footer: BottomNavigationBarWidget(
-              width: width,
-            ),
-          );
-        }),
+      child: SafeArea(
+        child: Scaffold(
+          body: Consumer<PlayerProvider>(builder: (context, playerProvider, _) {
+            return WeSlide(
+              panelMinSize: playerProvider.isPlaying ? panelMinSize : 60,
+              panelMaxSize: panelMaxSize,
+              body: Consumer<BottomNavigationBarProvider>(
+                  builder: (context, pro, _) {
+                return IndexedStack(
+                  index: pro.selectedBottomIndex,
+                  children: widget.items
+                      .map((page) => Navigator(
+                            key: page.navigatorkey,
+                            onGenerateInitialRoutes: (navigator, initialRoute) {
+                              return [
+                                MaterialPageRoute(
+                                    builder: (context) => page.tab)
+                              ];
+                            },
+                          ))
+                      .toList(),
+                );
+              }),
+              panelHeader: playerProvider.isPlaying
+                  ? MiniPlayer(
+                      onChnage: controller.show,
+                    )
+                  : const SizedBox.shrink(),
+              panel: PlayerScreen(
+                onTap: controller.hide,
+              ),
+              footer: BottomNavigationBarWidget(
+                width: width,
+              ),
+            );
+          }),
+        ),
       ),
     );
   }

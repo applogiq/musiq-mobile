@@ -1,37 +1,49 @@
-import 'package:audio_service/audio_service.dart';
+// import 'package:audio_service/audio_service.dart';
+// import 'package:flutter/material.dart';
+// import 'package:just_audio/just_audio.dart';
+// import 'package:musiq/src/features/player/screen/player_screen/player_screen.dart';
+// import 'package:palette_generator/palette_generator.dart';
+// import 'package:provider/provider.dart';
+
+// import '../../../common_widgets/bottom_navigation_bar/bottom_navigation_bar.dart';
+// import '../../../common_widgets/box/horizontal_box.dart';
+// import '../../../core/constants/constant.dart';
+// import '../../player/provider/player_provider.dart';
+// import '../../player/widget/player/player_widgets.dart';
+
+// class BottomNavigationBarWithMiniPlayer extends StatelessWidget {
+//   const BottomNavigationBarWithMiniPlayer({super.key, required this.width});
+//   final double width;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Consumer<PlayerProvider>(builder: (context, pro, _) {
+//       return Column(
+//         mainAxisSize: MainAxisSize.min,
+//         children: [
+//           BottomNavigationBarWidget(
+//             width: width,
+//           ),
+//         ],
+//       );
+//     });
+//   }
+// }
+
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:musiq/src/features/player/screen/player_screen/player_screen.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
 
-import '../../../common_widgets/bottom_navigation_bar/bottom_navigation_bar.dart';
 import '../../../common_widgets/box/horizontal_box.dart';
-import '../../../core/constants/constant.dart';
+import '../../../core/constants/color.dart';
 import '../../player/provider/player_provider.dart';
-import '../../player/widget/player/player_widgets.dart';
-
-class BottomNavigationBarWithMiniPlayer extends StatelessWidget {
-  const BottomNavigationBarWithMiniPlayer({super.key, required this.width});
-  final double width;
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<PlayerProvider>(builder: (context, pro, _) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          BottomNavigationBarWidget(
-            width: width,
-          ),
-        ],
-      );
-    });
-  }
-}
+import '../../player/widget/player/player_button_widget.dart';
 
 class MiniPlayer extends StatefulWidget {
-  const MiniPlayer({super.key});
+  const MiniPlayer({super.key, required this.onChnage});
+  final Function onChnage;
 
   @override
   State<MiniPlayer> createState() => _MiniPlayerState();
@@ -41,16 +53,20 @@ class _MiniPlayerState extends State<MiniPlayer> {
   Color miniPlayerColor = const Color.fromRGBO(22, 21, 28, 1);
 
   Future<Color> getImagePalette(ImageProvider imageProvider) async {
-    final PaletteGenerator paletteGenerator =
-        await PaletteGenerator.fromImageProvider(imageProvider);
     try {
+      final PaletteGenerator paletteGenerator =
+          await PaletteGenerator.fromImageProvider(imageProvider);
       miniPlayerColor =
           paletteGenerator.darkMutedColor!.color.withOpacity(0.98);
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
       return paletteGenerator.dominantColor!.color;
     } catch (e) {
       miniPlayerColor = CustomColor.bg;
-      setState(() {});
+      if (mounted) {
+        setState(() {});
+      }
       return CustomColor.bg;
     }
   }
@@ -79,11 +95,11 @@ class _MiniPlayerState extends State<MiniPlayer> {
                         GestureDetector(
                           onTap: () {
                             context.read<PlayerProvider>().isUpNextShow = false;
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const PlayerScreen()));
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) =>
+                            //             const PlayerScreen()));
                           },
                           child: Container(
                             height: 60,
@@ -105,11 +121,11 @@ class _MiniPlayerState extends State<MiniPlayer> {
                             onTap: () {
                               context.read<PlayerProvider>().isUpNextShow =
                                   false;
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const PlayerScreen()));
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             const PlayerScreen()));
                             },
                             child: SizedBox(
                               child: Column(

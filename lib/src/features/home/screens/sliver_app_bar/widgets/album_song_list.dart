@@ -185,6 +185,27 @@ class AlbumSongsList extends StatelessWidget {
     }
   }
 
+  getPremiumStatus(ViewAllStatus status, int index) {
+    switch (status) {
+      case ViewAllStatus.newRelease:
+        return newReleaseModel!.records[index].premiumStatus == "free";
+
+      case ViewAllStatus.recentlyPlayed:
+        return recentlyPlayed!.records[index][0].premiumStatus == "free";
+      case ViewAllStatus.trendingHits:
+        return trendingHitsModel!.records[index].premiumStatus == "free";
+      // case ViewAllStatus.album:
+      //   return albumSongListModel!.records[index].albumName;
+
+      case ViewAllStatus.aura:
+        return auraSongListModel!.records[index].premiumStatus == "free";
+      case ViewAllStatus.artist:
+        return collectionViewAllModel!.records[index]!.premiumStatus == "free";
+      default:
+        return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SliverList(
@@ -194,18 +215,25 @@ class AlbumSongsList extends StatelessWidget {
           padding: const EdgeInsets.all(0.0),
           child: InkWell(
             onTap: () {
-              if (index == 1 || isPremium) {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const SubscriptionsScreen()));
-              } else {
+              if (getPremiumStatus(status, index)) {
                 context
                     .read<ViewAllProvider>()
                     .navigateToPlayerScreen(context, status, index: index);
+              } else {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const SubscriptionsScreen()));
               }
+              // if (index == 1 || isPremium) {
+              // Navigator.of(context).push(MaterialPageRoute(
+              //     builder: (context) => const SubscriptionsScreen()));
+              // } else {
+              // context
+              //     .read<ViewAllProvider>()
+              //     .navigateToPlayerScreen(context, status, index: index);
+              // }
             },
             child: SongListTile(
-              isPremium:
-                  (index == 1 && status != ViewAllStatus.album) ? true : false,
+              isPremium: !getPremiumStatus(status, index),
               albumName: getAlbumName(status, index),
               imageUrl: getImageUrl(status, index),
               musicDirectorName: getMusicDirectorName(status, index),

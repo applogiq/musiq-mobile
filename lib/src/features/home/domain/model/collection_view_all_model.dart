@@ -31,18 +31,18 @@ class CollectionViewAllModel {
 }
 
 class Record {
-  Record({
-    required this.id,
-    required this.songName,
-    required this.lyrics,
-    required this.isMusic,
-    required this.artistId,
-    required this.albumId,
-    required this.albumName,
-    required this.musicDirectorName,
-    required this.duration,
-    required this.isImage,
-  });
+  Record(
+      {required this.id,
+      required this.songName,
+      required this.lyrics,
+      required this.isMusic,
+      required this.artistId,
+      required this.albumId,
+      required this.albumName,
+      required this.musicDirectorName,
+      required this.duration,
+      required this.isImage,
+      required this.premiumStatus});
 
   factory Record.fromMap(Map<String, dynamic> json) => Record(
         id: json["id"],
@@ -55,6 +55,7 @@ class Record {
             : List<int?>.from(json["artist_id"]!.map((x) => x)),
         albumId: json["album_id"],
         albumName: json["album_name"],
+        premiumStatus: json["premium_status"],
         musicDirectorName:
             List<String?>.from(json["music_director_name"]!.map((x) => x)),
         isImage: json["is_image"],
@@ -68,6 +69,7 @@ class Record {
   bool isMusic;
   String? lyrics;
   List<String?>? musicDirectorName;
+  String premiumStatus;
   String songName;
   String duration;
 

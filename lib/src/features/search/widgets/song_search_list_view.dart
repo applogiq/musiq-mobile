@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
-import 'package:musiq/src/features/home/provider/home_provider.dart';
 import 'package:musiq/src/features/payment/screen/subscription_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -43,12 +42,12 @@ class SongSearchListView extends StatelessWidget {
 
                     return InkWell(
                       onTap: () {
-                        if ((index == 1 &&
-                            context.read<HomeProvider>().premiumStatus ==
-                                "free")) {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  const SubscriptionsScreen()));
+                        if (rec.premiumStatus != "free") {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const SubscriptionsScreen(),
+                            ),
+                          );
                           FocusScope.of(context).unfocus();
                         } else {
                           FocusScope.of(context).unfocus();
@@ -68,7 +67,8 @@ class SongSearchListView extends StatelessWidget {
                                     imageUrl: generateSongImageUrl(
                                         rec.albumName, rec.albumId),
                                     musicDirectorName: rec.musicDirectorName[0],
-                                    duration: rec.duration);
+                                    duration: rec.duration,
+                                    premium: rec.premiumStatus);
                             context
                                 .read<PlayerProvider>()
                                 .playSingleSong(context, playerSongListModel);
@@ -76,11 +76,7 @@ class SongSearchListView extends StatelessWidget {
                         }
                       },
                       child: SongListTile(
-                        isPremium: (index == 1 &&
-                                context.read<HomeProvider>().premiumStatus ==
-                                    "free")
-                            ? true
-                            : false,
+                        isPremium: rec.premiumStatus != "free" ? true : false,
                         albumName: rec.albumName,
                         imageUrl:
                             generateSongImageUrl(rec.albumName, rec.albumId),
@@ -102,9 +98,7 @@ class SongSearchListView extends StatelessWidget {
 
                   return InkWell(
                     onTap: () {
-                      if ((index == 1 &&
-                          context.read<HomeProvider>().premiumStatus ==
-                              "free")) {
+                      if (rec.premiumStatus != "free") {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const SubscriptionsScreen()));
                       } else {
@@ -121,18 +115,15 @@ class SongSearchListView extends StatelessWidget {
                                 imageUrl: generateSongImageUrl(
                                     rec.albumName, rec.albumId),
                                 musicDirectorName: rec.musicDirectorName[0],
-                                duration: rec.duration);
+                                duration: rec.duration,
+                                premium: rec.premiumStatus);
                         context
                             .read<PlayerProvider>()
                             .playSingleSong(context, playerSongListModel);
                       }
                     },
                     child: SongListTile(
-                      isPremium: (index == 1 &&
-                              context.read<HomeProvider>().premiumStatus ==
-                                  "free")
-                          ? true
-                          : false,
+                      isPremium: rec.premiumStatus != "free" ? true : false,
                       albumName: rec.albumName,
                       imageUrl:
                           generateSongImageUrl(rec.albumName, rec.albumId),

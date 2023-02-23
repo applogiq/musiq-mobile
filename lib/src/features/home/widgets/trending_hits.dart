@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/features/payment/screen/subscription_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/constant.dart';
@@ -131,17 +132,25 @@ class TrendingHitsHomeContainer extends StatelessWidget {
           ),
           child: InkWell(
             onTap: () {
-              context.read<ViewAllProvider>().getViewAll(
-                  ViewAllStatus.trendingHits,
-                  context: context,
-                  goToNextfunction: true,
-                  index: index);
+              print(trendingHitsModel.records[index].premiumStatus);
+              if (trendingHitsModel.records[index].premiumStatus == "free") {
+                context.read<ViewAllProvider>().getViewAll(
+                    ViewAllStatus.trendingHits,
+                    context: context,
+                    goToNextfunction: true,
+                    index: index);
+              } else {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SubscriptionsScreen()));
+              }
             },
             child: const Padding(
               padding: EdgeInsets.all(8.0),
               child: Align(
                 alignment: Alignment.bottomRight,
-                child: PlayButtonWidget(),
+                child: InkWell(child: PlayButtonWidget()),
               ),
             ),
           ),

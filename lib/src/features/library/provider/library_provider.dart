@@ -80,7 +80,6 @@ class LibraryProvider extends ChangeNotifier {
   }
 
   getFavouritesList() async {
-  
     try {
       var id = await secureStorage.read(key: "id");
 
@@ -180,7 +179,8 @@ class LibraryProvider extends ChangeNotifier {
             title: element.songName,
             imageUrl: generateSongImageUrl(element.albumName, element.albumId),
             musicDirectorName: element.musicDirectorName[0],
-            duration: element.duration));
+            duration: element.duration,
+            premium: element.premiumStatus));
       }
       context.read<PlayerProvider>().addSongToQueueSongList(playSongListModel);
     }
@@ -216,7 +216,8 @@ class LibraryProvider extends ChangeNotifier {
             title: element.songName,
             imageUrl: generateSongImageUrl(element.albumName, element.albumId),
             musicDirectorName: element.musicDirectorName[0],
-            duration: element.duration));
+            duration: element.duration,
+            premium: element.premiumStatus));
       }
       context
           .read<PlayerProvider>()
@@ -235,7 +236,8 @@ class LibraryProvider extends ChangeNotifier {
             title: element.songName,
             imageUrl: generateSongImageUrl(element.albumName, element.albumId),
             musicDirectorName: element.musicDirectorName[0],
-            duration: element.duration),
+            duration: element.duration,
+            premium: element.premiumStatus),
       );
     }
 

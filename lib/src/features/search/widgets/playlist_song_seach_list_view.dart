@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/home/domain/model/song_search_model.dart';
 import 'package:musiq/src/features/search/screens/search_screen.dart';
-import 'package:provider/provider.dart';
 
 import '../../../core/utils/url_generate.dart';
 import '../../home/screens/sliver_app_bar/widgets/song_play_list_tile.dart';
-import '../../player/domain/model/player_song_list_model.dart';
-import '../../player/provider/player_provider.dart';
 import '../provider/search_provider.dart';
 
 class PlaylistSearchSongTile extends StatelessWidget {
@@ -40,6 +36,10 @@ class PlaylistSearchSongTile extends StatelessWidget {
                     .contains(pro.searchSongModel.records[index].id)
                 ? true
                 : false,
+            isPremium:
+                pro.searchSongModel.records[index].premiumStatus != "free"
+                    ? true
+                    : false,
           ),
         ),
       ),

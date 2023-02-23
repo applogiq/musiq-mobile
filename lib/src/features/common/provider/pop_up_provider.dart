@@ -75,6 +75,8 @@ class PopUpProvider extends ChangeNotifier {
     FlutterSecureStorage secureStorage = const FlutterSecureStorage();
     var subscriptionEndDate =
         await secureStorage.read(key: LocalStorageConstant.subscriptionEndDate);
+    print("subscriptionEndDate");
+    print(subscriptionEndDate);
     if (subscriptionEndDate != null) {
       DateTime endDate = DateTime.parse(subscriptionEndDate);
       DateTime now = DateTime.now();

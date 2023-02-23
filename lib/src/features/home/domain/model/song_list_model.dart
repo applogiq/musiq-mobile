@@ -4,13 +4,15 @@ class SongListModel {
       required this.albumId,
       required this.songName,
       required this.albumName,
-      required this.musicDirectorName});
+      required this.musicDirectorName,
+      required this.premiumStatus});
 
   String albumId;
   String albumName;
   int id;
   String musicDirectorName;
   String songName;
+  String premiumStatus;
 
   // factory SongListModel.fromMap(Map<String, dynamic> json) => SongListModel(
   //       id: json["id"],

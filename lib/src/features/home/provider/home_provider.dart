@@ -95,7 +95,8 @@ class HomeProvider extends ChangeNotifier {
             songName: recentlyPlayed.records[i][0].songName,
             albumName: recentlyPlayed.records[i][0].albumName,
             musicDirectorName:
-                recentlyPlayed.records[i][0].musicDirectorName[0].toString()));
+                recentlyPlayed.records[i][0].musicDirectorName[0].toString(),
+            premiumStatus: recentlyPlayed.records[i][0].premiumStatus));
       }
     } else {
       recentlyPlayed = RecentlyPlayed(
@@ -124,7 +125,8 @@ class HomeProvider extends ChangeNotifier {
             songName: trendingHitsModel.records[i].songName,
             albumName: trendingHitsModel.records[i].albumName,
             musicDirectorName:
-                trendingHitsModel.records[i].musicDirectorName[0].toString()));
+                trendingHitsModel.records[i].musicDirectorName[0].toString(),
+            premiumStatus: "free"));
       }
     } else {
       trendingSongListModel.clear();
@@ -172,7 +174,8 @@ class HomeProvider extends ChangeNotifier {
             songName: newReleaseModel.records[i].songName,
             albumName: newReleaseModel.records[i].albumName,
             musicDirectorName:
-                newReleaseModel.records[i].musicDirectorName[0].toString()));
+                newReleaseModel.records[i].musicDirectorName[0].toString(),
+            premiumStatus: newReleaseModel.records[i].premiumStatus));
       }
       log(newReleaseListModel.toString());
     }

@@ -73,7 +73,7 @@ class TopAlbum extends StatelessWidget {
                                 child: Stack(
                                   alignment: Alignment.topRight,
                                   children: [
-                                    album.records[index].isImage == 0
+                                    album.records[index].isImage == false
                                         ? Image.asset(
                                             Images.noArtist,
                                             height: 125,

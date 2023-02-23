@@ -139,7 +139,9 @@ class SongListTile extends StatelessWidget {
                                 title: songName,
                                 imageUrl: imageUrl,
                                 musicDirectorName: musicDirectorName,
-                                duration: duration);
+                                duration: duration,
+                                premium:
+                                    isPremium != true ? "free" : "premium");
                         context
                             .read<PlayerProvider>()
                             .queuePlayNext(playerSongListModel);
@@ -157,7 +159,9 @@ class SongListTile extends StatelessWidget {
                                 title: songName,
                                 imageUrl: imageUrl,
                                 musicDirectorName: musicDirectorName,
-                                duration: duration);
+                                duration: duration,
+                                premium:
+                                    isPremium != true ? "free" : "premium");
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => SongInfoScreen(id: songId)));
                         // Navigation.navigateToScreen(context, RouteName.songInfo,
@@ -176,7 +180,9 @@ class SongListTile extends StatelessWidget {
                                 title: songName,
                                 imageUrl: imageUrl,
                                 musicDirectorName: musicDirectorName,
-                                duration: duration);
+                                duration: duration,
+                                premium:
+                                    isPremium != true ? "free" : "premium");
                         // Navigation.navigateToScreen(context, RouteName.songInfo,
                         //     args: playerSongListModel);
                         context.read<PlayerProvider>().addQueueToLocalDb(

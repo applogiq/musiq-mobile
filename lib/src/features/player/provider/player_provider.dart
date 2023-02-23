@@ -227,7 +227,8 @@ class PlayerProvider extends ChangeNotifier {
               title: e.title,
               imageUrl: e.imageUrl,
               musicDirectorName: e.musicDirectorName,
-              duration: e.duration));
+              duration: e.duration,
+              premium: ''));
           final item = MediaItem(
               id: generateSongUrl(e.songId),
               album: e.albumName,
@@ -291,29 +292,31 @@ class PlayerProvider extends ChangeNotifier {
       List<SongListModel> songListModels = [];
       // removePlaylist();
       for (var e in playerSongList) {
-        songListModels.add(SongListModel(
-            songId: e.id,
-            albumName: e.albumName,
-            title: e.title,
-            musicDirectorName: e.musicDirectorName,
-            imageUrl: e.imageUrl,
-            songUrl: generateSongUrl(e.id),
-            duration: e.duration));
-        final item = MediaItem(
-            id: generateSongUrl(e.id),
-            album: e.albumName,
-            title: e.title,
-            artist: e.musicDirectorName,
-            duration: Duration(milliseconds: totalDuration(e.duration)),
-            artUri: Uri.parse(e.imageUrl),
-            extras: {"song_id": e.id});
-        playlist.add(
-          AudioSource.uri(
-              Uri.parse(
-                generateSongUrl(e.id),
-              ),
-              tag: item),
-        );
+        if (e.premium == "free") {
+          songListModels.add(SongListModel(
+              songId: e.id,
+              albumName: e.albumName,
+              title: e.title,
+              musicDirectorName: e.musicDirectorName,
+              imageUrl: e.imageUrl,
+              songUrl: generateSongUrl(e.id),
+              duration: e.duration));
+          final item = MediaItem(
+              id: generateSongUrl(e.id),
+              album: e.albumName,
+              title: e.title,
+              artist: e.musicDirectorName,
+              duration: Duration(milliseconds: totalDuration(e.duration)),
+              artUri: Uri.parse(e.imageUrl),
+              extras: {"song_id": e.id});
+          playlist.add(
+            AudioSource.uri(
+                Uri.parse(
+                  generateSongUrl(e.id),
+                ),
+                tag: item),
+          );
+        }
       }
       objectbox.removeAllQueueSong();
       objectbox.addSongListQueue(songListModels);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:musiq/src/features/payment/screen/subscription_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/loader.dart';
@@ -118,11 +119,21 @@ class _ViewPlaylistSongScreenState extends State<ViewPlaylistSongScreen> {
                                                 .playlistSongListModel.records;
                                             return InkWell(
                                               onTap: () {
-                                                context
-                                                    .read<LibraryProvider>()
-                                                    .navigateToPlayerScreen(
-                                                        context, widget.id!,
-                                                        index: index);
+                                                if (records[index]
+                                                        .premiumStatus ==
+                                                    "free") {
+                                                  context
+                                                      .read<LibraryProvider>()
+                                                      .navigateToPlayerScreen(
+                                                          context, widget.id!,
+                                                          index: index);
+                                                } else {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const SubscriptionsScreen()));
+                                                }
                                               },
                                               child: PlaylistSongListTile(
                                                 playlistId: records[index]
@@ -146,6 +157,11 @@ class _ViewPlaylistSongScreenState extends State<ViewPlaylistSongScreen> {
                                                     .id,
                                                 duration:
                                                     records[index].duration,
+                                                isPremium: records[index]
+                                                            .premiumStatus !=
+                                                        "free"
+                                                    ? true
+                                                    : false,
                                               ),
                                             );
                                           },

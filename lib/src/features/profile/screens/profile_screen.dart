@@ -94,15 +94,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             index: index,
                           ))
                     ..add(
-                      Padding(
-                        padding: const EdgeInsets.only(left: 23),
-                        child: InkWell(
-                          onTap: () {
-                            showSubscriptionDialog(context);
-                          },
-                          child: const AboutUsTextWidget(
-                            title: "Free plan",
-                          ),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 23),
+                        child: AboutUsTextWidget(
+                          title: "Free plan",
                         ),
                       ),
                     ),

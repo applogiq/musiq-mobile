@@ -34,6 +34,7 @@ class AlbumSongListModel {
 
 class Record {
   Record({
+    required this.premiumStatus,
     required this.id,
     required this.songName,
     required this.lyrics,
@@ -56,6 +57,7 @@ class Record {
   final List<String> musicDirectorName;
   final bool isImage;
   final String duration;
+  final String premiumStatus;
 
   factory Record.fromMap(Map<String, dynamic> json) => Record(
         id: json["id"],
@@ -69,6 +71,7 @@ class Record {
         musicDirectorName:
             List<String>.from(json["music_director_name"].map((x) => x)),
         isImage: json["is_image"],
+        premiumStatus: json["premium_status"],
       );
 
   Map<String, dynamic> toMap() => {

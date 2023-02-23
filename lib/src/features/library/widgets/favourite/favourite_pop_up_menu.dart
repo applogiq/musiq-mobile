@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../../core/constants/constant.dart';
 import '../../../../core/utils/url_generate.dart';
 import '../../../common/provider/pop_up_provider.dart';
+import '../../../payment/screen/subscription_screen.dart';
 import '../../../player/domain/model/player_song_list_model.dart';
 import '../../../player/provider/player_provider.dart';
 
@@ -36,28 +37,57 @@ class FavouritesPopUpMenuButton extends StatelessWidget {
                 imageUrl: generateSongImageUrl(
                     record[index].albumName, record[index].albumId),
                 musicDirectorName: record[index].musicDirectorName[0],
-                duration: record[index].duration);
+                duration: record[index].duration,
+                premium: record[index].premiumStatus);
             switch (value) {
               case PopUpConstants.playNext:
-                context
-                    .read<PopUpProvider>()
-                    .playNext(playerSongListModel, context);
+                if (record[index].premiumStatus != "free") {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SubscriptionsScreen()));
+                } else {
+                  context
+                      .read<PopUpProvider>()
+                      .playNext(playerSongListModel, context);
+                }
                 break;
               case PopUpConstants.addToQueue:
-                context
-                    .read<PopUpProvider>()
-                    .addToQueue(playerSongListModel, context);
+                if (record[index].premiumStatus != "free") {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SubscriptionsScreen()));
+                } else {
+                  context
+                      .read<PopUpProvider>()
+                      .addToQueue(playerSongListModel, context);
+                }
                 break;
 
               case PopUpConstants.removeFavourite:
-                context
-                    .read<PopUpProvider>()
-                    .removeFromFavourites(playerSongListModel.id, context);
+                if (record[index].premiumStatus != "free") {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SubscriptionsScreen()));
+                } else {
+                  context
+                      .read<PopUpProvider>()
+                      .removeFromFavourites(playerSongListModel.id, context);
+                }
                 break;
               case PopUpConstants.songInfo:
-                context
-                    .read<PopUpProvider>()
-                    .goToSongInfo(playerSongListModel.id, context);
+                if (record[index].premiumStatus != "free") {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SubscriptionsScreen()));
+                } else {
+                  context
+                      .read<PopUpProvider>()
+                      .goToSongInfo(playerSongListModel.id, context);
+                }
                 break;
             }
           },

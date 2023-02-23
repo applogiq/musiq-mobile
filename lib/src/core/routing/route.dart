@@ -17,7 +17,6 @@ import '../../features/home/screens/home_screen.dart';
 import '../../features/home/screens/view_all/view_all_song_list_screen.dart';
 import '../../features/library/screens/library.dart';
 import '../../features/player/screen/add_playlist_screen.dart';
-import '../../features/player/screen/player_screen/player_screen.dart';
 import '../../features/player/screen/song_info_screen.dart';
 import '../../features/profile/screens/artist_preference.dart';
 import '../../features/profile/screens/image_crop_screen.dart';
@@ -104,12 +103,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case RouteName.artistViewAllScreen:
       return MaterialPageRoute(
           builder: (BuildContext context) => const ArtistViewAllScreen());
-    case RouteName.player:
-      // if (args is PlayerModel) {
-      return MaterialPageRoute(
-          builder: (BuildContext context) => const PlayerScreen(
-              // playerModel: args,
-              ));
+    // case RouteName.player:
+    //   // if (args is PlayerModel) {
+    //   return MaterialPageRoute(
+    //       builder: (BuildContext context) => const PlayerScreen(
+    //           // playerModel: args,
+    //           ));
     // }
     // return MaterialPageRoute(
     //     builder: (BuildContext context) => const ErrorScreen());
