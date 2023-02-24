@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:musiq/src/common_widgets/box/vertical_box.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
 import 'package:musiq/src/core/constants/images.dart';
 import 'package:musiq/src/core/enums/enums.dart';
+import 'package:musiq/src/features/auth/provider/login_provider.dart';
 import 'package:musiq/src/features/home/provider/home_provider.dart';
 import 'package:musiq/src/features/payment/provider/payment_provider.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +13,7 @@ import 'package:provider/provider.dart';
 import '../../../common_widgets/box/horizontal_box.dart';
 import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../core/constants/constant.dart';
+import '../../../core/constants/local_storage_constants.dart';
 import '../../../core/utils/size_config.dart';
 
 class SubscriptionsScreen extends StatefulWidget {
@@ -21,12 +24,63 @@ class SubscriptionsScreen extends StatefulWidget {
 }
 
 class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
+  bool isSubscriptionEnable = true;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       context.read<PaymentProvider>().getSubscriptionList();
+      await subscriptionCheck(context);
     });
+  }
+
+  subscriptionCheck(BuildContext context) async {
+    FlutterSecureStorage secureStorage = const FlutterSecureStorage();
+    var subscriptionEndDate =
+        await secureStorage.read(key: LocalStorageConstant.subscriptionEndDate);
+    print("subscriptionEndDate");
+    print(subscriptionEndDate);
+    if (subscriptionEndDate != null) {
+      DateTime endDate = DateTime.parse(subscriptionEndDate);
+      DateTime now = DateTime.now();
+      if (endDate.compareTo(now) < 0) {
+        isSubscriptionEnable = true;
+      } else {
+        isSubscriptionEnable = false;
+      }
+    } else {
+      isSubscriptionEnable = true;
+    }
+    setState(() {});
+
+    // await secureStorage.write(
+    //     key: LocalStorageConstant.subscriptionEndDate, value: "2023-02-21");
+  }
+
+  getPayNowState(LoginProvider loginProvider, PaymentProvider pro) {
+    // (pro.subscriptionPlan != SubscriptionPlan.free &&
+    //     pro.isSubsciptionLoad == false &&
+    //     loginProvider.userModel!.records.subscriptionEndDate == null &&
+    // DateTime.parse(loginProvider.userModel!.records.subscriptionEndDate
+    //             .toString())
+    //         .compareTo(DateTime.now()) <
+    //     0);
+
+    if (pro.subscriptionPlan != SubscriptionPlan.free &&
+        pro.isSubsciptionLoad == false &&
+        loginProvider.userModel!.records.subscriptionEndDate == null) {
+      return true;
+    } else if (pro.subscriptionPlan != SubscriptionPlan.free &&
+        pro.isSubsciptionLoad == false &&
+        DateTime.parse(loginProvider.userModel!.records.subscriptionEndDate
+                    .toString())
+                .compareTo(DateTime.now()) <
+            0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override
@@ -44,6 +98,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
             child: const Icon(Icons.arrow_back_ios)),
       ),
       body: Consumer<PaymentProvider>(builder: (context, pro, _) {
+        print(!isSubscriptionEnable);
         return pro.isSubsciptionLoad
             ? const LoaderScreen()
             : Padding(
@@ -66,20 +121,24 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
               );
       }),
       bottomNavigationBar:
-          Consumer<PaymentProvider>(builder: (context, pro, _) {
-        return GestureDetector(
-          onTap: () {
-            context.read<PaymentProvider>().pay(context);
-          },
-          child: CustomButton(
-            isValid: (pro.subscriptionPlan != SubscriptionPlan.free &&
-                    pro.isSubsciptionLoad == false)
-                ? true
-                : false,
-            label: ConstantText.payNow,
-            horizontalMargin: 0,
-          ),
-        );
+          Consumer<LoginProvider>(builder: (context, loginProvider, _) {
+        return Consumer<PaymentProvider>(builder: (context, pro, _) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: GestureDetector(
+              onTap: getPayNowState(loginProvider, pro)
+                  ? () {
+                      context.read<PaymentProvider>().createPayment(context);
+                    }
+                  : () {},
+              child: CustomButton(
+                isValid: getPayNowState(loginProvider, pro) ? true : false,
+                label: ConstantText.payNow,
+                horizontalMargin: 0,
+              ),
+            ),
+          );
+        });
       }),
     );
   }
@@ -103,6 +162,7 @@ class SubscriptionCard extends StatelessWidget {
             planName: ConstantText.free,
             planPrice: "0",
             comparedPrice: '0',
+            planValidity: 0,
           ),
           const HorizontalBox(width: 4),
           SubscriptionPlanCard(
@@ -111,6 +171,7 @@ class SubscriptionCard extends StatelessWidget {
             imageAsset: Images.starImage,
             planName: pro.premiumPriceModel.records[0].title,
             planPrice: pro.premiumPriceModel.records[0].price.toString(),
+            planValidity: pro.premiumPriceModel.records[0].validity,
             comparedPrice:
                 pro.premiumPriceModel.records[0].comparePrice.toString(),
           ),
@@ -121,6 +182,7 @@ class SubscriptionCard extends StatelessWidget {
             imageAsset: Images.medalStarImage,
             planName: pro.premiumPriceModel.records[1].title,
             planPrice: pro.premiumPriceModel.records[1].price.toString(),
+            planValidity: pro.premiumPriceModel.records[1].validity,
             comparedPrice:
                 pro.premiumPriceModel.records[1].comparePrice.toString(),
           )
@@ -140,6 +202,7 @@ class SubscriptionPlanCard extends StatelessWidget {
     required this.planPrice,
     required this.selectedSubscriptionPlan,
     required this.comparedPrice,
+    required this.planValidity,
   }) : super(key: key);
   final SubscriptionPlan subscriptionPlan;
   final bool isBestSeller;
@@ -148,13 +211,15 @@ class SubscriptionPlanCard extends StatelessWidget {
   final String planPrice;
   final String comparedPrice;
   final SubscriptionPlan selectedSubscriptionPlan;
+  final int planValidity;
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Consumer<PaymentProvider>(builder: (context, pro, _) {
         return GestureDetector(
           onTap: () {
-            pro.changeSubscription(subscriptionPlan);
+            pro.changeSubscription(
+                subscriptionPlan, planName, int.parse(planPrice), planValidity);
           },
           child: SizedBox(
             height: 190,
@@ -234,10 +299,15 @@ class SubscriptionPlanCard extends StatelessWidget {
                                 : const SizedBox.shrink(),
                           ],
                         ),
-                        selectedSubscriptionPlan == subscriptionPlan
+                        (planName.toLowerCase() ==
+                                context
+                                    .read<PaymentProvider>()
+                                    .currentPlan
+                                    .toLowerCase())
                             ? Container(
+                                margin: const EdgeInsets.fromLTRB(0, 0, 0, 8),
                                 padding:
-                                    const EdgeInsets.symmetric(horizontal: 6),
+                                    const EdgeInsets.symmetric(horizontal: 8),
                                 decoration: BoxDecoration(
                                     color: const Color(0xFF2E2E3D),
                                     borderRadius: BorderRadius.circular(12)),

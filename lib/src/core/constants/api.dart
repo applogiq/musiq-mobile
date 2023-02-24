@@ -36,7 +36,9 @@ class APIConstants {
   static String kTrendingHits = "$baseUrl${versionUrl}trending-hits";
   static String paymentCreateEndpoint =
       "$baseUrl${versionUrl}users-payment/create";
-
+  static String paymentCallbackEndpoint =
+      "$baseUrl${versionUrl}users-payment/callback";
+// users-payment/callback
   static String kUpdateProfileEndPoint = "$baseUrl${versionUrl}users/";
   static String searchArtist = "$baseUrl${versionUrl}artist/list/search?data=";
   static String subscriptionListEndPoint =

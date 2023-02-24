@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:musiq/src/features/auth/provider/login_provider.dart';
 import 'package:musiq/src/features/payment/screen/subscription_screen.dart';
 import 'package:musiq/src/features/profile/screens/my_profile_screen.dart';
 import 'package:musiq/src/features/profile/screens/preference_screen.dart';
@@ -11,6 +12,7 @@ import '../../../core/constants/color.dart';
 import '../../../core/constants/images.dart';
 import '../../../core/constants/style.dart';
 import '../../../core/utils/size_config.dart';
+import '../../../core/utils/time.dart';
 import '../provider/profile_provider.dart';
 import '../widgets/logout_dialog.dart';
 
@@ -94,11 +96,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             index: index,
                           ))
                     ..add(
-                      const Padding(
-                        padding: EdgeInsets.only(left: 23),
-                        child: AboutUsTextWidget(
-                          title: "Free plan",
-                        ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 23),
+                        child:
+                            Consumer<LoginProvider>(builder: (context, pro, _) {
+                          return AboutUsTextWidget(
+                            title: pro.userModel == null
+                                ? "Free plan"
+                                : pro.userModel!.records.premiumStatus == "free"
+                                    ? "Free plan"
+                                    : "Premium - Expires on ${dateTimeFormat(pro.userModel!.records.subscriptionEndDate, "dd-MM-yyyy")}",
+                          );
+                        }),
                       ),
                     ),
                 ),

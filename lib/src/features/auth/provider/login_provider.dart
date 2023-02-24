@@ -8,6 +8,7 @@ import 'package:musiq/main.dart';
 import 'package:musiq/src/core/constants/local_storage_constants.dart';
 import 'package:musiq/src/core/constants/string.dart';
 import 'package:musiq/src/core/utils/image_utils.dart';
+import 'package:musiq/src/features/artist/screens/artist_preference_screen/artist_preference_screen.dart';
 import 'package:musiq/src/features/common/screen/main_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -28,6 +29,7 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
   bool isSuccess = false;
   String password = "";
   String passwordErrorMessage = "";
+  UserModel? userModel;
   final storage = const FlutterSecureStorage();
   late Store store;
 
@@ -98,7 +100,11 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
       isErrorStatus = false;
 
       var data = jsonDecode(response.body.toString());
+      print(data.toString());
       UserModel user = UserModel.fromMap(data);
+      userModel = UserModel.fromMap(data);
+      print("user.records.premiumStatus");
+      print(user.records.premiumStatus);
       if (user.records.isImage == true) {
         objectbox.deleteImage();
         loadImage(user.records.registerId.toString());
@@ -123,6 +129,11 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
     notifyListeners();
   }
 
+  changeUserModel(UserModel kUserModel) {
+    userModel = kUserModel;
+    notifyListeners();
+  }
+
   passwordTap() {
     // emailAddressChanged(emailAddress);
     if (emailAddress.isEmpty) {
@@ -143,15 +154,27 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
   storeResponseData(UserModel userModel) async {
     var isOnboardFree =
         await storage.read(key: LocalStorageConstant.isOnboardFree);
-    var subscriptionEndDate =
-        await storage.read(key: LocalStorageConstant.subscriptionEndDate);
-    await storage.deleteAll();
+    // var subscriptionEndDate =
+    //     await storage.read(key: LocalStorageConstant.subscriptionEndDate);
+    var currentIndex =
+        await storage.read(key: LocalStorageConstant.currentIndex);
+    var currentPosition =
+        await storage.read(key: LocalStorageConstant.currentPosition);
+    // await storage.deleteAll();
     await storage.write(
         key: LocalStorageConstant.isOnboardFree, value: isOnboardFree);
     await storage.write(
+        key: LocalStorageConstant.currentIndex, value: currentIndex);
+    await storage.write(
+        key: LocalStorageConstant.currentPosition, value: currentPosition);
+    await storage.write(
         key: LocalStorageConstant.subscriptionEndDate,
-        value: subscriptionEndDate);
+        value: userModel.records.subscriptionEndDate);
+    print(userModel.records.subscriptionEndDate);
     var userData = userModel.records.toMap();
+    await storage.write(
+        key: LocalStorageConstant.premierStatus,
+        value: userModel.records.premiumStatus);
     for (final name in userData.keys) {
       final value = userData[name];
 
@@ -171,6 +194,11 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
   navigateToNextPage(UserModel userModel, context) {
     Future.delayed(const Duration(milliseconds: 600), () {
       if (userModel.records.isPreference == false) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const ArtistPreferenceScreen()),
+            (route) => false);
       } else {
         Navigator.pushAndRemoveUntil(
             context,

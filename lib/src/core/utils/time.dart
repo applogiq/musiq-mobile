@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 String detailedDuration(String duration) {
   List durationList = duration.split(":");
 
@@ -26,4 +28,16 @@ int totalDuration(String time) {
     return milliseconds;
   }
   return 0;
+}
+
+dateTimeFormat(String utc, String format) {
+  if (utc == "null") {
+    return "";
+  }
+  var dateFormat = DateFormat(format);
+  var utcDate = dateFormat.format(DateTime.parse(utc));
+  var localDate = dateFormat.parse(utcDate, true).toLocal().toString();
+  String convertedDate = dateFormat.format(DateTime.parse(localDate));
+
+  return convertedDate;
 }

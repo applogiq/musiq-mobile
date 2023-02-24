@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../../common_widgets/box/vertical_box.dart';
 import '../../../common_widgets/buttons/custom_button.dart';
+import '../../../common_widgets/loader.dart';
 import '../../../core/constants/constant.dart';
 import '../../payment/screen/subscription_screen.dart';
 
@@ -24,7 +25,11 @@ class _SubscriptionOnboardState extends State<SubscriptionOnboard> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       context.read<HomeProvider>().refreshPremiumStatus();
-      context.read<PaymentProvider>().changeSubscription(SubscriptionPlan.free);
+
+      context.read<PaymentProvider>().getSubscriptionList();
+      context
+          .read<PaymentProvider>()
+          .changeSubscription(SubscriptionPlan.free, "free", 0, 0);
     });
   }
 
@@ -36,30 +41,36 @@ class _SubscriptionOnboardState extends State<SubscriptionOnboard> {
         automaticallyImplyLeading: false,
         title: const Text(ConstantText.subscription),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: ListView(
-          shrinkWrap: true,
-          children: const [
-            VerticalBox(height: 12),
-            FlashImageWidget(),
-            VerticalBox(height: 8),
-            GetExclusiveContentWidget(),
-            VerticalBox(height: 8),
-            GetExclusiveSubtitleWidget(),
-            VerticalBox(height: 44),
-            SubscriptionCard(),
-            VerticalBox(height: 32),
-            PlanDescriptionWidget(),
-          ],
-        ),
-      ),
+      body: Consumer<PaymentProvider>(builder: (context, pro, _) {
+        return pro.isSubsciptionLoad
+            ? const LoaderScreen()
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: ListView(
+                  shrinkWrap: true,
+                  children: const [
+                    VerticalBox(height: 12),
+                    FlashImageWidget(),
+                    VerticalBox(height: 8),
+                    GetExclusiveContentWidget(),
+                    VerticalBox(height: 8),
+                    GetExclusiveSubtitleWidget(),
+                    VerticalBox(height: 44),
+                    SubscriptionCard(),
+                    VerticalBox(height: 32),
+                    PlanDescriptionWidget(),
+                  ],
+                ),
+              );
+      }),
       bottomNavigationBar:
           Consumer<PaymentProvider>(builder: (context, pro, _) {
         return GestureDetector(
           onTap: () {
             if (pro.subscriptionPlan != SubscriptionPlan.free) {
-              context.read<PaymentProvider>().pay(context);
+              context
+                  .read<PaymentProvider>()
+                  .createPayment(context, isFromProfile: false);
             } else {
               context.read<HomeProvider>().goToHome(context);
             }

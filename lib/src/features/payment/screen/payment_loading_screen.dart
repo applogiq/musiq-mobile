@@ -1,11 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
+import 'package:musiq/src/core/constants/constant.dart';
 import 'package:musiq/src/features/payment/provider/payment_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class PaymentLoadingScreen extends StatefulWidget {
-  const PaymentLoadingScreen({super.key});
+  final int amount;
+  final bool isFromProfile;
+  // final int validity;
+  final String orderId;
+  const PaymentLoadingScreen(
+      {super.key,
+      required this.amount,
+      required this.orderId,
+      this.isFromProfile = true});
 
   @override
   State<PaymentLoadingScreen> createState() => _PaymentLoadingScreenState();
@@ -17,18 +26,21 @@ class _PaymentLoadingScreenState extends State<PaymentLoadingScreen> {
   void initState() {
     super.initState();
     _razorpay = Razorpay();
-    paymentProcess();
+    paymentProcess(widget.amount, widget.orderId);
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
   }
 
-  paymentProcess() {
+  paymentProcess(int amount, String orderId) {
+    print("amount");
+    print(amount);
     var options = {
-      'key': 'rzp_test_0Soma3GGNGgA8f',
-      'amount': 100,
+      'key': RazorPayConstant.razoryPayKey,
+      'amount': amount,
       'name': 'MusiQ',
       'description': 'Monthly subscription',
+      'order_id': orderId,
       'retry': {'enabled': true, 'max_count': 1},
       'external': {
         'wallets': ['gpay', 'paytm']
@@ -40,12 +52,20 @@ class _PaymentLoadingScreenState extends State<PaymentLoadingScreen> {
       },
       'send_sms_hash': true,
     };
+    print(options);
     _razorpay.open(options);
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
-    await Future.delayed(const Duration(seconds: 3), () {});
-    context.read<PaymentProvider>().paymentSuccess(context);
+    print(response.orderId);
+    print(response.paymentId);
+    print(response.signature);
+    print(response.orderId);
+    await context.read<PaymentProvider>().confirmPayment(
+        context, response.orderId!, response.paymentId!, response.signature!);
+    context
+        .read<PaymentProvider>()
+        .paymentSuccess(context, isFromProfile: widget.isFromProfile);
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {

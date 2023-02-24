@@ -51,7 +51,7 @@ class Records {
         subscriptionEndDate: json["subscription_end_date"],
       );
 
-  String accessToken;
+  String? accessToken;
   String email;
   String fullname;
   int id;
@@ -63,7 +63,7 @@ class Records {
   bool isPreference;
   String password;
   Preference preference;
-  String refreshToken;
+  String? refreshToken;
   int registerId;
   String username;
 

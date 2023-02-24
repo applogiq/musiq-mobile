@@ -26,6 +26,23 @@ class PaymentRepository {
 
       params["user_id"] = int.parse(userId!);
       var endpoint = APIConstants.paymentCreateEndpoint;
+      print(params);
+      dynamic response =
+          await apiServices.getPostAuthApiResponse(endpoint, params);
+      return response;
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  Future<dynamic> confirmPayment(Map params) async {
+    try {
+      var userId = await storage.read(key: "id");
+
+      params["user_id"] = int.parse(userId!);
+      var endpoint = APIConstants.paymentCallbackEndpoint;
+      print(params);
       dynamic response =
           await apiServices.getPostAuthApiResponse(endpoint, params);
       return response;

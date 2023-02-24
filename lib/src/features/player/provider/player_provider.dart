@@ -261,6 +261,9 @@ class PlayerProvider extends ChangeNotifier {
         }
         player.setAudioSource(playlist);
         try {
+          print("TRY init");
+          print(songPositionList);
+          print(songPositionSeconds);
           if (songPositionSeconds.isNotEmpty && songPositionList.isNotEmpty) {
             player.seek(
                 Duration(
@@ -269,7 +272,10 @@ class PlayerProvider extends ChangeNotifier {
                     seconds: int.parse(songPositionSeconds[0])),
                 index: int.parse(index!));
           }
+          print("TRY dispose");
         } catch (e) {
+          print("TRY cancel");
+
           print(e.toString());
         }
 

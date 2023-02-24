@@ -9,9 +9,7 @@ environment:
   sdk: ">=2.17.0 <3.0.0"
 dependencies:
   audio_video_progress_bar: ^0.10.0
-  palette_generator: ^0.3.3+2
   cached_network_image: ^3.2.3
-
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
@@ -23,10 +21,12 @@ dependencies:
   http: ^0.13.4
   image_picker: ^0.8.5+3
   internet_connection_checker: ^0.0.1+4
+  intl: ^0.18.0
   just_audio: ^0.9.24
   just_audio_background: ^0.0.1-beta.9
   objectbox: ^1.7.1
   objectbox_flutter_libs: any
+  palette_generator: ^0.3.3+2
   path: ^1.8.2
   path_provider: ^2.0.11
   persistent_bottom_nav_bar: ^5.0.2

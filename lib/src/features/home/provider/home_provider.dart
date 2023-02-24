@@ -82,9 +82,11 @@ class HomeProvider extends ChangeNotifier {
   }
 
   recentSongList() async {
+    print("It' s recent");
     var res = await homeRepository.getRecentPlayedList(10);
     recentlyPlayed.records.clear();
     recentSongListModel.clear();
+    notifyListeners();
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);
       recentlyPlayed = RecentlyPlayed.fromMap(data);
@@ -98,6 +100,9 @@ class HomeProvider extends ChangeNotifier {
                 recentlyPlayed.records[i][0].musicDirectorName[0].toString(),
             premiumStatus: recentlyPlayed.records[i][0].premiumStatus));
       }
+      print("It' s recent list changed");
+
+      notifyListeners();
     } else {
       recentlyPlayed = RecentlyPlayed(
           success: false,

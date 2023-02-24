@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/common_widgets/box/vertical_box.dart';
 import 'package:musiq/src/core/constants/images.dart';
-import 'package:provider/provider.dart';
+import 'package:musiq/src/features/common/screen/main_screen.dart';
 
 import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../core/constants/constant.dart';
 import '../../../core/utils/size_config.dart';
-import '../provider/payment_provider.dart';
 
 class SubscriptionSuccess extends StatelessWidget {
-  const SubscriptionSuccess({super.key});
+  const SubscriptionSuccess({super.key, required this.isFromProfile});
+  final bool isFromProfile;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,13 @@ class SubscriptionSuccess extends StatelessWidget {
         toolbarHeight: getProportionateScreenHeight(70),
         title: const Text(ConstantText.subscription),
         titleSpacing: 0.1,
-        leading: InkWell(onTap: () {}, child: const Icon(Icons.arrow_back_ios)),
+        leading: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+            child: const Icon(Icons.arrow_back_ios)),
       ),
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -44,13 +50,24 @@ class SubscriptionSuccess extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: GestureDetector(
-        onTap: () {
-          context.read<PaymentProvider>().pay(context);
-        },
-        child: const CustomButton(
-          label: ConstantText.listenNow,
-          horizontalMargin: 0,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: GestureDetector(
+          onTap: () {
+            if (isFromProfile) {
+              Navigator.pop(context);
+              Navigator.pop(context);
+              Navigator.pop(context);
+            } else {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const MainScreen()));
+            }
+            // context.read<PaymentProvider>().pay(context);
+          },
+          child: const CustomButton(
+            label: ConstantText.listenNow,
+            horizontalMargin: 0,
+          ),
         ),
       ),
     );
