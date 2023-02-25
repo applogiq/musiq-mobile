@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../core/enums/enums.dart';
 import '../../../../../core/utils/url_generate.dart';
+import '../../../../auth/provider/login_provider.dart';
 import '../../../domain/model/album_song_list_model.dart';
 import '../../../domain/model/aura_song_list_model.dart';
 import '../../../domain/model/collection_view_all_model.dart';
@@ -34,6 +35,16 @@ class AlbumSongsList extends StatelessWidget {
   final ViewAllStatus status;
   final TrendingHitsModel? trendingHitsModel;
   final bool isPremium;
+  bool getPremiumStatusUtil(
+      BuildContext context, String premiumStatus, int index) {
+    if (premiumStatus == "premium" &&
+        context.read<LoginProvider>().userModel!.records.premiumStatus ==
+            "free") {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   int getListCount(
     ViewAllStatus status,
@@ -185,22 +196,32 @@ class AlbumSongsList extends StatelessWidget {
     }
   }
 
-  getPremiumStatus(ViewAllStatus status, int index) {
+  getPremiumStatus(ViewAllStatus status, int index, BuildContext context) {
     switch (status) {
       case ViewAllStatus.newRelease:
-        return newReleaseModel!.records[index].premiumStatus == "free";
+        return getPremiumStatusUtil(
+            context, newReleaseModel!.records[index].premiumStatus, index);
 
       case ViewAllStatus.recentlyPlayed:
-        return recentlyPlayed!.records[index][0].premiumStatus == "free";
+        return getPremiumStatusUtil(
+            context, recentlyPlayed!.records[index][0].premiumStatus, index);
+      // return recentlyPlayed!.records[index][0].premiumStatus == "free";
       case ViewAllStatus.trendingHits:
-        return trendingHitsModel!.records[index].premiumStatus == "free";
-      // case ViewAllStatus.album:
-      //   return albumSongListModel!.records[index].albumName;
+        return getPremiumStatusUtil(
+            context, trendingHitsModel!.records[index].premiumStatus, index);
+      // return trendingHitsModel!.records[index].premiumStatus == "free";
+      case ViewAllStatus.album:
+        return getPremiumStatusUtil(
+            context, albumSongListModel!.records[index].premiumStatus, index);
+      // albumSongListModel!.records[index].albumName;
 
       case ViewAllStatus.aura:
-        return auraSongListModel!.records[index].premiumStatus == "free";
+        return getPremiumStatusUtil(
+            context, auraSongListModel!.records[index].premiumStatus, index);
       case ViewAllStatus.artist:
-        return collectionViewAllModel!.records[index]!.premiumStatus == "free";
+        return getPremiumStatusUtil(context,
+            collectionViewAllModel!.records[index]!.premiumStatus, index);
+
       default:
         return false;
     }
@@ -215,7 +236,7 @@ class AlbumSongsList extends StatelessWidget {
           padding: const EdgeInsets.all(0.0),
           child: InkWell(
             onTap: () {
-              if (getPremiumStatus(status, index)) {
+              if (!getPremiumStatus(status, index, context)) {
                 context
                     .read<ViewAllProvider>()
                     .navigateToPlayerScreen(context, status, index: index);
@@ -233,7 +254,7 @@ class AlbumSongsList extends StatelessWidget {
               // }
             },
             child: SongListTile(
-              isPremium: !getPremiumStatus(status, index),
+              isPremium: getPremiumStatus(status, index, context),
               albumName: getAlbumName(status, index),
               imageUrl: getImageUrl(status, index),
               musicDirectorName: getMusicDirectorName(status, index),

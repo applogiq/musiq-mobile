@@ -151,4 +151,11 @@ class ObjectBox {
   void addFavouritesSong(FavouriteSong song) {
     favouriteBox.put(song);
   }
+
+  void removeAllData() async {
+    removeAllFavourite();
+    removeAllArtistSearch();
+    removeAllSongSearch();
+    removeAllQueueSong();
+  }
 }

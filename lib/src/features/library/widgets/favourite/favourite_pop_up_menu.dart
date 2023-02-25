@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../core/constants/constant.dart';
 import '../../../../core/utils/url_generate.dart';
+import '../../../auth/provider/login_provider.dart';
 import '../../../common/provider/pop_up_provider.dart';
 import '../../../payment/screen/subscription_screen.dart';
 import '../../../player/domain/model/player_song_list_model.dart';
@@ -41,7 +42,13 @@ class FavouritesPopUpMenuButton extends StatelessWidget {
                 premium: record[index].premiumStatus);
             switch (value) {
               case PopUpConstants.playNext:
-                if (record[index].premiumStatus != "free") {
+                if (record[index].premiumStatus == "premium" &&
+                    context
+                            .read<LoginProvider>()
+                            .userModel!
+                            .records
+                            .premiumStatus ==
+                        "free") {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -53,7 +60,13 @@ class FavouritesPopUpMenuButton extends StatelessWidget {
                 }
                 break;
               case PopUpConstants.addToQueue:
-                if (record[index].premiumStatus != "free") {
+                if (record[index].premiumStatus == "premium" &&
+                    context
+                            .read<LoginProvider>()
+                            .userModel!
+                            .records
+                            .premiumStatus ==
+                        "free") {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -66,7 +79,13 @@ class FavouritesPopUpMenuButton extends StatelessWidget {
                 break;
 
               case PopUpConstants.removeFavourite:
-                if (record[index].premiumStatus != "free") {
+                if (record[index].premiumStatus == "premium" &&
+                    context
+                            .read<LoginProvider>()
+                            .userModel!
+                            .records
+                            .premiumStatus ==
+                        "free") {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -78,7 +97,13 @@ class FavouritesPopUpMenuButton extends StatelessWidget {
                 }
                 break;
               case PopUpConstants.songInfo:
-                if (record[index].premiumStatus != "free") {
+                if (record[index].premiumStatus == "premium" &&
+                    context
+                            .read<LoginProvider>()
+                            .userModel!
+                            .records
+                            .premiumStatus ==
+                        "free") {
                   Navigator.push(
                       context,
                       MaterialPageRoute(

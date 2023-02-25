@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 import '../../../../objectbox.g.dart';
 import '../../../core/utils/validation.dart';
 import '../../common/provider/bottom_navigation_bar_provider.dart';
+import '../../common/screen/subscription_onboard.dart';
 import '../domain/models/user_model.dart';
 import '../domain/repository/auth_repo.dart';
 
@@ -154,15 +155,17 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
   storeResponseData(UserModel userModel) async {
     var isOnboardFree =
         await storage.read(key: LocalStorageConstant.isOnboardFree);
-    // var subscriptionEndDate =
-    //     await storage.read(key: LocalStorageConstant.subscriptionEndDate);
     var currentIndex =
         await storage.read(key: LocalStorageConstant.currentIndex);
     var currentPosition =
         await storage.read(key: LocalStorageConstant.currentPosition);
-    // await storage.deleteAll();
-    await storage.write(
-        key: LocalStorageConstant.isOnboardFree, value: isOnboardFree);
+
+    if (isOnboardFree == null) {
+      if (userModel.records.premiumStatus != "free") {
+        await storage.write(
+            key: LocalStorageConstant.isOnboardFree, value: "true");
+      }
+    }
     await storage.write(
         key: LocalStorageConstant.currentIndex, value: currentIndex);
     await storage.write(
@@ -191,7 +194,9 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
     await storage.write(key: "isLogged", value: "true");
   }
 
-  navigateToNextPage(UserModel userModel, context) {
+  navigateToNextPage(UserModel userModel, context) async {
+    var isOnboardFree =
+        await storage.read(key: LocalStorageConstant.isOnboardFree);
     Future.delayed(const Duration(milliseconds: 600), () {
       if (userModel.records.isPreference == false) {
         Navigator.pushAndRemoveUntil(
@@ -199,11 +204,14 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
             MaterialPageRoute(
                 builder: (context) => const ArtistPreferenceScreen()),
             (route) => false);
-      } else {
+      } else if (isOnboardFree == "true") {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const MainScreen()),
             (route) => false);
+      } else {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => const SubscriptionOnboard()));
       }
     });
   }

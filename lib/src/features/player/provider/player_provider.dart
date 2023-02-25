@@ -20,6 +20,7 @@ import '../../../core/local/model/queue_model.dart';
 import '../../../core/utils/time.dart';
 import '../../../core/utils/toast_message.dart';
 import '../../../core/utils/url_generate.dart';
+import '../../auth/provider/login_provider.dart';
 import '../../home/provider/home_provider.dart';
 import '../../library/domain/library_repo.dart';
 import '../../library/domain/models/playlist_model.dart';
@@ -299,6 +300,35 @@ class PlayerProvider extends ChangeNotifier {
       // removePlaylist();
       for (var e in playerSongList) {
         if (e.premium == "free") {
+          songListModels.add(SongListModel(
+              songId: e.id,
+              albumName: e.albumName,
+              title: e.title,
+              musicDirectorName: e.musicDirectorName,
+              imageUrl: e.imageUrl,
+              songUrl: generateSongUrl(e.id),
+              duration: e.duration));
+          final item = MediaItem(
+              id: generateSongUrl(e.id),
+              album: e.albumName,
+              title: e.title,
+              artist: e.musicDirectorName,
+              duration: Duration(milliseconds: totalDuration(e.duration)),
+              artUri: Uri.parse(e.imageUrl),
+              extras: {"song_id": e.id});
+          playlist.add(
+            AudioSource.uri(
+                Uri.parse(
+                  generateSongUrl(e.id),
+                ),
+                tag: item),
+          );
+        } else if (context
+                .read<LoginProvider>()
+                .userModel!
+                .records
+                .premiumStatus !=
+            "free") {
           songListModels.add(SongListModel(
               songId: e.id,
               albumName: e.albumName,

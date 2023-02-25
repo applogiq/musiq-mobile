@@ -6,6 +6,7 @@ import '../../../../common_widgets/container/custom_color_container.dart';
 import '../../../../core/constants/constant.dart';
 import '../../../../core/constants/images.dart';
 import '../../../../core/utils/url_generate.dart';
+import '../../../auth/provider/login_provider.dart';
 import '../../domain/models/favourite_model.dart';
 import '../../provider/library_provider.dart';
 import 'favourite_widgets.dart';
@@ -24,13 +25,15 @@ class FavouriteTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (record[index].premiumStatus == "free") {
-          context.read<LibraryProvider>().playFavourite(context, index: index);
-        } else {
+        if (record[index].premiumStatus != "premium" &&
+            context.read<LoginProvider>().userModel!.records.premiumStatus ==
+                "free") {
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => const SubscriptionsScreen()));
+        } else {
+          context.read<LibraryProvider>().playFavourite(context, index: index);
         }
       },
       child: Padding(
@@ -63,7 +66,13 @@ class FavouriteTile extends StatelessWidget {
                             record[index].songName,
                             style: fontWeight400(),
                           ),
-                          record[index].premiumStatus != "free"
+                          (record[index].premiumStatus != "premium" &&
+                                  context
+                                          .read<LoginProvider>()
+                                          .userModel!
+                                          .records
+                                          .premiumStatus ==
+                                      "free")
                               ? Image.asset(
                                   Images.crownImage,
                                   height: 18,

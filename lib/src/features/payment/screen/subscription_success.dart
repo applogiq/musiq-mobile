@@ -19,13 +19,15 @@ class SubscriptionSuccess extends StatelessWidget {
         toolbarHeight: getProportionateScreenHeight(70),
         title: const Text(ConstantText.subscription),
         titleSpacing: 0.1,
-        leading: InkWell(
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.pop(context);
-              Navigator.pop(context);
-            },
-            child: const Icon(Icons.arrow_back_ios)),
+        leading: isFromProfile
+            ? InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                child: const Icon(Icons.arrow_back_ios))
+            : const SizedBox.shrink(),
       ),
       body: SizedBox(
         width: MediaQuery.of(context).size.width,

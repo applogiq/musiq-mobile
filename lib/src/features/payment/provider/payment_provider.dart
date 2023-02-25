@@ -32,8 +32,7 @@ class PaymentProvider extends ChangeNotifier {
     params["payment_price"] = planPrice * 100;
     params["premier_status"] = planName;
     var res = await paymentRepository.createPayment(params);
-    print(res.statusCode);
-    print(res.body);
+
     if (res.statusCode == 201) {
       var data = jsonDecode(res.body);
       PaymentSuccessModel successModel = PaymentSuccessModel.fromMap(data);
@@ -131,7 +130,7 @@ class PaymentProvider extends ChangeNotifier {
 
   void paymentSuccess(BuildContext context, {bool isFromProfile = true}) async {
     await secureStorage.write(
-        key: LocalStorageConstant.subscriptionEndDate, value: null);
+        key: LocalStorageConstant.isOnboardFree, value: "true");
     Navigator.push(
         context,
         MaterialPageRoute(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/features/auth/provider/login_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';
@@ -89,9 +90,30 @@ class HomeScreenSongList extends StatelessWidget {
                                 goToNextfunction: true,
                                 index: index);
                           } else {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    const SubscriptionsScreen()));
+                            print(context
+                                    .read<LoginProvider>()
+                                    .userModel!
+                                    .records
+                                    .premiumStatus !=
+                                "free");
+                            if (context
+                                    .read<LoginProvider>()
+                                    .userModel!
+                                    .records
+                                    .premiumStatus !=
+                                "free") {
+                              context.read<ViewAllProvider>().getViewAll(
+                                  title == "New Releases"
+                                      ? ViewAllStatus.newRelease
+                                      : ViewAllStatus.recentlyPlayed,
+                                  context: context,
+                                  goToNextfunction: true,
+                                  index: index);
+                            } else {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      const SubscriptionsScreen()));
+                            }
                           }
                         },
                         child: Container(
@@ -112,21 +134,57 @@ class HomeScreenSongList extends StatelessWidget {
                                       fit: BoxFit.cover,
                                     ),
                                   ),
-                                  (songList[index].premiumStatus != "free")
-                                      ? Padding(
-                                          padding: const EdgeInsets.all(4.0),
-                                          child: CircleAvatar(
-                                            radius: 15,
-                                            backgroundColor: CustomColor.bg,
-                                            child: Image.asset(
-                                              Images.crownImage,
-                                              height: 21,
-                                              width: 21,
-                                              fit: BoxFit.cover,
-                                            ),
+                                  Builder(builder: (context) {
+                                    if (songList[index].premiumStatus ==
+                                        "free") {
+                                      return const SizedBox.shrink();
+                                    } else if (songList[index].premiumStatus !=
+                                            "free" &&
+                                        context
+                                                .read<LoginProvider>()
+                                                .userModel!
+                                                .records
+                                                .premiumStatus ==
+                                            "free") {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: CircleAvatar(
+                                          radius: 15,
+                                          backgroundColor: CustomColor.bg,
+                                          child: Image.asset(
+                                            Images.crownImage,
+                                            height: 21,
+                                            width: 21,
+                                            fit: BoxFit.cover,
                                           ),
-                                        )
-                                      : const SizedBox.shrink()
+                                        ),
+                                      );
+                                    } else {
+                                      return const SizedBox.shrink();
+                                    }
+                                  }),
+                                  // (context
+                                  //                 .read<LoginProvider>()
+                                  //                 .userModel!
+                                  //                 .records
+                                  //                 .premiumStatus !=
+                                  //             "free" ||
+                                  // songList[index].premiumStatus !=
+                                  //     "free")
+                                  // ? Padding(
+                                  //     padding: const EdgeInsets.all(4.0),
+                                  //     child: CircleAvatar(
+                                  //       radius: 15,
+                                  //       backgroundColor: CustomColor.bg,
+                                  //       child: Image.asset(
+                                  //         Images.crownImage,
+                                  //         height: 21,
+                                  //         width: 21,
+                                  //         fit: BoxFit.cover,
+                                  //       ),
+                                  //     ),
+                                  //   )
+                                  //     : const SizedBox.shrink()
                                 ],
                               ),
                               const SizedBox(

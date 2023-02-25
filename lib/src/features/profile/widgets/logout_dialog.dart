@@ -43,8 +43,8 @@ showAlertDialog(BuildContext context) {
           GestureDetector(
             onTap: () async {
               Auth auth = Auth();
-              await auth.logOut();
-              context.read<PlayerProvider>().removeAllData();
+              await auth.logOut(context);
+              await context.read<PlayerProvider>().removeAllData();
 
               Provider.of<RegisterProvider>(context, listen: false)
                   .clearError();

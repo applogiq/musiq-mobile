@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/core/constants/images.dart';
-import 'package:musiq/src/features/home/provider/home_provider.dart';
+import 'package:musiq/src/features/auth/provider/login_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';
@@ -15,6 +15,17 @@ import '../screens/sliver_app_bar/view_all_screen.dart';
 class TopAlbum extends StatelessWidget {
   const TopAlbum({super.key, required this.album});
   final Album album;
+
+  bool getPremiumStatus(BuildContext context, Record record, int index) {
+    // album.records[index]
+    if (record.premiumStatus == "premium" &&
+        context.read<LoginProvider>().userModel!.records.premiumStatus ==
+            "free") {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +73,11 @@ class TopAlbum extends StatelessWidget {
                                 } else {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => ViewAllScreen(
-                                            status: ViewAllStatus.album,
-                                            id: album.records[index].id,
-                                            isPremium:
-                                                index == 1 ? true : false,
+                                          status: ViewAllStatus.album,
+                                          id: album.records[index].id,
+                                          isPremium: getPremiumStatus(context,
+                                              album.records[index], index)
+                                          // index == 1 ? true : false,
                                           )));
                                 }
                               },
@@ -88,11 +100,8 @@ class TopAlbum extends StatelessWidget {
                                             width: 135,
                                             fit: BoxFit.cover,
                                           ),
-                                    (context
-                                                    .read<HomeProvider>()
-                                                    .premiumStatus ==
-                                                "free" &&
-                                            index == 1)
+                                    (getPremiumStatus(context,
+                                            album.records[index], index))
                                         ? Padding(
                                             padding: const EdgeInsets.all(4.0),
                                             child: CircleAvatar(

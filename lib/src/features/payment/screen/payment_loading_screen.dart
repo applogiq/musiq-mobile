@@ -8,7 +8,7 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 class PaymentLoadingScreen extends StatefulWidget {
   final int amount;
   final bool isFromProfile;
-  // final int validity;
+
   final String orderId;
   const PaymentLoadingScreen(
       {super.key,
@@ -42,9 +42,6 @@ class _PaymentLoadingScreenState extends State<PaymentLoadingScreen> {
       'description': 'Monthly subscription',
       'order_id': orderId,
       'retry': {'enabled': true, 'max_count': 1},
-      'external': {
-        'wallets': ['gpay', 'paytm']
-      },
       'theme': {
         'hide_topbar': true,
         'backdrop_color': "#16151C",

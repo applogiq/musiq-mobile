@@ -13,6 +13,7 @@ import '../../../core/constants/images.dart';
 import '../../../core/constants/style.dart';
 import '../../../core/utils/size_config.dart';
 import '../../../core/utils/time.dart';
+import '../../player/provider/player_provider.dart';
 import '../provider/profile_provider.dart';
 import '../widgets/logout_dialog.dart';
 
@@ -186,6 +187,8 @@ class SignOutWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
+        await context.read<PlayerProvider>().player.stop();
+
         showAlertDialog(context);
       },
       child: const CustomButton(

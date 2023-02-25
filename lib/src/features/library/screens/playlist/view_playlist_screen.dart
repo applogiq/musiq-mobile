@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../../../common_widgets/loader.dart';
 import '../../../../core/constants/color.dart';
 import '../../../../core/utils/url_generate.dart';
+import '../../../auth/provider/login_provider.dart';
 import '../../../common/screen/offline_screen.dart';
 import '../../../home/screens/sliver_app_bar/widgets/playlist_song_tile.dart';
 import '../../../home/screens/sliver_app_bar/widgets/sliver_app_bar.dart';
@@ -120,19 +121,26 @@ class _ViewPlaylistSongScreenState extends State<ViewPlaylistSongScreen> {
                                             return InkWell(
                                               onTap: () {
                                                 if (records[index]
-                                                        .premiumStatus ==
-                                                    "free") {
-                                                  context
-                                                      .read<LibraryProvider>()
-                                                      .navigateToPlayerScreen(
-                                                          context, widget.id!,
-                                                          index: index);
-                                                } else {
+                                                            .premiumStatus ==
+                                                        "premium" &&
+                                                    context
+                                                            .read<
+                                                                LoginProvider>()
+                                                            .userModel!
+                                                            .records
+                                                            .premiumStatus ==
+                                                        "free") {
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               const SubscriptionsScreen()));
+                                                } else {
+                                                  context
+                                                      .read<LibraryProvider>()
+                                                      .navigateToPlayerScreen(
+                                                          context, widget.id!,
+                                                          index: index);
                                                 }
                                               },
                                               child: PlaylistSongListTile(
@@ -157,9 +165,16 @@ class _ViewPlaylistSongScreenState extends State<ViewPlaylistSongScreen> {
                                                     .id,
                                                 duration:
                                                     records[index].duration,
-                                                isPremium: records[index]
-                                                            .premiumStatus !=
-                                                        "free"
+                                                isPremium: (records[index]
+                                                                .premiumStatus ==
+                                                            "premium" &&
+                                                        context
+                                                                .read<
+                                                                    LoginProvider>()
+                                                                .userModel!
+                                                                .records
+                                                                .premiumStatus ==
+                                                            "free")
                                                     ? true
                                                     : false,
                                               ),
