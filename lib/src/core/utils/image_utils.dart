@@ -2,9 +2,7 @@ import 'dart:io';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:musiq/main.dart';
 import 'package:musiq/src/core/constants/local_storage_constants.dart';
-import 'package:musiq/src/core/local/model/user_model.dart';
 import 'package:musiq/src/core/utils/url_generate.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,7 +12,7 @@ loadImage(String userId) async {
 
   var response = await http.get(Uri.parse(generateProfileImageUrl(userId)));
   Directory documentDirectory = await getApplicationDocumentsDirectory();
- 
+
   int timestamp = DateTime.now().millisecondsSinceEpoch;
   File file = File(join(documentDirectory.path, '${timestamp.toString()}.png'));
   file.writeAsBytesSync(response.bodyBytes);
@@ -22,14 +20,4 @@ loadImage(String userId) async {
       key: LocalStorageConstant.profileUrl, value: file.path);
   // objectbox.saveImage(ProfileImage(
   //     isImage: true, registerId: userId, profileImageString: file.path));
-}
-
-String getImage() {
-  List<ProfileImage> r = objectbox.getImage();
-  if (r.isNotEmpty) {
-    ProfileImage res = r.first;
-   
-    return res.profileImageString;
-  }
-  return "";
 }

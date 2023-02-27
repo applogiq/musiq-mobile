@@ -1,15 +1,14 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:musiq/src/features/auth/domain/repository/auth_repo.dart';
-import 'package:musiq/src/features/auth/provider/login_provider.dart';
-import 'package:musiq/src/features/auth/screens/login_screen.dart';
+import 'package:musiq/src/core/extensions/context_extension.dart';
 import 'package:musiq/src/core/routing/route_name.dart';
 import 'package:musiq/src/core/utils/navigation.dart';
 import 'package:musiq/src/core/utils/validation.dart';
+import 'package:musiq/src/features/auth/domain/repository/auth_repo.dart';
+import 'package:musiq/src/features/auth/provider/login_provider.dart';
+import 'package:musiq/src/features/auth/screens/login_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/string.dart';
@@ -63,7 +62,9 @@ class ForgotPasswordProvider extends ChangeNotifier with InputValidationMixin {
       otpErrorMessage = "";
       isOTPButtonEnable = false;
       buttonEmailStatus(false);
-      Navigation.navigateToScreen(context, RouteName.forgotPasswordOTP);
+      if (context.mounted) {
+        Navigation.navigateToScreen(context, RouteName.forgotPasswordOTP);
+      }
     } else if (res.statusCode == 404) {
       emailAddressErrorMessage = ConstantText.incorrectEmail;
       buttonEmailStatus(true);
@@ -123,8 +124,10 @@ class ForgotPasswordProvider extends ChangeNotifier with InputValidationMixin {
       confirmPasswordErrorMessage = "";
       newPasswordErrorMessage = "";
       isResetButtonEnable = false;
-      Navigation.navigateToScreen(
-          context, RouteName.forgotPasswordChangePassword);
+      if (context.mounted) {
+        Navigation.navigateToScreen(
+            context, RouteName.forgotPasswordChangePassword);
+      }
     } else if (res.statusCode == 400) {
       otpErrorMessage = ConstantText.invalidOTP;
       isOTPButtonEnable = true;
@@ -230,11 +233,13 @@ class ForgotPasswordProvider extends ChangeNotifier with InputValidationMixin {
 
     if (response.statusCode == 200) {
       isResetButtonEnable = false;
-      context.read<LoginProvider>().isPasswordReset = true;
-      context.read<LoginProvider>().resetPasswordTimer();
-      notifyListeners();
+      if (context.mounted) {
+        context.read<LoginProvider>().isPasswordReset = true;
+        context.read<LoginProvider>().resetPasswordTimer();
+        notifyListeners();
 
-      Navigation.removeAllScreenFromStack(context, const LoginScreen());
+        Navigation.removeAllScreenFromStack(context, const LoginScreen());
+      }
     } else {
       isResetButtonEnable = true;
     }

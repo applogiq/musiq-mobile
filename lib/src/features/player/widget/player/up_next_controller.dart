@@ -42,14 +42,14 @@ class UpNextController extends StatelessWidget {
                               }
                               MediaItem? metadata;
                               try {
-                                int currentShuffleIndex = playerProvider
-                                    .player.shuffleIndices!
-                                    .indexOf(state!.currentIndex);
+                                // int currentShuffleIndex = playerProvider
+                                //     .player.shuffleIndices!
+                                //     .indexOf(state!.currentIndex);
                                 int index =
                                     playerProvider.player.shuffleModeEnabled
                                         ? playerProvider.player.shuffleIndices!
-                                            .indexOf(state.currentIndex)
-                                        : state.currentIndex;
+                                            .indexOf(state!.currentIndex)
+                                        : state!.currentIndex;
                                 metadata = state.effectiveSequence[index + 1]
                                     .tag as MediaItem;
                               } catch (e) {

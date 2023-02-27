@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:musiq/src/app.dart';
@@ -9,7 +8,7 @@ import 'package:musiq/src/core/utils/my_http_overrides.dart';
 
 // Object box instance
 late ObjectBox objectbox;
-late AudioHandler audioHandler;
+// late AudioHandler audioHandler;
 Future<void> main() async {
   // This instance for handshaking error fix
   HttpOverrides.global = MyHttpOverrides();
@@ -21,7 +20,7 @@ Future<void> main() async {
   await JustAudioBackground.init(
     androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
     androidNotificationChannelName: 'Audio playback',
-    androidNotificationIcon: 'mipmap/ic',
+    androidNotificationIcon: 'mipmap/ic_notification',
     androidShowNotificationBadge: true,
     androidNotificationOngoing: true,
   );

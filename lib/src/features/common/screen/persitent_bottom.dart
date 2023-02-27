@@ -22,13 +22,13 @@ class PersistentBottomBarScaffold extends StatefulWidget {
 
 class _PersistentBottomBarScaffoldState
     extends State<PersistentBottomBarScaffold> {
-  final int _selectedTab = 0;
+  // final int _selectedTab = 0;
 
   @override
   Widget build(BuildContext context) {
     final WeSlideController controller = WeSlideController();
 
-    final colorScheme = Theme.of(context).colorScheme;
+    // final colorScheme = Theme.of(context).colorScheme;
     const double panelMinSize = 120.0;
     final double panelMaxSize = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -54,6 +54,7 @@ class _PersistentBottomBarScaffoldState
         child: Scaffold(
           body: Consumer<PlayerProvider>(builder: (context, playerProvider, _) {
             return WeSlide(
+              controller: controller,
               panelMinSize: playerProvider.isPlaying ? panelMinSize : 60,
               panelMaxSize: panelMaxSize,
               body: Consumer<BottomNavigationBarProvider>(
@@ -79,7 +80,9 @@ class _PersistentBottomBarScaffoldState
                     )
                   : const SizedBox.shrink(),
               panel: PlayerScreen(
-                onTap: controller.hide,
+                onTap: () {
+                  controller.hide();
+                },
               ),
               footer: BottomNavigationBarWidget(
                 width: width,

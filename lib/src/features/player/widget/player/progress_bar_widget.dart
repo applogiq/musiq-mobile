@@ -27,7 +27,7 @@ class ProgressBarWidget extends StatelessWidget {
           return Column(
             children: [
               StreamBuilder<Duration>(builder: (context, snapshot) {
-                final position = snapshot.data;
+                // final position = snapshot.data;
                 return ProgressBar(
                   progress: Duration(milliseconds: pro.progressDurationValue),
                   buffered: Duration(milliseconds: pro.bufferDurationValue),

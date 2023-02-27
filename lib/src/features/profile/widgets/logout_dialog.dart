@@ -45,6 +45,8 @@ showAlertDialog(BuildContext context) {
               Auth auth = Auth();
               await auth.logOut(context);
               await context.read<PlayerProvider>().removeAllData();
+              await context.read<PlayerProvider>().playlist.clear();
+              context.read<PlayerProvider>().inQueue = false;
 
               Provider.of<RegisterProvider>(context, listen: false)
                   .clearError();
@@ -119,7 +121,8 @@ showSubscriptionDialog(BuildContext context) {
                   onTap: () {
                     context
                         .read<PaymentProvider>()
-                        .continueWithFreePlanSubscription(context);
+                        .continueWithFreePlanSubscription(context,
+                            isFromDialog: true);
                     // Navigation.navigateToScreen(context, navigationString);
                     // Provider.of<LoginProvider>(context, listen: false).isErr();
                   },

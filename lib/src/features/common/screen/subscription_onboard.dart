@@ -21,7 +21,6 @@ class SubscriptionOnboard extends StatefulWidget {
 class _SubscriptionOnboardState extends State<SubscriptionOnboard> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       context.read<HomeProvider>().refreshPremiumStatus();
@@ -76,6 +75,7 @@ class _SubscriptionOnboardState extends State<SubscriptionOnboard> {
             }
           },
           child: CustomButton(
+            isLoading: pro.isPaymentLoad,
             label: pro.subscriptionPlan != SubscriptionPlan.free
                 ? ConstantText.payNow
                 : ConstantText.continueWithFreePlan,

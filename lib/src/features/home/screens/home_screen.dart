@@ -47,11 +47,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ? const SizedBox.shrink()
                       : Consumer<HomeProvider>(
                           builder: (context, homeProvider, _) {
-                          return HomeScreenSongList(
-                            title: "Recently Played",
-                            isViewAll: true,
-                            songList: homeProvider.recentSongListModel,
-                          );
+                          return homeProvider.isRecentlyPlayedLoad
+                              ? const LoaderScreen()
+                              : HomeScreenSongList(
+                                  title: "Recently Played",
+                                  isViewAll: true,
+                                  songList: homeProvider.recentSongListModel,
+                                );
                         }),
                   TrendingHitsWidget(
                     trendingHitsModel: pro.trendingHitsModel,

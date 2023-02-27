@@ -1,15 +1,3 @@
-// To parse this JSON data, do
-//
-//     final premiumPriceModel = premiumPriceModelFromMap(jsonString);
-
-import 'dart:convert';
-
-PremiumPriceModel premiumPriceModelFromMap(String str) =>
-    PremiumPriceModel.fromMap(json.decode(str));
-
-String premiumPriceModelToMap(PremiumPriceModel data) =>
-    json.encode(data.toMap());
-
 class PremiumPriceModel {
   PremiumPriceModel({
     required this.success,

@@ -166,7 +166,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                                 onTap: () {
                                   context
                                       .read<PlayerProvider>()
-                                      .playOrPause(playerState!);
+                                      .playOrPause(playerState!,context);
                                 },
                                 child: (processingState ==
                                             ProcessingState.loading ||

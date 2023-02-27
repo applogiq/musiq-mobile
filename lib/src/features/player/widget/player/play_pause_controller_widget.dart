@@ -25,7 +25,9 @@ class PlayPauseController extends StatelessWidget {
             final playing = playerState?.playing;
             return GestureDetector(
                 onTap: () {
-                  context.read<PlayerProvider>().playOrPause(playerState!);
+                  context
+                      .read<PlayerProvider>()
+                      .playOrPause(playerState!, context);
                 },
                 child: (processingState == ProcessingState.loading ||
                         processingState == ProcessingState.buffering)

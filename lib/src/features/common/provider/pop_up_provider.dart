@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musiq/src/core/constants/local_storage_constants.dart';
+import 'package:musiq/src/core/extensions/context_extension.dart';
 import 'package:musiq/src/features/library/provider/library_provider.dart';
 import 'package:musiq/src/features/player/domain/model/player_song_list_model.dart';
 import 'package:musiq/src/features/profile/widgets/logout_dialog.dart';
@@ -78,10 +79,20 @@ class PopUpProvider extends ChangeNotifier {
     print("subscriptionEndDate");
     print(subscriptionEndDate);
     if (subscriptionEndDate != null) {
-      DateTime endDate = DateTime.parse(subscriptionEndDate);
-      DateTime now = DateTime.now();
+      DateTime endDate = DateTime.parse(subscriptionEndDate).toLocal();
+      DateTime now = DateTime.now().toLocal();
+      print("😁😁😂😂😂");
+      print(endDate);
+      print("😁😁😂😂😂");
+      print(endDate.isAfter(now));
+
+      print(now);
       if (endDate.compareTo(now) < 0) {
-        showSubscriptionDialog(context);
+        if (context.mounted) {
+          showSubscriptionDialog(context);
+        }
+      } else {
+        print("SSSSDD");
       }
     }
     // await secureStorage.write(

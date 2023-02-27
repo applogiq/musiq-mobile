@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart ' as http;
 import 'package:image_picker/image_picker.dart';
@@ -46,6 +47,7 @@ class ProfileProvider extends ChangeNotifier {
   String nameError = "";
 
   String nameErrorMessage = "";
+  File? compressedFile;
 //! END
 
   File? pickedImage;
@@ -222,10 +224,23 @@ class ProfileProvider extends ChangeNotifier {
     if (pickedImage == null) return;
     final imageTemp = File(pickedImage.path);
     fileImage = imageTemp;
-    isCropSaveLoading = false;
+    notifyListeners();
+    var result = await FlutterImageCompress.compressWithFile(
+      fileImage!.absolute.path,
+      quality: 20,
+      rotate: 0,
+    );
+    compressedFile = await fileImage!.writeAsBytes(result!);
+    // fileImage = result;
+    // notifyListeners();
+    // return result;
+
+    // imageTemp = result
+    // isCropSaveLoading = false;
 
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const ImageCrop()));
+
     // Navigation.navigateToScreen(context, RouteName.crop);
 
     // if (_pickedImage != null) {

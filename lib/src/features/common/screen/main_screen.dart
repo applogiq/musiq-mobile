@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/common/provider/pop_up_provider.dart';
 import 'package:musiq/src/features/common/screen/persitent_bottom.dart';
@@ -45,7 +47,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
+    // double width = MediaQuery.of(context).size.width;
     return Consumer<BottomNavigationBarProvider>(
       builder: (context, pro, _) {
         return PersistentBottomBarScaffold(

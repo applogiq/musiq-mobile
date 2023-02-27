@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -7,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musiq/main.dart';
 import 'package:musiq/src/core/constants/local_storage_constants.dart';
 import 'package:musiq/src/core/constants/string.dart';
+import 'package:musiq/src/core/extensions/context_extension.dart';
 import 'package:musiq/src/core/utils/image_utils.dart';
 import 'package:musiq/src/features/artist/screens/artist_preference_screen/artist_preference_screen.dart';
 import 'package:musiq/src/features/common/screen/main_screen.dart';
@@ -96,7 +95,9 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
     notifyListeners();
     print(response.body);
     if (response.statusCode == 200) {
-      context.read<BottomNavigationBarProvider>().selectedBottomIndex = 0;
+      if (context.mounted) {
+        context.read<BottomNavigationBarProvider>().selectedBottomIndex = 0;
+      }
       isShowStatus = true;
       isErrorStatus = false;
 
@@ -121,7 +122,9 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
       password = "";
       emailAddressErrorMessage = "";
       passwordErrorMessage = "";
-      navigateToNextPage(user, context);
+      if (context.mounted) {
+        navigateToNextPage(user, context);
+      }
     } else if (response.statusCode == 404) {
       isShowStatus = true;
       isErrorStatus = true;

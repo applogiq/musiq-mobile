@@ -134,7 +134,7 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
     maxAppBarHeight = MediaQuery.of(context).size.height * 0.5;
     minAppBarHeight = MediaQuery.of(context).padding.top +
         MediaQuery.of(context).size.height * 0.08;
-    double width = MediaQuery.of(context).size.width;
+    // double width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Provider.of<InternetConnectionStatus>(context) ==
               InternetConnectionStatus.disconnected
@@ -177,18 +177,16 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                                         ),
                                         padding: const EdgeInsets.all(0.0),
                                         onSelected: (value) {
-                                          if (value == 1) {
-                                            if (widget.isPremium) {
-                                              Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const SubscriptionsScreen()));
-                                            } else {
-                                              context
-                                                  .read<ViewAllProvider>()
-                                                  .addQueue(
-                                                      widget.status, context);
-                                            }
+                                          if (widget.isPremium) {
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const SubscriptionsScreen()));
+                                          } else {
+                                            context
+                                                .read<ViewAllProvider>()
+                                                .addQueue(
+                                                    widget.status, context);
                                           }
                                         },
                                         itemBuilder: (ctx) => [

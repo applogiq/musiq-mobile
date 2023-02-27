@@ -29,7 +29,7 @@ class SongSearchListView extends StatelessWidget {
               if (state != null) {
                 var s = state.effectiveSequence[state.currentIndex].tag
                     as MediaItem;
-                if (state.sequence.isEmpty ?? true) {
+                if (state.sequence.isEmpty) {
                   return const ColoredBox(
                     color: Colors.black,
                   );

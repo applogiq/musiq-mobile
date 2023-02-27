@@ -152,16 +152,16 @@ class SongListTile extends StatelessWidget {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const SubscriptionsScreen()));
                       } else {
-                        PlayerSongListModel playerSongListModel =
-                            PlayerSongListModel(
-                                id: songId,
-                                albumName: albumName,
-                                title: songName,
-                                imageUrl: imageUrl,
-                                musicDirectorName: musicDirectorName,
-                                duration: duration,
-                                premium:
-                                    isPremium != true ? "free" : "premium");
+                        // PlayerSongListModel playerSongListModel =
+                        //     PlayerSongListModel(
+                        //         id: songId,
+                        //         albumName: albumName,
+                        //         title: songName,
+                        //         imageUrl: imageUrl,
+                        //         musicDirectorName: musicDirectorName,
+                        //         duration: duration,
+                        //         premium:
+                        //             isPremium != true ? "free" : "premium");
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => SongInfoScreen(id: songId)));
                         // Navigation.navigateToScreen(context, RouteName.songInfo,

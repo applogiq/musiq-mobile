@@ -274,6 +274,8 @@ class ViewAllProvider extends ChangeNotifier {
       default:
         break;
     }
-    context.read<PlayerProvider>().addSongToQueueSongList(playerSongList);
+    context
+        .read<PlayerProvider>()
+        .addSongToQueueSongList(playerSongList, context);
   }
 }

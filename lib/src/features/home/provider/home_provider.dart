@@ -1,10 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musiq/src/core/constants/local_storage_constants.dart';
-import 'package:musiq/src/features/common/screen/main_screen.dart';
+import 'package:musiq/src/features/payment/provider/payment_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/enums/enums.dart';
 import '../../../core/routing/route_name.dart';
@@ -22,6 +25,7 @@ import '../domain/repository/home_repo.dart';
 class HomeProvider extends ChangeNotifier {
   String premiumStatus = "free";
   FlutterSecureStorage storage = const FlutterSecureStorage();
+  bool isRecentlyPlayedLoad = false;
   bool isLoad = true;
   RecentlyPlayed recentlyPlayed = RecentlyPlayed(
       success: false, message: "No records", records: [], totalrecords: 0);
@@ -82,10 +86,10 @@ class HomeProvider extends ChangeNotifier {
   }
 
   recentSongList() async {
-    print("It' s recent");
     var res = await homeRepository.getRecentPlayedList(10);
     recentlyPlayed.records.clear();
     recentSongListModel.clear();
+
     notifyListeners();
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);
@@ -100,7 +104,6 @@ class HomeProvider extends ChangeNotifier {
                 recentlyPlayed.records[i][0].musicDirectorName[0].toString(),
             premiumStatus: recentlyPlayed.records[i][0].premiumStatus));
       }
-      print("It' s recent list changed");
 
       notifyListeners();
     } else {
@@ -110,6 +113,7 @@ class HomeProvider extends ChangeNotifier {
           records: [],
           totalrecords: 0);
     }
+    isRecentlyPlayedLoad = false;
     notifyListeners();
   }
 
@@ -199,8 +203,14 @@ class HomeProvider extends ChangeNotifier {
 
   void goToHome(BuildContext context) async {
     await storage.write(key: LocalStorageConstant.isOnboardFree, value: "true");
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const MainScreen()));
-    refreshPremiumStatus();
+    context.read<PaymentProvider>().continueWithFreePlanSubscription(context);
+    // Navigator.pop(context);
+  }
+
+  void clearRecentSongList() {
+    recentlyPlayed.records.clear();
+    recentSongListModel.clear();
+    isRecentlyPlayedLoad = true;
+    notifyListeners();
   }
 }

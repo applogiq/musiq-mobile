@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:convert';
 import 'dart:developer';
 
@@ -7,6 +5,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musiq/src/core/extensions/context_extension.dart';
 import 'package:musiq/src/core/local/model/favourite_model.dart';
 import 'package:musiq/src/features/library/domain/models/favourite_model.dart';
 import 'package:musiq/src/features/player/domain/model/player_song_list_model.dart';
@@ -68,7 +67,6 @@ class PlayerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // late Store store;
   List<int> favouritesList = [];
   List<int> queueIdList = [];
   List songPosition = [];
@@ -144,7 +142,9 @@ class PlayerProvider extends ChangeNotifier {
     if (res.statusCode == 200) {
       objectbox.removeFavourite(id);
       if (isFromFav) {
-        ctx.read<LibraryProvider>().getFavouritesList();
+        if (ctx.mounted) {
+          ctx.read<LibraryProvider>().getFavouritesList();
+        }
       }
       toastMessage(
           "Song removed from favourite list", Colors.grey, Colors.white);
@@ -158,7 +158,7 @@ class PlayerProvider extends ChangeNotifier {
     print("fgdfg");
     try {
       List<SongListModel> songListModels = [];
-      List<MediaItem> mediaItems = [];
+
       // removePlaylist();
 
       songListModels.add(SongListModel(
@@ -210,6 +210,8 @@ class PlayerProvider extends ChangeNotifier {
       await getFavourites();
       var index = await secureStorage.read(key: "currentIndex");
       var songPosition = await secureStorage.read(key: "lastPosition");
+      isPlaying = false;
+      notifyListeners();
       print(songPosition);
       List songPositionList = [];
       List songPositionSeconds = [];
@@ -292,13 +294,15 @@ class PlayerProvider extends ChangeNotifier {
 
   void goToPlayer(BuildContext context,
       List<PlayerSongListModel> playerSongList, int index) async {
-    player.stop();
-    playlist = ConcatenatingAudioSource(children: []);
     try {
-      List<MediaItem> mediaItems = [];
+      player.stop();
+      playlist = ConcatenatingAudioSource(children: []);
+
       List<SongListModel> songListModels = [];
       // removePlaylist();
-      for (var e in playerSongList) {
+      // for (var e in playerSongList) {
+      for (int i = 0; i < playerSongList.length; i++) {
+        var e = playerSongList[i];
         if (e.premium == "free") {
           songListModels.add(SongListModel(
               songId: e.id,
@@ -352,15 +356,21 @@ class PlayerProvider extends ChangeNotifier {
                 ),
                 tag: item),
           );
+        } else {
+          if (i <= index) {
+            index--;
+          }
         }
       }
+
       objectbox.removeAllQueueSong();
       objectbox.addSongListQueue(songListModels);
       player.setAudioSource(playlist);
       player.seek(Duration.zero, index: index);
+
       isPlaying = true;
       notifyListeners();
-      play();
+      play(context);
     } catch (e) {
       debugPrint(e.toString());
     }
@@ -381,73 +391,98 @@ class PlayerProvider extends ChangeNotifier {
   //             )).where((state) =>
   //         state.shuffleIndices == null ||
   //         state.queue.length == state.shuffleIndices!.length);
-  play() {
-    player.play();
-    player.positionStream.listen((event) {
-      progressDurationValue = event.inMilliseconds;
-      notifyListeners();
-    });
-    player.durationStream.listen((event) {
-      try {
-        totalDurationValue = event!.inMilliseconds;
-      } catch (e) {}
-      notifyListeners();
-    });
-    player.bufferedPositionStream.listen((event) {
-      bufferDurationValue = event.inMilliseconds;
-    });
-    player.currentIndexStream.listen((event) {
-      storage.write(key: "currentIndex", value: event.toString());
-    });
-    player.positionStream.listen((event) {
-      if (event.toString().trim() != " 0:00:00.000000".toString().trim()) {
-        storage.write(key: "lastPosition", value: event.toString());
-      }
-    });
-    player.playerStateStream.listen((event) async {
-      if (event.processingState == ProcessingState.ready) {
-        var metaData = player.sequenceState!
-            .effectiveSequence[player.currentIndex!].tag as MediaItem;
+  play(BuildContext context) {
+    try {
+      player.play();
+      player.playbackEventStream.listen((event) async {
+        if (event.processingState == ProcessingState.ready) {
+          var metaData = player.sequenceState!
+              .effectiveSequence[player.currentIndex!].tag as MediaItem;
 
-        Map params = {"song_id": metaData.extras!["song_id"]};
-        var res = await PlayerRepo().recentList(params);
-        print(res.statusCode);
-        print(res.body);
-        if (res.statusCode == 200) {
-          HomeProvider().recentSongList();
+          Map params = {"song_id": metaData.extras!["song_id"]};
+          var res = await PlayerRepo().recentList(params);
+
+          if (res.statusCode == 200) {
+            if (context.mounted) {
+              context.read<HomeProvider>().recentSongList();
+            }
+          }
         }
-      }
-    });
+      });
+      player.positionStream.listen((event) {
+        progressDurationValue = event.inMilliseconds;
+        notifyListeners();
+      });
+      player.durationStream.listen((event) {
+        try {
+          totalDurationValue = event!.inMilliseconds;
+        } catch (e) {
+          debugPrint(e.toString());
+        }
+        notifyListeners();
+      });
+      player.bufferedPositionStream.listen((event) {
+        bufferDurationValue = event.inMilliseconds;
+      });
+      player.currentIndexStream.listen((event) {
+        storage.write(key: "currentIndex", value: event.toString());
+      });
+      player.positionStream.listen((event) {
+        if (event.toString().trim() != " 0:00:00.000000".toString().trim()) {
+          storage.write(key: "lastPosition", value: event.toString());
+        }
+      });
+      player.playerStateStream.listen((event) async {
+        if (event.processingState == ProcessingState.ready) {
+          var metaData = player.sequenceState!
+              .effectiveSequence[player.currentIndex!].tag as MediaItem;
+
+          Map params = {"song_id": metaData.extras!["song_id"]};
+          var res = await PlayerRepo().recentList(params);
+
+          if (res.statusCode == 200) {
+            if (context.mounted) {
+              context.read<HomeProvider>().recentSongList();
+            }
+          }
+        }
+      });
+    } catch (e) {}
   }
 
-  void addSongToQueueSongList(List<PlayerSongListModel> playerSongList) async {
+  void addSongToQueueSongList(
+      List<PlayerSongListModel> playerSongList, BuildContext context) async {
     print(playerSongList.length);
     try {
       List<SongListModel> songListModels = [];
-      List<MediaItem> mediaItems = [];
 
       for (var e in playerSongList) {
-        songListModels.add(SongListModel(
-            songId: e.id,
-            albumName: e.albumName,
-            title: e.title,
-            musicDirectorName: e.musicDirectorName,
-            imageUrl: e.imageUrl,
-            songUrl: generateSongUrl(e.id),
-            duration: e.duration));
-        var item = MediaItem(
-            id: generateSongUrl(e.id),
-            album: e.albumName,
-            title: e.title,
-            artist: e.musicDirectorName,
-            duration: Duration(milliseconds: totalDuration(e.duration)),
-            artUri: Uri.parse(e.imageUrl),
-            extras: {"song_id": e.id});
-        await playlist.add(AudioSource.uri(
-            Uri.parse(
-              generateSongUrl(e.id),
-            ),
-            tag: item));
+        if (e.premium == "premium" &&
+            context.read<LoginProvider>().userModel!.records.premiumStatus ==
+                "free") {
+        } else {
+          songListModels.add(SongListModel(
+              songId: e.id,
+              albumName: e.albumName,
+              title: e.title,
+              musicDirectorName: e.musicDirectorName,
+              imageUrl: e.imageUrl,
+              songUrl: generateSongUrl(e.id),
+              duration: e.duration));
+          var item = MediaItem(
+              id: generateSongUrl(e.id),
+              album: e.albumName,
+              title: e.title,
+              artist: e.musicDirectorName,
+              duration: Duration(milliseconds: totalDuration(e.duration)),
+              artUri: Uri.parse(e.imageUrl),
+              extras: {"song_id": e.id});
+          await playlist.add(AudioSource.uri(
+              Uri.parse(
+                generateSongUrl(e.id),
+              ),
+              tag: item));
+        }
       }
       // player.setAudioSource(playlist);
       objectbox.addSongListQueue(songListModels);
@@ -466,9 +501,9 @@ class PlayerProvider extends ChangeNotifier {
     // print(_player.currentIndex);
   }
 
-  void playOrPause(PlayerState playerState) {
+  void playOrPause(PlayerState playerState, BuildContext context) {
     if (playerState.playing == false) {
-      play();
+      play(context);
     } else if (playerState.playing == true &&
         playerState.processingState == ProcessingState.completed) {
       player.seek(Duration.zero, index: 0);
@@ -552,7 +587,7 @@ class PlayerProvider extends ChangeNotifier {
         tag: item));
     player.setAudioSource(playlist);
 
-    play();
+    play(context);
   }
 
   void songInfo(String songId) async {

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -5,10 +7,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musiq/src/core/enums/enums.dart';
 import 'package:musiq/src/features/auth/domain/models/user_model.dart';
 import 'package:musiq/src/features/auth/provider/login_provider.dart';
+import 'package:musiq/src/features/common/screen/subscription_onboard.dart';
 import 'package:musiq/src/features/payment/domain/model/payment_price_model.dart';
 import 'package:musiq/src/features/payment/domain/model/payment_success_model.dart';
 import 'package:musiq/src/features/payment/domain/repo/payment_repo.dart';
-import 'package:musiq/src/features/payment/screen/subscription_screen.dart';
 import 'package:musiq/src/features/payment/screen/subscription_success.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +28,7 @@ class PaymentProvider extends ChangeNotifier {
   SubscriptionPlan subscriptionPlan = SubscriptionPlan.threeMonths;
   PremiumPriceModel premiumPriceModel = PremiumPriceModel(
       success: false, message: "", records: [], totalrecords: 0);
+  bool isPaymentLoad = false;
 
   createPayment(BuildContext context, {bool isFromProfile = true}) async {
     Map params = {};
@@ -139,20 +142,41 @@ class PaymentProvider extends ChangeNotifier {
                 )));
   }
 
-  void continueWithFreePlanSubscription(BuildContext context) async {
-    FlutterSecureStorage secureStorage = const FlutterSecureStorage();
-    await secureStorage.write(
-        key: LocalStorageConstant.subscriptionEndDate, value: null);
-    Navigator.pop(context);
+  void continueWithFreePlanSubscription(BuildContext context,
+      {bool isFromDialog = false}) async {
+    Map params = {};
+
+    params["premier_status"] = "free";
+    isPaymentLoad = true;
+    notifyListeners();
+    var res = await paymentRepository.createPayment(params);
+
+    if (res.statusCode == 201) {
+      FlutterSecureStorage secureStorage = const FlutterSecureStorage();
+      await secureStorage.write(
+          key: LocalStorageConstant.subscriptionEndDate, value: null);
+      Map<String, String> localData = await secureStorage.readAll();
+      context.read<LoginProvider>().emailAddress = localData["email"] ?? "";
+      context.read<LoginProvider>().password = localData["password_cred"] ?? "";
+      if (localData["email"] != null) {
+        await context.read<LoginProvider>().login(context);
+      }
+      isPaymentLoad = false;
+      notifyListeners();
+    }
+
+    if (isFromDialog) {
+      Navigator.pop(context);
+    }
   }
 
   void viewPlanSubscription(BuildContext context) async {
     FlutterSecureStorage secureStorage = const FlutterSecureStorage();
     await secureStorage.write(
         key: LocalStorageConstant.subscriptionEndDate, value: null);
-    Navigator.pop(context);
+    // Navigator.pop(context);
 
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const SubscriptionsScreen()));
+        MaterialPageRoute(builder: (context) => const SubscriptionOnboard()));
   }
 }

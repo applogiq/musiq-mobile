@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/cupertino.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
 import 'package:musiq/src/core/constants/constant.dart';
@@ -60,6 +62,7 @@ class _PaymentLoadingScreenState extends State<PaymentLoadingScreen> {
     print(response.orderId);
     await context.read<PaymentProvider>().confirmPayment(
         context, response.orderId!, response.paymentId!, response.signature!);
+
     context
         .read<PaymentProvider>()
         .paymentSuccess(context, isFromProfile: widget.isFromProfile);

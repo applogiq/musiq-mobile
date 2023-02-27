@@ -182,7 +182,9 @@ class LibraryProvider extends ChangeNotifier {
             duration: element.duration,
             premium: element.premiumStatus));
       }
-      context.read<PlayerProvider>().addSongToQueueSongList(playSongListModel);
+      context
+          .read<PlayerProvider>()
+          .addSongToQueueSongList(playSongListModel, context);
     }
   }
 

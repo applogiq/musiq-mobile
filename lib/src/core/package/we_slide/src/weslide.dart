@@ -1,6 +1,9 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+
 import 'weslide_controller.dart';
 
 /// A backdrop widget that displaying contextual and actionable content. =]
@@ -365,40 +368,40 @@ class _WeSlideState extends State<WeSlide> with TickerProviderStateMixin {
   // Get Body Animation [Paralax]
   Animation<Offset> _getAnimationOffSet(
       {required double minSize, required double maxSize}) {
-    final _closedPercentage =
+    final closedPercentage =
         (widget.panelMaxSize - minSize) / widget.panelMaxSize;
 
-    final _openPercentage =
+    final openPercentage =
         (widget.panelMaxSize - maxSize) / widget.panelMaxSize;
 
     return Tween<Offset>(
-            begin: Offset(0.0, _closedPercentage),
-            end: Offset(0.0, _openPercentage))
+            begin: Offset(0.0, closedPercentage),
+            end: Offset(0.0, openPercentage))
         .animate(_ac);
   }
 
   //Get Panel size
   double _getPanelSize() {
-    var _size = 0.0;
+    var size = 0.0;
     /* If footer is visible*/
     if (!widget.hideFooter && widget.footer != null) {
-      _size += widget.footerHeight;
+      size += widget.footerHeight;
     }
     /* If appbar is visible*/
     if (!widget.hideAppBar && widget.appBar != null) {
-      _size += widget.appBarHeight;
+      size += widget.appBarHeight;
     }
 
-    return _size;
+    return size;
   }
 
   /* Get panel maxsize location*/
   double _getPanelLocation() {
-    var _location = widget.panelMaxSize;
+    var location = widget.panelMaxSize;
     if (widget.appBar != null && !widget.hideAppBar) {
-      _location += -widget.appBarHeight;
+      location += -widget.appBarHeight;
     }
-    return _location;
+    return location;
   }
 
   double _getFooterOffset() {
@@ -417,43 +420,43 @@ class _WeSlideState extends State<WeSlide> with TickerProviderStateMixin {
 
   /* Get Body location*/
   double _getBodyLocation() {
-    var _location = 0.0;
+    var location = 0.0;
 
     /* if appbar */
     if (widget.appBar != null) {
-      _location += widget.appBarHeight;
+      location += widget.appBarHeight;
     }
 
     /* if paralax*/
     if (widget.parallax) {
-      _location += _ac.value *
+      location += _ac.value *
           (widget.panelMaxSize - widget.panelMinSize) *
           -widget.parallaxOffset;
     }
-    return _location;
+    return location;
   }
 
   double _getBodyHeight() {
-    var _size = widget.panelMinSize;
+    var size = widget.panelMinSize;
     /* If appbar is visible*/
-    if (widget.appBar != null) _size += widget.appBarHeight;
+    if (widget.appBar != null) size += widget.appBarHeight;
 
     /* if no panelMinSize value*/
     if (widget.panelMinSize == 0.0 && widget.footer != null) {
-      _size += widget.footerHeight;
+      size += widget.footerHeight;
     }
 
-    return _size;
+    return size;
   }
 
   @override
   Widget build(BuildContext context) {
     //Get MediaQuery Sizes
-    final _height = MediaQuery.of(context).size.height;
-    final _width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
 
     return Container(
-      height: _height,
+      height: height,
       color: widget.backgroundColor, // Same as body,
       child: Stack(
         alignment: Alignment.bottomCenter,
@@ -473,8 +476,8 @@ class _WeSlideState extends State<WeSlide> with TickerProviderStateMixin {
                       topRight: Radius.circular(_bodyBorderRadius.value),
                     ),
                     child: SizedBox(
-                      height: _height - _getBodyHeight() - _getFooterOffset(),
-                      width: widget.bodyWidth ?? _width,
+                      height: height - _getBodyHeight() - _getFooterOffset(),
+                      width: widget.bodyWidth ?? width,
                       child: child,
                     ),
                   ),
@@ -541,7 +544,7 @@ class _WeSlideState extends State<WeSlide> with TickerProviderStateMixin {
                   onVerticalDragEnd: _handleVerticalEnd,
                   child: AnimatedContainer(
                     height: widget.panelMaxSize,
-                    width: widget.panelWidth ?? _width,
+                    width: widget.panelWidth ?? width,
                     duration: const Duration(milliseconds: 200),
                     child: ClipRRect(
                       borderRadius: BorderRadius.only(
@@ -558,7 +561,7 @@ class _WeSlideState extends State<WeSlide> with TickerProviderStateMixin {
               children: <Widget>[
                 /** Panel widget **/
                 SizedBox(
-                  height: _height - _getPanelSize(),
+                  height: height - _getPanelSize(),
                   child: widget.panel!,
                 ),
                 /** Panel Header widget **/

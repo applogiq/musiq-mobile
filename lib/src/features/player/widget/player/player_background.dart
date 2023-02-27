@@ -10,9 +10,8 @@ import '../../domain/model/player_song_list_model.dart';
 import '../../provider/player_provider.dart';
 
 class PlayerBackground extends StatelessWidget {
-  const PlayerBackground({
-    super.key,
-  });
+  const PlayerBackground({super.key, required this.onTapped});
+  final Function onTapped;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +71,8 @@ class PlayerBackground extends StatelessWidget {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  checkBackNavigation(context);
+                                  onTapped();
+                                  print("back");
                                 },
                                 child: const RotatedBox(
                                   quarterTurns: 3,

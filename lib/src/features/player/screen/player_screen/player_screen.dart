@@ -39,10 +39,12 @@ class _PlayerScreenState extends State<PlayerScreen> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height,
                     child: Column(
-                      children: const [
-                        PlayerBackground(),
-                        PlayerController(),
-                        UpNextController()
+                      children: [
+                        PlayerBackground(
+                          onTapped: widget.onTap,
+                        ),
+                        const PlayerController(),
+                        const UpNextController()
                       ],
                     ),
                   ),

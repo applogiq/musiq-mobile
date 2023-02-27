@@ -1,15 +1,3 @@
-// To parse this JSON data, do
-//
-//     final paymentSuccessModel = paymentSuccessModelFromMap(jsonString);
-
-import 'dart:convert';
-
-PaymentSuccessModel paymentSuccessModelFromMap(String str) =>
-    PaymentSuccessModel.fromMap(json.decode(str));
-
-String paymentSuccessModelToMap(PaymentSuccessModel data) =>
-    json.encode(data.toMap());
-
 class PaymentSuccessModel {
   PaymentSuccessModel({
     required this.success,
