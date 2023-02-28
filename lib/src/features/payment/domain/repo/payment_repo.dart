@@ -8,6 +8,7 @@ import '../../../../core/constants/api.dart';
 class PaymentRepository {
   BaseApiServices apiServices = NetworkApiService();
   FlutterSecureStorage storage = const FlutterSecureStorage();
+// Get subscription API
   Future<dynamic> getSubscriptionsPlan({limit = 100}) async {
     var subscriptionListUrl = APIConstants.subscriptionListEndPoint;
 
@@ -20,6 +21,7 @@ class PaymentRepository {
     }
   }
 
+// Create Payment API call with request body
   Future<dynamic> createPayment(Map params) async {
     try {
       var userId = await storage.read(key: "id");
@@ -35,6 +37,7 @@ class PaymentRepository {
       rethrow;
     }
   }
+// Confirm Payment API call with request body
 
   Future<dynamic> confirmPayment(Map params) async {
     try {

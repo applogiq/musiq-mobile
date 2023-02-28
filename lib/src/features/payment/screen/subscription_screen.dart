@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:musiq/src/common_widgets/box/vertical_box.dart';
 import 'package:musiq/src/common_widgets/loader.dart';
-import 'package:musiq/src/core/constants/images.dart';
 import 'package:musiq/src/core/enums/enums.dart';
 import 'package:musiq/src/features/auth/provider/login_provider.dart';
-import 'package:musiq/src/features/home/provider/home_provider.dart';
 import 'package:musiq/src/features/payment/provider/payment_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../../common_widgets/box/horizontal_box.dart';
 import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../core/constants/constant.dart';
 import '../../../core/constants/local_storage_constants.dart';
 import '../../../core/utils/size_config.dart';
+import '../widgets/flash_image_widget.dart';
+import '../widgets/get_exclusive_content_widget.dart';
+import '../widgets/plan_description_widget.dart';
+import '../widgets/subscription_card.dart';
 
 class SubscriptionsScreen extends StatefulWidget {
   const SubscriptionsScreen({super.key});
@@ -39,8 +39,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
     FlutterSecureStorage secureStorage = const FlutterSecureStorage();
     var subscriptionEndDate =
         await secureStorage.read(key: LocalStorageConstant.subscriptionEndDate);
-    print("subscriptionEndDate");
-    print(subscriptionEndDate);
+
     if (subscriptionEndDate != null) {
       DateTime endDate = DateTime.parse(subscriptionEndDate);
       DateTime now = DateTime.now();
@@ -53,20 +52,9 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
       isSubscriptionEnable = true;
     }
     setState(() {});
-
-    // await secureStorage.write(
-    //     key: LocalStorageConstant.subscriptionEndDate, value: "2023-02-21");
   }
 
   getPayNowState(LoginProvider loginProvider, PaymentProvider pro) {
-    // (pro.subscriptionPlan != SubscriptionPlan.free &&
-    //     pro.isSubsciptionLoad == false &&
-    //     loginProvider.userModel!.records.subscriptionEndDate == null &&
-    // DateTime.parse(loginProvider.userModel!.records.subscriptionEndDate
-    //             .toString())
-    //         .compareTo(DateTime.now()) <
-    //     0);
-
     if (pro.subscriptionPlan != SubscriptionPlan.free &&
         pro.isSubsciptionLoad == false &&
         loginProvider.userModel!.records.subscriptionEndDate == null) {
@@ -140,349 +128,6 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
           );
         });
       }),
-    );
-  }
-}
-
-class SubscriptionCard extends StatelessWidget {
-  const SubscriptionCard({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<PaymentProvider>(builder: (context, pro, _) {
-      return Row(
-        children: [
-          SubscriptionPlanCard(
-            subscriptionPlan: SubscriptionPlan.free,
-            selectedSubscriptionPlan:
-                context.read<HomeProvider>().getPremierStatus(),
-            imageAsset: Images.chartImage,
-            planName: ConstantText.free,
-            planPrice: "0",
-            comparedPrice: '0',
-            planValidity: 0,
-          ),
-          const HorizontalBox(width: 4),
-          SubscriptionPlanCard(
-            subscriptionPlan: SubscriptionPlan.threeMonths,
-            selectedSubscriptionPlan: SubscriptionPlan.free,
-            imageAsset: Images.starImage,
-            planName: pro.premiumPriceModel.records[0].title,
-            planPrice: pro.premiumPriceModel.records[0].price.toString(),
-            planValidity: pro.premiumPriceModel.records[0].validity,
-            comparedPrice:
-                pro.premiumPriceModel.records[0].comparePrice.toString(),
-          ),
-          const HorizontalBox(width: 4),
-          SubscriptionPlanCard(
-            selectedSubscriptionPlan: SubscriptionPlan.free,
-            subscriptionPlan: SubscriptionPlan.sixMonths,
-            imageAsset: Images.medalStarImage,
-            planName: pro.premiumPriceModel.records[1].title,
-            planPrice: pro.premiumPriceModel.records[1].price.toString(),
-            planValidity: pro.premiumPriceModel.records[1].validity,
-            comparedPrice:
-                pro.premiumPriceModel.records[1].comparePrice.toString(),
-          )
-        ],
-      );
-    });
-  }
-}
-
-class SubscriptionPlanCard extends StatelessWidget {
-  const SubscriptionPlanCard({
-    Key? key,
-    required this.subscriptionPlan,
-    this.isBestSeller = false,
-    required this.imageAsset,
-    required this.planName,
-    required this.planPrice,
-    required this.selectedSubscriptionPlan,
-    required this.comparedPrice,
-    required this.planValidity,
-  }) : super(key: key);
-  final SubscriptionPlan subscriptionPlan;
-  final bool isBestSeller;
-  final String imageAsset;
-  final String planName;
-  final String planPrice;
-  final String comparedPrice;
-  final SubscriptionPlan selectedSubscriptionPlan;
-  final int planValidity;
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Consumer<PaymentProvider>(builder: (context, pro, _) {
-        return GestureDetector(
-          onTap: () {
-            pro.changeSubscription(
-                subscriptionPlan, planName, int.parse(planPrice), planValidity);
-          },
-          child: SizedBox(
-            height: 190,
-            child: Stack(
-              alignment: Alignment.topCenter,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top: 12),
-                  height: 172,
-                  decoration: BoxDecoration(
-                      color: const Color(0xFF23232D),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                          color: pro.subscriptionPlan == subscriptionPlan
-                              ? CustomColor.secondaryColor
-                              : Colors.black,
-                          width: 1)),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF2E2E3D),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Image.asset(
-                            imageAsset,
-                            height: 24,
-                            width: 24,
-                          ),
-                        ),
-                        Text(planName),
-                        Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(ConstantText.rupee,
-                                    style: GoogleFonts.portLligatSans(
-                                        textStyle: const TextStyle(
-                                      fontSize: 18.0,
-                                    ))
-                                    // style: fontWeight400(size: 18.0),
-                                    ),
-                                Text(
-                                  planPrice,
-                                  style: fontWeight600(size: 24.0),
-                                ),
-                              ],
-                            ),
-                            subscriptionPlan != SubscriptionPlan.free
-                                ? Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(ConstantText.rupee,
-                                          style: GoogleFonts.portLligatSans(
-                                            textStyle: fontWeight400(
-                                                size: 14.0,
-                                                color: CustomColor.subTitle),
-                                          )
-                                          // style: fontWeight400(size: 18.0),
-                                          ),
-                                      Text(
-                                        comparedPrice,
-                                        style: TextStyle(
-                                          color: CustomColor.subTitle,
-                                          fontSize: 14.0,
-                                          decoration:
-                                              TextDecoration.lineThrough,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : const SizedBox.shrink(),
-                          ],
-                        ),
-                        (planName.toLowerCase() ==
-                                context
-                                    .read<PaymentProvider>()
-                                    .currentPlan
-                                    .toLowerCase())
-                            ? Container(
-                                margin: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                decoration: BoxDecoration(
-                                    color: const Color(0xFF2E2E3D),
-                                    borderRadius: BorderRadius.circular(12)),
-                                child: Text(
-                                  ConstantText.currentPlan,
-                                  style: fontWeight400(size: 12.0),
-                                ))
-                            : const SizedBox.shrink()
-                      ],
-                    ),
-                  ),
-                ),
-                subscriptionPlan == SubscriptionPlan.threeMonths
-                    ? Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6),
-                        decoration: BoxDecoration(
-                            color: CustomColor.secondaryColor,
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Text(
-                          ConstantText.bestSeller,
-                          style: fontWeight400(size: 12.0),
-                        ),
-                      )
-                    : const SizedBox.shrink()
-              ],
-            ),
-          ),
-        );
-      }),
-    );
-  }
-}
-
-class GetExclusiveSubtitleWidget extends StatelessWidget {
-  const GetExclusiveSubtitleWidget({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        ConstantText.getExclusiveSubTopic,
-        textAlign: TextAlign.center,
-        style: fontWeight400(size: 12.0, color: CustomColor.subTitle),
-      ),
-    );
-  }
-}
-
-class GetExclusiveContentWidget extends StatelessWidget {
-  const GetExclusiveContentWidget({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        ConstantText.getExclusiveContent,
-        style: fontWeight600(size: 26.0),
-      ),
-    );
-  }
-}
-
-class FlashImageWidget extends StatelessWidget {
-  const FlashImageWidget({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: const Color(0xFF23232D),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Image.asset(
-          Images.flashImage,
-          height: 24,
-          width: 24,
-        ),
-      ),
-    );
-  }
-}
-
-class PlanDescriptionWidget extends StatelessWidget {
-  const PlanDescriptionWidget({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Expanded(
-              flex: 3,
-              child: Text(
-                ConstantText.features,
-                style: fontWeight600(size: 14.0),
-              ),
-            ),
-            Expanded(
-              child: Center(
-                  child: Text(
-                ConstantText.free,
-                style: fontWeight600(size: 14.0),
-              )),
-            ),
-            Expanded(
-              child: Text(
-                ConstantText.premium,
-                style: fontWeight600(size: 14.0),
-              ),
-            ),
-          ],
-        ),
-        const VerticalBox(height: 12),
-        const FeatureRowWidget(
-            featureLabel: ConstantText.adFreeSong,
-            freeIcon: Icons.close,
-            premiumIcon: Icons.check),
-        const VerticalBox(height: 16),
-        const FeatureRowWidget(
-            featureLabel: ConstantText.unlimitedStreaming,
-            freeIcon: Icons.check,
-            premiumIcon: Icons.check),
-        const VerticalBox(height: 16),
-        const FeatureRowWidget(
-            featureLabel: ConstantText.access,
-            freeIcon: Icons.close,
-            premiumIcon: Icons.check),
-      ],
-    );
-  }
-}
-
-class FeatureRowWidget extends StatelessWidget {
-  const FeatureRowWidget({
-    Key? key,
-    required this.featureLabel,
-    required this.freeIcon,
-    required this.premiumIcon,
-  }) : super(key: key);
-  final String featureLabel;
-  final IconData freeIcon;
-  final IconData premiumIcon;
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          flex: 3,
-          child: Text(
-            featureLabel,
-            style: fontWeight400(
-              color: CustomColor.subTitle,
-            ),
-          ),
-        ),
-        Expanded(
-          child: Align(
-              alignment: Alignment.center,
-              child: Center(child: Icon(freeIcon))),
-        ),
-        Expanded(
-          child: Icon(premiumIcon),
-        ),
-      ],
     );
   }
 }

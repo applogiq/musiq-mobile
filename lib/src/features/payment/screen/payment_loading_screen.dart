@@ -23,20 +23,24 @@ class PaymentLoadingScreen extends StatefulWidget {
 }
 
 class _PaymentLoadingScreenState extends State<PaymentLoadingScreen> {
+  // Create razorpay instance
   late Razorpay _razorpay;
   @override
   void initState() {
     super.initState();
     _razorpay = Razorpay();
+    // Payment process function call with amount and order id
     paymentProcess(widget.amount, widget.orderId);
+    // Handle payment success function call listener
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    // Handle payment error function call listener
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
-    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+    // Handle external wallet function call listener
+    // _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
   }
 
+// Razor pay payment process method and theme set
   paymentProcess(int amount, String orderId) {
-    print("amount");
-    print(amount);
     var options = {
       'key': RazorPayConstant.razoryPayKey,
       'amount': amount,
@@ -55,11 +59,8 @@ class _PaymentLoadingScreenState extends State<PaymentLoadingScreen> {
     _razorpay.open(options);
   }
 
+// After payment success this function call, confirm payment and navigate to payment success screen
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
-    print(response.orderId);
-    print(response.paymentId);
-    print(response.signature);
-    print(response.orderId);
     await context.read<PaymentProvider>().confirmPayment(
         context, response.orderId!, response.paymentId!, response.signature!);
 
@@ -68,18 +69,12 @@ class _PaymentLoadingScreenState extends State<PaymentLoadingScreen> {
         .paymentSuccess(context, isFromProfile: widget.isFromProfile);
   }
 
+// After payment error this function call
   void _handlePaymentError(PaymentFailureResponse response) {
     Navigator.pop(context);
-    print(response.toString());
   }
 
-  void _handleExternalWallet(ExternalWalletResponse response) async {
-    print("External");
-    print(response.walletName);
-    print(response.toString());
-    await Future.delayed(const Duration(seconds: 3), () {});
-    context.read<PaymentProvider>().paymentSuccess(context);
-  }
+  // void _handleExternalWallet(ExternalWalletResponse response) async {}
 
   @override
   void dispose() {

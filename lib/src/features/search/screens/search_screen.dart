@@ -37,26 +37,17 @@ class _SearchScreenState extends State<SearchScreen> {
     _controller.removeListener(_onSearchChange);
     _controller.dispose();
     super.dispose();
-
-    // context.read<SearchProvider>().destroy();
   }
 
   @override
   void initState() {
-    // context.read<SearchProvider>().init();
     _controller = TextEditingController();
-    // _controller.addListener(_onSearchChange);
 
-    if (widget.searchRequestModel.searchStatus == SearchStatus.artist) {
-      // context.read<SearchProvider>().getArtistSearchHistory();
-    } else if (widget.searchRequestModel.searchStatus ==
+    if (widget.searchRequestModel.searchStatus ==
         SearchStatus.artistPreference) {
-      // context.read<SearchProvider>().getUserFollowedList();
       context.read<SearchProvider>().searchArtistPreference();
     }
-    // else if (widget.searchRequestModel.searchStatus == SearchStatus.song) {
-    //   context.read<SearchProvider>().getSongSearchHistory();
-    // }
+
     super.initState();
   }
 

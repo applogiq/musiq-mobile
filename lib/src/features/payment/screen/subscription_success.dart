@@ -64,7 +64,6 @@ class SubscriptionSuccess extends StatelessWidget {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const MainScreen()));
             }
-            // context.read<PaymentProvider>().pay(context);
           },
           child: const CustomButton(
             label: ConstantText.listenNow,

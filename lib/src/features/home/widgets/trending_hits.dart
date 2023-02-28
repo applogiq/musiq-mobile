@@ -76,7 +76,7 @@ class TrendingHitsWidget extends StatelessWidget {
                           height: 120,
                           width: 120,
                           trendingHitsModel: trendingHitsModel,
-                          index: 2,
+                          index: 1,
                         ),
                         const SizedBox(
                           height: 12,
@@ -85,7 +85,7 @@ class TrendingHitsWidget extends StatelessWidget {
                           height: 120,
                           width: 120,
                           trendingHitsModel: trendingHitsModel,
-                          index: 5,
+                          index: 2,
                         ),
                       ],
                     ),

@@ -96,8 +96,8 @@ class PlayerProvider extends ChangeNotifier {
     return player.currentIndex.toString();
   }
 
+//Add song to queue in play next
   void queuePlayNext(PlayerSongListModel playerSongListModel) {
-    // player.currentIndex
     if (player.currentIndex != null) {
       final item = MediaItem(
           id: generateSongUrl(playerSongListModel.id),
@@ -113,6 +113,7 @@ class PlayerProvider extends ChangeNotifier {
     }
   }
 
+// Get favourite song list details
   getFavourites() async {
     log(player.currentIndex.toString());
     objectbox.removeAllFavourite();
@@ -133,6 +134,7 @@ class PlayerProvider extends ChangeNotifier {
     }
   }
 
+// Delete favourite song
   void deleteFavourite(int id,
       {required bool isFromFav, required BuildContext ctx}) async {
     Map params = {"song_id": id};
@@ -154,12 +156,10 @@ class PlayerProvider extends ChangeNotifier {
     }
   }
 
+// Add single song to queue
   void queueSong(PlayerSongListModel e) async {
-    print("fgdfg");
     try {
       List<SongListModel> songListModels = [];
-
-      // removePlaylist();
 
       songListModels.add(SongListModel(
           songId: e.id,
@@ -190,6 +190,7 @@ class PlayerProvider extends ChangeNotifier {
     }
   }
 
+// Add song to favourite
   void addFavourite(int id) async {
     Map params = {"song_id": id};
     var res = await playerRepo.addToFavourite(params);
@@ -204,8 +205,8 @@ class PlayerProvider extends ChangeNotifier {
     }
   }
 
+// Load queue from local db
   loadQueueSong() async {
-    // await loadSongIndex();
     if (!inQueue) {
       await getFavourites();
       var index = await secureStorage.read(key: "currentIndex");
@@ -247,20 +248,6 @@ class PlayerProvider extends ChangeNotifier {
                 ),
                 tag: item),
           );
-
-          // await _audioHandler!.addQueueItem(item);
-
-          // await _audioHandler!.skipToQueueItem(index);
-          // try {
-          //   // print(await secureStorage.read(key: "lastPosition "));
-          //   List sec = songPosition[2].toString().split(".");
-          // await _audioHandler!.seek(Duration(
-          //     hours: int.parse(songPosition[0]),
-          //     minutes: int.parse(songPosition[1]),
-          //     seconds: int.parse(sec[0])));
-          // } catch (e) {
-          //   print(e.toString());
-          // }
         }
         player.setAudioSource(playlist);
         try {
@@ -275,11 +262,8 @@ class PlayerProvider extends ChangeNotifier {
                     seconds: int.parse(songPositionSeconds[0])),
                 index: int.parse(index!));
           }
-          print("TRY dispose");
         } catch (e) {
-          print("TRY cancel");
-
-          print(e.toString());
+          debugPrint(e.toString());
         }
 
         isPlaying = true;
@@ -376,21 +360,7 @@ class PlayerProvider extends ChangeNotifier {
     }
   }
 
-  // Stream<QueueState> get queueState =>
-  //     Rx.combineLatest3<List<MediaItem>, PlaybackState, List<int>, QueueState>(
-  //         queue,
-  //         playbackState,
-  //         player.shuffleIndicesStream.whereType<List<int>>(),
-  //         (queue, playbackState, shuffleIndices) => QueueState(
-  //               queue,
-  //               playbackState.queueIndex,
-  //               playbackState.shuffleMode == AudioServiceShuffleMode.all
-  //                   ? shuffleIndices
-  //                   : null,
-  //               playbackState.repeatMode,
-  //             )).where((state) =>
-  //         state.shuffleIndices == null ||
-  //         state.queue.length == state.shuffleIndices!.length);
+// Play method for playing current playlist song
   play(BuildContext context) {
     try {
       player.play();
@@ -447,7 +417,9 @@ class PlayerProvider extends ChangeNotifier {
           }
         }
       });
-    } catch (e) {}
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   void addSongToQueueSongList(
@@ -484,23 +456,23 @@ class PlayerProvider extends ChangeNotifier {
               tag: item));
         }
       }
-      // player.setAudioSource(playlist);
+
       objectbox.addSongListQueue(songListModels);
     } catch (e) {
       debugPrint(e.toString());
     }
   }
 
-  void addQueueToLocalDb(PlayerSongListModel playerSongListModel) {}
+//  Pause the playing song
   pause() async {
     await storage.write(
         key: "currentIndex", value: player.currentIndex.toString());
     await storage.write(
         key: "lastPosition", value: player.position.inSeconds.toString());
     player.pause();
-    // print(_player.currentIndex);
   }
 
+// Play and pause player
   void playOrPause(PlayerState playerState, BuildContext context) {
     if (playerState.playing == false) {
       play(context);
@@ -546,24 +518,19 @@ class PlayerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void loopSong() {}
-
+// Player song shuffle enable or disable
   void shuffleSong(bool isEnable) async {
     print(isEnable);
     shuffleSongController(isEnable);
     notifyListeners();
-    // if (isEnable) {
-    //   await player.shuffle();
-    //   await player.setShuffleModeEnabled(true);
-    // } else {
-    //   await player.setShuffleModeEnabled(false);
-    // }
   }
 
+// Seek song duration
   void seekDuration(Duration duration) {
     player.seek(duration);
   }
 
+// Play tapped song in search screen
   void playSingleSong(BuildContext context, PlayerSongListModel e) {
     print(e.albumName);
     print(e.title);
@@ -590,6 +557,7 @@ class PlayerProvider extends ChangeNotifier {
     play(context);
   }
 
+// Get song info details
   void songInfo(String songId) async {
     issongInfoDetailsLoad = true;
     notifyListeners();
@@ -603,7 +571,10 @@ class PlayerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+// Play specific song
   void seekToIndex(int index) {
     player.seek(Duration.zero, index: index);
   }
+
+  void addQueueToLocalDb(PlayerSongListModel playerSongListModel) {}
 }

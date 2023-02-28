@@ -4,7 +4,7 @@ import '../../../../core/constants/api.dart';
 
 class AuthRepository {
   BaseApiServices apiServices = NetworkApiService();
-
+// Login API call
   Future<dynamic> login(params) async {
     try {
       dynamic response = await apiServices.getPostApiResponse(
@@ -16,6 +16,7 @@ class AuthRepository {
     }
   }
 
+// Register API call
   Future<dynamic> register(params) async {
     try {
       dynamic response = await apiServices.getPostApiResponse(
@@ -26,6 +27,7 @@ class AuthRepository {
     }
   }
 
+// Get artist list API
   Future<dynamic> getArtists({limit = 100}) async {
     var artistUrl = APIConstants.getArtistUrl(0, limit);
 
@@ -37,6 +39,7 @@ class AuthRepository {
     }
   }
 
+// Email verfication API call
   emailVerfication(Map params) async {
     try {
       dynamic response = await apiServices.getPostApiResponse(
@@ -47,6 +50,7 @@ class AuthRepository {
     }
   }
 
+// OTP verfication API call
   otpVerfication(Map params) async {
     try {
       dynamic response = await apiServices.getPostApiResponse(
@@ -57,6 +61,7 @@ class AuthRepository {
     }
   }
 
+// Password change API call
   passwordChanged(Map params) async {
     try {
       dynamic response = await apiServices.getPutApiResponse(

@@ -45,6 +45,7 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
     notifyListeners();
   }
 
+// Email field value change trigger emailAddressChanged
   emailAddressChanged(value) {
     emailAddress = value;
     if (value.isEmpty) {
@@ -59,6 +60,7 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
     notifyListeners();
   }
 
+// Password field value change trigger passwordChanged
   passwordChanged(value) {
     RegExp regex =
         RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
@@ -74,6 +76,7 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
     notifyListeners();
   }
 
+// Validate email address and password
   validate() {
     changeErrorStatus();
     bool emailValidate = emailAddress.isNotEmpty && isEmailValid(emailAddress);
@@ -86,6 +89,7 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
     notifyListeners();
   }
 
+// Login API call with request body
   login(BuildContext context) async {
     Map params = {"email": emailAddress, "password": password};
     isLoading = true;
@@ -133,13 +137,14 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
     notifyListeners();
   }
 
+// Change user model
   changeUserModel(UserModel kUserModel) {
     userModel = kUserModel;
     notifyListeners();
   }
 
+// Password field tap trigger passwordTap
   passwordTap() {
-    // emailAddressChanged(emailAddress);
     if (emailAddress.isEmpty) {
       emailAddressErrorMessage = "Field is required";
     } else if (!isEmailValid(emailAddress)) {

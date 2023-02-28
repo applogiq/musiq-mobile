@@ -24,37 +24,42 @@ class SearchListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<SearchProvider>(builder: (context, pro, _) {
-      return (pro.isRecentSearch &&
-              searchRequestModel.searchStatus == SearchStatus.song)
-          ? SongSearchHistoryBuilder(controller: _controller)
-          : (pro.isRecentSearch &&
-                  searchRequestModel.searchStatus == SearchStatus.artist)
-              ? ArtistSearchHistory(controller: _controller)
-              : Builder(builder: (context) {
-                  if (searchRequestModel.searchStatus == SearchStatus.artist ||
-                      searchRequestModel.searchStatus ==
-                          SearchStatus.artistPreference) {
-                    return pro.artistModel.message == "No records"
-                        ? const NoRecordWidget()
-                        : ArtistPrefereneSearchListView(
-                            searchRequestModel: searchRequestModel,
-                            pro: pro,
-                          );
-                  } else {
-                    return pro.searchSongModel.message == "No records"
-                        ? const NoRecordWidget()
-                        : searchRequestModel.searchStatus ==
-                                SearchStatus.playlist
-                            ? PlaylistSearchSongTile(
+    return Consumer<SearchProvider>(
+      builder: (context, pro, _) {
+        return (pro.isRecentSearch &&
+                searchRequestModel.searchStatus == SearchStatus.song)
+            ? SongSearchHistoryBuilder(controller: _controller)
+            : (pro.isRecentSearch &&
+                    searchRequestModel.searchStatus == SearchStatus.artist)
+                ? ArtistSearchHistory(controller: _controller)
+                : Builder(
+                    builder: (context) {
+                      if (searchRequestModel.searchStatus ==
+                              SearchStatus.artist ||
+                          searchRequestModel.searchStatus ==
+                              SearchStatus.artistPreference) {
+                        return pro.artistModel.message == "No records"
+                            ? const NoRecordWidget()
+                            : ArtistPrefereneSearchListView(
                                 searchRequestModel: searchRequestModel,
                                 pro: pro,
-                              )
-                            : SongSearchListView(
-                                provider: pro,
                               );
-                  }
-                });
-    });
+                      } else {
+                        return pro.searchSongModel.message == "No records"
+                            ? const NoRecordWidget()
+                            : searchRequestModel.searchStatus ==
+                                    SearchStatus.playlist
+                                ? PlaylistSearchSongTile(
+                                    searchRequestModel: searchRequestModel,
+                                    pro: pro,
+                                  )
+                                : SongSearchListView(
+                                    provider: pro,
+                                  );
+                      }
+                    },
+                  );
+      },
+    );
   }
 }

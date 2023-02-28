@@ -21,8 +21,9 @@ class SongSearchListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Consumer<PlayerProvider>(builder: (context, pro, _) {
-        return StreamBuilder<SequenceState?>(
+      child: Consumer<PlayerProvider>(
+        builder: (context, pro, _) {
+          return StreamBuilder<SequenceState?>(
             stream: pro.player.sequenceStateStream,
             builder: (context, snapshot) {
               final state = snapshot.data;
@@ -136,8 +137,10 @@ class SongSearchListView extends StatelessWidget {
                   );
                 },
               );
-            });
-      }),
+            },
+          );
+        },
+      ),
     );
   }
 }

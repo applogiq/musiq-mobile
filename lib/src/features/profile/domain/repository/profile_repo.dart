@@ -8,6 +8,7 @@ class ProfileRepository {
   BaseApiServices apiServices = NetworkApiService();
   FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
+// Update profile API call
   Future<dynamic> updateProfile(String id, Map params) async {
     try {
       dynamic response = await apiServices.getPutAuthApiResponse(
@@ -18,6 +19,7 @@ class ProfileRepository {
     }
   }
 
+// Get profile details API call
   Future<dynamic> getProfile() async {
     try {
       var id = await secureStorage.read(
@@ -32,6 +34,7 @@ class ProfileRepository {
     }
   }
 
+// Delete user image API call
   Future<dynamic> deleteUserImage(
     String id,
   ) async {

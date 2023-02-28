@@ -2,18 +2,13 @@
 
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:musiq/main.dart';
-import 'package:musiq/src/features/profile/domain/api_models/profile_update_api_model.dart';
-import 'package:musiq/src/features/profile/domain/repository/profile_repo.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../objectbox.g.dart';
 import '../../../core/enums/enums.dart';
-import '../../../core/local/model/search_model.dart';
 import '../../artist/domain/models/artist_model.dart';
 import '../../home/domain/model/song_search_model.dart';
 import '../../home/domain/repository/search_repo.dart';
@@ -24,7 +19,9 @@ import '../../player/domain/repo/player_repo.dart';
 
 class SearchProvider extends ChangeNotifier {
   late TextEditingController searchEditingController;
+  // SearchRepository instance
   SearchRepository searchRepository = SearchRepository();
+
   List<String> searchArtistList = [];
   List<String> searchSongList = [];
   List<int> playlistSongId = [];
@@ -41,13 +38,6 @@ class SearchProvider extends ChangeNotifier {
     searchEditingController.dispose();
   }
 
-  // historyTapped(String historySearch) {
-  //   searchEditingController.clear();
-  // searchEditingController.text = historySearch;
-  // searchEditingController.selection = TextSelection.fromPosition(
-  //     TextPosition(offset: searchEditingController.text.length));
-  // }
-
   ArtistModel artistModel = ArtistModel(
       success: false,
       message: "Search not started",
@@ -59,11 +49,7 @@ class SearchProvider extends ChangeNotifier {
       records: [],
       totalrecords: 0);
   bool isRecentSearch = true;
-  // searchFieldTap() {
-  //   isRecentSearch = false;
-  //   notifyListeners();
-  // }
-
+  // Search screen state reset
   resetState() {
     artistModel = ArtistModel(
         success: false,
@@ -79,32 +65,18 @@ class SearchProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  getUserFollowedList() async {
-    var res = await ProfileRepository().getProfile();
-    if (res.statusCode == 200) {
-      var jsonData = jsonDecode(res.body);
-      log(jsonData.toString());
-      ProfileAPIModel profileAPIModel = ProfileAPIModel.fromJson(jsonData);
-
-      userFollowedArtist.addAll(profileAPIModel.records!.preference!.artist);
-      notifyListeners();
-    }
-  }
-
-  // artistSearch(String data) async {
-  //   searchQuery = data;
-  //   var res = await searchRepository.getArtistSearch(data.trim());
+  // getUserFollowedList() async {
+  //   var res = await ProfileRepository().getProfile();
   //   if (res.statusCode == 200) {
-  //     artistModel = ArtistModel.fromMap(jsonDecode(res.body.toString()));
-  //   } else {
-  //     artistModel = ArtistModel(
-  //         success: false, message: "No records", records: [], totalRecords: 0);
+  //     var jsonData = jsonDecode(res.body);
+  //     log(jsonData.toString());
+  //     ProfileAPIModel profileAPIModel = ProfileAPIModel.fromJson(jsonData);
+
+  //     userFollowedArtist.addAll(profileAPIModel.records!.preference!.artist);
+  //     notifyListeners();
   //   }
-  //   notifyListeners();
-
-  //   log(res.body.toString());
   // }
-
+// Search song and artist API call
   getSearch(String data, SearchStatus status, int? playlistId,
       BuildContext context) async {
     playlistSongId.clear();
@@ -161,6 +133,7 @@ class SearchProvider extends ChangeNotifier {
     }
   }
 
+// Add searched song to playlist
   addSongToPlaylist(int songId, int playlistId) async {
     Map params = {"playlist_id": playlistId, "song_id": songId};
     var res = await PlayerRepo().addToPlaylist(params);
@@ -168,14 +141,7 @@ class SearchProvider extends ChangeNotifier {
       getPlaylistSongList(playlistId);
     }
   }
-
-  deleteSongToPlaylist(int playlistSongId, int playlistId) async {
-    var res =
-        await LibraryRepository().deletePlaylistSong(playlistSongId.toString());
-    if (res.statusCode == 200) {
-      getPlaylistSongList(playlistId);
-    }
-  }
+//  Get specific playlist song id list
 
   getPlaylistSongList(int id) async {
     var response =
@@ -192,71 +158,38 @@ class SearchProvider extends ChangeNotifier {
     }
   }
 
+// Artist search history store
   void searchArtistStore() async {
     await objectbox.removeArtistSearch(searchQuery.trim());
     await objectbox.addArtistSearch(searchQuery);
-    // await getApplicationDocumentsDirectory().then((Directory dir) async {
-    //   store = Store(getObjectBoxModel(), directory: '\${dir.path}/musiq/db/1');
-    //   final box = store.box<SearchArtistLocalModel>();
-    //   var res = box.getAll();
-    //   if (res.isEmpty) {
-    //     box.put(SearchArtistLocalModel(searchName: searchQuery.trim()));
-    //     store.close();
-    //   } else {
-    //     for (var element in res) {
-    //       if (element.searchName == searchQuery.trim()) {
-    //         box.remove(element.id);
-    //       }
-    //     }
-    //     box.put(SearchArtistLocalModel(searchName: searchQuery.trim()));
-    //   }
-    //   store.close();
-    // });
-    // getSongSearchHistory();
   }
 
+// Song search history store
   void searchSongStore() async {
     await objectbox.removeSongSearch(searchQuery.trim());
     await objectbox.addSongSearch(searchQuery);
-    // await getApplicationDocumentsDirectory().then((Directory dir) async {
-    //   store = Store(getObjectBoxModel(), directory: '\${dir.path}/musiq/db/1');
-    //   final box = store.box<SearchSongLocalModel>();
-    //   var res = box.getAll();
-    //   if (res.isEmpty) {
-    //     box.put(SearchSongLocalModel(searchName: searchQuery.trim()));
-    //     store.close();
-    //   } else {
-    //     for (var element in res) {
-    //       if (element.searchName == searchQuery.trim()) {
-    //         box.remove(element.id);
-    //       }
-    //     }
-    //     box.put(SearchSongLocalModel(searchName: searchQuery.trim()));
-    //   }
-    //   store.close();
-    //   getSongSearchHistory();
-    // });
   }
 
-  getArtistSearchHistory() async {
-    await getApplicationDocumentsDirectory().then((Directory dir) async {
-      store = Store(getObjectBoxModel(), directory: '\${dir.path}/musiq/db/1');
-      final box = store.box<SearchArtistLocalModel>();
-      var res = box.getAll();
-      if (res.isEmpty) {
-        searchSongList.clear();
-      } else {
-        searchSongList.clear();
-        for (var element in res) {
-          searchSongList.add(element.searchName);
-        }
-        searchSongList.reversed.toList();
-      }
-      store.close();
-    });
-    notifyListeners();
-  }
+  // getArtistSearchHistory() async {
+  //   await getApplicationDocumentsDirectory().then((Directory dir) async {
+  //     store = Store(getObjectBoxModel(), directory: '\${dir.path}/musiq/db/1');
+  //     final box = store.box<SearchArtistLocalModel>();
+  //     var res = box.getAll();
+  //     if (res.isEmpty) {
+  //       searchSongList.clear();
+  //     } else {
+  //       searchSongList.clear();
+  //       for (var element in res) {
+  //         searchSongList.add(element.searchName);
+  //       }
+  //       searchSongList.reversed.toList();
+  //     }
+  //     store.close();
+  //   });
+  //   notifyListeners();
+  // }
 
+// Clear song search history
   void clearSongHistoryList() async {
     objectbox.removeAllSongSearch();
   }

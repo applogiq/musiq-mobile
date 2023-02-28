@@ -92,56 +92,58 @@ class ArtistPrefereneSearchListView extends StatelessWidget {
                           ),
                         ),
                         Consumer<ArtistPreferenceProvider>(
-                            builder: (context, artistProvider, _) {
-                          return Align(
-                            alignment: Alignment.centerRight,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: artistProvider.userFollowedArtist
-                                          .contains(pro.artistModel
-                                              .records[index].artistId)
-                                      ? 12
-                                      : 16,
-                                  vertical: 4),
-                              child: InkWell(
-                                onTap: () async {
-                                  artistProvider.checkFollow(
-                                      pro.artistModel.records[index],
-                                      index,
-                                      context);
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: artistProvider
-                                              .userFollowedArtist
-                                              .contains(pro.artistModel
-                                                  .records[index].artistId)
-                                          ? 12
-                                          : 10,
-                                      vertical: 4),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(6),
-                                    color: artistProvider.userFollowedArtist
+                          builder: (context, artistProvider, _) {
+                            return Align(
+                              alignment: Alignment.centerRight,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: artistProvider
+                                            .userFollowedArtist
                                             .contains(pro.artistModel
                                                 .records[index].artistId)
-                                        ? CustomColor.followingColor
-                                        : CustomColor.secondaryColor,
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      artistProvider.userFollowedArtist
+                                        ? 12
+                                        : 16,
+                                    vertical: 4),
+                                child: InkWell(
+                                  onTap: () async {
+                                    artistProvider.checkFollow(
+                                        pro.artistModel.records[index],
+                                        index,
+                                        context);
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: artistProvider
+                                                .userFollowedArtist
+                                                .contains(pro.artistModel
+                                                    .records[index].artistId)
+                                            ? 12
+                                            : 10,
+                                        vertical: 4),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(6),
+                                      color: artistProvider.userFollowedArtist
                                               .contains(pro.artistModel
                                                   .records[index].artistId)
-                                          ? ConstantText.unFollow
-                                          : ConstantText.follow,
-                                      style: fontWeight400(),
+                                          ? CustomColor.followingColor
+                                          : CustomColor.secondaryColor,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        artistProvider.userFollowedArtist
+                                                .contains(pro.artistModel
+                                                    .records[index].artistId)
+                                            ? ConstantText.unFollow
+                                            : ConstantText.follow,
+                                        style: fontWeight400(),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        }),
+                            );
+                          },
+                        ),
                       ],
                     ),
                   );

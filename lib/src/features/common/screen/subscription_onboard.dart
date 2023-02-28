@@ -9,7 +9,10 @@ import '../../../common_widgets/box/vertical_box.dart';
 import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../common_widgets/loader.dart';
 import '../../../core/constants/constant.dart';
-import '../../payment/screen/subscription_screen.dart';
+import '../../payment/widgets/flash_image_widget.dart';
+import '../../payment/widgets/get_exclusive_content_widget.dart';
+import '../../payment/widgets/plan_description_widget.dart';
+import '../../payment/widgets/subscription_card.dart';
 
 class SubscriptionOnboard extends StatefulWidget {
   const SubscriptionOnboard({super.key});

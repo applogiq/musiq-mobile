@@ -183,8 +183,7 @@ class SongListTile extends StatelessWidget {
                                 duration: duration,
                                 premium:
                                     isPremium != true ? "free" : "premium");
-                        // Navigation.navigateToScreen(context, RouteName.songInfo,
-                        //     args: playerSongListModel);
+
                         context.read<PlayerProvider>().addQueueToLocalDb(
                               playerSongListModel,
                             );

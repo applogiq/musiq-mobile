@@ -42,8 +42,8 @@ import '../../player/provider/player_provider.dart';
 import '../../player/widget/player/player_button_widget.dart';
 
 class MiniPlayer extends StatefulWidget {
-  const MiniPlayer({super.key, required this.onChnage});
-  final Function onChnage;
+  const MiniPlayer({super.key, required this.onChange});
+  final Function onChange;
 
   @override
   State<MiniPlayer> createState() => _MiniPlayerState();
@@ -95,11 +95,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                         GestureDetector(
                           onTap: () {
                             context.read<PlayerProvider>().isUpNextShow = false;
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) =>
-                            //             const PlayerScreen()));
+                            widget.onChange();
                           },
                           child: Container(
                             height: 60,
@@ -121,11 +117,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                             onTap: () {
                               context.read<PlayerProvider>().isUpNextShow =
                                   false;
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) =>
-                              //             const PlayerScreen()));
+                              widget.onChange();
                             },
                             child: SizedBox(
                               child: Column(
@@ -166,7 +158,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                                 onTap: () {
                                   context
                                       .read<PlayerProvider>()
-                                      .playOrPause(playerState!,context);
+                                      .playOrPause(playerState!, context);
                                 },
                                 child: (processingState ==
                                             ProcessingState.loading ||

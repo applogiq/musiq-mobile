@@ -28,7 +28,6 @@ class _PersistentBottomBarScaffoldState
   Widget build(BuildContext context) {
     final WeSlideController controller = WeSlideController();
 
-    // final colorScheme = Theme.of(context).colorScheme;
     const double panelMinSize = 120.0;
     final double panelMaxSize = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -48,7 +47,7 @@ class _PersistentBottomBarScaffoldState
             pro.profileNavigatorKey2.currentState?.pop();
           }
         }
-        return false;
+        return true;
       },
       child: SafeArea(
         child: Scaffold(
@@ -76,7 +75,7 @@ class _PersistentBottomBarScaffoldState
               }),
               panelHeader: playerProvider.isPlaying
                   ? MiniPlayer(
-                      onChnage: controller.show,
+                      onChange: controller.show,
                     )
                   : const SizedBox.shrink(),
               panel: PlayerScreen(

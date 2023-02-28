@@ -15,8 +15,6 @@ import 'package:musiq/src/features/profile/screens/image_crop_screen.dart';
 
 import '../../../../objectbox.g.dart';
 import '../../../common_widgets/model/profile_model.dart';
-import '../../../core/constants/color.dart';
-import '../../../core/constants/images.dart';
 import '../../../core/constants/string.dart';
 import '../../../core/utils/toast_message.dart';
 import '../domain/api_models/profile_update_api_model.dart';
@@ -29,7 +27,7 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   String base64Value = "";
-//! Start
+
   File? fileImage;
 
   String getImageValue = "";
@@ -43,12 +41,11 @@ class ProfileProvider extends ChangeNotifier {
   bool myProfileLoading = true;
   String? imageUrl;
   String name = "";
-  // String name = "";
+
   String nameError = "";
 
   String nameErrorMessage = "";
   File? compressedFile;
-//! END
 
   File? pickedImage;
 
@@ -79,6 +76,7 @@ class ProfileProvider extends ChangeNotifier {
   String userNameErrorMessage = "";
   Uint8List? viewImage;
 
+// Remove the my profile screen state
   removeMyProfileState() {
     fileImage = null;
     memoryImage = null;
@@ -90,6 +88,7 @@ class ProfileProvider extends ChangeNotifier {
     nameErrorMessage = "";
   }
 
+// Get profile screen details
   getProfileDetails() async {
     myProfileLoading = true;
     notifyListeners();
@@ -120,6 +119,7 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+// Name text field value change trigger profileNameChanged function
   void profileNameChanged(String value) {
     name = value;
     if (value.isEmpty) {
@@ -131,6 +131,7 @@ class ProfileProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+// User Name text field value change trigger profileUserNameChanged function
 
   void profileUserNameChanged(String value) {
     userName = value;
@@ -144,10 +145,11 @@ class ProfileProvider extends ChangeNotifier {
       isProfileSave = true;
       userNameErrorMessage = "";
     }
-    // buttonEnable();
+
     notifyListeners();
   }
 
+// Profile update API integration
   profileUpdate(BuildContext context) async {
     isProfileSaveLoading = true;
     notifyListeners();
@@ -160,10 +162,9 @@ class ProfileProvider extends ChangeNotifier {
     var id = await secureStorage.read(
       key: "id",
     );
-    // try {
+
     var res = await ProfileRepository().updateProfile(id!, params);
-    debugPrint(res.body);
-    debugPrint(res.statusCode.toString());
+
     if (res.statusCode == 200) {
       userNameErrorMessage = "";
       ProfileAPIModel profileAPIModel =
@@ -178,38 +179,16 @@ class ProfileProvider extends ChangeNotifier {
         notifyListeners();
       }
 
-      // objectBox.insertUser(user);
       successToastMessage(
         "Profile update successfully",
       );
       Navigator.pop(context);
-      // Navigator.pushAndRemoveUntil(context, M, (route) => false)
-      // Navigation.removeAllScreenFromStack(context, const MainScreen());
     } else if (res.statusCode == 400) {
       var jsonData = json.decode(res.body);
       if (jsonData["detail"] == "Username already exist") {
         userNameErrorMessage = "Username already exist";
       }
     } else {}
-
-    // if (res.statusCode == 200) {
-    //   debugPrint("IF");
-
-    //   var jsonData = jsonDecode(res.body);
-    //   log(jsonData.toString());
-    //   // profileAPIModel = ProfileAPIModel.fromJson(jsonData);
-    // } else {
-    //   debugPrint("Else");
-
-    //   // profileAPIModel =
-    //   //     ProfileAPIModel(status: false, message: "No data", records: null);
-    // }
-    // } catch (e) {
-    //   debugPrint(e.toString());
-    //   debugPrint("ERRR");
-    //   // profileAPIModel =
-    //   //     ProfileAPIModel(status: false, message: "No data", records: null);
-    // }
 
     isProfileSaveLoading = false;
     notifyListeners();
@@ -231,70 +210,19 @@ class ProfileProvider extends ChangeNotifier {
       rotate: 0,
     );
     compressedFile = await fileImage!.writeAsBytes(result!);
-    // fileImage = result;
-    // notifyListeners();
-    // return result;
-
-    // imageTemp = result
-    // isCropSaveLoading = false;
 
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const ImageCrop()));
-
-    // Navigation.navigateToScreen(context, RouteName.crop);
-
-    // if (_pickedImage != null) {
-    //   var image = File(_pickedImage.path.toString());
-    //   final _sizeInKbBefore = image.lengthSync() / 1024;
-    //   debugPrint('Before Compress $_sizeInKbBefore kb');
-    //   var _compressedImage = await AppHelper.compress(image: image);
-    //   final _sizeInKbAfter = _compressedImage.lengthSync() / 1024;
-    //   debugPrint('After Compress $_sizeInKbAfter kb');
-    //   var _croppedImage = await AppHelper.cropImage(_compressedImage);
-    //   if (_croppedImage == null) {
-    //     debugPrint("NU:L");
-    //     return;
-    //   }
-    //   isImagePicked = true;
-
-    //   imagePath = File(_croppedImage.path);
-    //   // imagePath = _croppedImage.path;
-
-    //   debugPrint("FILE");
-    //   debugPrint(imagePath);
-    //   update();
-
-    // imagePath = File(_croppedImage.path);
-    // imagePath = _croppedImage;
-    // update();
-    // setState(() {
-    //   fileImage = _croppedImage;
-    // });
-    // }
   }
 
-  // buttonEnable() {
-  //   // bool emailvalidate = email.isNotEmpty && isEmailValid(email);
-  //   // bool ppasswordvalidate = password.isNotEmpty &&
-  //   //     (password.isNotEmpty == confirmPassword.isNotEmpty) &&
-  //   //     validateStructure(password);
-  //   // bool userVali = userName.isNotEmpty && userName.contains("");
-  //   // bool cpass = confirmPassword.isNotEmpty && (password == confirmPassword);
-  //   if (userName.isNotEmpty || name.isNotEmpty) {
-  //     isProfileSave = false;
-  //   } else {
-  //     isProfileSave = true;
-  //   }
-  //   notifyListeners();
-  // }
   String uint8ListTob64(Uint8List uint8list) {
     String base64String = base64Encode(uint8list);
 
     return base64String;
   }
 
+// Cropped Image store
   void saveImage(Uint8List image, BuildContext context) {
-    debugPrint("Trigger");
     memoryImage = image;
     if (memoryImage != null) {
       base64Value = uint8ListTob64(memoryImage!);
@@ -306,36 +234,13 @@ class ProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  loaderDialog(context) {
-    return showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (_) {
-          return Dialog(
-            backgroundColor: CustomColor.bg,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Image.asset(
-                    Images.loaderImage,
-                    height: 70,
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
-  }
-
+// Delete image function
   Future deleteImage(BuildContext context, BuildContext mainContext) async {
     Navigator.of(context).pop();
     fileImage = null;
     memoryImage = null;
 
     if (profileAPIModel.records != null) {
-      debugPrint("@");
       if (profileAPIModel.records!.isImage == true) {
         var id = await secureStorage.read(
           key: "id",
@@ -349,9 +254,6 @@ class ProfileProvider extends ChangeNotifier {
     } else {
       return http.Response("", 200);
     }
-    // if (memoryImage != null) {
-    //   memoryImage!.clear();
-    // }
 
     notifyListeners();
   }

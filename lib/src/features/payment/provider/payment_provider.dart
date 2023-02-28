@@ -18,18 +18,24 @@ import '../../../core/constants/local_storage_constants.dart';
 import '../screen/payment_loading_screen.dart';
 
 class PaymentProvider extends ChangeNotifier {
-  PaymentRepository paymentRepository = PaymentRepository();
-  FlutterSecureStorage secureStorage = const FlutterSecureStorage();
-  bool isSubsciptionLoad = true;
   String currentPlan = "Free";
+  bool isPaymentLoad = false;
+  bool isSubsciptionLoad = true;
+  //Create Payment repository instance
+  PaymentRepository paymentRepository = PaymentRepository();
+
   String planName = "free";
   int planPrice = 0;
   int planValidity = 0;
-  SubscriptionPlan subscriptionPlan = SubscriptionPlan.threeMonths;
   PremiumPriceModel premiumPriceModel = PremiumPriceModel(
       success: false, message: "", records: [], totalrecords: 0);
-  bool isPaymentLoad = false;
 
+  //Create FlutterSecureStorage instance
+  FlutterSecureStorage secureStorage = const FlutterSecureStorage();
+
+  SubscriptionPlan subscriptionPlan = SubscriptionPlan.threeMonths;
+
+//Create payment API request
   createPayment(BuildContext context, {bool isFromProfile = true}) async {
     Map params = {};
     params["payment_price"] = planPrice * 100;
@@ -40,20 +46,23 @@ class PaymentProvider extends ChangeNotifier {
       var data = jsonDecode(res.body);
       PaymentSuccessModel successModel = PaymentSuccessModel.fromMap(data);
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => PaymentLoadingScreen(
-                    amount: successModel.records.paymentPrice,
-                    orderId: successModel.records.razorpayOrderId,
-                    isFromProfile: isFromProfile,
-                  )));
+        context,
+        MaterialPageRoute(
+          builder: (context) => PaymentLoadingScreen(
+            amount: successModel.records.paymentPrice,
+            orderId: successModel.records.razorpayOrderId,
+            isFromProfile: isFromProfile,
+          ),
+        ),
+      );
     }
   }
 
+// Confirm payment API call
   confirmPayment(BuildContext context, String orderId, String paymentId,
       String razorpaySignature) async {
     Map params = {};
-    // params["payment_price"] = planPrice * 100;
+
     params["premier_status"] = planName;
     params["validity"] = planValidity;
     params["razorpay_order_id"] = orderId;
@@ -76,28 +85,19 @@ class PaymentProvider extends ChangeNotifier {
           key: LocalStorageConstant.subscriptionEndDate));
       context.read<LoginProvider>().changeUserModel(userModel);
     }
-    // if (res.statusCode == 201) {
-
-    //   Navigator.push(
-    //       context,
-    //       MaterialPageRoute(
-    //           builder: (context) => PaymentLoadingScreen(
-    //                 amount: successModel.records.paymentPrice,
-    //                 orderId: successModel.records.razorpayOrderId,
-    //               )));
-    // }
   }
 
+// Subscription toggle in subscription screen
   changeSubscription(SubscriptionPlan sp, String kPlanName, int kPlanPrice,
       int kPlanValidity) {
     subscriptionPlan = sp;
-
     planName = kPlanName;
     planPrice = kPlanPrice;
     planValidity = kPlanValidity;
     notifyListeners();
   }
 
+// Get all subscription list from API
   getSubscriptionList() async {
     isSubsciptionLoad = true;
     notifyListeners();
@@ -108,7 +108,6 @@ class PaymentProvider extends ChangeNotifier {
     notifyListeners();
 
     premiumPriceModel.records.clear();
-    // albumListModel.records.clear();
 
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);
@@ -126,11 +125,7 @@ class PaymentProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void pay(BuildContext context) {
-    print(planName);
-    print(planPrice);
-  }
-
+// If Razorpay payment success to call paymentSuccess method and Navigate to subscription success screen
   void paymentSuccess(BuildContext context, {bool isFromProfile = true}) async {
     await secureStorage.write(
         key: LocalStorageConstant.isOnboardFree, value: "true");
@@ -142,6 +137,7 @@ class PaymentProvider extends ChangeNotifier {
                 )));
   }
 
+// Continue with free plan API call and navigate to main screen
   void continueWithFreePlanSubscription(BuildContext context,
       {bool isFromDialog = false}) async {
     Map params = {};
@@ -170,12 +166,11 @@ class PaymentProvider extends ChangeNotifier {
     }
   }
 
+// View plan navigtation in subscription end dialog
   void viewPlanSubscription(BuildContext context) async {
     FlutterSecureStorage secureStorage = const FlutterSecureStorage();
     await secureStorage.write(
         key: LocalStorageConstant.subscriptionEndDate, value: null);
-    // Navigator.pop(context);
-
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const SubscriptionOnboard()));
   }
