@@ -260,4 +260,10 @@ class LibraryProvider extends ChangeNotifier {
       getPlayListSongList(playlistId);
     }
   }
+
+  void reset() {
+    playListError = "";
+    isPlayListError = false;
+    notifyListeners();
+  }
 }

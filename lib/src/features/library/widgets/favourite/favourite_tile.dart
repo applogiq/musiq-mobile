@@ -25,7 +25,7 @@ class FavouriteTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (record[index].premiumStatus != "premium" &&
+        if (record[index].premiumStatus == "premium" &&
             context.read<LoginProvider>().userModel!.records.premiumStatus ==
                 "free") {
           Navigator.push(
@@ -66,7 +66,7 @@ class FavouriteTile extends StatelessWidget {
                             record[index].songName,
                             style: fontWeight400(),
                           ),
-                          (record[index].premiumStatus != "premium" &&
+                          (record[index].premiumStatus == "premium" &&
                                   context
                                           .read<LoginProvider>()
                                           .userModel!

@@ -27,11 +27,12 @@ class NavBarItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CircleAvatar(
-                  radius: 18,
+                  radius: 12,
                   backgroundColor: provider.activeIconColor(index),
                   child: Icon(
                     provider.bottomItems[index].iconData,
                     color: provider.iconColor(index),
+                    size: 18,
                   ),
                 ),
                 Text(

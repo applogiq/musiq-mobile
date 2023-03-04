@@ -73,61 +73,64 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        toolbarHeight: getProportionateScreenHeight(70),
-        title: const Text(ConstantText.subscription),
-        titleSpacing: 0.1,
-        leading: InkWell(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: const Icon(Icons.arrow_back_ios)),
-      ),
-      body: Consumer<PaymentProvider>(builder: (context, pro, _) {
-        print(!isSubscriptionEnable);
-        return pro.isSubsciptionLoad
-            ? const LoaderScreen()
-            : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: const [
-                    VerticalBox(height: 12),
-                    FlashImageWidget(),
-                    VerticalBox(height: 8),
-                    GetExclusiveContentWidget(),
-                    VerticalBox(height: 8),
-                    GetExclusiveSubtitleWidget(),
-                    VerticalBox(height: 44),
-                    SubscriptionCard(),
-                    VerticalBox(height: 32),
-                    PlanDescriptionWidget(),
-                  ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4.0),
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          toolbarHeight: getProportionateScreenHeight(70),
+          title: const Text(ConstantText.subscription),
+          titleSpacing: 0.1,
+          leading: InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: const Icon(Icons.arrow_back_ios)),
+        ),
+        body: Consumer<PaymentProvider>(builder: (context, pro, _) {
+          print(!isSubscriptionEnable);
+          return pro.isSubsciptionLoad
+              ? const LoaderScreen()
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: const [
+                      VerticalBox(height: 12),
+                      FlashImageWidget(),
+                      VerticalBox(height: 8),
+                      GetExclusiveContentWidget(),
+                      VerticalBox(height: 8),
+                      GetExclusiveSubtitleWidget(),
+                      VerticalBox(height: 44),
+                      SubscriptionCard(),
+                      VerticalBox(height: 32),
+                      PlanDescriptionWidget(),
+                    ],
+                  ),
+                );
+        }),
+        bottomNavigationBar:
+            Consumer<LoginProvider>(builder: (context, loginProvider, _) {
+          return Consumer<PaymentProvider>(builder: (context, pro, _) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: GestureDetector(
+                onTap: getPayNowState(loginProvider, pro)
+                    ? () {
+                        context.read<PaymentProvider>().createPayment(context);
+                      }
+                    : () {},
+                child: CustomButton(
+                  isValid: getPayNowState(loginProvider, pro) ? true : false,
+                  label: ConstantText.payNow,
+                  horizontalMargin: 0,
                 ),
-              );
-      }),
-      bottomNavigationBar:
-          Consumer<LoginProvider>(builder: (context, loginProvider, _) {
-        return Consumer<PaymentProvider>(builder: (context, pro, _) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: GestureDetector(
-              onTap: getPayNowState(loginProvider, pro)
-                  ? () {
-                      context.read<PaymentProvider>().createPayment(context);
-                    }
-                  : () {},
-              child: CustomButton(
-                isValid: getPayNowState(loginProvider, pro) ? true : false,
-                label: ConstantText.payNow,
-                horizontalMargin: 0,
               ),
-            ),
-          );
-        });
-      }),
+            );
+          });
+        }),
+      ),
     );
   }
 }

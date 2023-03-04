@@ -16,14 +16,6 @@ class FavouritesScreen extends StatefulWidget {
 
 class _FavouritesScreenState extends State<FavouritesScreen> {
   @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      context.read<LibraryProvider>().getFavouritesList();
-    });
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: context.read<LibraryProvider>().getFavouritesList(),
@@ -46,7 +38,14 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
                         itemCount: pro.favouriteModel.records.length,
                         itemBuilder: (context, index) {
                           var record = pro.favouriteModel.records;
-                          return FavouriteTile(record: record, index: index);
+                          return Column(
+                            children: [
+                              FavouriteTile(record: record, index: index),
+                              pro.favouriteModel.records.length - 1 == index
+                                  ? const SizedBox(height: 24)
+                                  : const SizedBox.shrink()
+                            ],
+                          );
                         },
                       );
               },

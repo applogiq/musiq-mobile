@@ -173,6 +173,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Padding(
                 padding: EdgeInsets.only(top: getProportionateScreenHeight(70)),
                 child: const SignOutWidget(),
+              ),
+              const SizedBox(
+                height: 24,
               )
             ],
           )),

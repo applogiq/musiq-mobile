@@ -51,6 +51,7 @@ class ViewAllPlaylistPopUpMenu extends StatelessWidget {
           //     args: SearchRequestModel(
           //         searchStatus: SearchStatus.playlist, playlistId: id));
         } else if (value == 2) {
+          context.read<LibraryProvider>().reset();
           showDialog(
               context: context,
               barrierDismissible: false,
@@ -68,8 +69,8 @@ class ViewAllPlaylistPopUpMenu extends StatelessWidget {
                   title: ConstantText.renamePlaylist,
                   fieldName: ConstantText.name,
                   buttonText: ConstantText.rename,
-                  errorValue: context.read<LibraryProvider>().playListError,
-                  isError: context.read<LibraryProvider>().isPlayListError,
+                  errorValue: "",
+                  isError: false,
                   // callback: libraryController.createPlaylist(context),
                 );
               });

@@ -62,6 +62,7 @@ class PlayerProvider extends ChangeNotifier {
   int index = 2;
   bool inQueue = false;
   bool isUpNextShow = false;
+  bool isRecentlyAPICalled = false;
   void toggleUpNext() {
     isUpNextShow = !isUpNextShow;
     notifyListeners();
@@ -317,22 +318,27 @@ class PlayerProvider extends ChangeNotifier {
                 .records
                 .premiumStatus !=
             "free") {
-          songListModels.add(SongListModel(
-              songId: e.id,
-              albumName: e.albumName,
-              title: e.title,
-              musicDirectorName: e.musicDirectorName,
-              imageUrl: e.imageUrl,
-              songUrl: generateSongUrl(e.id),
-              duration: e.duration));
+          songListModels.add(
+            SongListModel(
+                songId: e.id,
+                albumName: e.albumName,
+                title: e.title,
+                musicDirectorName: e.musicDirectorName,
+                imageUrl: e.imageUrl,
+                songUrl: generateSongUrl(e.id),
+                duration: e.duration),
+          );
           final item = MediaItem(
-              id: generateSongUrl(e.id),
-              album: e.albumName,
-              title: e.title,
-              artist: e.musicDirectorName,
-              duration: Duration(milliseconds: totalDuration(e.duration)),
-              artUri: Uri.parse(e.imageUrl),
-              extras: {"song_id": e.id});
+            id: generateSongUrl(e.id),
+            album: e.albumName,
+            title: e.title,
+            artist: e.musicDirectorName,
+            duration: Duration(
+              milliseconds: totalDuration(e.duration),
+            ),
+            artUri: Uri.parse(e.imageUrl),
+            extras: {"song_id": e.id},
+          );
           playlist.add(
             AudioSource.uri(
                 Uri.parse(
@@ -364,21 +370,30 @@ class PlayerProvider extends ChangeNotifier {
   play(BuildContext context) {
     try {
       player.play();
-      player.playbackEventStream.listen((event) async {
-        if (event.processingState == ProcessingState.ready) {
-          var metaData = player.sequenceState!
-              .effectiveSequence[player.currentIndex!].tag as MediaItem;
+      // player.playbackEventStream.listen((event) async {
+      //   if (event.processingState == ProcessingState.ready) {
+      //     var metaData = player.sequenceState!
+      //         .effectiveSequence[player.currentIndex!].tag as MediaItem;
+      //     if (isRecentlyAPICalled == false) {
+      //       isRecentlyAPICalled = true;
+      //       notifyListeners();
 
-          Map params = {"song_id": metaData.extras!["song_id"]};
-          var res = await PlayerRepo().recentList(params);
-
-          if (res.statusCode == 200) {
-            if (context.mounted) {
-              context.read<HomeProvider>().recentSongList();
-            }
-          }
-        }
-      });
+      //       print(
+      //           "33333333333fdffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff333333");
+      //       print(
+      //           "333f888888888888888888888888888888888****************************************************dgghfhgfj33333333333333");
+      //       Map params = {"song_id": metaData.extras!["song_id"]};
+      //       var res = await PlayerRepo().recentList(params);
+      //       isRecentlyAPICalled = false;
+      //       notifyListeners();
+      //       if (res.statusCode == 200) {
+      //         if (context.mounted) {
+      //           context.read<HomeProvider>().recentSongList();
+      //         }
+      //       }
+      //     }
+      //   }
+      // });
       player.positionStream.listen((event) {
         progressDurationValue = event.inMilliseconds;
         notifyListeners();
@@ -394,8 +409,21 @@ class PlayerProvider extends ChangeNotifier {
       player.bufferedPositionStream.listen((event) {
         bufferDurationValue = event.inMilliseconds;
       });
-      player.currentIndexStream.listen((event) {
-        storage.write(key: "currentIndex", value: event.toString());
+      player.currentIndexStream.listen((event) async {
+        print("_______________________________");
+        print(event.toString());
+        var metaData = player.sequenceState!
+            .effectiveSequence[player.currentIndex!].tag as MediaItem;
+
+        Map params = {"song_id": metaData.extras!["song_id"]};
+        var res = await PlayerRepo().recentList(params);
+        print(res.body);
+        if (res.statusCode == 200) {
+          if (context.mounted) {
+            context.read<HomeProvider>().recentSongList();
+          }
+        }
+        await storage.write(key: "currentIndex", value: event.toString());
       });
       player.positionStream.listen((event) {
         if (event.toString().trim() != " 0:00:00.000000".toString().trim()) {
@@ -406,7 +434,8 @@ class PlayerProvider extends ChangeNotifier {
         if (event.processingState == ProcessingState.ready) {
           var metaData = player.sequenceState!
               .effectiveSequence[player.currentIndex!].tag as MediaItem;
-
+          print("33333333333333333");
+          print("333fdgghfhgfj33333333333333");
           Map params = {"song_id": metaData.extras!["song_id"]};
           var res = await PlayerRepo().recentList(params);
 
@@ -418,6 +447,7 @@ class PlayerProvider extends ChangeNotifier {
         }
       });
     } catch (e) {
+      print("SSSSSSSSSSSSSSSSSSSSfffffffffff");
       debugPrint(e.toString());
     }
   }

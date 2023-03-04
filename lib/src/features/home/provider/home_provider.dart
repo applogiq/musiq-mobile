@@ -77,10 +77,11 @@ class HomeProvider extends ChangeNotifier {
 
   artistList() async {
     var res = await homeRepository.getArtist(limit: 10);
-
+    log(res.body);
     artistModel.records.clear();
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);
+
       artistModel = ArtistModel.fromMap(data);
     }
   }

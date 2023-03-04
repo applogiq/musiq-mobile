@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/loader.dart';
+import '../../../../core/enums/enums.dart';
 import '../../../view_all/widgets/sliver_song/sliver_app_bar.dart';
 import '../../provider/view_all_provider.dart';
-import '../../../../core/enums/enums.dart';
 import '../artist_view_all/album_songs_list.dart';
 
 class ViewAllSongListScreen extends StatefulWidget {

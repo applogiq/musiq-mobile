@@ -55,14 +55,22 @@ class ViewAllProvider extends ChangeNotifier {
         trendingHitsModel = TrendingHitsModel.fromMap(data);
       }
     } else if (status == ViewAllStatus.newRelease) {
+      print("sssssssssssssssss");
       var res = await homeRepository.getNewRelease();
+      print("-------------------------");
+      print(res.body);
+
       if (res.statusCode == 200) {
         var data = jsonDecode(res.body);
 
         newReleaseModel = NewReleaseModel.fromMap(data);
       }
     } else if (status == ViewAllStatus.recentlyPlayed) {
+      print("-------------------------");
+
       var res = await homeRepository.getRecentPlayedList(100);
+      print(res.body);
+
       if (res.statusCode == 200) {
         var data = jsonDecode(res.body);
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:musiq/src/features/library/provider/library_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -81,9 +80,9 @@ class PlaylistDialogBox extends StatelessWidget {
                               child: TextFormField(
                                 initialValue: initialText,
                                 cursorColor: Colors.white,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(
-                                      RegExp(r"^[A-Za-z]+[A-Za-z ]*$"))
+                                inputFormatters: const [
+                                  // FilteringTextInputFormatter.allow(
+                                  //     RegExp(r"^[A-Za-z]+[A-Za-z ]*$"))
                                 ],
                                 onChanged: (value) {
                                   pro.checkPlayListName(value);
@@ -108,15 +107,17 @@ class PlaylistDialogBox extends StatelessWidget {
                       ],
                     );
                   }),
-                  InkWell(
-                      onTap: () {
-                        callBack();
-                      },
-                      child: CustomButton(
-                        label: buttonText,
-                        horizontalMargin: 60,
-                        verticalMargin: 8,
-                      ))
+                  InkWell(onTap: () {
+                    callBack();
+                  }, child: Consumer<LibraryProvider>(
+                      builder: (context, playerProvider, _) {
+                    return CustomButton(
+                      isValid: !playerProvider.isPlayListError,
+                      label: buttonText,
+                      horizontalMargin: 60,
+                      verticalMargin: 8,
+                    );
+                  }))
                 ],
               )
             ],

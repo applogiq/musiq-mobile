@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/home/screens/sliver_app_bar/widgets/song_list_tile.dart';
 import 'package:musiq/src/features/payment/screen/subscription_screen.dart';
+import 'package:musiq/src/features/player/provider/player_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/enums/enums.dart';
@@ -232,39 +233,56 @@ class AlbumSongsList extends StatelessWidget {
     return SliverList(
       delegate: SliverChildBuilderDelegate(childCount: getListCount(status),
           (context, index) {
-        return Padding(
-          padding: const EdgeInsets.all(0.0),
-          child: InkWell(
-            onTap: () {
-              if (!getPremiumStatus(status, index, context)) {
-                context
-                    .read<ViewAllProvider>()
-                    .navigateToPlayerScreen(context, status, index: index);
-              } else {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const SubscriptionsScreen()));
-              }
-              // if (index == 1 || isPremium) {
-              // Navigator.of(context).push(MaterialPageRoute(
-              //     builder: (context) => const SubscriptionsScreen()));
-              // } else {
-              // context
-              //     .read<ViewAllProvider>()
-              //     .navigateToPlayerScreen(context, status, index: index);
-              // }
-            },
-            child: SongListTile(
-              isPremium: getPremiumStatus(status, index, context),
-              albumName: getAlbumName(status, index),
-              imageUrl: getImageUrl(status, index),
-              musicDirectorName: getMusicDirectorName(status, index),
-              songName: getSongName(status, index),
-              songId: getSongId(status, index),
-              duration: getDuration(status, index),
-              isPlay: false,
-            ),
-          ),
-        );
+        return Consumer<PlayerProvider>(builder: (context, pro, _) {
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 0),
+                child: InkWell(
+                  onTap: () {
+                    if (!getPremiumStatus(status, index, context)) {
+                      context.read<ViewAllProvider>().navigateToPlayerScreen(
+                          context, status,
+                          index: index);
+                    } else {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const SubscriptionsScreen()));
+                    }
+                    // if (index == 1 || isPremium) {
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //     builder: (context) => const SubscriptionsScreen()));
+                    // } else {
+                    // context
+                    //     .read<ViewAllProvider>()
+                    //     .navigateToPlayerScreen(context, status, index: index);
+                    // }
+                  },
+                  child: Consumer<PlayerProvider>(builder: (context, pro, _) {
+                    return SongListTile(
+                      isPremium: getPremiumStatus(status, index, context),
+                      albumName: getAlbumName(status, index),
+                      imageUrl: getImageUrl(status, index),
+                      musicDirectorName: getMusicDirectorName(status, index),
+                      songName: getSongName(status, index),
+                      songId: getSongId(status, index),
+                      duration: getDuration(status, index),
+                      isPlay: false,
+                    );
+                  }),
+                ),
+              ),
+              Consumer<PlayerProvider>(builder: (context, pro, _) {
+                return pro.isPlaying
+                    ? index == getListCount(status) - 1
+                        ? const SizedBox(
+                            height: 20,
+                          )
+                        : const SizedBox.shrink()
+                    : const SizedBox.shrink();
+              })
+            ],
+          );
+        });
       }),
     );
   }
