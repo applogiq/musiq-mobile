@@ -11,6 +11,7 @@ import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../core/constants/constant.dart';
 import '../../../core/constants/local_storage_constants.dart';
 import '../../../core/utils/size_config.dart';
+import '../../library/screens/playlist/view_playlist_screen.dart';
 import '../widgets/flash_image_widget.dart';
 import '../widgets/get_exclusive_content_widget.dart';
 import '../widgets/plan_description_widget.dart';
@@ -110,26 +111,34 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
                   ),
                 );
         }),
-        bottomNavigationBar:
+        bottomNavigationBar: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
             Consumer<LoginProvider>(builder: (context, loginProvider, _) {
-          return Consumer<PaymentProvider>(builder: (context, pro, _) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: GestureDetector(
-                onTap: getPayNowState(loginProvider, pro)
-                    ? () {
-                        context.read<PaymentProvider>().createPayment(context);
-                      }
-                    : () {},
-                child: CustomButton(
-                  isValid: getPayNowState(loginProvider, pro) ? true : false,
-                  label: ConstantText.payNow,
-                  horizontalMargin: 0,
-                ),
-              ),
-            );
-          });
-        }),
+              return Consumer<PaymentProvider>(builder: (context, pro, _) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: GestureDetector(
+                    onTap: getPayNowState(loginProvider, pro)
+                        ? () {
+                            context
+                                .read<PaymentProvider>()
+                                .createPayment(context);
+                          }
+                        : () {},
+                    child: CustomButton(
+                      isValid:
+                          getPayNowState(loginProvider, pro) ? true : false,
+                      label: ConstantText.payNow,
+                      horizontalMargin: 0,
+                    ),
+                  ),
+                );
+              });
+            }),
+            const BottomMiniPlayer(),
+          ],
+        ),
       ),
     );
   }

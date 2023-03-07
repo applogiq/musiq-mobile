@@ -43,16 +43,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 pro.recentlyPlayed.success == false
                     ? const SizedBox.shrink()
-                    : Consumer<HomeProvider>(
-                        builder: (context, homeProvider, _) {
-                        return homeProvider.isRecentlyPlayedLoad
-                            ? const LoaderScreen()
-                            : HomeScreenSongList(
-                                title: "Recently Played",
-                                isViewAll: true,
-                                songList: homeProvider.recentSongListModel,
-                              );
-                      }),
+                    : HomeScreenSongList(
+                        title: "Recently Played",
+                        isViewAll: true,
+                        songList: pro.recentSongListModel,
+                      ),
                 TrendingHitsWidget(
                   trendingHitsModel: pro.trendingHitsModel,
                 ),

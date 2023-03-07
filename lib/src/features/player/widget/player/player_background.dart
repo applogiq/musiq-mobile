@@ -1,6 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musiq/src/core/constants/images.dart';
 import 'package:musiq/src/features/player/widget/player/player_pop_up_menu.dart';
 import 'package:provider/provider.dart';
 
@@ -45,9 +46,9 @@ class PlayerBackground extends StatelessWidget {
                   return Container(
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: NetworkImage(
-                              metadata.artUri.toString(),
-                            ),
+                            image: NetworkImage(Images.noSongNetwork
+                                // metadata.artUri.toString(),
+                                ),
                             fit: BoxFit.cover)),
                     child: Stack(
                       children: [

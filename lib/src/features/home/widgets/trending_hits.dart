@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/core/constants/images.dart';
 import 'package:musiq/src/features/payment/screen/subscription_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -122,14 +123,18 @@ class TrendingHitsHomeContainer extends StatelessWidget {
           height: height,
           width: width,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            image: DecorationImage(
-              image: NetworkImage(generateSongImageUrl(
-                  trendingHitsModel.records[index].albumName,
-                  trendingHitsModel.records[index].albumId)),
-              fit: BoxFit.fill,
-            ),
-          ),
+              borderRadius: BorderRadius.circular(12),
+              image: trendingHitsModel.records[index].isImage
+                  ? DecorationImage(
+                      image: NetworkImage(generateSongImageUrl(
+                          trendingHitsModel.records[index].albumName,
+                          trendingHitsModel.records[index].albumId)),
+                      fit: BoxFit.fill,
+                    )
+                  : DecorationImage(
+                      image: AssetImage(Images.noSong),
+                      fit: BoxFit.fill,
+                    )),
           child: InkWell(
             onTap: () {
               print(trendingHitsModel.records[index].premiumStatus);

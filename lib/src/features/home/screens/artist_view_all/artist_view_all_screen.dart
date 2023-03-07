@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:musiq/src/features/player/provider/player_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/app_bar.dart';
@@ -10,10 +11,12 @@ import '../../../../core/enums/enums.dart';
 import '../../../../core/utils/url_generate.dart';
 import '../../../artist/domain/models/artist_model.dart';
 import '../../../common/screen/offline_screen.dart';
+import '../../../player/screen/player_screen/player_screen.dart';
 import '../../../search/provider/search_provider.dart';
 import '../../../search/screens/search_screen.dart';
 import '../../provider/artist_view_all_provider.dart';
 import '../../provider/view_all_provider.dart';
+import '../../widgets/bottom_navigation_bar_widget.dart';
 import '../../widgets/search_notifications.dart';
 import '../sliver_app_bar/view_all_screen.dart';
 
@@ -43,6 +46,20 @@ class _ArtistViewAllScreenState extends State<ArtistViewAllScreen> {
         ? const OfflineScreen()
         : SafeArea(
             child: Scaffold(
+            bottomNavigationBar:
+                Consumer<PlayerProvider>(builder: (context, pro, _) {
+              return pro.isPlaying
+                  ? MiniPlayer(onChange: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PlayerScreen(
+                              onTap: () => Navigator.pop(context),
+                            ),
+                          ));
+                    })
+                  : const SizedBox.shrink();
+            }),
             appBar: const PreferredSize(
               preferredSize: Size(double.maxFinite, 50),
               child: CustomAppBarWidget(

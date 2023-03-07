@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:musiq/src/features/library/screens/playlist/view_playlist_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/loader.dart';
@@ -33,6 +34,7 @@ class _ProfileArtistPreferenceScreenState
             InternetConnectionStatus.disconnected
         ? const OfflineScreen()
         : Scaffold(
+            bottomNavigationBar: BottomMiniPlayer(),
             appBar: AppBar(
               automaticallyImplyLeading: true,
               title: const Text("Artist Preference"),

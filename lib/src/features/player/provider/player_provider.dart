@@ -233,7 +233,8 @@ class PlayerProvider extends ChangeNotifier {
               imageUrl: e.imageUrl,
               musicDirectorName: e.musicDirectorName,
               duration: e.duration,
-              premium: ''));
+              premium: '',
+              isImage: false));
           final item = MediaItem(
               id: generateSongUrl(e.songId),
               album: e.albumName,
@@ -241,7 +242,7 @@ class PlayerProvider extends ChangeNotifier {
               artist: e.musicDirectorName,
               duration: Duration(milliseconds: totalDuration(e.duration)),
               artUri: Uri.parse(e.imageUrl),
-              extras: {"song_id": e.songId});
+              extras: {"song_id": e.songId, "isImage": false});
           playlist.add(
             AudioSource.uri(
                 Uri.parse(

@@ -31,25 +31,27 @@ class _PlayerScreenState extends State<PlayerScreen> {
     return Provider.of<InternetConnectionStatus>(context) ==
             InternetConnectionStatus.disconnected
         ? const OfflineScreen()
-        : Scaffold(
-            body: SingleChildScrollView(
-              child: Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    child: Column(
-                      children: [
-                        PlayerBackground(
-                          onTapped: widget.onTap,
-                        ),
-                        const PlayerController(),
-                        const UpNextController()
-                      ],
+        : SafeArea(
+            child: Scaffold(
+              body: SingleChildScrollView(
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height - 30,
+                      child: Column(
+                        children: [
+                          PlayerBackground(
+                            onTapped: widget.onTap,
+                          ),
+                          const PlayerController(),
+                          const UpNextController()
+                        ],
+                      ),
                     ),
-                  ),
-                  UpNextExpandableWidget(widget: widget)
-                ],
+                    UpNextExpandableWidget(widget: widget)
+                  ],
+                ),
               ),
             ),
           );

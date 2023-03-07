@@ -42,6 +42,8 @@ class Images {
   static String noSong = "assets/images/default/no_song.png";
   static String userDefault = "assets/images/no_user.png";
   static String subscriptionSuccess = "assets/images/subscription_success.png";
+  static String noSongNetwork =
+      "https://images.unsplash.com/photo-1499415479124-43c32433a620?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1032&q=80";
 
   List<ImageModel> artistList = [
     ImageModel(

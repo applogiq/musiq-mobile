@@ -63,7 +63,8 @@ class AlbumSongsList extends StatelessWidget {
                         generateSongImageUrl(record.albumName, record.albumId),
                     musicDirectorName: record.musicDirectorName![0].toString(),
                     duration: record.duration,
-                    premium: record.premiumStatus));
+                    premium: record.premiumStatus,
+                    isImage: record.isImage));
               }
               context
                   .read<PlayerProvider>()
@@ -135,6 +136,7 @@ class AlbumSongsList extends StatelessWidget {
                                       id: record[index]!.id,
                                       albumName: record[index]!.albumName,
                                       title: record[index]!.songName,
+                                      isImage: record[index]!.isImage,
                                       imageUrl: generateSongImageUrl(
                                           record[index]!.albumName,
                                           record[index]!.albumId),

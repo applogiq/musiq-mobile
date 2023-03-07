@@ -1,6 +1,7 @@
 class PlayerSongListModel {
   PlayerSongListModel(
       {required this.id,
+      required this.isImage,
       required this.premium,
       required this.duration,
       required this.albumName,
@@ -15,4 +16,5 @@ class PlayerSongListModel {
   final String title;
   final String premium;
   final String duration;
+  final bool isImage;
 }

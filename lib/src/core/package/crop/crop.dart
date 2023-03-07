@@ -653,13 +653,5 @@ image.Image _fromByteData(Uint8List data) {
   final tempImage = image.decodeImage(data);
   assert(tempImage != null);
 
-  switch (tempImage?.exif.data[0x0112] ?? -1) {
-    case 3:
-      return image.copyRotate(tempImage!, 180);
-    case 6:
-      return image.copyRotate(tempImage!, 90);
-    case 8:
-      return image.copyRotate(tempImage!, -90);
-  }
   return tempImage!;
 }

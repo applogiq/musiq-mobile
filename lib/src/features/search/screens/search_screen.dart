@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../../core/enums/enums.dart';
 import '../../common/screen/offline_screen.dart';
 import '../../home/widgets/search_notifications.dart';
+import '../../library/screens/playlist/view_playlist_screen.dart';
 import '../provider/search_provider.dart';
 import '../widgets/search_list_view.dart';
 
@@ -78,6 +79,7 @@ class _SearchScreenState extends State<SearchScreen> {
               InternetConnectionStatus.disconnected
           ? const OfflineScreen()
           : Scaffold(
+              bottomNavigationBar: const BottomMiniPlayer(),
               backgroundColor: const Color(0xFF16151C),
               resizeToAvoidBottomInset: false,
               body: Column(

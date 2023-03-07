@@ -20,6 +20,7 @@ class PlaylistSongListTile extends StatelessWidget {
     required this.playlistId,
     required this.duration,
     required this.isPremium,
+    required this.isImage,
   });
 
   final String albumName;
@@ -31,6 +32,7 @@ class PlaylistSongListTile extends StatelessWidget {
   final int playlistId;
   final String duration;
   final bool isPremium;
+  final bool isImage;
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +130,8 @@ class PlaylistSongListTile extends StatelessWidget {
                                 imageUrl: imageUrl,
                                 musicDirectorName: musicDirectorName,
                                 duration: '',
-                                premium: '');
+                                premium: '',
+                                isImage: isImage);
                         context
                             .read<PopUpProvider>()
                             .playNext(playerSongListModel, context);
@@ -150,7 +153,8 @@ class PlaylistSongListTile extends StatelessWidget {
                                 imageUrl: imageUrl,
                                 musicDirectorName: musicDirectorName,
                                 duration: duration,
-                                premium: '');
+                                premium: '',
+                                isImage: isImage);
                         context
                             .read<PopUpProvider>()
                             .addToQueue(playerSongListModel, context);

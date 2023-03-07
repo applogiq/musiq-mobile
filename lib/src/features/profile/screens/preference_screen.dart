@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../../../common_widgets/app_bar.dart';
 import '../../../core/constants/color.dart';
 import '../../common/screen/offline_screen.dart';
+import '../../library/screens/playlist/view_playlist_screen.dart';
 
 class PreferenceScreen extends StatelessWidget {
   const PreferenceScreen({Key? key}) : super(key: key);
@@ -26,6 +27,7 @@ class PreferenceScreen extends StatelessWidget {
                 title: "Preferences",
               ),
             ),
+            bottomNavigationBar: const BottomMiniPlayer(),
             body: SizedBox(
               child: ListView(
                   physics: const BouncingScrollPhysics(),

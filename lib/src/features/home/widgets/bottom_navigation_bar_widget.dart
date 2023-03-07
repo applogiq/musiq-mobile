@@ -1,45 +1,37 @@
 // import 'package:audio_service/audio_service.dart';
-// import 'package:flutter/material.dart';
-// import 'package:just_audio/just_audio.dart';
-// import 'package:musiq/src/features/player/screen/player_screen/player_screen.dart';
-// import 'package:palette_generator/palette_generator.dart';
-// import 'package:provider/provider.dart';
-
-// import '../../../common_widgets/bottom_navigation_bar/bottom_navigation_bar.dart';
-// import '../../../common_widgets/box/horizontal_box.dart';
-// import '../../../core/constants/constant.dart';
-// import '../../player/provider/player_provider.dart';
-// import '../../player/widget/player/player_widgets.dart';
-
-// class BottomNavigationBarWithMiniPlayer extends StatelessWidget {
-//   const BottomNavigationBarWithMiniPlayer({super.key, required this.width});
-//   final double width;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Consumer<PlayerProvider>(builder: (context, pro, _) {
-//       return Column(
-//         mainAxisSize: MainAxisSize.min,
-//         children: [
-//           BottomNavigationBarWidget(
-//             width: width,
-//           ),
-//         ],
-//       );
-//     });
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:musiq/src/core/constants/images.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common_widgets/bottom_navigation_bar/bottom_navigation_bar.dart';
 import '../../../common_widgets/box/horizontal_box.dart';
 import '../../../core/constants/color.dart';
+import '../../../core/constants/constant.dart';
 import '../../player/provider/player_provider.dart';
 import '../../player/widget/player/player_button_widget.dart';
+import '../../player/widget/player/player_widgets.dart';
+
+class BottomNavigationBarWithMiniPlayer extends StatelessWidget {
+  const BottomNavigationBarWithMiniPlayer({super.key, required this.width});
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<PlayerProvider>(builder: (context, pro, _) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          BottomNavigationBarWidget(
+            width: width,
+          ),
+        ],
+      );
+    });
+  }
+}
 
 class MiniPlayer extends StatefulWidget {
   const MiniPlayer({super.key, required this.onChange});
@@ -107,6 +99,8 @@ class _MiniPlayerState extends State<MiniPlayer> {
                             child: Image.network(
                               metadata.artUri.toString(),
                               fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Image.asset(Images.noSong),
                             ),
                           ),
                         ),

@@ -50,6 +50,13 @@ class SongListTile extends StatelessWidget {
                   height: 70,
                   width: 70,
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      Images.noSong,
+                      height: 70,
+                      width: 70,
+                    );
+                  },
                 ),
               ),
             ),
@@ -140,8 +147,8 @@ class SongListTile extends StatelessWidget {
                                 imageUrl: imageUrl,
                                 musicDirectorName: musicDirectorName,
                                 duration: duration,
-                                premium:
-                                    isPremium != true ? "free" : "premium");
+                                premium: isPremium != true ? "free" : "premium",
+                                isImage: null);
                         context
                             .read<PlayerProvider>()
                             .queuePlayNext(playerSongListModel);

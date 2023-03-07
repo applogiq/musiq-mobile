@@ -37,33 +37,39 @@ class NoPlaylistSong extends StatelessWidget {
           actions: [popUpMenu],
         ),
       ),
-      body: Column(
-        children: [
-          const Spacer(),
-          NoSongScreen(
-            isFav: true,
-            mainTitle: ConstantText.noSongHere,
-            subTitle: ConstantText.noSongInPlayList,
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            children: [
+              const Spacer(),
+              NoSongScreen(
+                isFav: true,
+                mainTitle: ConstantText.noSongHere,
+                subTitle: ConstantText.noSongInPlayList,
+              ),
+              GestureDetector(
+                  onTap: () {
+                    context.read<SearchProvider>().resetState();
+                    Navigation.navigateToScreen(
+                      context,
+                      RouteName.search,
+                      args: SearchRequestModel(
+                        searchStatus: SearchStatus.playlist,
+                        playlistId: int.parse(playListId),
+                      ),
+                    );
+                  },
+                  child: const CustomButton(
+                    label: ConstantText.addSong,
+                    horizontalMargin: 105,
+                  )),
+              const Spacer(),
+              const Spacer()
+            ],
           ),
-          GestureDetector(
-              onTap: () {
-                context.read<SearchProvider>().resetState();
-                Navigation.navigateToScreen(
-                  context,
-                  RouteName.search,
-                  args: SearchRequestModel(
-                    searchStatus: SearchStatus.playlist,
-                    playlistId: int.parse(playListId),
-                  ),
-                );
-              },
-              child: const CustomButton(
-                label: ConstantText.addSong,
-                horizontalMargin: 105,
-              )),
-          const Spacer(),
-          const Spacer()
-        ],
+        ),
       ),
     );
   }

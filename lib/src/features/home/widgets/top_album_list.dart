@@ -125,6 +125,8 @@ class TopAlbum extends StatelessWidget {
                             ),
                             Text(
                               album.records[index].albumName.toString(),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 12),
                             ),

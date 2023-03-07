@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/common_widgets/box/vertical_box.dart';
+import 'package:musiq/src/features/library/screens/playlist/view_playlist_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/buttons/custom_button.dart';
@@ -34,6 +35,7 @@ class _MyProfileState extends State<MyProfile> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      bottomNavigationBar: const BottomMiniPlayer(),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         toolbarHeight: getProportionateScreenHeight(70),
