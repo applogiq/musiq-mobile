@@ -153,6 +153,13 @@ class ArtistGridView extends StatelessWidget {
                         height: 185,
                         width: 163.5,
                         fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) =>
+                            Image.asset(
+                          "assets/images/default/no_artist.png",
+                          width: 185,
+                          height: 163.5,
+                          fit: BoxFit.fill,
+                        ),
                       )),
                 const SizedBox(
                   height: 6,

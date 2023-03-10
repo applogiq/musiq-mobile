@@ -32,47 +32,43 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Consumer<HomeProvider>(builder: (context, pro, _) {
-      return SizedBox(
-        child: pro.isLoad
-            ? const LoaderScreen()
-            : ListView(shrinkWrap: true, children: [
-                const VerticalBox(height: 8),
-                const SearchAndNotifications(
-                  searchStatus: SearchStatus.song,
+    return Consumer<HomeProvider>(
+      builder: (context, pro, _) {
+        return SizedBox(
+          child: pro.isLoad
+              ? const LoaderScreen()
+              : ListView(
+                  shrinkWrap: true,
+                  children: [
+                    const VerticalBox(height: 8),
+                    const SearchAndNotifications(
+                      searchStatus: SearchStatus.song,
+                    ),
+                    pro.recentlyPlayed.success == false
+                        ? const SizedBox.shrink()
+                        : HomeScreenSongList(
+                            title: "Recently Played",
+                            isViewAll: true,
+                            songList: pro.recentSongListModel,
+                          ),
+                    TrendingHitsWidget(
+                      trendingHitsModel: pro.trendingHitsModel,
+                    ),
+                    ArtistListView(artist: pro.artistModel),
+                    HomeScreenSongList(
+                      title: "New Releases",
+                      isViewAll: true,
+                      songList: pro.newReleaseListModel,
+                    ),
+                    CurrentMood(auraModel: pro.auraListModel),
+                    TopAlbum(album: pro.albumListModel),
+                    const SizedBox(
+                      height: 24,
+                    )
+                  ],
                 ),
-                pro.recentlyPlayed.success == false
-                    ? const SizedBox.shrink()
-                    : HomeScreenSongList(
-                        title: "Recently Played",
-                        isViewAll: true,
-                        songList: pro.recentSongListModel,
-                      ),
-                TrendingHitsWidget(
-                  trendingHitsModel: pro.trendingHitsModel,
-                ),
-                ArtistListView(artist: pro.artistModel),
-                HomeScreenSongList(
-                  title: "New Releases",
-                  isViewAll: true,
-                  songList: pro.newReleaseListModel,
-                ),
-                CurrentMood(auraModel: pro.auraListModel),
-                TopAlbum(album: pro.albumListModel),
-                const SizedBox(
-                  height: 24,
-                )
-                // Consumer<PlayerProvider>(builder: (context, pro, _) {
-                //   return pro.isPlaying
-                //       ? const SizedBox(
-                //           height: 12,
-                //         )
-                //       : const SizedBox(
-                //           height: 24,
-                //         );
-                // }),
-              ]),
-      );
-    });
+        );
+      },
+    );
   }
 }

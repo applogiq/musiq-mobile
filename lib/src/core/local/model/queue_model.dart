@@ -10,7 +10,8 @@ class SongListModel {
       required this.musicDirectorName,
       required this.imageUrl,
       required this.songUrl,
-      required this.duration});
+      required this.duration,
+      required this.isImage});
 
   String albumName;
   @Id(assignable: true)
@@ -22,4 +23,5 @@ class SongListModel {
   String songUrl;
   String title;
   String duration;
+  bool isImage;
 }

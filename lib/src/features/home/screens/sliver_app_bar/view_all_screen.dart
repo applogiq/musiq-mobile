@@ -79,35 +79,21 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
   getImageUrl(ViewAllStatus status, ViewAllProvider pro) {
     switch (status) {
       case ViewAllStatus.newRelease:
-        if (pro.newReleaseModel.records[0].isImage) {
-          return generateSongImageUrl(pro.newReleaseModel.records[0].albumName,
-              pro.newReleaseModel.records[0].albumId);
-        }
-        return "https://images.unsplash.com/photo-1499415479124-43c32433a620?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1032&q=80";
+        return generateSongImageUrl(pro.newReleaseModel.records[0].albumName,
+            pro.newReleaseModel.records[0].albumId);
       case ViewAllStatus.recentlyPlayed:
-        if (false) {
-          return generateSongImageUrl(
-              pro.recentlyPlayed.records[0][0].albumName,
-              pro.recentlyPlayed.records[0][0].albumId);
-        }
-        return "https://images.unsplash.com/photo-1499415479124-43c32433a620?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1032&q=80";
+        return generateSongImageUrl(pro.recentlyPlayed.records[0][0].albumName,
+            pro.recentlyPlayed.records[0][0].albumId);
 
       case ViewAllStatus.trendingHits:
-        if (pro.trendingHitsModel.records[0].isImage) {
-          return generateSongImageUrl(
-              pro.trendingHitsModel.records[0].albumName,
-              pro.trendingHitsModel.records[0].albumId);
-        }
-        return "https://images.unsplash.com/photo-1499415479124-43c32433a620?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1032&q=80";
+        return generateSongImageUrl(pro.trendingHitsModel.records[0].albumName,
+            pro.trendingHitsModel.records[0].albumId);
 
       case ViewAllStatus.album:
-        if (pro.albumSongListModel.records[0].isImage) {
-          return generateSongImageUrl(
-            pro.albumSongListModel.records[0].albumName,
-            pro.albumSongListModel.records[0].albumId,
-          );
-        }
-        return "https://images.unsplash.com/photo-1499415479124-43c32433a620?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1032&q=80";
+        return generateSongImageUrl(
+          pro.albumSongListModel.records[0].albumName,
+          pro.albumSongListModel.records[0].albumId,
+        );
 
       case ViewAllStatus.aura:
         return generateAuraImageUrl(widget.auraId);

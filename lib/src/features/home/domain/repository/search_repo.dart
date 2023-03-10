@@ -10,7 +10,6 @@ class SearchRepository {
 
   Future<dynamic> getArtistSearch(String data) async {
     try {
-      // var userId = await storage.read(key: "register_id");
       var endpoint = APIConstants.searchArtist + data;
       dynamic response = await apiServices.getGetAuthApiResponse(endpoint);
       return response;

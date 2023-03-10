@@ -35,6 +35,7 @@ class Record {
     required this.duration,
     required this.albumName,
     required this.musicDirectorName,
+    required this.isImage,
     required this.premiumStatus,
   });
 
@@ -45,6 +46,7 @@ class Record {
         albumName: json["album_name"],
         duration: json["duration"],
         premiumStatus: json["premium_status"],
+        isImage: json["is_image"],
         musicDirectorName:
             List<String>.from(json["music_director_name"].map((x) => x)),
       );
@@ -55,6 +57,8 @@ class Record {
   String duration;
   List<String> musicDirectorName;
   String songName;
+  bool isImage;
+
   String premiumStatus;
 
   Map<String, dynamic> toMap() => {

@@ -23,19 +23,8 @@ class SongSearchListView extends StatelessWidget {
     return Expanded(
       child: Consumer<PlayerProvider>(
         builder: (context, pro, _) {
-          return StreamBuilder<SequenceState?>(
-            stream: pro.player.sequenceStateStream,
-            builder: (context, snapshot) {
-              final state = snapshot.data;
-              if (state != null) {
-                var s = state.effectiveSequence[state.currentIndex].tag
-                    as MediaItem;
-                if (state.sequence.isEmpty) {
-                  return const ColoredBox(
-                    color: Colors.black,
-                  );
-                }
-                return ListView.builder(
+          return pro.isPlaying == false
+              ? ListView.builder(
                   shrinkWrap: true,
                   itemCount: provider.searchSongModel.records.length,
                   itemBuilder: (context, index) {
@@ -44,36 +33,29 @@ class SongSearchListView extends StatelessWidget {
                     return InkWell(
                       onTap: () {
                         if (rec.premiumStatus != "free") {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const SubscriptionsScreen(),
-                            ),
-                          );
-                          FocusScope.of(context).unfocus();
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  const SubscriptionsScreen()));
                         } else {
-                          FocusScope.of(context).unfocus();
-                          if (s.extras!["song_id"] ==
-                              provider.searchSongModel.records[index].id) {
-                          } else {
-                            context.read<SearchProvider>().searchSongStore();
-                            Record rec = context
-                                .read<SearchProvider>()
-                                .searchSongModel
-                                .records[index];
-                            PlayerSongListModel playerSongListModel =
-                                PlayerSongListModel(
-                                    id: rec.id,
-                                    albumName: rec.albumName,
-                                    title: rec.songName,
-                                    imageUrl: generateSongImageUrl(
-                                        rec.albumName, rec.albumId),
-                                    musicDirectorName: rec.musicDirectorName[0],
-                                    duration: rec.duration,
-                                    premium: rec.premiumStatus);
-                            context
-                                .read<PlayerProvider>()
-                                .playSingleSong(context, playerSongListModel);
-                          }
+                          context.read<SearchProvider>().searchSongStore();
+                          Record rec = context
+                              .read<SearchProvider>()
+                              .searchSongModel
+                              .records[index];
+                          PlayerSongListModel playerSongListModel =
+                              PlayerSongListModel(
+                                  id: rec.id,
+                                  albumName: rec.albumName,
+                                  title: rec.songName,
+                                  imageUrl: generateSongImageUrl(
+                                      rec.albumName, rec.albumId),
+                                  musicDirectorName: rec.musicDirectorName[0],
+                                  duration: rec.duration,
+                                  premium: rec.premiumStatus,
+                                  isImage: false);
+                          context
+                              .read<PlayerProvider>()
+                              .playSingleSong(context, playerSongListModel);
                         }
                       },
                       child: SongListTile(
@@ -85,60 +67,140 @@ class SongSearchListView extends StatelessWidget {
                         songName: rec.songName,
                         songId: rec.id,
                         duration: rec.duration,
-                        isPlay: s.extras!["song_id"] == rec.id,
+                        isPlay: false,
+                        isImage: false,
                       ),
                     );
                   },
-                );
-              }
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: provider.searchSongModel.records.length,
-                itemBuilder: (context, index) {
-                  var rec = provider.searchSongModel.records[index];
-
-                  return InkWell(
-                    onTap: () {
-                      if (rec.premiumStatus != "free") {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const SubscriptionsScreen()));
-                      } else {
-                        context.read<SearchProvider>().searchSongStore();
-                        Record rec = context
-                            .read<SearchProvider>()
-                            .searchSongModel
-                            .records[index];
-                        PlayerSongListModel playerSongListModel =
-                            PlayerSongListModel(
-                                id: rec.id,
-                                albumName: rec.albumName,
-                                title: rec.songName,
-                                imageUrl: generateSongImageUrl(
-                                    rec.albumName, rec.albumId),
-                                musicDirectorName: rec.musicDirectorName[0],
-                                duration: rec.duration,
-                                premium: rec.premiumStatus);
-                        context
-                            .read<PlayerProvider>()
-                            .playSingleSong(context, playerSongListModel);
+                )
+              : StreamBuilder<SequenceState?>(
+                  stream: pro.player.sequenceStateStream,
+                  builder: (context, snapshot) {
+                    final state = snapshot.data;
+                    if (state != null) {
+                      var s = state.effectiveSequence[state.currentIndex].tag
+                          as MediaItem;
+                      if (state.sequence.isEmpty) {
+                        return const ColoredBox(
+                          color: Colors.black,
+                        );
                       }
-                    },
-                    child: SongListTile(
-                      isPremium: rec.premiumStatus != "free" ? true : false,
-                      albumName: rec.albumName,
-                      imageUrl:
-                          generateSongImageUrl(rec.albumName, rec.albumId),
-                      musicDirectorName: rec.musicDirectorName[0],
-                      songName: rec.songName,
-                      songId: rec.id,
-                      duration: rec.duration,
-                      isPlay: false,
-                    ),
-                  );
-                },
-              );
-            },
-          );
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: provider.searchSongModel.records.length,
+                        itemBuilder: (context, index) {
+                          var rec = provider.searchSongModel.records[index];
+
+                          return InkWell(
+                            onTap: () {
+                              if (rec.premiumStatus != "free") {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const SubscriptionsScreen(),
+                                  ),
+                                );
+                                FocusScope.of(context).unfocus();
+                              } else {
+                                FocusScope.of(context).unfocus();
+                                if (s.extras!["song_id"] ==
+                                    provider
+                                        .searchSongModel.records[index].id) {
+                                } else {
+                                  context
+                                      .read<SearchProvider>()
+                                      .searchSongStore();
+                                  Record rec = context
+                                      .read<SearchProvider>()
+                                      .searchSongModel
+                                      .records[index];
+                                  PlayerSongListModel playerSongListModel =
+                                      PlayerSongListModel(
+                                          id: rec.id,
+                                          albumName: rec.albumName,
+                                          title: rec.songName,
+                                          imageUrl: generateSongImageUrl(
+                                              rec.albumName, rec.albumId),
+                                          musicDirectorName:
+                                              rec.musicDirectorName[0],
+                                          duration: rec.duration,
+                                          premium: rec.premiumStatus,
+                                          isImage: rec.isImage);
+                                  context.read<PlayerProvider>().playSingleSong(
+                                      context, playerSongListModel);
+                                }
+                              }
+                            },
+                            child: SongListTile(
+                              isPremium:
+                                  rec.premiumStatus != "free" ? true : false,
+                              albumName: rec.albumName,
+                              imageUrl: generateSongImageUrl(
+                                  rec.albumName, rec.albumId),
+                              musicDirectorName: rec.musicDirectorName[0],
+                              songName: rec.songName,
+                              songId: rec.id,
+                              duration: rec.duration,
+                              isPlay: s.extras!["song_id"] == rec.id,
+                              isImage: false,
+                            ),
+                          );
+                        },
+                      );
+                    }
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: provider.searchSongModel.records.length,
+                      itemBuilder: (context, index) {
+                        var rec = provider.searchSongModel.records[index];
+
+                        return InkWell(
+                          onTap: () {
+                            if (rec.premiumStatus != "free") {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      const SubscriptionsScreen()));
+                            } else {
+                              context.read<SearchProvider>().searchSongStore();
+                              Record rec = context
+                                  .read<SearchProvider>()
+                                  .searchSongModel
+                                  .records[index];
+                              PlayerSongListModel playerSongListModel =
+                                  PlayerSongListModel(
+                                      id: rec.id,
+                                      albumName: rec.albumName,
+                                      title: rec.songName,
+                                      imageUrl: generateSongImageUrl(
+                                          rec.albumName, rec.albumId),
+                                      musicDirectorName:
+                                          rec.musicDirectorName[0],
+                                      duration: rec.duration,
+                                      premium: rec.premiumStatus,
+                                      isImage: false);
+                              context
+                                  .read<PlayerProvider>()
+                                  .playSingleSong(context, playerSongListModel);
+                            }
+                          },
+                          child: SongListTile(
+                            isPremium:
+                                rec.premiumStatus != "free" ? true : false,
+                            albumName: rec.albumName,
+                            imageUrl: generateSongImageUrl(
+                                rec.albumName, rec.albumId),
+                            musicDirectorName: rec.musicDirectorName[0],
+                            songName: rec.songName,
+                            songId: rec.id,
+                            duration: rec.duration,
+                            isPlay: false,
+                            isImage: false,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                );
         },
       ),
     );

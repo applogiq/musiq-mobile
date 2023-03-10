@@ -228,6 +228,27 @@ class AlbumSongsList extends StatelessWidget {
     }
   }
 
+  getIsImage(ViewAllStatus status, int index) {
+    switch (status) {
+      case ViewAllStatus.newRelease:
+        return newReleaseModel!.records[index].isImage;
+
+      case ViewAllStatus.recentlyPlayed:
+        return recentlyPlayed!.records[index][0].isImage;
+      case ViewAllStatus.trendingHits:
+        return trendingHitsModel!.records[index].isImage;
+      case ViewAllStatus.album:
+        return albumSongListModel!.records[index].isImage;
+
+      case ViewAllStatus.aura:
+        return auraSongListModel!.records[index].isImage;
+      case ViewAllStatus.artist:
+        return collectionViewAllModel!.records[index]!.isImage;
+      default:
+        return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SliverList(
@@ -267,6 +288,7 @@ class AlbumSongsList extends StatelessWidget {
                       songId: getSongId(status, index),
                       duration: getDuration(status, index),
                       isPlay: false,
+                      isImage: getIsImage(status, index),
                     );
                   }),
                 ),

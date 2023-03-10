@@ -180,7 +180,8 @@ class LibraryProvider extends ChangeNotifier {
             imageUrl: generateSongImageUrl(element.albumName, element.albumId),
             musicDirectorName: element.musicDirectorName[0],
             duration: element.duration,
-            premium: element.premiumStatus));
+            premium: element.premiumStatus,
+            isImage: element.isImage));
       }
       context
           .read<PlayerProvider>()
@@ -219,7 +220,8 @@ class LibraryProvider extends ChangeNotifier {
             imageUrl: generateSongImageUrl(element.albumName, element.albumId),
             musicDirectorName: element.musicDirectorName[0],
             duration: element.duration,
-            premium: element.premiumStatus));
+            premium: element.premiumStatus,
+            isImage: false));
       }
       context
           .read<PlayerProvider>()
@@ -239,7 +241,8 @@ class LibraryProvider extends ChangeNotifier {
             imageUrl: generateSongImageUrl(element.albumName, element.albumId),
             musicDirectorName: element.musicDirectorName[0],
             duration: element.duration,
-            premium: element.premiumStatus),
+            premium: element.premiumStatus,
+            isImage: false),
       );
     }
 

@@ -45,7 +45,7 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   // final _tab1navigatorKey = GlobalKey<NavigatorState>();
   // final _tab2navigatorKey = GlobalKey<NavigatorState>();
   // final _tab3navigatorKey = GlobalKey<NavigatorState>();
@@ -56,6 +56,7 @@ class _MainScreenState extends State<MainScreen> {
   late final ValueChanged<int> onItemSelected;
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
     load();
   }
@@ -68,10 +69,19 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     BottomNavigationBarProvider()
         .pages[BottomNavigationBarProvider().selectedBottomIndex];
 
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.detached) {
+      context.read<PlayerProvider>().player.dispose();
+    }
   }
 
   @override
@@ -89,27 +99,39 @@ class _MainScreenState extends State<MainScreen> {
             Provider.of<InternetConnectionStatus>(context) ==
                     InternetConnectionStatus.disconnected
                 ? const OfflineScreen()
-                : WeSlide(
-                    controller: controller,
-                    panelMinSize: panelMinSize,
-                    panelMaxSize: panelMaxSize,
-                    body: Expanded(
-                      child: Consumer<BottomNavigationBarProvider>(
-                        builder: (context, provider, _) {
-                          return provider.pages[provider.selectedBottomIndex];
-                        },
+                : Consumer<PlayerProvider>(builder: (context, pro, _) {
+                    return WeSlide(
+                      controller: controller,
+                      panelMinSize: pro.isPlaying ? panelMinSize : 60,
+                      panelMaxSize: panelMaxSize,
+                      body: Expanded(
+                        child: Consumer<BottomNavigationBarProvider>(
+                          builder: (context, provider, _) {
+                            return provider.pages[provider.selectedBottomIndex];
+                          },
+                        ),
                       ),
-                    ),
-                    panel: PlayerScreen(onTap: () {
-                      controller.hide();
-                    }),
-                    panelHeader: MiniPlayer(
-                      onChange: controller.show,
-                    ),
-                    footer: BottomNavigationBarWithMiniPlayer(
-                      width: width,
-                    ),
-                  ),
+                      panel:
+                          Consumer<PlayerProvider>(builder: (context, pro, _) {
+                        return pro.isPlaying
+                            ? PlayerScreen(onTap: () {
+                                controller.hide();
+                              })
+                            : const SizedBox.shrink();
+                      }),
+                      panelHeader:
+                          Consumer<PlayerProvider>(builder: (context, pro, _) {
+                        return pro.isPlaying
+                            ? MiniPlayer(
+                                onChange: controller.show,
+                              )
+                            : const SizedBox.shrink();
+                      }),
+                      footer: BottomNavigationBarWithMiniPlayer(
+                        width: width,
+                      ),
+                    );
+                  }),
             // : Column(
             //     children: [
             //       Expanded(

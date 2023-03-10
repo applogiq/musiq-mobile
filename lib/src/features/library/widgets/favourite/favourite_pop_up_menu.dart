@@ -39,7 +39,8 @@ class FavouritesPopUpMenuButton extends StatelessWidget {
                     record[index].albumName, record[index].albumId),
                 musicDirectorName: record[index].musicDirectorName[0],
                 duration: record[index].duration,
-                premium: record[index].premiumStatus);
+                premium: record[index].premiumStatus,
+                isImage: record[index].isImage);
             switch (value) {
               case PopUpConstants.playNext:
                 if (record[index].premiumStatus == "premium" &&

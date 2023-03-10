@@ -108,7 +108,10 @@ class PlayerProvider extends ChangeNotifier {
           duration: Duration(
               milliseconds: totalDuration(playerSongListModel.duration)),
           artUri: Uri.parse(playerSongListModel.imageUrl),
-          extras: {"song_id": playerSongListModel.id});
+          extras: {
+            "song_id": playerSongListModel.id,
+            "isImage": playerSongListModel.isImage
+          });
       playlist.insert(player.currentIndex! + 1,
           AudioSource.uri(Uri.parse(item.id), tag: item));
     }
@@ -169,7 +172,8 @@ class PlayerProvider extends ChangeNotifier {
           musicDirectorName: e.musicDirectorName,
           imageUrl: e.imageUrl,
           songUrl: generateSongUrl(e.id),
-          duration: e.duration));
+          duration: e.duration,
+          isImage: e.isImage));
       var item = MediaItem(
           id: generateSongUrl(e.id),
           album: e.albumName,
@@ -177,7 +181,7 @@ class PlayerProvider extends ChangeNotifier {
           artist: e.musicDirectorName,
           duration: Duration(milliseconds: totalDuration(e.duration)),
           artUri: Uri.parse(e.imageUrl),
-          extras: {"song_id": e.id});
+          extras: {"song_id": e.id, "isImage": e.isImage});
       await playlist.add(AudioSource.uri(
           Uri.parse(
             generateSongUrl(e.id),
@@ -234,7 +238,7 @@ class PlayerProvider extends ChangeNotifier {
               musicDirectorName: e.musicDirectorName,
               duration: e.duration,
               premium: '',
-              isImage: false));
+              isImage: e.isImage));
           final item = MediaItem(
               id: generateSongUrl(e.songId),
               album: e.albumName,
@@ -242,7 +246,7 @@ class PlayerProvider extends ChangeNotifier {
               artist: e.musicDirectorName,
               duration: Duration(milliseconds: totalDuration(e.duration)),
               artUri: Uri.parse(e.imageUrl),
-              extras: {"song_id": e.songId, "isImage": false});
+              extras: {"song_id": e.songId, "isImage": e.isImage});
           playlist.add(
             AudioSource.uri(
                 Uri.parse(
@@ -297,7 +301,8 @@ class PlayerProvider extends ChangeNotifier {
               musicDirectorName: e.musicDirectorName,
               imageUrl: e.imageUrl,
               songUrl: generateSongUrl(e.id),
-              duration: e.duration));
+              duration: e.duration,
+              isImage: e.isImage));
           final item = MediaItem(
               id: generateSongUrl(e.id),
               album: e.albumName,
@@ -305,7 +310,7 @@ class PlayerProvider extends ChangeNotifier {
               artist: e.musicDirectorName,
               duration: Duration(milliseconds: totalDuration(e.duration)),
               artUri: Uri.parse(e.imageUrl),
-              extras: {"song_id": e.id});
+              extras: {"song_id": e.id, "isImage": e.isImage});
           playlist.add(
             AudioSource.uri(
                 Uri.parse(
@@ -327,7 +332,8 @@ class PlayerProvider extends ChangeNotifier {
                 musicDirectorName: e.musicDirectorName,
                 imageUrl: e.imageUrl,
                 songUrl: generateSongUrl(e.id),
-                duration: e.duration),
+                duration: e.duration,
+                isImage: e.isImage),
           );
           final item = MediaItem(
             id: generateSongUrl(e.id),
@@ -338,7 +344,7 @@ class PlayerProvider extends ChangeNotifier {
               milliseconds: totalDuration(e.duration),
             ),
             artUri: Uri.parse(e.imageUrl),
-            extras: {"song_id": e.id},
+            extras: {"song_id": e.id, "isImage": e.isImage},
           );
           playlist.add(
             AudioSource.uri(
@@ -471,7 +477,8 @@ class PlayerProvider extends ChangeNotifier {
               musicDirectorName: e.musicDirectorName,
               imageUrl: e.imageUrl,
               songUrl: generateSongUrl(e.id),
-              duration: e.duration));
+              duration: e.duration,
+              isImage: e.isImage));
           var item = MediaItem(
               id: generateSongUrl(e.id),
               album: e.albumName,
@@ -479,7 +486,7 @@ class PlayerProvider extends ChangeNotifier {
               artist: e.musicDirectorName,
               duration: Duration(milliseconds: totalDuration(e.duration)),
               artUri: Uri.parse(e.imageUrl),
-              extras: {"song_id": e.id});
+              extras: {"song_id": e.id, "isImage": e.isImage});
           await playlist.add(AudioSource.uri(
               Uri.parse(
                 generateSongUrl(e.id),

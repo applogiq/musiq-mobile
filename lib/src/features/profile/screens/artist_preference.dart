@@ -34,7 +34,7 @@ class _ProfileArtistPreferenceScreenState
             InternetConnectionStatus.disconnected
         ? const OfflineScreen()
         : Scaffold(
-            bottomNavigationBar: BottomMiniPlayer(),
+            bottomNavigationBar: const BottomMiniPlayer(),
             appBar: AppBar(
               automaticallyImplyLeading: true,
               title: const Text("Artist Preference"),

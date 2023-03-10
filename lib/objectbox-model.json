@@ -86,7 +86,7 @@
     },
     {
       "id": "5:7342810452216053734",
-      "lastPropertyId": "8:3846003436775018625",
+      "lastPropertyId": "9:5362883311295436265",
       "name": "SongListModel",
       "properties": [
         {
@@ -129,6 +129,11 @@
           "id": "8:3846003436775018625",
           "name": "duration",
           "type": 9
+        },
+        {
+          "id": "9:5362883311295436265",
+          "name": "isImage",
+          "type": 1
         }
       ],
       "relations": []

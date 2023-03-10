@@ -101,6 +101,14 @@ class ArtistListView extends StatelessWidget {
                                         height: 240,
                                         width: 200,
                                         fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                Image.asset(
+                                          Images.noArtist,
+                                          height: 240,
+                                          width: 200,
+                                          fit: BoxFit.fill,
+                                        ),
                                       ),
                                     ),
                               const SizedBox(

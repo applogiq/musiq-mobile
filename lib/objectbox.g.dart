@@ -106,7 +106,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(5, 7342810452216053734),
       name: 'SongListModel',
-      lastPropertyId: const IdUid(8, 3846003436775018625),
+      lastPropertyId: const IdUid(9, 5362883311295436265),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -148,6 +148,11 @@ final _entities = <ModelEntity>[
             id: const IdUid(8, 3846003436775018625),
             name: 'duration',
             type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(9, 5362883311295436265),
+            name: 'isImage',
+            type: 1,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -350,7 +355,7 @@ ModelDefinition getObjectBoxModel() {
           final songUrlOffset = fbb.writeString(object.songUrl);
           final titleOffset = fbb.writeString(object.title);
           final durationOffset = fbb.writeString(object.duration);
-          fbb.startTable(9);
+          fbb.startTable(10);
           fbb.addOffset(0, albumNameOffset);
           fbb.addInt64(1, object.id);
           fbb.addOffset(2, imageUrlOffset);
@@ -359,6 +364,7 @@ ModelDefinition getObjectBoxModel() {
           fbb.addOffset(5, songUrlOffset);
           fbb.addOffset(6, titleOffset);
           fbb.addOffset(7, durationOffset);
+          fbb.addBool(8, object.isImage);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -381,7 +387,9 @@ ModelDefinition getObjectBoxModel() {
               songUrl: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 14, ''),
               duration: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 18, ''));
+                  .vTableGet(buffer, rootOffset, 18, ''),
+              isImage: const fb.BoolReader()
+                  .vTableGet(buffer, rootOffset, 20, false));
 
           return object;
         }),
@@ -510,6 +518,10 @@ class SongListModel_ {
   /// see [SongListModel.duration]
   static final duration =
       QueryStringProperty<SongListModel>(_entities[4].properties[7]);
+
+  /// see [SongListModel.isImage]
+  static final isImage =
+      QueryBooleanProperty<SongListModel>(_entities[4].properties[8]);
 }
 
 /// [User] entity fields to define ObjectBox queries.

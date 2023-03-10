@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/core/constants/images.dart';
 
 import '../../../../../core/constants/color.dart';
-import '../../../../../core/constants/images.dart';
 
 class ExpandedAppBar extends StatelessWidget {
   const ExpandedAppBar({
@@ -36,18 +36,16 @@ class ExpandedAppBar extends StatelessWidget {
             height: albumImageSize,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-              color: imageUrl != ""
-                  ? Colors.deepPurpleAccent
-                  : CustomColor.defaultCard,
-              image: imageUrl != ""
-                  ? DecorationImage(
-                      image: NetworkImage(imageUrl),
-                      fit: BoxFit.fill,
-                    )
-                  : DecorationImage(
-                      image: AssetImage(Images.noArtist),
-                      fit: BoxFit.fill,
-                    ),
+              color: CustomColor.defaultCard,
+              // image: imageUrl != ""
+              //     ? DecorationImage(
+              //         image: NetworkImage(imageUrl),
+              //         fit: BoxFit.fill,
+              //       )
+              //     : DecorationImage(
+              //         image: AssetImage(Images.noArtist),
+              //         fit: BoxFit.fill,
+              //       ),
               boxShadow: const [
                 BoxShadow(
                   color: Colors.black87,
@@ -55,6 +53,11 @@ class ExpandedAppBar extends StatelessWidget {
                   blurRadius: 50,
                 ),
               ],
+            ),
+            child: Image.network(
+              imageUrl,
+              errorBuilder: (context, error, stackTrace) =>
+                  Image.asset(Images.noSong),
             ),
           ),
         ));

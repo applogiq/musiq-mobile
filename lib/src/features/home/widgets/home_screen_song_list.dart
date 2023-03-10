@@ -65,9 +65,6 @@ class HomeScreenSongList extends StatelessWidget {
           padding: const EdgeInsets.only(top: 8),
           height: 200,
           child: ListView.builder(
-
-              // reverse: true,
-
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
@@ -168,28 +165,6 @@ class HomeScreenSongList extends StatelessWidget {
                                       return const SizedBox.shrink();
                                     }
                                   }),
-                                  // (context
-                                  //                 .read<LoginProvider>()
-                                  //                 .userModel!
-                                  //                 .records
-                                  //                 .premiumStatus !=
-                                  //             "free" ||
-                                  // songList[index].premiumStatus !=
-                                  //     "free")
-                                  // ? Padding(
-                                  //     padding: const EdgeInsets.all(4.0),
-                                  //     child: CircleAvatar(
-                                  //       radius: 15,
-                                  //       backgroundColor: CustomColor.bg,
-                                  //       child: Image.asset(
-                                  //         Images.crownImage,
-                                  //         height: 21,
-                                  //         width: 21,
-                                  //         fit: BoxFit.cover,
-                                  //       ),
-                                  //     ),
-                                  //   )
-                                  //     : const SizedBox.shrink()
                                 ],
                               ),
                               const SizedBox(

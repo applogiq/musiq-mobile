@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/core/constants/images.dart';
 
 class ArtistImagesWidget extends StatelessWidget {
   const ArtistImagesWidget({
@@ -15,6 +16,12 @@ class ArtistImagesWidget extends StatelessWidget {
       width: 80,
       height: 80,
       fit: BoxFit.fill,
+      errorBuilder: (context, error, stackTrace) => Image.asset(
+        Images.noArtist,
+        width: 80,
+        height: 80,
+        fit: BoxFit.fill,
+      ),
     );
   }
 }

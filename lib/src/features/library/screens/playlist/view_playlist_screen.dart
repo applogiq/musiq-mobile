@@ -181,6 +181,7 @@ class _ViewPlaylistSongScreenState extends State<ViewPlaylistSongScreen> {
                                                             "free")
                                                     ? true
                                                     : false,
+                                                isImage: records[index].isImage,
                                               ),
                                             );
                                           },

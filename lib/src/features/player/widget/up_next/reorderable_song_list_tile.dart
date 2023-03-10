@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:musiq/src/core/constants/images.dart';
 import 'package:musiq/src/features/player/provider/player_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -63,12 +64,16 @@ class ReorderableSongListTile extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: CustomColorContainer(
-                child: Image.network(
-                  metadata.artUri.toString(),
-                  height: 70,
-                  width: 70,
-                  fit: BoxFit.fill,
-                ),
+                child: Image.network(metadata.artUri.toString(),
+                    height: 70,
+                    width: 70,
+                    fit: BoxFit.fill,
+                    errorBuilder: (context, error, stackTrace) => Image.asset(
+                          Images.noSong,
+                          height: 70,
+                          width: 70,
+                          fit: BoxFit.fill,
+                        )),
               ),
             ),
             Expanded(

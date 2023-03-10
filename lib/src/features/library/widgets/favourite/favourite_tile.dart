@@ -49,6 +49,11 @@ class FavouriteTile extends StatelessWidget {
                   height: 70,
                   width: 70,
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Image.asset(
+                      Images.noSong,
+                      height: 70,
+                      width: 70,
+                      fit: BoxFit.cover),
                 ),
               ),
             ),

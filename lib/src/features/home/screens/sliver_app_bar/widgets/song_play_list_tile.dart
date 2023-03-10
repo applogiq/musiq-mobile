@@ -49,12 +49,17 @@ class SongPlayListTile extends StatelessWidget {
                               .read<SearchProvider>()
                               .addSongToPlaylist(songId, playlistId);
                         },
-                        child: Image.network(
-                          imageUrl,
-                          height: 70,
-                          width: 70,
-                          fit: BoxFit.cover,
-                        ),
+                        child: Image.network(imageUrl,
+                            height: 70,
+                            width: 70,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Image.asset(
+                                  Images.noSong,
+                                  height: 70,
+                                  width: 70,
+                                  fit: BoxFit.cover,
+                                )),
                       ),
                       isAdded
                           ? Positioned.fill(

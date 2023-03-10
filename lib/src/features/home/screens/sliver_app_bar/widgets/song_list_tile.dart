@@ -21,6 +21,7 @@ class SongListTile extends StatelessWidget {
     required this.duration,
     required this.isPlay,
     this.isPremium = false,
+    required this.isImage,
   });
 
   final String albumName;
@@ -31,6 +32,7 @@ class SongListTile extends StatelessWidget {
   final String songName;
   final String duration;
   final bool isPremium;
+  final bool isImage;
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +150,7 @@ class SongListTile extends StatelessWidget {
                                 musicDirectorName: musicDirectorName,
                                 duration: duration,
                                 premium: isPremium != true ? "free" : "premium",
-                                isImage: null);
+                                isImage: isImage);
                         context
                             .read<PlayerProvider>()
                             .queuePlayNext(playerSongListModel);
@@ -188,8 +190,8 @@ class SongListTile extends StatelessWidget {
                                 imageUrl: imageUrl,
                                 musicDirectorName: musicDirectorName,
                                 duration: duration,
-                                premium:
-                                    isPremium != true ? "free" : "premium");
+                                premium: isPremium != true ? "free" : "premium",
+                                isImage: isImage);
 
                         context.read<PlayerProvider>().addQueueToLocalDb(
                               playerSongListModel,

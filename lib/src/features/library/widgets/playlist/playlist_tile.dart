@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/core/constants/images.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/container/custom_color_container.dart';
@@ -65,6 +66,13 @@ class PlaylistTile extends StatelessWidget {
                               height: 70,
                               width: 70,
                               fit: BoxFit.fill,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Image.asset(
+                                Images.noSong,
+                                height: 70,
+                                width: 70,
+                                fit: BoxFit.fill,
+                              ),
                             ),
                     ),
                   ),

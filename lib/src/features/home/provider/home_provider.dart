@@ -48,16 +48,20 @@ class HomeProvider extends ChangeNotifier {
   );
   HomeRepository homeRepository = HomeRepository();
   getSongData() async {
-    premiumStatus = await storage.read(key: "premier_status") ?? "free";
+    try {
+      premiumStatus = await storage.read(key: "premier_status") ?? "free";
 
-    await changeLoadState(true);
-    await recentSongList();
-    await artistList();
-    await trendingHitsSongList();
-    await newRelease();
-    await auraSongList();
-    await albumList();
-    changeLoadState(false);
+      await changeLoadState(true);
+      await recentSongList();
+      await artistList();
+      await trendingHitsSongList();
+      await newRelease();
+      await auraSongList();
+      await albumList();
+      changeLoadState(false);
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   refreshPremiumStatus() async {
@@ -65,13 +69,17 @@ class HomeProvider extends ChangeNotifier {
   }
 
   albumList() async {
-    var res = await homeRepository.getAlbum();
+    try {
+      var res = await homeRepository.getAlbum();
 
-    albumListModel.records.clear();
+      albumListModel.records.clear();
 
-    if (res.statusCode == 200) {
-      var data = jsonDecode(res.body);
-      albumListModel = Album.fromMap(data);
+      if (res.statusCode == 200) {
+        var data = jsonDecode(res.body);
+        albumListModel = Album.fromMap(data);
+      }
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 

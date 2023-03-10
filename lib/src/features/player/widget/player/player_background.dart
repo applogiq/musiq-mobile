@@ -32,9 +32,6 @@ class PlayerBackground extends StatelessWidget {
                   }
                   final metadata = state!.currentSource!.tag as MediaItem;
 
-                  // if (mediaItem == null) {
-                  //   return const LoaderScreen();
-                  // }
                   PlayerSongListModel playerSongListModel = PlayerSongListModel(
                       id: metadata.extras!["song_id"],
                       duration: metadata.duration.toString(),
@@ -42,14 +39,22 @@ class PlayerBackground extends StatelessWidget {
                       title: metadata.title,
                       imageUrl: metadata.artUri.toString(),
                       musicDirectorName: metadata.artist!,
-                      premium: 'free');
+                      premium: 'free',
+                      isImage: metadata.extras!["isImage"]);
                   return Container(
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: NetworkImage(Images.noSongNetwork
-                                // metadata.artUri.toString(),
+                    decoration: metadata.extras!["isImage"]
+                        ? BoxDecoration(
+                            image: DecorationImage(
+                                image: NetworkImage(
+                                  metadata.artUri.toString(),
                                 ),
-                            fit: BoxFit.cover)),
+                                fit: BoxFit.cover))
+                        : BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(Images.noSong
+                                    // metadata.artUri.toString(),
+                                    ),
+                                fit: BoxFit.fill)),
                     child: Stack(
                       children: [
                         Container(
@@ -73,7 +78,6 @@ class PlayerBackground extends StatelessWidget {
                               InkWell(
                                 onTap: () {
                                   onTapped();
-                                  print("back");
                                 },
                                 child: const RotatedBox(
                                   quarterTurns: 3,
