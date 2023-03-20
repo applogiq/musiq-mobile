@@ -101,6 +101,7 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
     if (response.statusCode == 200) {
       if (context.mounted) {
         context.read<BottomNavigationBarProvider>().selectedBottomIndex = 0;
+        isLoginButtonEnable = false;
       }
       isShowStatus = true;
       isErrorStatus = false;
@@ -118,10 +119,9 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
         objectbox.deleteImage();
       }
       await storeResponseData(user);
-
-      await Future.delayed(const Duration(seconds: 2));
-      isLoginButtonEnable = false;
       isShowStatus = false;
+      await Future.delayed(const Duration(seconds: 2));
+
       emailAddress = "";
       password = "";
       emailAddressErrorMessage = "";
@@ -215,7 +215,8 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
       } else if (isOnboardFree == "true") {
         Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => const MainScreen()),
+            MaterialPageRoute(
+                builder: (context) => const MainScreen(), maintainState: true),
             (route) => false);
       } else {
         Navigator.of(context).push(MaterialPageRoute(

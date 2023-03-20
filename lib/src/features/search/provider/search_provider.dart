@@ -5,6 +5,7 @@ import 'dart:developer';
 
 import 'package:flutter/widgets.dart';
 import 'package:musiq/main.dart';
+import 'package:musiq/src/core/utils/loader_dialog.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../objectbox.g.dart';
@@ -134,12 +135,19 @@ class SearchProvider extends ChangeNotifier {
   }
 
 // Add searched song to playlist
-  addSongToPlaylist(int songId, int playlistId) async {
+  addSongToPlaylist(int songId, int playlistId, BuildContext context) async {
+    showLoadingDialog(context);
     Map params = {"playlist_id": playlistId, "song_id": songId};
     var res = await PlayerRepo().addToPlaylist(params);
+    print(res.statusCode);
+    print(params);
+    print(res.body);
+    print("Stop");
     if (res.statusCode == 200) {
-      getPlaylistSongList(playlistId);
+      await getPlaylistSongList(playlistId);
     }
+    FocusScope.of(context).unfocus();
+    Navigator.pop(context);
   }
 //  Get specific playlist song id list
 

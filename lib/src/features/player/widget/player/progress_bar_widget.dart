@@ -1,4 +1,6 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/constant.dart';
@@ -23,30 +25,41 @@ class ProgressBarWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Consumer<PlayerProvider>(builder: (context, pro, _) {
-        return StreamBuilder<PositionData?>(builder: (context, snapshot) {
-          return Column(
-            children: [
-              StreamBuilder<Duration>(builder: (context, snapshot) {
-                // final position = snapshot.data;
-                return ProgressBar(
-                  progress: Duration(milliseconds: pro.progressDurationValue),
-                  buffered: Duration(milliseconds: pro.bufferDurationValue),
-                  total: Duration(milliseconds: pro.totalDurationValue),
-                  progressBarColor: CustomColor.secondaryColor,
-                  baseBarColor: Colors.white.withOpacity(0.24),
-                  bufferedBarColor: Colors.transparent,
-                  thumbColor: Colors.white,
-                  barHeight: 6.0,
-                  thumbRadius: 6.0,
-                  onSeek: (duration) {
-                    pro.seekDuration(duration);
-                    // songController.seekDuration(duration);
-                  },
-                );
-              }),
-            ],
-          );
-        });
+        return StreamBuilder<SequenceState?>(
+            stream: pro.player.sequenceStateStream,
+            builder: (context, snapshot) {
+              final state = snapshot.data;
+              if (state?.sequence.isEmpty ?? true) {
+                return const SizedBox.shrink();
+              }
+              final metadata = state!.currentSource!.tag as MediaItem;
+              return Column(
+                children: [
+                  StreamBuilder<Duration>(builder: (context, snapshot) {
+                    // final position = snapshot.data;
+                    return ProgressBar(
+                      progress:
+                          Duration(milliseconds: pro.progressDurationValue),
+                      buffered: Duration(milliseconds: pro.bufferDurationValue),
+                      total: Duration(milliseconds: pro.totalDurationValue),
+                      // total: Duration(
+                      //     milliseconds:
+                      //         totalDuration(metadata.duration.toString())),
+                      progressBarColor: CustomColor.secondaryColor,
+                      baseBarColor: Colors.white.withOpacity(0.24),
+                      bufferedBarColor: Colors.transparent,
+                      thumbColor: Colors.white,
+                      barHeight: 6.0,
+                      thumbRadius: 6.0,
+                      onSeek: (duration) {
+                        pro.seekDuration(duration);
+                        // songController.seekDuration(duration);
+                      },
+                    );
+                  }),
+                ],
+              );
+            });
       }),
     );
   }

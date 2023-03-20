@@ -138,118 +138,116 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
   @override
   Widget build(BuildContext context) {
     maxAppBarHeight = MediaQuery.of(context).size.height * 0.5;
-    minAppBarHeight = MediaQuery.of(context).padding.top +
-        MediaQuery.of(context).size.height * 0.08;
+    minAppBarHeight = MediaQuery.of(context).size.height * 0.11;
     // double width = MediaQuery.of(context).size.width;
-    return SafeArea(
-      child: Provider.of<InternetConnectionStatus>(context) ==
-              InternetConnectionStatus.disconnected
-          ? const OfflineScreen()
-          : Scaffold(
-              bottomNavigationBar:
-                  Consumer<PlayerProvider>(builder: (context, pro, _) {
-                return pro.isPlaying
-                    ? MiniPlayer(onChange: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PlayerScreen(
-                                onTap: () => Navigator.pop(context),
-                              ),
-                            ));
-                      })
-                    : const SizedBox.shrink();
-              }),
-              body: Consumer<ViewAllProvider>(
-                builder: (context, pro, _) {
-                  return pro.isLoad
-                      ? const LoaderScreen()
-                      : DecoratedBox(
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Colors.black,
-                                  Colors.black,
-                                ],
-                                stops: [
-                                  0,
-                                  0.7
-                                ]),
-                          ),
-                          child: Stack(
-                            children: [
-                              CustomScrollView(
-                                controller: scrollController,
-                                slivers: [
-                                  SliverCustomAppBar(
-                                      isPremium: widget.isPremium,
-                                      popUpMenu: PopupMenuButton(
-                                        color: CustomColor.appBarColor,
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(8.0),
-                                            bottomRight: Radius.circular(8.0),
-                                            topLeft: Radius.circular(8.0),
-                                            topRight: Radius.circular(8.0),
-                                          ),
-                                        ),
-                                        padding: const EdgeInsets.all(0.0),
-                                        onSelected: (value) {
-                                          if (widget.isPremium) {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const SubscriptionsScreen()));
-                                          } else {
-                                            context
-                                                .read<ViewAllProvider>()
-                                                .addQueue(
-                                                    widget.status, context);
-                                          }
-                                        },
-                                        itemBuilder: (ctx) => [
-                                          const PopupMenuItem(
-                                            value: 1,
-                                            child: Text('Add to Queue'),
-                                          ),
-                                        ],
-                                      ),
-                                      maxAppBarHeight: maxAppBarHeight,
-                                      minAppBarHeight: minAppBarHeight,
-                                      title: getTitle(widget.status),
-                                      songCounts: getSongCount(widget.status),
-                                      callback: () {
-                                        context
-                                            .read<ViewAllProvider>()
-                                            .navigateToPlayerScreen(
-                                                context, widget.status);
-                                      },
-                                      imageUrl: getImageUrl(widget.status, pro),
-                                      addToQueue: () {}),
-                                  AlbumSongsList(
+    return Provider.of<InternetConnectionStatus>(context) ==
+            InternetConnectionStatus.disconnected
+        ? const OfflineScreen()
+        : Scaffold(
+            bottomNavigationBar:
+                Consumer<PlayerProvider>(builder: (context, pro, _) {
+              return pro.isPlaying
+                  ? MiniPlayer(onChange: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PlayerScreen(
+                              onTap: () => Navigator.pop(context),
+                            ),
+                          ));
+                    })
+                  : const SizedBox.shrink();
+            }),
+            body: Consumer<ViewAllProvider>(
+              builder: (context, pro, _) {
+                return pro.isLoad
+                    ? const LoaderScreen()
+                    : DecoratedBox(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.black,
+                                Colors.black,
+                              ],
+                              stops: [
+                                0,
+                                0.7
+                              ]),
+                        ),
+                        child: Stack(
+                          children: [
+                            CustomScrollView(
+                              controller: scrollController,
+                              slivers: [
+                                SliverCustomAppBar(
                                     isPremium: widget.isPremium,
-                                    status: widget.status,
-                                    newReleaseModel: pro.newReleaseModel,
-                                    recentlyPlayed: pro.recentlyPlayed,
-                                    trendingHitsModel: pro.trendingHitsModel,
-                                    albumSongListModel: pro.albumSongListModel,
-                                    auraSongListModel: pro.auraSongListModel,
-                                    collectionViewAllModel:
-                                        pro.collectionViewAllModel,
-                                  ),
-                                  // const SizedBox(
-                                  //   height: 24,
-                                  // )
-                                ],
-                              ),
-                            ],
-                          ),
-                        );
-                },
-              ),
+                                    popUpMenu: PopupMenuButton(
+                                      iconSize: 26,
+                                      color: CustomColor.appBarColor,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(8.0),
+                                          bottomRight: Radius.circular(8.0),
+                                          topLeft: Radius.circular(8.0),
+                                          topRight: Radius.circular(8.0),
+                                        ),
+                                      ),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0.0, 0.0, 0.0, 0.0),
+                                      onSelected: (value) {
+                                        if (widget.isPremium) {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const SubscriptionsScreen()));
+                                        } else {
+                                          context
+                                              .read<ViewAllProvider>()
+                                              .addQueue(widget.status, context);
+                                        }
+                                      },
+                                      itemBuilder: (ctx) => [
+                                        const PopupMenuItem(
+                                          value: 1,
+                                          child: Text('Add to Queue'),
+                                        ),
+                                      ],
+                                    ),
+                                    maxAppBarHeight: maxAppBarHeight,
+                                    minAppBarHeight: minAppBarHeight,
+                                    title: getTitle(widget.status),
+                                    songCounts: getSongCount(widget.status),
+                                    callback: () {
+                                      context
+                                          .read<ViewAllProvider>()
+                                          .navigateToPlayerScreen(
+                                              context, widget.status);
+                                    },
+                                    imageUrl: getImageUrl(widget.status, pro),
+                                    addToQueue: () {}),
+                                AlbumSongsList(
+                                  isPremium: widget.isPremium,
+                                  status: widget.status,
+                                  newReleaseModel: pro.newReleaseModel,
+                                  recentlyPlayed: pro.recentlyPlayed,
+                                  trendingHitsModel: pro.trendingHitsModel,
+                                  albumSongListModel: pro.albumSongListModel,
+                                  auraSongListModel: pro.auraSongListModel,
+                                  collectionViewAllModel:
+                                      pro.collectionViewAllModel,
+                                ),
+                                // const SizedBox(
+                                //   height: 24,
+                                // )
+                              ],
+                            ),
+                          ],
+                        ),
+                      );
+              },
             ),
-    );
+          );
   }
 }

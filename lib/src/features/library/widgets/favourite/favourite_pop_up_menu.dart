@@ -15,132 +15,138 @@ class FavouritesPopUpMenuButton extends StatelessWidget {
     Key? key,
     required this.record,
     required this.index,
+    required this.mainContext,
   }) : super(key: key);
 
   final List<Record> record;
   final int index;
+  final BuildContext mainContext;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
+        flex: 2,
         child: Padding(
-      padding: const EdgeInsets.only(right: 0.0),
-      child: Align(
-        // alignment: Alignment.centerRight,
-        child: PopupMenuButton(
-          color: CustomColor.appBarColor,
-          shape: popUpDecorationContainer(),
-          onSelected: (value) {
-            PlayerSongListModel playerSongListModel = PlayerSongListModel(
-                id: record[index].id,
-                albumName: record[index].albumName,
-                title: record[index].songName,
-                imageUrl: generateSongImageUrl(
-                    record[index].albumName, record[index].albumId),
-                musicDirectorName: record[index].musicDirectorName[0],
-                duration: record[index].duration,
-                premium: record[index].premiumStatus,
-                isImage: record[index].isImage);
-            switch (value) {
-              case PopUpConstants.playNext:
-                if (record[index].premiumStatus == "premium" &&
-                    context
-                            .read<LoginProvider>()
-                            .userModel!
-                            .records
-                            .premiumStatus ==
-                        "free") {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SubscriptionsScreen()));
-                } else {
-                  context
-                      .read<PopUpProvider>()
-                      .playNext(playerSongListModel, context);
-                }
-                break;
-              case PopUpConstants.addToQueue:
-                if (record[index].premiumStatus == "premium" &&
-                    context
-                            .read<LoginProvider>()
-                            .userModel!
-                            .records
-                            .premiumStatus ==
-                        "free") {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SubscriptionsScreen()));
-                } else {
-                  context
-                      .read<PopUpProvider>()
-                      .addToQueue(playerSongListModel, context);
-                }
-                break;
+          padding: const EdgeInsets.only(right: 0.0),
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: PopupMenuButton(
+              color: CustomColor.appBarColor,
+              shape: popUpDecorationContainer(),
+              onSelected: (value) {
+                PlayerSongListModel playerSongListModel = PlayerSongListModel(
+                    id: record[index].id,
+                    albumName: record[index].albumName,
+                    title: record[index].songName,
+                    imageUrl: generateSongImageUrl(
+                        record[index].albumName, record[index].albumId),
+                    musicDirectorName: record[index].musicDirectorName[0],
+                    duration: record[index].duration,
+                    premium: record[index].premiumStatus,
+                    isImage: record[index].isImage);
+                switch (value) {
+                  case PopUpConstants.playNext:
+                    if (record[index].premiumStatus == "premium" &&
+                        context
+                                .read<LoginProvider>()
+                                .userModel!
+                                .records
+                                .premiumStatus ==
+                            "free") {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const SubscriptionsScreen()));
+                    } else {
+                      context
+                          .read<PopUpProvider>()
+                          .playNext(playerSongListModel, context);
+                    }
+                    break;
+                  case PopUpConstants.addToQueue:
+                    if (record[index].premiumStatus == "premium" &&
+                        context
+                                .read<LoginProvider>()
+                                .userModel!
+                                .records
+                                .premiumStatus ==
+                            "free") {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const SubscriptionsScreen()));
+                    } else {
+                      context
+                          .read<PopUpProvider>()
+                          .addToQueue(playerSongListModel, context);
+                    }
+                    break;
 
-              case PopUpConstants.removeFavourite:
-                if (record[index].premiumStatus == "premium" &&
-                    context
-                            .read<LoginProvider>()
-                            .userModel!
-                            .records
-                            .premiumStatus ==
-                        "free") {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SubscriptionsScreen()));
-                } else {
-                  context
-                      .read<PopUpProvider>()
-                      .removeFromFavourites(playerSongListModel.id, context);
+                  case PopUpConstants.removeFavourite:
+                    if (record[index].premiumStatus == "premium" &&
+                        context
+                                .read<LoginProvider>()
+                                .userModel!
+                                .records
+                                .premiumStatus ==
+                            "free") {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const SubscriptionsScreen()));
+                    } else {
+                      context.read<PopUpProvider>().removeFromFavourites(
+                          playerSongListModel.id, context, mainContext);
+                    }
+                    break;
+                  case PopUpConstants.songInfo:
+                    if (record[index].premiumStatus == "premium" &&
+                        context
+                                .read<LoginProvider>()
+                                .userModel!
+                                .records
+                                .premiumStatus ==
+                            "free") {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const SubscriptionsScreen()));
+                    } else {
+                      context
+                          .read<PopUpProvider>()
+                          .goToSongInfo(playerSongListModel.id, context);
+                    }
+                    break;
                 }
-                break;
-              case PopUpConstants.songInfo:
-                if (record[index].premiumStatus == "premium" &&
-                    context
-                            .read<LoginProvider>()
-                            .userModel!
-                            .records
-                            .premiumStatus ==
-                        "free") {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SubscriptionsScreen()));
-                } else {
-                  context
-                      .read<PopUpProvider>()
-                      .goToSongInfo(playerSongListModel.id, context);
-                }
-                break;
-            }
-          },
-          itemBuilder: (ctx) {
-            return [
-              PopupMenuItem(
-                value: PopUpConstants.playNext,
-                enabled: context.read<PlayerProvider>().isPlaying,
-                child: const Text(ConstantText.playNext),
-              ),
-              PopupMenuItem(
-                value: PopUpConstants.addToQueue,
-                enabled: context.read<PlayerProvider>().isPlaying,
-                child: const Text(ConstantText.addToQueue),
-              ),
-              const PopupMenuItem(
-                value: PopUpConstants.removeFavourite,
-                child: Text(ConstantText.remove),
-              ),
-              const PopupMenuItem(
-                value: PopUpConstants.songInfo,
-                child: Text(ConstantText.songInfo),
-              ),
-            ];
-          },
-        ),
-      ),
-    ));
+              },
+              itemBuilder: (ctx) {
+                return [
+                  PopupMenuItem(
+                    value: PopUpConstants.playNext,
+                    enabled: context.read<PlayerProvider>().isPlaying,
+                    child: const Text(ConstantText.playNext),
+                  ),
+                  PopupMenuItem(
+                    value: PopUpConstants.addToQueue,
+                    enabled: context.read<PlayerProvider>().isPlaying,
+                    child: const Text(ConstantText.addToQueue),
+                  ),
+                  const PopupMenuItem(
+                    value: PopUpConstants.removeFavourite,
+                    child: Text(ConstantText.remove),
+                  ),
+                  const PopupMenuItem(
+                    value: PopUpConstants.songInfo,
+                    child: Text(ConstantText.songInfo),
+                  ),
+                ];
+              },
+            ),
+          ),
+        ));
   }
 }

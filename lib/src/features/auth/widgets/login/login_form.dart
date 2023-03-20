@@ -32,7 +32,7 @@ class LoginForm extends StatelessWidget {
           const Spacer(),
           Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: getProportionateScreenHeight(16)),
+                horizontal: getProportionateScreenHeight(0)),
             child: const LogoWidget(
               size: 60,
             ),
@@ -41,7 +41,7 @@ class LoginForm extends StatelessWidget {
             height: getProportionateScreenHeight(12),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 0.0),
             child: Text(
               ConstantText.welcomeBack,
               style: fontWeight600(size: getProportionateScreenHeight(24)),

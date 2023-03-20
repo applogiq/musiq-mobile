@@ -9,8 +9,6 @@ class NoRecordWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Expanded(
-      child: NoSongScreen(mainTitle: "No Records", subTitle: ""),
-    );
+    return const NoSongScreen(mainTitle: "No Records", subTitle: "");
   }
 }

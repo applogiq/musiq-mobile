@@ -58,7 +58,7 @@ class CollapsedAppBar extends StatelessWidget {
             child: ColoredBox(
               color: Colors.black,
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.baseline,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 textBaseline: TextBaseline.alphabetic,
                 children: [
                   Padding(

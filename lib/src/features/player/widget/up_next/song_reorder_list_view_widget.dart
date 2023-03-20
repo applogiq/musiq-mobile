@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:musiq/src/features/player/widget/up_next/song_list_tile_up_next.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/player_provider.dart';
@@ -31,49 +30,71 @@ class _SongReorderListViewWidgetState extends State<SongReorderListViewWidget> {
           );
         }
 
-        return ReorderableListView.builder(
-          physics: const BouncingScrollPhysics(),
-          itemCount: state!.effectiveSequence.length,
-          itemBuilder: (context, index) {
-            var metadata = state.effectiveSequence[index].tag as MediaItem;
+        return state!.shuffleModeEnabled
+            ? ListView.builder(
+                itemCount: state.shuffleIndices.length,
+                itemBuilder: (context, index) {
+                  var metadata =
+                      state.effectiveSequence[index].tag as MediaItem;
+                  return SongListTileUpNext(
+                    state: state,
+                    metadata: metadata,
+                    index: index,
+                    currentIndex: context
+                                .read<PlayerProvider>()
+                                .player
+                                .shuffleModeEnabled ==
+                            true
+                        ? state.shuffleIndices.indexOf(state.currentIndex)
+                        : state.currentIndex,
+                  );
+                })
+            : ReorderableListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: state.shuffleModeEnabled
+                    ? state.shuffleIndices.length
+                    : state.effectiveSequence.length,
+                itemBuilder: (context, index) {
+                  var metadata =
+                      state.effectiveSequence[index].tag as MediaItem;
 
-            return ReorderableSongListTile(
-              key: Key(index.toString()),
-              state: state,
-              metadata: metadata,
-              index: index,
-              currentIndex:
-                  context.read<PlayerProvider>().player.shuffleModeEnabled ==
-                          true
-                      ? context
-                          .read<PlayerProvider>()
-                          .player
-                          .shuffleIndices!
-                          .indexOf(state.currentIndex)
-                      : state.currentIndex,
-            );
-          },
-          shrinkWrap: true,
-          onReorder: (oldIndex, newIndex) {
-            log(newIndex.toString());
-            if (newIndex != state.currentIndex &&
-                oldIndex != state.currentIndex) {
-              setState(() {
-                if (newIndex > oldIndex) {
-                  newIndex = newIndex - 1;
-                }
-                if (context.read<PlayerProvider>().player.shuffleModeEnabled ==
-                    false) {
-                  final element = state.effectiveSequence.removeAt(oldIndex);
-                  state.effectiveSequence.insert(newIndex, element);
-                } else {
-                  final element = state.shuffleIndices.removeAt(oldIndex);
-                  state.shuffleIndices.insert(newIndex, element);
-                }
-              });
-            }
-          },
-        );
+                  return ReorderableSongListTile(
+                    key: Key(index.toString()),
+                    state: state,
+                    metadata: metadata,
+                    index: index,
+                    currentIndex: context
+                                .read<PlayerProvider>()
+                                .player
+                                .shuffleModeEnabled ==
+                            true
+                        ? state.shuffleIndices.indexOf(state.currentIndex)
+                        : state.currentIndex,
+                  );
+                },
+                shrinkWrap: true,
+                onReorder: (oldIndex, newIndex) async {
+                  if (oldIndex < newIndex) {
+                    newIndex--;
+                  }
+
+                  if (state.shuffleModeEnabled == false) {
+                    context
+                        .read<PlayerProvider>()
+                        .playlist
+                        .move(oldIndex, newIndex);
+                    print(oldIndex);
+                    print(newIndex);
+                    final element = state.effectiveSequence.removeAt(oldIndex);
+                    state.effectiveSequence.insert(newIndex, element);
+                  } else {
+                    if (newIndex > state.effectiveSequence.length - 1) {
+                      final element = state.shuffleIndices.removeAt(oldIndex);
+                      state.shuffleIndices.insert(newIndex, element);
+                    }
+                  }
+                  setState(() {});
+                });
       },
     );
   }

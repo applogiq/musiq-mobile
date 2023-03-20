@@ -1,12 +1,13 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musiq/src/core/constants/color.dart';
 import 'package:musiq/src/core/extensions/context_extension.dart';
 import 'package:musiq/src/core/local/model/favourite_model.dart';
+import 'package:musiq/src/features/home/provider/view_all_provider.dart';
 import 'package:musiq/src/features/library/domain/models/favourite_model.dart';
 import 'package:musiq/src/features/player/domain/model/player_song_list_model.dart';
 import 'package:musiq/src/features/player/domain/model/song_info_model.dart';
@@ -15,6 +16,7 @@ import 'package:musiq/src/features/player/provider/extension/player_controls_ext
 import 'package:provider/provider.dart';
 
 import '../../../../main.dart';
+import '../../../core/enums/enums.dart';
 import '../../../core/local/model/queue_model.dart';
 import '../../../core/utils/time.dart';
 import '../../../core/utils/toast_message.dart';
@@ -29,19 +31,20 @@ export "extension/player_controls_extension.dart";
 export "extension/player_local_db_controller_extension.dart";
 
 class QueueState {
+  const QueueState(
+      this.queue, this.queueIndex, this.shuffleIndices, this.repeatMode);
+
   static const QueueState empty =
       QueueState([], 0, [], AudioServiceRepeatMode.none);
 
   final List<MediaItem> queue;
   final int? queueIndex;
-  final List<int>? shuffleIndices;
   final AudioServiceRepeatMode repeatMode;
-
-  const QueueState(
-      this.queue, this.queueIndex, this.shuffleIndices, this.repeatMode);
+  final List<int>? shuffleIndices;
 
   bool get hasPrevious =>
       repeatMode != AudioServiceRepeatMode.none || (queueIndex ?? 0) > 0;
+
   bool get hasNext =>
       repeatMode != AudioServiceRepeatMode.none ||
       (queueIndex ?? 0) + 1 < queue.length;
@@ -51,45 +54,45 @@ class QueueState {
 }
 
 class PlayerProvider extends ChangeNotifier {
-  // final MiniplayerController controller = MiniplayerController();
-  // AudioPlayerHandler audioPlayerHandler = AudioPlayerHandler();
-  FlutterSecureStorage storage = const FlutterSecureStorage();
+  var bufferDurationValue = 0;
+  Stream<int>? currentIndex = const Stream.empty();
+  List<int> favouritesList = [];
+  int? globalIndex;
+  List<MediaItem> globalQueue = [];
+  bool inQueue = false;
+  int index = 2;
   bool isPlay = false;
+  bool isPlayListLoad = true;
   bool isPlaying = false;
+  bool isPlayingLoad = false;
+  bool isRecentlyAPICalled = false;
   bool isShuffle = false;
+  bool isUpNextShow = false;
   bool issongInfoDetailsLoad = true;
   int loopStatus = 0;
-  int index = 2;
-  bool inQueue = false;
-  bool isUpNextShow = false;
-  bool isRecentlyAPICalled = false;
+  Color miniPlayerBackground = CustomColor.miniPlayerBackgroundColors[0];
+  PlayListModel playListModel = PlayListModel(
+      success: false, message: "No records", records: [], totalRecords: 0);
+
+  AudioPlayer player = AudioPlayer();
+  PlayerRepo playerRepo = PlayerRepo();
+  ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: []);
+  Stream<Duration>? positionStream = const Stream.empty();
+  var progressDurationValue = 0;
+  List<int> queueIdList = [];
+  FlutterSecureStorage secureStorage = const FlutterSecureStorage();
+  var selectedIndex = 0;
+  SongInfoModel? songInfoModel;
+  List songPosition = [];
+  FlutterSecureStorage storage = const FlutterSecureStorage();
+  var totalDurationValue = 0;
+
+  AudioHandler? _audioHandler;
+
   void toggleUpNext() {
     isUpNextShow = !isUpNextShow;
     notifyListeners();
   }
-
-  List<int> favouritesList = [];
-  List<int> queueIdList = [];
-  List songPosition = [];
-  ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: []);
-
-  AudioPlayer player = AudioPlayer();
-
-  var selectedIndex = 0;
-  var progressDurationValue = 0;
-  var totalDurationValue = 0;
-  var bufferDurationValue = 0;
-  SongInfoModel? songInfoModel;
-  PlayerRepo playerRepo = PlayerRepo();
-  bool isPlayListLoad = true;
-  FlutterSecureStorage secureStorage = const FlutterSecureStorage();
-  PlayListModel playListModel = PlayListModel(
-      success: false, message: "No records", records: [], totalRecords: 0);
-  AudioHandler? _audioHandler;
-  List<MediaItem> globalQueue = [];
-  int? globalIndex;
-  Stream<Duration>? positionStream = const Stream.empty();
-  Stream<int>? currentIndex = const Stream.empty();
 
   AudioHandler? get audioHandler => _audioHandler;
 
@@ -119,7 +122,6 @@ class PlayerProvider extends ChangeNotifier {
 
 // Get favourite song list details
   getFavourites() async {
-    log(player.currentIndex.toString());
     objectbox.removeAllFavourite();
     var id = await secureStorage.read(key: "id");
 
@@ -140,16 +142,26 @@ class PlayerProvider extends ChangeNotifier {
 
 // Delete favourite song
   void deleteFavourite(int id,
-      {required bool isFromFav, required BuildContext ctx}) async {
+      {required bool isFromFav,
+      required BuildContext ctx,
+      required BuildContext mainContext}) async {
     Map params = {"song_id": id};
 
     var res = await playerRepo.deleteFavourite(params);
 
     if (res.statusCode == 200) {
       objectbox.removeFavourite(id);
+      print("1");
       if (isFromFav) {
+        print("2");
+
         if (ctx.mounted) {
           ctx.read<LibraryProvider>().getFavouritesList();
+        }
+        print("1");
+
+        if (mainContext.mounted) {
+          mainContext.read<LibraryProvider>().getFavouritesList();
         }
       }
       toastMessage(
@@ -211,10 +223,13 @@ class PlayerProvider extends ChangeNotifier {
   }
 
 // Load queue from local db
-  loadQueueSong() async {
+  loadQueueSong(BuildContext context) async {
     if (!inQueue) {
       await getFavourites();
       var index = await secureStorage.read(key: "currentIndex");
+      print(index);
+      print("currentIndex");
+      print(index);
       var songPosition = await secureStorage.read(key: "lastPosition");
       isPlaying = false;
       notifyListeners();
@@ -223,7 +238,10 @@ class PlayerProvider extends ChangeNotifier {
       List songPositionSeconds = [];
       if (songPosition != null) {
         songPositionList = songPosition.toString().split(":");
-        songPositionSeconds = songPositionList[2].toString().split(".");
+        print(songPositionSeconds);
+        if (songPositionList.isNotEmpty) {
+          songPositionSeconds = songPositionList[2].toString().split(".");
+        }
       }
       var res = objectbox.getAllQueueSong();
       if (res.isNotEmpty) {
@@ -260,16 +278,27 @@ class PlayerProvider extends ChangeNotifier {
           print("TRY init");
           print(songPositionList);
           print(songPositionSeconds);
-          if (songPositionSeconds.isNotEmpty && songPositionList.isNotEmpty) {
+          if (songPositionList.isNotEmpty) {
             player.seek(
                 Duration(
                     hours: int.parse(songPositionList[0]),
                     minutes: int.parse(songPositionList[1]),
-                    seconds: int.parse(songPositionSeconds[0])),
+                    seconds: songPositionSeconds.isEmpty
+                        ? 0
+                        : int.parse(songPositionSeconds[0])),
                 index: int.parse(index!));
+          } else {
+            player.seek(Duration.zero, index: int.parse(index!));
           }
         } catch (e) {
           debugPrint(e.toString());
+          player.seek(Duration.zero, index: int.parse(index!));
+        }
+
+        if (context.mounted) {
+          await play(context);
+          await player.pause();
+          // await player.stop();
         }
 
         isPlaying = true;
@@ -285,12 +314,17 @@ class PlayerProvider extends ChangeNotifier {
   void goToPlayer(BuildContext context,
       List<PlayerSongListModel> playerSongList, int index) async {
     try {
-      player.stop();
+      if (player.playing) {
+        await player.stop();
+      }
+
+      isPlayingLoad = true;
+      notifyListeners();
       playlist = ConcatenatingAudioSource(children: []);
 
       List<SongListModel> songListModels = [];
-      // removePlaylist();
-      // for (var e in playerSongList) {
+      // // removePlaylist();
+      // // for (var e in playerSongList) {
       for (int i = 0; i < playerSongList.length; i++) {
         var e = playerSongList[i];
         if (e.premium == "free") {
@@ -359,102 +393,139 @@ class PlayerProvider extends ChangeNotifier {
           }
         }
       }
-
+      print(songListModels.map((e) => e.title));
       objectbox.removeAllQueueSong();
       objectbox.addSongListQueue(songListModels);
-      player.setAudioSource(playlist);
-      player.seek(Duration.zero, index: index);
+      await player.setAudioSource(playlist);
 
+      await player.seek(Duration.zero, index: index);
+      if (context.mounted) {
+        play(context);
+      }
+      // player.play();
+      isPlayingLoad = false;
       isPlaying = true;
       notifyListeners();
-      play(context);
     } catch (e) {
+      print("error");
       debugPrint(e.toString());
     }
   }
 
 // Play method for playing current playlist song
-  play(BuildContext context) {
+  play(BuildContext context) async {
     try {
-      player.play();
-      // player.playbackEventStream.listen((event) async {
-      //   if (event.processingState == ProcessingState.ready) {
-      //     var metaData = player.sequenceState!
-      //         .effectiveSequence[player.currentIndex!].tag as MediaItem;
-      //     if (isRecentlyAPICalled == false) {
-      //       isRecentlyAPICalled = true;
-      //       notifyListeners();
+      await player.play();
 
-      //       print(
-      //           "33333333333fdffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff333333");
-      //       print(
-      //           "333f888888888888888888888888888888888****************************************************dgghfhgfj33333333333333");
-      //       Map params = {"song_id": metaData.extras!["song_id"]};
-      //       var res = await PlayerRepo().recentList(params);
-      //       isRecentlyAPICalled = false;
-      //       notifyListeners();
-      //       if (res.statusCode == 200) {
-      //         if (context.mounted) {
-      //           context.read<HomeProvider>().recentSongList();
-      //         }
-      //       }
-      //     }
-      //   }
-      // });
       player.positionStream.listen((event) {
-        progressDurationValue = event.inMilliseconds;
-        notifyListeners();
-      });
-      player.durationStream.listen((event) {
         try {
-          totalDurationValue = event!.inMilliseconds;
+          progressDurationValue = event.inMilliseconds;
+          notifyListeners();
         } catch (e) {
+          print("position stream");
           debugPrint(e.toString());
         }
-        notifyListeners();
       });
-      player.bufferedPositionStream.listen((event) {
-        bufferDurationValue = event.inMilliseconds;
-      });
-      player.currentIndexStream.listen((event) async {
-        print("_______________________________");
-        print(event.toString());
-        var metaData = player.sequenceState!
-            .effectiveSequence[player.currentIndex!].tag as MediaItem;
+      player.durationStream.listen((event) {
+        if (event != null) {
+          try {
+            totalDurationValue = event.inMilliseconds;
+            notifyListeners();
+          } catch (e) {
+            print("duration stream");
 
-        Map params = {"song_id": metaData.extras!["song_id"]};
-        var res = await PlayerRepo().recentList(params);
-        print(res.body);
-        if (res.statusCode == 200) {
-          if (context.mounted) {
-            context.read<HomeProvider>().recentSongList();
+            debugPrint(e.toString());
           }
         }
-        await storage.write(key: "currentIndex", value: event.toString());
+      });
+      player.bufferedPositionStream.listen((event) {
+        try {
+          bufferDurationValue = event.inMilliseconds;
+        } catch (e) {
+          print("buffered stream");
+        }
+      });
+      player.currentIndexStream.listen((event) async {
+        player.positionStream.listen((e) async {
+          if (e.toString().trim() == " 0:00:05.000000".toString().trim()) {
+            try {
+              if (context.mounted) {
+                if (player.currentIndex != null) {
+                  try {
+                    miniPlayerBackground =
+                        CustomColor.miniPlayerBackgroundColors[
+                            player.currentIndex! %
+                                CustomColor.miniPlayerBackgroundColors.length];
+                  } catch (e) {
+                    miniPlayerBackground =
+                        CustomColor.miniPlayerBackgroundColors[0];
+                  }
+                  notifyListeners();
+                }
+              }
+              int index = player.shuffleModeEnabled
+                  ? player.shuffleIndices!.indexOf(player.currentIndex!)
+                  : player.currentIndex!;
+              var metaData = player.sequenceState!.effectiveSequence[index].tag
+                  as MediaItem;
+
+              Map params = {"song_id": metaData.extras!["song_id"]};
+              var res = await PlayerRepo().recentList(params);
+              print(res.body);
+              if (res.statusCode == 200) {
+                print("EEE");
+                if (context.mounted) {
+                  context.read<HomeProvider>().recentSongList();
+                }
+                try {
+                  print("SSS");
+                  context
+                      .read<ViewAllProvider>()
+                      .getViewAll(ViewAllStatus.recentlyPlayed);
+                } catch (e) {}
+              }
+              await storage.write(key: "currentIndex", value: event.toString());
+            } catch (e) {
+              print("index stream");
+
+              debugPrint(e.toString());
+            }
+          }
+        });
       });
       player.positionStream.listen((event) {
-        if (event.toString().trim() != " 0:00:00.000000".toString().trim()) {
-          storage.write(key: "lastPosition", value: event.toString());
+        try {
+          if (event.toString().trim() != " 0:00:00.000000".toString().trim()) {
+            storage.write(key: "lastPosition", value: event.toString());
+          }
+        } catch (e) {
+          print("position2 stream");
+
+          debugPrint(e.toString());
         }
       });
       player.playerStateStream.listen((event) async {
-        if (event.processingState == ProcessingState.ready) {
-          var metaData = player.sequenceState!
-              .effectiveSequence[player.currentIndex!].tag as MediaItem;
-          print("33333333333333333");
-          print("333fdgghfhgfj33333333333333");
-          Map params = {"song_id": metaData.extras!["song_id"]};
-          var res = await PlayerRepo().recentList(params);
+        try {
+          if (event.processingState == ProcessingState.ready) {
+            var metaData = player.sequenceState!
+                .effectiveSequence[player.currentIndex!].tag as MediaItem;
 
-          if (res.statusCode == 200) {
-            if (context.mounted) {
-              context.read<HomeProvider>().recentSongList();
+            Map params = {"song_id": metaData.extras!["song_id"]};
+            var res = await PlayerRepo().recentList(params);
+
+            if (res.statusCode == 200) {
+              if (context.mounted) {
+                context.read<HomeProvider>().recentSongList();
+              }
             }
           }
+        } catch (e) {
+          print("player stream");
+
+          debugPrint(e.toString());
         }
       });
     } catch (e) {
-      print("SSSSSSSSSSSSSSSSSSSSfffffffffff");
       debugPrint(e.toString());
     }
   }
@@ -584,7 +655,7 @@ class PlayerProvider extends ChangeNotifier {
         artist: e.musicDirectorName,
         duration: Duration(milliseconds: totalDuration(e.duration)),
         artUri: Uri.parse(e.imageUrl),
-        extras: {"song_id": e.id});
+        extras: {"song_id": e.id, "isImage": e.isImage});
     playlist.add(AudioSource.uri(
         Uri.parse(
           generateSongUrl(e.id),
@@ -593,6 +664,9 @@ class PlayerProvider extends ChangeNotifier {
     player.setAudioSource(playlist);
 
     play(context);
+    isPlayingLoad = false;
+    isPlaying = true;
+    notifyListeners();
   }
 
 // Get song info details

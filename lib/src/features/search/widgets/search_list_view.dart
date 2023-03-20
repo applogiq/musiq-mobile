@@ -16,11 +16,13 @@ class SearchListView extends StatelessWidget {
     Key? key,
     required this.searchRequestModel,
     required TextEditingController controller,
+    required this.onChanged,
   })  : _controller = controller,
         super(key: key);
 
   final TextEditingController _controller;
   final SearchRequestModel searchRequestModel;
+  final ValueSetter<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,10 @@ class SearchListView extends StatelessWidget {
       builder: (context, pro, _) {
         return (pro.isRecentSearch &&
                 searchRequestModel.searchStatus == SearchStatus.song)
-            ? SongSearchHistoryBuilder(controller: _controller)
+            ? SongSearchHistoryBuilder(
+                controller: _controller,
+                onChanged: onChanged,
+              )
             : (pro.isRecentSearch &&
                     searchRequestModel.searchStatus == SearchStatus.artist)
                 ? ArtistSearchHistory(controller: _controller)

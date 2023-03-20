@@ -128,12 +128,14 @@ class HomeScreenSongList extends StatelessWidget {
                                       "${APIConstants.baseUrl}public/music/tamil/${songList[index].albumName[0].toUpperCase()}/${songList[index].albumName}/image/${songList[index].albumId.toString()}.png",
                                       height: 125,
                                       width: 135,
-                                      cacheHeight: 126,
-                                      cacheWidth: 126,
+                                      fit: BoxFit.fill,
                                       errorBuilder:
                                           (context, error, stackTrace) =>
-                                              Image.asset(Images.noSong),
-                                      fit: BoxFit.cover,
+                                              Image.asset(
+                                        Images.noSong,
+                                        height: 125,
+                                        width: 135,
+                                      ),
                                     ),
                                   ),
                                   Builder(builder: (context) {

@@ -47,16 +47,15 @@ class PopUpProvider extends ChangeNotifier {
     context.read<PlayerProvider>().queuePlayNext(playerSongListModel);
   }
 
-  removeFromFavourites(int id, BuildContext context) {
-    context
-        .read<PlayerProvider>()
-        .deleteFavourite(id, isFromFav: true, ctx: context);
+  removeFromFavourites(int id, BuildContext context, BuildContext mainContext) {
+    context.read<PlayerProvider>().deleteFavourite(id,
+        isFromFav: true, ctx: context, mainContext: mainContext);
   }
 
   deletePlaylist(int id, BuildContext context) {
-    context
-        .read<PlayerProvider>()
-        .deleteFavourite(id, isFromFav: true, ctx: context);
+    // context
+    //     .read<PlayerProvider>()
+    //     .deleteFavourite(id, isFromFav: true, ctx: context);
   }
 
   renamePlaylist() {}

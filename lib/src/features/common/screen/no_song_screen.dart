@@ -19,22 +19,25 @@ class NoSongScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            Images.noFav,
-            width: 200,
-          ),
-          Text(
-            mainTitle,
-            style: fontWeight500(size: 16.0),
-          ),
-          Text(
-            subTitle,
-            style: fontWeight400(color: CustomColor.subTitle),
-          ),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 40),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              Images.noFav,
+              width: 200,
+            ),
+            Text(
+              mainTitle,
+              style: fontWeight500(size: 16.0),
+            ),
+            Text(
+              subTitle,
+              style: fontWeight400(color: CustomColor.subTitle),
+            ),
+          ],
+        ),
       ),
     );
   }

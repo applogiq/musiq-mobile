@@ -48,7 +48,7 @@ class PlayerBackground extends StatelessWidget {
                                 image: NetworkImage(
                                   metadata.artUri.toString(),
                                 ),
-                                fit: BoxFit.cover))
+                                fit: BoxFit.fill))
                         : BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage(Images.noSong
@@ -70,8 +70,8 @@ class PlayerBackground extends StatelessWidget {
                           ],
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0, vertical: 30),
+                          padding:
+                              const EdgeInsets.fromLTRB(12.0, 12.0, 0.0, 0.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [

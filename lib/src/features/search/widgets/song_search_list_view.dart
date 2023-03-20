@@ -52,7 +52,7 @@ class SongSearchListView extends StatelessWidget {
                                   musicDirectorName: rec.musicDirectorName[0],
                                   duration: rec.duration,
                                   premium: rec.premiumStatus,
-                                  isImage: false);
+                                  isImage: rec.isImage);
                           context
                               .read<PlayerProvider>()
                               .playSingleSong(context, playerSongListModel);

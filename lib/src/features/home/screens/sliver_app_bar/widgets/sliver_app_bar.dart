@@ -35,15 +35,13 @@ class SliverCustomAppBar extends StatelessWidget {
     final extraTopPadding = MediaQuery.of(context).size.height * 0.03;
     //app bar content padding
     final padding = EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top + extraTopPadding,
-        right: 10,
-        left: 10);
+        top: MediaQuery.of(context).padding.top, right: 0, left: 10);
 
     return SliverPersistentHeader(
         pinned: true,
         delegate: SliverAppBarDelegate(
             maxHeight: maxAppBarHeight,
-            minHeight: 80,
+            minHeight: minAppBarHeight,
             builder: (context, shrinkOffset) {
               final double shrinkToMaxAppBarHeightRatio =
                   shrinkOffset / maxAppBarHeight;

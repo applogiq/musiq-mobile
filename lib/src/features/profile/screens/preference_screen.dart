@@ -181,7 +181,7 @@ class _NotificationPreferenceListTileState
               });
             },
             activeTrackColor: Colors.white,
-            activeColor: CustomColor.subTitle,
+            activeColor: CustomColor.secondaryColor,
             inactiveTrackColor: CustomColor.subTitle,
             inactiveThumbColor: CustomColor.secondaryColor,
           ),

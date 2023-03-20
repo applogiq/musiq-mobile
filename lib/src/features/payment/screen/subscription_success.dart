@@ -61,8 +61,11 @@ class SubscriptionSuccess extends StatelessWidget {
               Navigator.pop(context);
               Navigator.pop(context);
             } else {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const MainScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const MainScreen(),
+                      maintainState: true));
             }
           },
           child: const CustomButton(

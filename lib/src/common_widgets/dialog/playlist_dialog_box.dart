@@ -107,17 +107,22 @@ class PlaylistDialogBox extends StatelessWidget {
                       ],
                     );
                   }),
-                  InkWell(onTap: () {
-                    callBack();
-                  }, child: Consumer<LibraryProvider>(
+                  Consumer<LibraryProvider>(
                       builder: (context, playerProvider, _) {
-                    return CustomButton(
-                      isValid: !playerProvider.isPlayListError,
-                      label: buttonText,
-                      horizontalMargin: 60,
-                      verticalMargin: 8,
+                    return InkWell(
+                      onTap: playerProvider.isPlayListError
+                          ? () {}
+                          : () {
+                              callBack();
+                            },
+                      child: CustomButton(
+                        isValid: !playerProvider.isPlayListError,
+                        label: buttonText,
+                        horizontalMargin: 60,
+                        verticalMargin: 8,
+                      ),
                     );
-                  }))
+                  })
                 ],
               )
             ],

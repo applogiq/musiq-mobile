@@ -17,6 +17,7 @@ import '../../../../objectbox.g.dart';
 import '../../../common_widgets/model/profile_model.dart';
 import '../../../core/constants/string.dart';
 import '../../../core/utils/toast_message.dart';
+import '../../../core/utils/url_generate.dart';
 import '../domain/api_models/profile_update_api_model.dart';
 import '../domain/repository/profile_repo.dart';
 
@@ -40,6 +41,8 @@ class ProfileProvider extends ChangeNotifier {
   Uint8List? memoryImage;
   bool myProfileLoading = true;
   String? imageUrl;
+  String? url;
+
   String name = "";
 
   String nameError = "";
@@ -103,6 +106,11 @@ class ProfileProvider extends ChangeNotifier {
         if (profileAPIModel.records!.isImage == true) {
           imageUrl =
               await secureStorage.read(key: LocalStorageConstant.profileUrl);
+          url = generateProfileImageUrl(
+              profileAPIModel.records!.registerId.toString());
+
+          // final cacheManager = await CacheManager.getInstance();
+          // await cacheManager.removeFile(imageUrl);
           notifyListeners();
         } else {
           imageUrl = null;
@@ -388,7 +396,7 @@ class ProfileProvider extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  generateProfileImageUrl() async {
+  generateProfileImageUrlz() async {
     var resgisterId = await secureStorage.read(
       key: "register_id",
     );

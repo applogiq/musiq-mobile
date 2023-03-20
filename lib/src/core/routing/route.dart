@@ -40,7 +40,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           builder: (BuildContext context) => const SplashScreen());
     case RouteName.mainScreen:
       return MaterialPageRoute(
-          builder: (BuildContext context) => const MainScreen());
+          builder: (BuildContext context) => const MainScreen(),
+          maintainState: true);
     case RouteName.artistPreference:
       return MaterialPageRoute(
           builder: (BuildContext context) => const ArtistPreferenceScreen());

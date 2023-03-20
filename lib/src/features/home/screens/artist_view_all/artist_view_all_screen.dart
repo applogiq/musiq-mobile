@@ -98,7 +98,7 @@ class ArtistGridView extends StatelessWidget {
         shrinkWrap: true,
         itemCount: artistModel.records.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, childAspectRatio: 0.78),
+            crossAxisCount: 2, childAspectRatio: 0.89),
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {
@@ -123,54 +123,56 @@ class ArtistGridView extends StatelessWidget {
               //             artistModel.records[index].artistName.toString(),
               //         isImage: artistModel.records[index].isImage));
             },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                (artistModel.records[index].isImage == false ||
-                        artistModel.records[index].isImage == false)
-                    ? Container(
-                        height: 185,
-                        width: 163.5,
-                        decoration: BoxDecoration(
-                            color: CustomColor.defaultCard,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                                color: CustomColor.defaultCardBorder,
-                                width: 2.0)),
-                        child: Center(
-                            child: Image.asset(
-                          "assets/images/default/no_artist.png",
-                          width: 113,
-                          height: 118,
+            child: Center(
+              child: Column(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  (artistModel.records[index].isImage == false)
+                      ? Container(
+                          height: 185,
+                          width: 163.5,
+                          decoration: BoxDecoration(
+                              color: CustomColor.defaultCard,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                  color: CustomColor.defaultCardBorder,
+                                  width: 2.0)),
+                          child: Image.asset(
+                            "assets/images/default/no_artist.png",
+                            height: 185,
+                            width: 163.5,
+                            fit: BoxFit.fill,
+                          ),
+                        )
+                      : CustomColorContainer(
+                          child: Image.network(
+                          generateArtistImageUrl(
+                              artistModel.records[index].artistId),
+                          // "${APIConstants.baseUrl}${pro.artistModel.records[index].artistId}.png",
+                          height: 185,
+                          width: 163.5,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Image.asset(
+                            "assets/images/default/no_artist.png",
+                            width: 185,
+                            height: 163.5,
+                            fit: BoxFit.fill,
+                          ),
                         )),
-                      )
-                    : CustomColorContainer(
-                        child: Image.network(
-                        generateArtistImageUrl(
-                            artistModel.records[index].artistId),
-                        // "${APIConstants.baseUrl}${pro.artistModel.records[index].artistId}.png",
-                        height: 185,
-                        width: 163.5,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) =>
-                            Image.asset(
-                          "assets/images/default/no_artist.png",
-                          width: 185,
-                          height: 163.5,
-                          fit: BoxFit.fill,
-                        ),
-                      )),
-                const SizedBox(
-                  height: 6,
-                ),
-                Text(
-                  artistModel.records[index].artistName,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w400, fontSize: 14),
-                ),
-              ],
+                  const SizedBox(
+                    height: 6,
+                  ),
+                  Text(
+                    artistModel.records[index].artistName,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w400, fontSize: 14),
+                  ),
+                ],
+              ),
             ),
           );
         },

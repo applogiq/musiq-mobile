@@ -12,10 +12,12 @@ class SongSearchHistoryBuilder extends StatelessWidget {
   const SongSearchHistoryBuilder({
     Key? key,
     required TextEditingController controller,
+    required this.onChanged,
   })  : _controller = controller,
         super(key: key);
 
   final TextEditingController _controller;
+  final ValueSetter<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,7 @@ class SongSearchHistoryBuilder extends StatelessWidget {
                       return InkWell(
                         onTap: () {
                           _controller.text = s[index].searchName;
+                          onChanged!(_controller.text);
                           FocusScope.of(context).unfocus();
                         },
                         child: Padding(

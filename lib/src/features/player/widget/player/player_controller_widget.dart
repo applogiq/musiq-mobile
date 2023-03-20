@@ -84,7 +84,8 @@ class PlayerControllerWidget extends StatelessWidget {
                                               .deleteFavourite(
                                                   metadata.extras!["song_id"],
                                                   ctx: context,
-                                                  isFromFav: false)
+                                                  isFromFav: false,
+                                                  mainContext: context)
                                           : context
                                               .read<PlayerProvider>()
                                               .addFavourite(

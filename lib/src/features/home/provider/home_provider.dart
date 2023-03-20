@@ -58,6 +58,8 @@ class HomeProvider extends ChangeNotifier {
       await newRelease();
       await auraSongList();
       await albumList();
+      print("ALBUM");
+      print(albumListModel.records);
       changeLoadState(false);
     } catch (e) {
       debugPrint(e.toString());
@@ -74,11 +76,22 @@ class HomeProvider extends ChangeNotifier {
 
       albumListModel.records.clear();
 
+      print("eeeeeeeeeeeeeeeeeeeeeee----------------------eeeeeeeeee");
       if (res.statusCode == 200) {
+        print(
+            "eeeeeeeeeeeeeeeeeeeeeee--<<<<<<<<<<<<<<<<<<<<<<<<<<<--------------------eeeeeeeeee");
+
         var data = jsonDecode(res.body);
+        print(
+            "eeeeeeeeeeeeeeeeeeeeeee---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>------------------eeeeeeeeee");
+
         albumListModel = Album.fromMap(data);
+        print(
+            "eeeeeeeeeeeeeeeeeeeeeee-------999999999999999999999---------------eeeeeeeeee");
       }
     } catch (e) {
+      print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+      print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
       debugPrint(e.toString());
     }
   }
@@ -127,44 +140,54 @@ class HomeProvider extends ChangeNotifier {
   }
 
   trendingHitsSongList() async {
-    var res = await homeRepository.getTrendingSongList(10);
+    try {
+      var res = await homeRepository.getTrendingSongList(10);
 
-    trendingSongListModel.clear();
-
-    if (res.statusCode == 200) {
-      var data = jsonDecode(res.body);
-
-      trendingHitsModel = TrendingHitsModel.fromMap(data);
-
-      for (int i = 0; i < trendingHitsModel.records.length; i++) {
-        trendingSongListModel.add(SongListModel(
-            id: trendingHitsModel.records[i].id,
-            albumId: trendingHitsModel.records[i].albumId,
-            songName: trendingHitsModel.records[i].songName,
-            albumName: trendingHitsModel.records[i].albumName,
-            musicDirectorName:
-                trendingHitsModel.records[i].musicDirectorName[0].toString(),
-            premiumStatus: "free"));
-      }
-    } else {
       trendingSongListModel.clear();
-      trendingHitsModel = TrendingHitsModel(
-          success: false,
-          message: "No recent songs",
-          records: [],
-          totalrecords: 0);
+
+      if (res.statusCode == 200) {
+        var data = jsonDecode(res.body);
+
+        trendingHitsModel = TrendingHitsModel.fromMap(data);
+
+        for (int i = 0; i < trendingHitsModel.records.length; i++) {
+          trendingSongListModel.add(SongListModel(
+              id: trendingHitsModel.records[i].id,
+              albumId: trendingHitsModel.records[i].albumId,
+              songName: trendingHitsModel.records[i].songName,
+              albumName: trendingHitsModel.records[i].albumName,
+              musicDirectorName:
+                  trendingHitsModel.records[i].musicDirectorName.isEmpty
+                      ? ""
+                      : trendingHitsModel.records[i].musicDirectorName[0]
+                          .toString(),
+              premiumStatus: "free"));
+        }
+      } else {
+        trendingSongListModel.clear();
+        trendingHitsModel = TrendingHitsModel(
+            success: false,
+            message: "No recent songs",
+            records: [],
+            totalrecords: 0);
+      }
+      notifyListeners();
+    } catch (e) {
+      print("ERRROR");
+      print(e.toString());
     }
-    notifyListeners();
   }
 
   auraSongList() async {
-    var res = await homeRepository.getAura();
+    try {
+      var res = await homeRepository.getAura();
 
-    auraListModel.records.clear();
-    if (res.statusCode == 200) {
-      var data = jsonDecode(res.body);
-      auraListModel = AuraModel.fromMap(data);
-    }
+      auraListModel.records.clear();
+      if (res.statusCode == 200) {
+        var data = jsonDecode(res.body);
+        auraListModel = AuraModel.fromMap(data);
+      }
+    } catch (e) {}
   }
 
   changeLoadState(bool status) {

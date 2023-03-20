@@ -9,8 +9,8 @@ import '../../../../common_widgets/container/custom_color_container.dart';
 import '../../../../core/constants/constant.dart';
 import 'up_next_widgets.dart';
 
-class ReorderableSongListTile extends StatelessWidget {
-  const ReorderableSongListTile({
+class SongListTileUpNext extends StatelessWidget {
+  const SongListTileUpNext({
     Key? key,
     required this.state,
     required this.metadata,
@@ -41,27 +41,26 @@ class ReorderableSongListTile extends StatelessWidget {
         context.read<PlayerProvider>().play(context);
       },
       child: Container(
-        key: Key(index.toString()),
         padding: const EdgeInsets.symmetric(vertical: 4),
         width: MediaQuery.of(context).size.width,
         child: Row(
           children: [
-            ReorderableDragStartListener(
-              index: index,
-              enabled: index != currentIndex,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 16.0),
-                child: Icon(
-                  index == currentIndex
-                      ? Icons.play_arrow_rounded
-                      : Icons.view_stream_rounded,
-                  color: index == currentIndex
-                      ? CustomColor.secondaryColor
-                      : Colors.white,
-                  size: 18,
-                ),
-              ),
-            ),
+            // ReorderableDragStartListener(
+            //   index: index,
+            //   enabled: index != currentIndex,
+            //   child: Padding(
+            //     padding: const EdgeInsets.only(right: 16.0),
+            //     child: Icon(
+            //       index == currentIndex
+            //           ? Icons.play_arrow_rounded
+            //           : Icons.view_stream_rounded,
+            //       color: index == currentIndex
+            //           ? CustomColor.secondaryColor
+            //           : Colors.white,
+            //       size: 18,
+            //     ),
+            //   ),
+            // ),
             Align(
               alignment: Alignment.centerLeft,
               child: CustomColorContainer(

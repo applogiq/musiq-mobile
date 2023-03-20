@@ -107,7 +107,7 @@ class ArtistListView extends StatelessWidget {
                                           Images.noArtist,
                                           height: 240,
                                           width: 200,
-                                          fit: BoxFit.fill,
+                                          fit: BoxFit.cover,
                                         ),
                                       ),
                                     ),

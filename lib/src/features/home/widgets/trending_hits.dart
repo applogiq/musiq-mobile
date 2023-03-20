@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../../core/constants/constant.dart';
 import '../../../core/enums/enums.dart';
 import '../../../core/utils/url_generate.dart';
+import '../../auth/provider/login_provider.dart';
 import '../../player/widget/player/player_widgets.dart';
 import '../domain/model/trending_hits_model.dart';
 import '../provider/view_all_provider.dart';
@@ -135,29 +136,73 @@ class TrendingHitsHomeContainer extends StatelessWidget {
                       image: AssetImage(Images.noSong),
                       fit: BoxFit.fill,
                     )),
-          child: InkWell(
-            onTap: () {
-              print(trendingHitsModel.records[index].premiumStatus);
-              if (trendingHitsModel.records[index].premiumStatus == "free") {
-                context.read<ViewAllProvider>().getViewAll(
-                    ViewAllStatus.trendingHits,
-                    context: context,
-                    goToNextfunction: true,
-                    index: index);
-              } else {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SubscriptionsScreen()));
-              }
-            },
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: InkWell(child: PlayButtonWidget()),
+          child: Stack(
+            children: [
+              (trendingHitsModel.records[index].premiumStatus == "premium" &&
+                      context
+                              .read<LoginProvider>()
+                              .userModel!
+                              .records
+                              .premiumStatus ==
+                          "free")
+                  ? Align(
+                      alignment: Alignment.topRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: CustomColor.bg,
+                          child: Image.asset(
+                            Images.crownImage,
+                            height: 21,
+                            width: 21,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+              InkWell(
+                onTap: () {
+                  print(trendingHitsModel.records[index].premiumStatus);
+                  print(trendingHitsModel.records[index].songName);
+                  if (trendingHitsModel.records[index].premiumStatus ==
+                      "free") {
+                    context.read<ViewAllProvider>().getViewAll(
+                        ViewAllStatus.trendingHits,
+                        context: context,
+                        goToNextfunction: true,
+                        index: index);
+                  } else {
+                    if (context
+                            .read<LoginProvider>()
+                            .userModel!
+                            .records
+                            .premiumStatus !=
+                        "free") {
+                      context.read<ViewAllProvider>().getViewAll(
+                          ViewAllStatus.trendingHits,
+                          context: context,
+                          goToNextfunction: true,
+                          index: index);
+                    } else {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const SubscriptionsScreen()));
+                    }
+                  }
+                },
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: InkWell(child: PlayButtonWidget()),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),

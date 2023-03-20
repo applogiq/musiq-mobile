@@ -37,54 +37,51 @@ class _ViewAllSongListScreenState extends State<ViewAllSongListScreen> {
   Widget build(BuildContext context) {
     maxAppBarHeight = MediaQuery.of(context).size.height * 0.5;
     minAppBarHeight = MediaQuery.of(context).padding.top +
-        MediaQuery.of(context).size.height * 0.05;
+        MediaQuery.of(context).size.height * 0.06;
     playPauseButtonSize = (MediaQuery.of(context).size.width / 320) * 50 > 80
         ? 80
         : (MediaQuery.of(context).size.width / 320) * 50;
     infoBoxHeight = 180;
-    return SafeArea(
-      child: Scaffold(
-        body: Consumer<ViewAllProvider>(builder: (context, pro, _) {
-          return pro.isLoad
-              ? const LoaderScreen()
-              : DecoratedBox(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Colors.black,
-                          Colors.black,
-                        ],
-                        stops: [
-                          0,
-                          0.7
-                        ]),
-                  ),
-                  child: Stack(
-                    children: [
-                      CustomScrollView(
-                        controller: scrollController,
-                        slivers: [
-                          SliverCustomAppBarSong(
-                            title: widget.status == ViewAllStatus.recentlyPlayed
-                                ? "Recently Played"
-                                : "fdf",
-                            maxAppBarHeight: maxAppBarHeight,
-                            minAppBarHeight: minAppBarHeight,
-                            artistViewAllModel: pro.trendingHitsModel,
-                            songCount: int.parse(pro
-                                .trendingHitsModel.records.length
-                                .toString()),
-                          ),
-                          const AlbumSongsList(),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-        }),
-      ),
+    return Scaffold(
+      body: Consumer<ViewAllProvider>(builder: (context, pro, _) {
+        return pro.isLoad
+            ? const LoaderScreen()
+            : DecoratedBox(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.black,
+                        Colors.black,
+                      ],
+                      stops: [
+                        0,
+                        0.7
+                      ]),
+                ),
+                child: Stack(
+                  children: [
+                    CustomScrollView(
+                      controller: scrollController,
+                      slivers: [
+                        SliverCustomAppBarSong(
+                          title: widget.status == ViewAllStatus.recentlyPlayed
+                              ? "Recently Played"
+                              : "fdf",
+                          maxAppBarHeight: maxAppBarHeight,
+                          minAppBarHeight: minAppBarHeight,
+                          artistViewAllModel: pro.trendingHitsModel,
+                          songCount: int.parse(
+                              pro.trendingHitsModel.records.length.toString()),
+                        ),
+                        const AlbumSongsList(),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+      }),
     );
   }
 }

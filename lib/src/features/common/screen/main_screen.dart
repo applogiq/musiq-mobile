@@ -62,14 +62,16 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   }
 
   load() async {
-    await context.read<PlayerProvider>().loadQueueSong();
+    await context.read<PlayerProvider>().loadQueueSong(context);
     await context.read<PopUpProvider>().subscriptionCheck(context);
     // await context.read<PlayerAudioProvider>().loadQueueSong();
   }
 
   @override
   void dispose() {
+    print("dispose");
     WidgetsBinding.instance.removeObserver(this);
+
     BottomNavigationBarProvider()
         .pages[BottomNavigationBarProvider().selectedBottomIndex];
 
@@ -79,6 +81,8 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
+    print("state");
+    print(state);
     if (state == AppLifecycleState.detached) {
       context.read<PlayerProvider>().player.dispose();
     }
@@ -91,59 +95,71 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
 
     const double panelMinSize = 120.0;
     final double panelMaxSize = MediaQuery.of(context).size.height;
-    return SafeArea(
-      child: Scaffold(
-        body: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            Provider.of<InternetConnectionStatus>(context) ==
-                    InternetConnectionStatus.disconnected
-                ? const OfflineScreen()
-                : Consumer<PlayerProvider>(builder: (context, pro, _) {
-                    return WeSlide(
-                      controller: controller,
-                      panelMinSize: pro.isPlaying ? panelMinSize : 60,
-                      panelMaxSize: panelMaxSize,
-                      body: Expanded(
-                        child: Consumer<BottomNavigationBarProvider>(
-                          builder: (context, provider, _) {
-                            return provider.pages[provider.selectedBottomIndex];
-                          },
-                        ),
-                      ),
-                      panel:
+    return WillPopScope(
+      onWillPop: () async {
+        // SystemNavigator.pop();
+        // Minimize the app
+        // SystemNavigator.pop();
+
+        // Pause the app's lifecycle
+        // WidgetsBinding.instance?.pauseFrame();
+        return false;
+      },
+      child: SafeArea(
+        child: Scaffold(
+          body: Column(
+            children: [
+              Provider.of<InternetConnectionStatus>(context) ==
+                      InternetConnectionStatus.disconnected
+                  ? const OfflineScreen()
+                  : Expanded(
+                      child:
                           Consumer<PlayerProvider>(builder: (context, pro, _) {
-                        return pro.isPlaying
-                            ? PlayerScreen(onTap: () {
-                                controller.hide();
-                              })
-                            : const SizedBox.shrink();
+                        return WeSlide(
+                          controller: controller,
+                          panelMinSize: pro.isPlaying ? panelMinSize : 60,
+                          panelMaxSize: panelMaxSize,
+                          body: Consumer<BottomNavigationBarProvider>(
+                            builder: (context, provider, _) {
+                              return provider
+                                  .pages[provider.selectedBottomIndex];
+                            },
+                          ),
+                          panel: Consumer<PlayerProvider>(
+                              builder: (context, pro, _) {
+                            return pro.isPlaying
+                                ? PlayerScreen(onTap: () {
+                                    controller.hide();
+                                  })
+                                : const SizedBox.shrink();
+                          }),
+                          panelHeader: Consumer<PlayerProvider>(
+                              builder: (context, pro, _) {
+                            return pro.isPlaying
+                                ? MiniPlayer(
+                                    onChange: controller.show,
+                                  )
+                                : const SizedBox.shrink();
+                          }),
+                          footer: BottomNavigationBarWithMiniPlayer(
+                            width: width,
+                          ),
+                        );
                       }),
-                      panelHeader:
-                          Consumer<PlayerProvider>(builder: (context, pro, _) {
-                        return pro.isPlaying
-                            ? MiniPlayer(
-                                onChange: controller.show,
-                              )
-                            : const SizedBox.shrink();
-                      }),
-                      footer: BottomNavigationBarWithMiniPlayer(
-                        width: width,
-                      ),
-                    );
-                  }),
-            // : Column(
-            //     children: [
-            //       Expanded(
-            //         child: Consumer<BottomNavigationBarProvider>(
-            //           builder: (context, provider, _) {
-            //             return provider.pages[provider.selectedBottomIndex];
-            //           },
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-          ],
+                    ),
+              // : Column(
+              //     children: [
+              //       Expanded(
+              //         child: Consumer<BottomNavigationBarProvider>(
+              //           builder: (context, provider, _) {
+              //             return provider.pages[provider.selectedBottomIndex];
+              //           },
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+            ],
+          ),
         ),
       ),
     );

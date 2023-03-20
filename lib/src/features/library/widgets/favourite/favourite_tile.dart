@@ -48,7 +48,7 @@ class FavouriteTile extends StatelessWidget {
                       record[index].albumName, record[index].albumId),
                   height: 70,
                   width: 70,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                   errorBuilder: (context, error, stackTrace) => Image.asset(
                       Images.noSong,
                       height: 70,
@@ -98,6 +98,7 @@ class FavouriteTile extends StatelessWidget {
             FavouritesPopUpMenuButton(
               record: record,
               index: index,
+              mainContext: context,
             )
           ],
         ),

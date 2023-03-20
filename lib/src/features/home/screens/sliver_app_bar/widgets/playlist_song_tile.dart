@@ -51,7 +51,7 @@ class PlaylistSongListTile extends StatelessWidget {
                   imageUrl,
                   height: 70,
                   width: 70,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                   errorBuilder: (context, error, stackTrace) => Image.asset(
                     Images.noSong,
                     height: 70,
@@ -95,6 +95,7 @@ class PlaylistSongListTile extends StatelessWidget {
               ),
             ),
             Expanded(
+              flex: 2,
               child: PopupMenuButton<int>(
                 color: CustomColor.appBarColor,
                 shape: const RoundedRectangleBorder(

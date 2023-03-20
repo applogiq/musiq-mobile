@@ -31,14 +31,14 @@ class TextFieldWithError extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 8),
+          padding: const EdgeInsets.only(left: 2),
           child: Text(
             label,
-            style: fontWeight500(size: getProportionateScreenHeight(14)),
+            style: fontWeight500(size: getProportionateScreenHeight(16)),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 4),
           child: CustomColorContainer(
             left: 16,
             right: getProportionateScreenWidth(24),

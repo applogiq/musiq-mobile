@@ -17,10 +17,12 @@ class ViewAllPlaylistPopUpMenu extends StatelessWidget {
     Key? key,
     required this.id,
     required this.title,
+    required this.mainContext,
   }) : super(key: key);
 
   final int id;
   final String title;
+  final BuildContext mainContext;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +65,7 @@ class ViewAllPlaylistPopUpMenu extends StatelessWidget {
                   callBack: () async {
                     await context
                         .read<LibraryProvider>()
-                        .updatePlayListName(context, id);
+                        .updatePlayListName(context, id, mainContext);
                   },
                   initialText: title,
                   title: ConstantText.renamePlaylist,

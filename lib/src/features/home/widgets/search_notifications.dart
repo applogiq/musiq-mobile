@@ -105,6 +105,7 @@ class SearchTextWidget extends StatelessWidget {
           onTap: onTap,
           readOnly: isReadOnly,
           onChanged: onChange,
+          onSubmitted: onChange,
           cursorColor: Colors.white,
           decoration: InputDecoration(
               prefixIcon: Container(

@@ -51,7 +51,7 @@ class SongListTile extends StatelessWidget {
                   imageUrl,
                   height: 70,
                   width: 70,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                   errorBuilder: (context, error, stackTrace) {
                     return Image.asset(
                       Images.noSong,
@@ -63,7 +63,7 @@ class SongListTile extends StatelessWidget {
               ),
             ),
             Expanded(
-                flex: 8,
+                flex: 9,
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
@@ -101,129 +101,142 @@ class SongListTile extends StatelessWidget {
                   ),
                 )),
             Expanded(
-              child: PopupMenuButton<int>(
-                color: CustomColor.appBarColor,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(8.0),
-                    bottomRight: Radius.circular(8.0),
-                    topLeft: Radius.circular(8.0),
-                    topRight: Radius.circular(8.0),
+              flex: 3,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: PopupMenuButton<int>(
+                  padding: const EdgeInsets.fromLTRB(12, 0, 0, 0),
+                  color: CustomColor.appBarColor,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(8.0),
+                      bottomRight: Radius.circular(8.0),
+                      topLeft: Radius.circular(8.0),
+                      topRight: Radius.circular(8.0),
+                    ),
                   ),
+                  onSelected: (value) {
+                    switch (value) {
+                      case 1:
+                        if (isPremium) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  const SubscriptionsScreen()));
+                        } else {
+                          context.read<PlayerProvider>().addFavourite(songId);
+                        }
+                        break;
+
+                      case 2:
+                        if (isPremium) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  const SubscriptionsScreen()));
+                        } else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      AddToPlaylistScreen(songId: songId)));
+                        }
+
+                        break;
+
+                      case 3:
+                        if (isPremium) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  const SubscriptionsScreen()));
+                        } else {
+                          PlayerSongListModel playerSongListModel =
+                              PlayerSongListModel(
+                                  id: songId,
+                                  albumName: albumName,
+                                  title: songName,
+                                  imageUrl: imageUrl,
+                                  musicDirectorName: musicDirectorName,
+                                  duration: duration,
+                                  premium:
+                                      isPremium != true ? "free" : "premium",
+                                  isImage: isImage);
+                          context
+                              .read<PlayerProvider>()
+                              .queuePlayNext(playerSongListModel);
+                        }
+                        break;
+                      case 4:
+                        if (isPremium) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  const SubscriptionsScreen()));
+                        } else {
+                          // PlayerSongListModel playerSongListModel =
+                          //     PlayerSongListModel(
+                          //         id: songId,
+                          //         albumName: albumName,
+                          //         title: songName,
+                          //         imageUrl: imageUrl,
+                          //         musicDirectorName: musicDirectorName,
+                          //         duration: duration,
+                          //         premium:
+                          //             isPremium != true ? "free" : "premium");
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  SongInfoScreen(id: songId)));
+                          // Navigation.navigateToScreen(context, RouteName.songInfo,
+                          //     args: playerSongListModel);
+                        }
+                        break;
+                      case 5:
+                        if (isPremium) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  const SubscriptionsScreen()));
+                        } else {
+                          PlayerSongListModel playerSongListModel =
+                              PlayerSongListModel(
+                                  id: songId,
+                                  albumName: albumName,
+                                  title: songName,
+                                  imageUrl: imageUrl,
+                                  musicDirectorName: musicDirectorName,
+                                  duration: duration,
+                                  premium:
+                                      isPremium != true ? "free" : "premium",
+                                  isImage: isImage);
+
+                          context.read<PlayerProvider>().addQueueToLocalDb(
+                                playerSongListModel,
+                              );
+                        }
+                        break;
+                    }
+                  },
+                  itemBuilder: (BuildContext context) {
+                    return [
+                      const PopupMenuItem(
+                        value: 1,
+                        child: Text('Add to Favourites'),
+                      ),
+                      const PopupMenuItem(
+                        value: 2,
+                        child: Text('Add to Playlist'),
+                      ),
+                      const PopupMenuItem(
+                        value: 5,
+                        child: Text('Add to Queue'),
+                      ),
+                      const PopupMenuItem(
+                        value: 3,
+                        child: Text('Play next'),
+                      ),
+                      const PopupMenuItem(
+                        value: 4,
+                        child: Text('Song info'),
+                      ),
+                    ];
+                  },
                 ),
-                onSelected: (value) {
-                  switch (value) {
-                    case 1:
-                      if (isPremium) {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const SubscriptionsScreen()));
-                      } else {
-                        context.read<PlayerProvider>().addFavourite(songId);
-                      }
-                      break;
-
-                    case 2:
-                      if (isPremium) {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const SubscriptionsScreen()));
-                      } else {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    AddToPlaylistScreen(songId: songId)));
-                      }
-
-                      break;
-
-                    case 3:
-                      if (isPremium) {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const SubscriptionsScreen()));
-                      } else {
-                        PlayerSongListModel playerSongListModel =
-                            PlayerSongListModel(
-                                id: songId,
-                                albumName: albumName,
-                                title: songName,
-                                imageUrl: imageUrl,
-                                musicDirectorName: musicDirectorName,
-                                duration: duration,
-                                premium: isPremium != true ? "free" : "premium",
-                                isImage: isImage);
-                        context
-                            .read<PlayerProvider>()
-                            .queuePlayNext(playerSongListModel);
-                      }
-                      break;
-                    case 4:
-                      if (isPremium) {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const SubscriptionsScreen()));
-                      } else {
-                        // PlayerSongListModel playerSongListModel =
-                        //     PlayerSongListModel(
-                        //         id: songId,
-                        //         albumName: albumName,
-                        //         title: songName,
-                        //         imageUrl: imageUrl,
-                        //         musicDirectorName: musicDirectorName,
-                        //         duration: duration,
-                        //         premium:
-                        //             isPremium != true ? "free" : "premium");
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => SongInfoScreen(id: songId)));
-                        // Navigation.navigateToScreen(context, RouteName.songInfo,
-                        //     args: playerSongListModel);
-                      }
-                      break;
-                    case 5:
-                      if (isPremium) {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const SubscriptionsScreen()));
-                      } else {
-                        PlayerSongListModel playerSongListModel =
-                            PlayerSongListModel(
-                                id: songId,
-                                albumName: albumName,
-                                title: songName,
-                                imageUrl: imageUrl,
-                                musicDirectorName: musicDirectorName,
-                                duration: duration,
-                                premium: isPremium != true ? "free" : "premium",
-                                isImage: isImage);
-
-                        context.read<PlayerProvider>().addQueueToLocalDb(
-                              playerSongListModel,
-                            );
-                      }
-                      break;
-                  }
-                },
-                itemBuilder: (BuildContext context) {
-                  return [
-                    const PopupMenuItem(
-                      value: 1,
-                      child: Text('Add to Favourites'),
-                    ),
-                    const PopupMenuItem(
-                      value: 2,
-                      child: Text('Add to Playlist'),
-                    ),
-                    const PopupMenuItem(
-                      value: 5,
-                      child: Text('Add to Queue'),
-                    ),
-                    const PopupMenuItem(
-                      value: 3,
-                      child: Text('Play next'),
-                    ),
-                    const PopupMenuItem(
-                      value: 4,
-                      child: Text('Song info'),
-                    ),
-                  ];
-                },
               ),
             )
           ],

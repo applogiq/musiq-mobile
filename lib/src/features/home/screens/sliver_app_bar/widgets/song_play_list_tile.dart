@@ -47,12 +47,12 @@ class SongPlayListTile extends StatelessWidget {
                         onTap: () {
                           context
                               .read<SearchProvider>()
-                              .addSongToPlaylist(songId, playlistId);
+                              .addSongToPlaylist(songId, playlistId, context);
                         },
                         child: Image.network(imageUrl,
                             height: 70,
                             width: 70,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fill,
                             errorBuilder: (context, error, stackTrace) =>
                                 Image.asset(
                                   Images.noSong,
@@ -74,10 +74,11 @@ class SongPlayListTile extends StatelessWidget {
               Expanded(
                 flex: 8,
                 child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
                   onTap: () {
                     context
                         .read<SearchProvider>()
-                        .addSongToPlaylist(songId, playlistId);
+                        .addSongToPlaylist(songId, playlistId, context);
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
@@ -119,7 +120,7 @@ class SongPlayListTile extends StatelessWidget {
                         onPressed: () {
                           context
                               .read<SearchProvider>()
-                              .addSongToPlaylist(songId, playlistId);
+                              .addSongToPlaylist(songId, playlistId, context);
                         },
                       ),
                     )

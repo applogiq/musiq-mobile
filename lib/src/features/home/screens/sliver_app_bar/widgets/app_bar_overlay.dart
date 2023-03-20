@@ -29,6 +29,7 @@ class AppBarOverlayContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(size);
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16.0, 16.0, 0.0, 0),
@@ -45,14 +46,18 @@ class AppBarOverlayContent extends StatelessWidget {
                   Expanded(
                     child: Row(
                       children: [
-                        Text(
-                          title,
-                          style: fontWeight600(
-                              size: size < 0.3
-                                  ? 22.0
-                                  : size > 0.48
-                                      ? 0.0
-                                      : 18.0),
+                        Expanded(
+                          child: Text(
+                            title,
+                            maxLines: 1,
+                            style: fontWeight600(
+                                    size: size < 0.3
+                                        ? 22.0
+                                        : size > 0.48
+                                            ? 0.0
+                                            : 18.0)
+                                .copyWith(overflow: TextOverflow.ellipsis),
+                          ),
                         ),
                         isPremium
                             ? size < 0.48
@@ -91,7 +96,8 @@ class AppBarOverlayContent extends StatelessWidget {
                     opacity: (size - 1.0).abs(),
                     duration: const Duration(milliseconds: 100),
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 24, right: 16),
+                      padding:
+                          EdgeInsets.only(top: size > 0.5 ? 10 : 24, right: 16),
                       child: Consumer<ArtistViewAllProvider>(
                           builder: (context, pro, _) {
                         return isPremium
@@ -156,16 +162,16 @@ class AppBarOverlayContent extends StatelessWidget {
                                 // },
                                 child: CustomButton(
                                     isIcon: true,
-                                    label: "Play All",
+                                    label: "Play All ",
                                     horizontalMargin: 0.0,
                                     height: size < 0.3
                                         ? 48
                                         : size < 0.4
                                             ? 48
                                             : size < 0.6
-                                                ? 38
+                                                ? 34
                                                 : size < 0.65
-                                                    ? 36
+                                                    ? 32
                                                     : 0,
                                     verticalMargin: 0.0),
                               );

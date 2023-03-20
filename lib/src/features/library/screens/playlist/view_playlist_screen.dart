@@ -53,149 +53,147 @@ class _ViewPlaylistSongScreenState extends State<ViewPlaylistSongScreen> {
     minAppBarHeight = MediaQuery.of(context).padding.top +
         MediaQuery.of(context).size.height * 0.06;
 
-    return SafeArea(
-      child: Provider.of<InternetConnectionStatus>(context) ==
-              InternetConnectionStatus.disconnected
-          ? const OfflineScreen()
-          : Scaffold(
-              bottomNavigationBar: const BottomMiniPlayer(),
-              backgroundColor: CustomColor.bg,
-              body: Consumer<LibraryProvider>(
-                builder: (context, pro, _) {
-                  return pro.isPlayListSongLoad
-                      ? const LoaderScreen()
-                      : pro.playlistSongListModel.records.isEmpty
-                          ? NoPlaylistSong(
-                              appBarTitle: widget.title!,
-                              playListId: widget.id.toString(),
-                              popUpMenu: ViewAllPlaylistPopUpMenu(
-                                id: widget.id!,
-                                title: widget.title!,
-                              ),
-                            )
-                          : DecoratedBox(
-                              decoration: const BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Colors.black,
-                                      Colors.black,
-                                    ],
-                                    stops: [
-                                      0,
-                                      0.7
-                                    ]),
-                              ),
-                              child: Stack(
-                                children: [
-                                  CustomScrollView(
-                                    controller: scrollController,
-                                    slivers: [
-                                      SliverCustomAppBar(
-                                          popUpMenu: ViewAllPlaylistPopUpMenu(
-                                            id: widget.id!,
-                                            title: widget.title!,
-                                          ),
-                                          maxAppBarHeight: maxAppBarHeight,
-                                          minAppBarHeight: minAppBarHeight,
-                                          title: widget.title!,
-                                          songCounts: pro.playlistSongListModel
-                                              .records.length,
-                                          callback: () {
-                                            context
-                                                .read<LibraryProvider>()
-                                                .navigateToPlayerScreen(
-                                                    context, widget.id!);
-                                          },
-                                          imageUrl: generateSongImageUrl(
-                                                  pro.playlistSongListModel
-                                                      .records[0].albumName,
-                                                  pro.playlistSongListModel
-                                                      .records[0].albumId) ??
-                                              "",
-                                          addToQueue: () {}),
-                                      SliverList(
-                                        delegate: SliverChildBuilderDelegate(
-                                          childCount: pro.playlistSongListModel
-                                              .records.length,
-                                          (context, index) {
-                                            var records = pro
-                                                .playlistSongListModel.records;
-                                            return InkWell(
-                                              onTap: () {
-                                                if (records[index]
-                                                            .premiumStatus ==
-                                                        "premium" &&
-                                                    context
-                                                            .read<
-                                                                LoginProvider>()
-                                                            .userModel!
-                                                            .records
-                                                            .premiumStatus ==
-                                                        "free") {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              const SubscriptionsScreen()));
-                                                } else {
-                                                  context
-                                                      .read<LibraryProvider>()
-                                                      .navigateToPlayerScreen(
-                                                          context, widget.id!,
-                                                          index: index);
-                                                }
-                                              },
-                                              child: PlaylistSongListTile(
-                                                playlistId: records[index]
-                                                    .playlistSongs
-                                                    .playlistId,
-                                                albumName:
-                                                    records[index].albumName,
-                                                imageUrl: generateSongImageUrl(
-                                                    records[index].albumName,
-                                                    records[index].albumId),
-                                                musicDirectorName:
-                                                    records[index]
-                                                        .musicDirectorName[0],
-                                                songName:
-                                                    records[index].songName,
-                                                songId: records[index]
-                                                    .playlistSongs
-                                                    .songId,
-                                                playlistSongId: records[index]
-                                                    .playlistSongs
-                                                    .id,
-                                                duration:
-                                                    records[index].duration,
-                                                isPremium: (records[index]
-                                                                .premiumStatus ==
-                                                            "premium" &&
-                                                        context
-                                                                .read<
-                                                                    LoginProvider>()
-                                                                .userModel!
-                                                                .records
-                                                                .premiumStatus ==
-                                                            "free")
-                                                    ? true
-                                                    : false,
-                                                isImage: records[index].isImage,
-                                              ),
-                                            );
-                                          },
+    return Provider.of<InternetConnectionStatus>(context) ==
+            InternetConnectionStatus.disconnected
+        ? const OfflineScreen()
+        : Scaffold(
+            bottomNavigationBar: const BottomMiniPlayer(),
+            backgroundColor: CustomColor.bg,
+            body: Consumer<LibraryProvider>(
+              builder: (context, pro, _) {
+                return pro.isPlayListSongLoad
+                    ? const LoaderScreen()
+                    : pro.playlistSongListModel.records.isEmpty
+                        ? NoPlaylistSong(
+                            appBarTitle: widget.title!,
+                            playListId: widget.id.toString(),
+                            popUpMenu: ViewAllPlaylistPopUpMenu(
+                              id: widget.id!,
+                              title: widget.title!,
+                              mainContext: context,
+                            ),
+                          )
+                        : DecoratedBox(
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.black,
+                                    Colors.black,
+                                  ],
+                                  stops: [
+                                    0,
+                                    0.7
+                                  ]),
+                            ),
+                            child: Stack(
+                              children: [
+                                CustomScrollView(
+                                  controller: scrollController,
+                                  slivers: [
+                                    SliverCustomAppBar(
+                                        popUpMenu: ViewAllPlaylistPopUpMenu(
+                                          id: widget.id!,
+                                          title: pro.playlistSongListModel
+                                              .records[0].playlistName,
+                                          mainContext: context,
                                         ),
+                                        maxAppBarHeight: maxAppBarHeight,
+                                        minAppBarHeight: minAppBarHeight,
+                                        title: pro.playlistSongListModel
+                                            .records[0].playlistName,
+                                        songCounts: pro.playlistSongListModel
+                                            .records.length,
+                                        callback: () {
+                                          context
+                                              .read<LibraryProvider>()
+                                              .navigateToPlayerScreen(
+                                                  context, widget.id!);
+                                        },
+                                        imageUrl: generateSongImageUrl(
+                                                pro.playlistSongListModel
+                                                    .records[0].albumName,
+                                                pro.playlistSongListModel
+                                                    .records[0].albumId) ??
+                                            "",
+                                        addToQueue: () {}),
+                                    SliverList(
+                                      delegate: SliverChildBuilderDelegate(
+                                        childCount: pro.playlistSongListModel
+                                            .records.length,
+                                        (context, index) {
+                                          var records =
+                                              pro.playlistSongListModel.records;
+                                          return InkWell(
+                                            onTap: () {
+                                              if (records[index]
+                                                          .premiumStatus ==
+                                                      "premium" &&
+                                                  context
+                                                          .read<LoginProvider>()
+                                                          .userModel!
+                                                          .records
+                                                          .premiumStatus ==
+                                                      "free") {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const SubscriptionsScreen()));
+                                              } else {
+                                                context
+                                                    .read<LibraryProvider>()
+                                                    .navigateToPlayerScreen(
+                                                        context, widget.id!,
+                                                        index: index);
+                                              }
+                                            },
+                                            child: PlaylistSongListTile(
+                                              playlistId: records[index]
+                                                  .playlistSongs
+                                                  .playlistId,
+                                              albumName:
+                                                  records[index].albumName,
+                                              imageUrl: generateSongImageUrl(
+                                                  records[index].albumName,
+                                                  records[index].albumId),
+                                              musicDirectorName: records[index]
+                                                  .musicDirectorName[0],
+                                              songName: records[index].songName,
+                                              songId: records[index]
+                                                  .playlistSongs
+                                                  .songId,
+                                              playlistSongId: records[index]
+                                                  .playlistSongs
+                                                  .id,
+                                              duration: records[index].duration,
+                                              isPremium: (records[index]
+                                                              .premiumStatus ==
+                                                          "premium" &&
+                                                      context
+                                                              .read<
+                                                                  LoginProvider>()
+                                                              .userModel!
+                                                              .records
+                                                              .premiumStatus ==
+                                                          "free")
+                                                  ? true
+                                                  : false,
+                                              isImage: records[index].isImage,
+                                            ),
+                                          );
+                                        },
                                       ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            );
-                },
-              ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+              },
             ),
-    );
+          );
   }
 }
 

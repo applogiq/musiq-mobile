@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/common_widgets/box/vertical_box.dart';
@@ -10,7 +12,6 @@ import '../../../common_widgets/text_field/custom_text_field.dart';
 import '../../../core/constants/images.dart';
 import '../../../core/constants/string.dart';
 import '../../../core/utils/size_config.dart';
-import '../../../core/utils/url_generate.dart';
 import '../../common/screen/offline_screen.dart';
 import '../provider/profile_provider.dart';
 import '../widgets/image_picker_sheet.dart';
@@ -64,7 +65,7 @@ class _MyProfileState extends State<MyProfile> {
                                 const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Column(
                               children: [
-                                ProfileImageEdit(size: size),
+                                ProfileImageEdit(key: UniqueKey(), size: size),
                                 Consumer<ProfileProvider>(
                                     builder: (context, provider, _) {
                                   return TextFieldWithError(
@@ -155,11 +156,12 @@ class ProfileImageEdit extends StatelessWidget {
                     fit: BoxFit.cover)
                 : pro.profileAPIModel.records != null
                     ? (pro.profileAPIModel.records!.isImage != null &&
-                            pro.profileAPIModel.records!.isImage != false)
+                            pro.profileAPIModel.records!.isImage != false &&
+                            pro.imageUrl != null)
                         ? DecorationImage(
-                            image: NetworkImage(generateProfileImageUrl(pro
-                                .profileAPIModel.records!.registerId
-                                .toString())),
+                            image: FileImage(
+                              File(pro.imageUrl!),
+                            ),
                             fit: BoxFit.cover)
                         : DecorationImage(
                             image: AssetImage(

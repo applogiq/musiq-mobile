@@ -15,8 +15,6 @@ import 'package:musiq/src/features/player/provider/player_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/string.dart';
-import '../../../core/routing/route_name.dart';
-import '../../../core/utils/navigation.dart';
 
 class LibraryProvider extends ChangeNotifier {
   bool isFavouriteLoad = true;
@@ -59,7 +57,8 @@ class LibraryProvider extends ChangeNotifier {
     }
   }
 
-  updatePlayListName(BuildContext context, int playlistId,
+  updatePlayListName(
+      BuildContext context, int playlistId, BuildContext mainContext,
       {bool isAddPlaylist = false}) async {
     // var id = await secureStorage.read(key: "id");
     Map params = {"name": playListName};
@@ -68,12 +67,14 @@ class LibraryProvider extends ChangeNotifier {
     if (response.statusCode == 200) {
       playListNameExistList.add(playListName);
 
-      if (isAddPlaylist) {
+      if (!isAddPlaylist) {
         context.read<PlayerProvider>().getPlayListsList();
       }
-      Navigator.of(context).pop();
 
-      Navigation.navigateReplaceToScreen(context, RouteName.mainScreen);
+      Navigator.of(context).pop();
+      mainContext.read<LibraryProvider>().getPlayListSongList(playlistId);
+
+      // Navigation.navigateReplaceToScreen(context, RouteName.mainScreen);
 
       notifyListeners();
     }
@@ -81,6 +82,8 @@ class LibraryProvider extends ChangeNotifier {
 
   getFavouritesList() async {
     try {
+      isFavouriteLoad = true;
+      notifyListeners();
       var id = await secureStorage.read(key: "id");
 
       var response = await LibraryRepository().getFavouritesList(id!);
@@ -99,9 +102,9 @@ class LibraryProvider extends ChangeNotifier {
       favouriteModel = FavouriteModel(
           success: false, message: "No records", records: [], totalRecords: 0);
     }
-    // isFavouriteLoad = false;
+    isFavouriteLoad = false;
 
-    // notifyListeners();
+    notifyListeners();
   }
 
   getPlayListsList() async {
@@ -202,6 +205,7 @@ class LibraryProvider extends ChangeNotifier {
     }
     isPlayListSongLoad = false;
     notifyListeners();
+    getPlayListsList();
   }
 
   void play(int id, BuildContext context, {int index = 0}) async {
@@ -221,7 +225,7 @@ class LibraryProvider extends ChangeNotifier {
             musicDirectorName: element.musicDirectorName[0],
             duration: element.duration,
             premium: element.premiumStatus,
-            isImage: false));
+            isImage: element.isImage));
       }
       context
           .read<PlayerProvider>()

@@ -81,12 +81,14 @@ class ImagePickerSheet extends StatelessWidget {
                   style: fontWeight400(),
                 )),
             (context.read<ProfileProvider>().fileImage != null ||
-                    context
-                            .read<ProfileProvider>()
-                            .profileAPIModel
-                            .records!
-                            .isImage ==
-                        true)
+                    (context.read<ProfileProvider>().profileAPIModel.records !=
+                            null &&
+                        context
+                                .read<ProfileProvider>()
+                                .profileAPIModel
+                                .records!
+                                .isImage ==
+                            true))
                 ? ListTile(
                     onTap: () async {
                       await context

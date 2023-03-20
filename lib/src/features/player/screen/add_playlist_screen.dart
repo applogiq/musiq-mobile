@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/loader.dart';
+import '../../../core/constants/constant.dart';
+import '../../common/screen/no_song_screen.dart';
 import '../../library/widgets/playlist/playlist_widgets.dart';
 import '../provider/player_provider.dart';
 
@@ -38,25 +40,29 @@ class _AddToPlaylistScreenState extends State<AddToPlaylistScreen> {
       body: Consumer<PlayerProvider>(builder: (context, pro, _) {
         return pro.isPlayListLoad
             ? const LoaderScreen()
-            : ListView.builder(
-                itemCount: pro.playListModel.records.length,
-                itemBuilder: (context, index) {
-                  var record = pro.playListModel.records;
-                  return PlaylistTile(
-                    record: record,
-                    index: index,
-                    isMore: false,
-                    callBack: () {
-                      Map params = {};
+            : pro.playListModel.records.isEmpty
+                ? NoSongScreen(
+                    mainTitle: ConstantText.noPlaylistHere,
+                    subTitle: ConstantText.yourPlaylistNoAvailable)
+                : ListView.builder(
+                    itemCount: pro.playListModel.records.length,
+                    itemBuilder: (context, index) {
+                      var record = pro.playListModel.records;
+                      return PlaylistTile(
+                        record: record,
+                        index: index,
+                        isMore: false,
+                        callBack: () {
+                          Map params = {};
 
-                      params["playlist_id"] = record[index].id;
-                      params["song_id"] = widget.songId;
+                          params["playlist_id"] = record[index].id;
+                          params["song_id"] = widget.songId;
 
-                      context.read<PlayerProvider>().addToPlaylist(
-                          params, context, record[index].playlistName);
-                    },
-                  );
-                });
+                          context.read<PlayerProvider>().addToPlaylist(
+                              params, context, record[index].playlistName);
+                        },
+                      );
+                    });
       }),
     );
   }

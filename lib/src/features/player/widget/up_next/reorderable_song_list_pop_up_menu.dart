@@ -18,6 +18,7 @@ class ReorderableSongListPopUpMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
+      flex: 1,
       child: PopupMenuButton(
         color: CustomColor.appBarColor,
         shape: popUpDecorationContainer(),

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:musiq/src/features/library/provider/library_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/enums/enums.dart';
@@ -78,24 +79,38 @@ class _SearchScreenState extends State<SearchScreen> {
       child: Provider.of<InternetConnectionStatus>(context) ==
               InternetConnectionStatus.disconnected
           ? const OfflineScreen()
-          : Scaffold(
-              bottomNavigationBar: const BottomMiniPlayer(),
-              backgroundColor: const Color(0xFF16151C),
-              resizeToAvoidBottomInset: false,
-              body: Column(
-                children: [
-                  SearchFieldWidget(
-                    onChanged: (value) {
-                      _onSearchChange();
-                    },
-                    controller: _controller,
-                    searchRequestModel: widget.searchRequestModel,
-                  ),
-                  SearchListView(
-                    searchRequestModel: widget.searchRequestModel,
-                    controller: _controller,
-                  ),
-                ],
+          : WillPopScope(
+              onWillPop: () async {
+                if (widget.searchRequestModel.searchStatus ==
+                    SearchStatus.playlist) {
+                  Navigator.pop(context);
+                  await context.read<LibraryProvider>().getPlayListSongList(
+                      widget.searchRequestModel.playlistId!);
+                }
+                return true;
+              },
+              child: Scaffold(
+                bottomNavigationBar: const BottomMiniPlayer(),
+                backgroundColor: const Color(0xFF16151C),
+                resizeToAvoidBottomInset: false,
+                body: Column(
+                  children: [
+                    SearchFieldWidget(
+                      onChanged: (value) {
+                        _onSearchChange();
+                      },
+                      controller: _controller,
+                      searchRequestModel: widget.searchRequestModel,
+                    ),
+                    SearchListView(
+                      searchRequestModel: widget.searchRequestModel,
+                      controller: _controller,
+                      onChanged: (value) {
+                        _onSearchChange();
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
     );

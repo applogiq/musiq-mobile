@@ -21,7 +21,7 @@ class ConstantText {
 
   static String fullName = "Full Name";
   static String incorrectEmail = "Email address doesn't exist";
-  static String invalidEmail = "Invalid Email Format";
+  static String invalidEmail = "Please enter a valid email";
   static String invalidEmailAndPassword = "Your email or password is Incorrect";
   static String invalidFormat = "Password Format is invalid";
   static String invalidOTP = 'The OTP you have entered is invalid';

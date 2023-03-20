@@ -44,38 +44,41 @@ class _PasswordTextFieldWithErrorState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 0),
+          padding: const EdgeInsets.only(left: 2),
           child: Text(
             widget.label,
             style: fontWeight500(size: 14.0),
           ),
         ),
-        CustomColorContainer(
-          left: 16,
-          verticalPadding: 0,
-          bgColor: CustomColor.textfieldBg,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints.expand(
-                height: 46, width: double.maxFinite),
-            child: TextFormField(
-              onTap: widget.onTap,
-              obscureText: obscure,
-              cursorColor: Colors.white,
-              onChanged: widget.onChange,
-              decoration: InputDecoration(
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    obscure ? Icons.visibility_off : Icons.visibility,
-                    color: Colors.white,
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: CustomColorContainer(
+            left: 16,
+            verticalPadding: 0,
+            bgColor: CustomColor.textfieldBg,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints.expand(
+                  height: 46, width: double.maxFinite),
+              child: TextFormField(
+                onTap: widget.onTap,
+                obscureText: obscure,
+                cursorColor: Colors.white,
+                onChanged: widget.onChange,
+                decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      obscure ? Icons.visibility_off : Icons.visibility,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        obscure = !obscure;
+                      });
+                    },
                   ),
-                  onPressed: () {
-                    setState(() {
-                      obscure = !obscure;
-                    });
-                  },
+                  border: InputBorder.none,
+                  hintStyle: const TextStyle(fontSize: 14),
                 ),
-                border: InputBorder.none,
-                hintStyle: const TextStyle(fontSize: 14),
               ),
             ),
           ),

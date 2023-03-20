@@ -125,6 +125,8 @@ class RegisterScreen extends StatelessWidget {
                           )
                         : CustomElevatedButton(
                             onTap: () {
+                              FocusScope.of(context).requestFocus(FocusNode());
+
                               registerProvider.createAccount(context);
                             },
                             isValid: !registerProvider.isButtonLoading,

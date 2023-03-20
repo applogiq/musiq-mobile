@@ -43,7 +43,7 @@ class NoPlaylistSong extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           child: Column(
             children: [
-              const Spacer(),
+              // const Spacer(),
               NoSongScreen(
                 isFav: true,
                 mainTitle: ConstantText.noSongHere,
