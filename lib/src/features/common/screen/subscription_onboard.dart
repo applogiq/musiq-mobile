@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:musiq/src/core/enums/enums.dart';
 import 'package:musiq/src/core/utils/size_config.dart';
 import 'package:musiq/src/features/home/provider/home_provider.dart';
@@ -38,54 +39,121 @@ class _SubscriptionOnboardState extends State<SubscriptionOnboard> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text(ConstantText.subscription),
+    return WillPopScope(
+      onWillPop: () {
+        return showAlertDialog(context);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: const Text(ConstantText.subscription),
+        ),
+        body: Consumer<PaymentProvider>(builder: (context, pro, _) {
+          return pro.isSubsciptionLoad
+              ? const LoaderScreen()
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: const [
+                      VerticalBox(height: 12),
+                      FlashImageWidget(),
+                      VerticalBox(height: 8),
+                      GetExclusiveContentWidget(),
+                      VerticalBox(height: 8),
+                      GetExclusiveSubtitleWidget(),
+                      VerticalBox(height: 44),
+                      SubscriptionCard(),
+                      VerticalBox(height: 32),
+                      PlanDescriptionWidget(),
+                    ],
+                  ),
+                );
+        }),
+        bottomNavigationBar:
+            Consumer<PaymentProvider>(builder: (context, pro, _) {
+          return GestureDetector(
+            onTap: () {
+              if (pro.subscriptionPlan != SubscriptionPlan.free) {
+                context
+                    .read<PaymentProvider>()
+                    .createPayment(context, isFromProfile: false);
+              } else {
+                context.read<HomeProvider>().goToHome(context);
+              }
+            },
+            child: CustomButton(
+              isLoading: pro.isPaymentLoad,
+              label: pro.subscriptionPlan != SubscriptionPlan.free
+                  ? ConstantText.payNow
+                  : ConstantText.continueWithFreePlan,
+              horizontalMargin: 4,
+            ),
+          );
+        }),
       ),
-      body: Consumer<PaymentProvider>(builder: (context, pro, _) {
-        return pro.isSubsciptionLoad
-            ? const LoaderScreen()
-            : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: ListView(
-                  shrinkWrap: true,
-                  children: const [
-                    VerticalBox(height: 12),
-                    FlashImageWidget(),
-                    VerticalBox(height: 8),
-                    GetExclusiveContentWidget(),
-                    VerticalBox(height: 8),
-                    GetExclusiveSubtitleWidget(),
-                    VerticalBox(height: 44),
-                    SubscriptionCard(),
-                    VerticalBox(height: 32),
-                    PlanDescriptionWidget(),
-                  ],
-                ),
-              );
-      }),
-      bottomNavigationBar:
-          Consumer<PaymentProvider>(builder: (context, pro, _) {
-        return GestureDetector(
-          onTap: () {
-            if (pro.subscriptionPlan != SubscriptionPlan.free) {
-              context
-                  .read<PaymentProvider>()
-                  .createPayment(context, isFromProfile: false);
-            } else {
-              context.read<HomeProvider>().goToHome(context);
-            }
-          },
-          child: CustomButton(
-            isLoading: pro.isPaymentLoad,
-            label: pro.subscriptionPlan != SubscriptionPlan.free
-                ? ConstantText.payNow
-                : ConstantText.continueWithFreePlan,
-            horizontalMargin: 4,
-          ),
-        );
-      }),
     );
   }
+}
+
+showAlertDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: const Color.fromRGBO(33, 33, 44, 1),
+        title: const SizedBox.shrink(),
+        content: const Padding(
+          padding: EdgeInsets.only(left: 12),
+          child: Text(
+            "Do you want to Exit app?",
+            style: TextStyle(fontSize: 16),
+          ),
+        ),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Container(
+              height: getProportionateScreenHeight(44),
+              width: getProportionateScreenWidth(120),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: const Color.fromRGBO(255, 255, 255, 0.1)),
+              child: const Center(child: Text("Cancel")),
+            ),
+          ),
+          GestureDetector(
+            onTap: () async {
+              SystemNavigator.pop();
+              // Auth auth = Auth();
+              // await auth.logOut(context);
+              // await context.read<PlayerProvider>().removeAllData();
+              // await context.read<PlayerProvider>().playlist.clear();
+              // context.read<PlayerProvider>().inQueue = false;
+
+              // Provider.of<RegisterProvider>(context, listen: false)
+              //     .clearError();
+              // Provider.of<RegisterProvider>(context, listen: false)
+              //     .isButtonEnable = true;
+              // await Navigation.removeAllScreenFromStack(
+              //     context, const OnboardingScreen());
+            },
+            child: Container(
+              height: getProportionateScreenHeight(44),
+              width: getProportionateScreenWidth(120),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: const Color.fromRGBO(254, 86, 49, 1)),
+              child: const Center(child: Text("Confirm")),
+            ),
+          ),
+          SizedBox(
+            width: getProportionateScreenWidth(5),
+          )
+        ],
+      );
+    },
+  );
 }

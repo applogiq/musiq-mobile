@@ -164,6 +164,7 @@ class TrendingHitsHomeContainer extends StatelessWidget {
                   : const SizedBox.shrink(),
               InkWell(
                 onTap: () {
+                  print("1");
                   print(trendingHitsModel.records[index].premiumStatus);
                   print(trendingHitsModel.records[index].songName);
                   if (trendingHitsModel.records[index].premiumStatus ==

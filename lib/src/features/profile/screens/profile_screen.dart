@@ -33,8 +33,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Provider.of<ProfileProvider>(context, listen: false)
           .getProfileDetails();
-
-      setState(() {});
     });
     super.initState();
   }

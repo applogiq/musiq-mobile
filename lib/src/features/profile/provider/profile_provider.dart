@@ -191,6 +191,7 @@ class ProfileProvider extends ChangeNotifier {
         "Profile update successfully",
       );
       Navigator.pop(context);
+      getProfileDetails();
     } else if (res.statusCode == 400) {
       var jsonData = json.decode(res.body);
       if (jsonData["detail"] == "Username already exist") {

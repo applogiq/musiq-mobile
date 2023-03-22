@@ -44,6 +44,8 @@ class _MyProfileState extends State<MyProfile> {
         titleSpacing: 0.1,
         leading: InkWell(
             onTap: () {
+              Provider.of<ProfileProvider>(context, listen: false)
+                  .getProfileDetails();
               Navigator.pop(context);
               // pro.clearError();
             },

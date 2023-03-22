@@ -101,6 +101,20 @@ class _SearchScreenState extends State<SearchScreen> {
                       },
                       controller: _controller,
                       searchRequestModel: widget.searchRequestModel,
+                      pop: InkWell(
+                          onTap: () async {
+                            if (widget.searchRequestModel.searchStatus ==
+                                SearchStatus.playlist) {
+                              Navigator.pop(context);
+                              await context
+                                  .read<LibraryProvider>()
+                                  .getPlayListSongList(
+                                      widget.searchRequestModel.playlistId!);
+                            }
+                            // ignore: use_build_context_synchronously
+                            Navigator.pop(context);
+                          },
+                          child: const Icon(Icons.arrow_back_ios_rounded)),
                     ),
                     SearchListView(
                       searchRequestModel: widget.searchRequestModel,
@@ -123,12 +137,14 @@ class SearchFieldWidget extends StatelessWidget {
     required TextEditingController controller,
     required this.searchRequestModel,
     this.onChanged,
+    required this.pop,
   })  : _controller = controller,
         super(key: key);
 
   final TextEditingController _controller;
   final SearchRequestModel searchRequestModel;
   final ValueSetter<String>? onChanged;
+  final Widget pop;
 
   @override
   Widget build(BuildContext context) {
@@ -136,14 +152,13 @@ class SearchFieldWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       child: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: InkWell(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Icon(Icons.arrow_back_ios_rounded)),
-          ),
+          Padding(padding: const EdgeInsets.only(right: 16), child: pop
+              //  InkWell(
+              //     onTap: () {
+              //       Navigator.pop(context);
+              //     },
+              //     child: const Icon(Icons.arrow_back_ios_rounded)),
+              ),
           Expanded(
             child: SearchTextWidget(
               onChange: onChanged,
