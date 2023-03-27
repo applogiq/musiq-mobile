@@ -6,6 +6,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:musiq/src/core/constants/local_storage_constants.dart';
+import 'package:musiq/src/features/home/screens/artist_view_all/preferable_artist.dart';
 import 'package:musiq/src/features/payment/provider/payment_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -21,12 +22,16 @@ import '../domain/model/recent_song_model.dart';
 import '../domain/model/song_list_model.dart';
 import '../domain/model/trending_hits_model.dart';
 import '../domain/repository/home_repo.dart';
+import 'package:http/http.dart' as http;
+
+FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
 class HomeProvider extends ChangeNotifier {
   String premiumStatus = "free";
   FlutterSecureStorage storage = const FlutterSecureStorage();
   bool isRecentlyPlayedLoad = false;
   bool isLoad = true;
+
   RecentlyPlayed recentlyPlayed = RecentlyPlayed(
       success: false, message: "No records", records: [], totalrecords: 0);
   TrendingHitsModel trendingHitsModel = TrendingHitsModel(
@@ -40,6 +45,8 @@ class HomeProvider extends ChangeNotifier {
       success: false, message: "no records", records: [], totalRecords: 0);
   Album albumListModel = Album(
       success: false, message: "No Records", records: [], totalrecords: 0);
+  Preferableartistmodel preferableartistmodel = Preferableartistmodel(
+      success: false, message: "No records", records: [], totalRecords: 0);
   NewReleaseModel newReleaseModel = NewReleaseModel(
     success: false,
     message: "No Records",
@@ -54,6 +61,7 @@ class HomeProvider extends ChangeNotifier {
       await changeLoadState(true);
       await recentSongList();
       await artistList();
+      await preferableArtistList();
       await trendingHitsSongList();
       await newRelease();
       await auraSongList();
@@ -93,6 +101,36 @@ class HomeProvider extends ChangeNotifier {
       print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
       print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
       debugPrint(e.toString());
+    }
+  }
+
+  preferableArtistList() async {
+    var accessToken = await secureStorage.read(
+      key: "access_token",
+    );
+    try {
+      var response = await http.get(
+          Uri.parse(
+              "https://api-musiq.applogiq.org/api/v1/artist/homepage/{artist_id}"),
+          headers: {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $accessToken'
+          });
+
+      log("111111111111111111111111111111");
+      log(response.body);
+      log(response.statusCode.toString());
+      preferableartistmodel.records.clear();
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        preferableartistmodel = Preferableartistmodel.fromJson(data);
+      }
+
+      notifyListeners();
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -187,6 +225,7 @@ class HomeProvider extends ChangeNotifier {
         var data = jsonDecode(res.body);
         auraListModel = AuraModel.fromMap(data);
       }
+      // ignore: empty_catches
     } catch (e) {}
   }
 

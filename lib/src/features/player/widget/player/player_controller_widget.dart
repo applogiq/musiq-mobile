@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
@@ -26,7 +28,8 @@ class PlayerControllerWidget extends StatelessWidget {
             builder: (context, snapshot) {
               final state = snapshot.data;
               if (state?.sequence.isEmpty ?? true) {
-                return const SizedBox();
+                log("1object");
+                return const Text("no song");
               }
               final metadata = state!.currentSource!.tag as MediaItem;
 
@@ -124,15 +127,16 @@ class PlayerControllerWidget extends StatelessWidget {
                                 .sequenceStateStream,
                             builder: (context, snapshot) {
                               return PlayNextPrev(
-                                onTap: () {
-                                  context.read<PlayerProvider>().playPrev();
-                                },
-                                iconData: Icons.skip_previous_rounded,
-                                isEnable: context
-                                    .read<PlayerProvider>()
-                                    .player
-                                    .hasPrevious,
-                              );
+                                  onTap: () {
+                                    context.read<PlayerProvider>().playPrev();
+                                  },
+                                  iconData: Icons.skip_previous_rounded,
+                                  isEnable: true
+                                  // context
+                                  //     .read<PlayerProvider>()
+                                  //     .player
+                                  //     .hasPrevious,
+                                  );
                             }),
                         const PlayPauseController(),
                         StreamBuilder<SequenceState?>(
@@ -142,15 +146,11 @@ class PlayerControllerWidget extends StatelessWidget {
                                 .sequenceStateStream,
                             builder: (context, snapshot) {
                               return PlayNextPrev(
-                                onTap: () {
-                                  context.read<PlayerProvider>().playNext();
-                                },
-                                iconData: Icons.skip_next_rounded,
-                                isEnable: context
-                                    .read<PlayerProvider>()
-                                    .player
-                                    .hasNext,
-                              );
+                                  onTap: () {
+                                    context.read<PlayerProvider>().playNext();
+                                  },
+                                  iconData: Icons.skip_next_rounded,
+                                  isEnable: true);
                             }),
                         Consumer<PlayerProvider>(builder: (context, pro, _) {
                           return StreamBuilder<LoopMode>(

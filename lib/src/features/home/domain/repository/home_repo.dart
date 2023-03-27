@@ -50,6 +50,16 @@ class HomeRepository {
     }
   }
 
+  Future<dynamic> getPreferableArtistList() async {
+    try {
+      var endpoint = APIConstants.preferenceartistUrl;
+      dynamic response = await apiServices.getGetApiResponse(endpoint);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<dynamic> getArtist({int limit = 100}) async {
     try {
       var endpoint = APIConstants.getArtistUrl(0, limit);

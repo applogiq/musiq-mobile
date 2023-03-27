@@ -44,6 +44,8 @@ class APIConstants {
   static String subscriptionListEndPoint =
       "$baseUrl${versionUrl}premium?limit=100";
   static String versionUrl = "api/v1/";
+  static String preferenceartistUrl =
+      "https://api-musiq.applogiq.org/api/v1/artist/homepage/{artist_id}";
 
 // https://api-musiq.applogiq.org/api/v1/playlist-song/40
   getRecentlyPlayedUrl(String userId, int limit) {

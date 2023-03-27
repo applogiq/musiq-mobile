@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -25,9 +27,14 @@ class _SongReorderListViewWidgetState extends State<SongReorderListViewWidget> {
       builder: (context, snapshot) {
         final state = snapshot.data;
         if (state?.sequence.isEmpty ?? true) {
-          return const ColoredBox(
-            color: Colors.black,
-          );
+          log("object");
+          return const Center(
+              child: Text(
+            "No songs here...",
+            style: TextStyle(
+              fontSize: 20,
+            ),
+          ));
         }
 
         return state!.shuffleModeEnabled

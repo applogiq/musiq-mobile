@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
           TrendingHitsWidget(
             trendingHitsModel: pro.trendingHitsModel,
           ),
-          ArtistListView(artist: pro.artistModel),
+          ArtistListView(artist: pro.preferableartistmodel),
           HomeScreenSongList(
             title: "New Releases",
             isViewAll: true,

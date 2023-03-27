@@ -47,7 +47,7 @@ class _PaymentLoadingScreenState extends State<PaymentLoadingScreen> {
       'name': 'MusiQ',
       'description': 'Monthly subscription',
       'order_id': orderId,
-      'retry': {'enabled': true, 'max_count': 1},
+      '  ': {'enabled': true, 'max_count': 1},
       'theme': {
         'hide_topbar': true,
         'backdrop_color': "#16151C",

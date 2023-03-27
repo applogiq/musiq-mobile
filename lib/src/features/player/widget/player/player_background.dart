@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
@@ -28,6 +30,7 @@ class PlayerBackground extends StatelessWidget {
                 builder: (context, snapshot) {
                   final state = snapshot.data;
                   if (state?.sequence.isEmpty ?? true) {
+                    log("0object");
                     return const SizedBox();
                   }
                   final metadata = state!.currentSource!.tag as MediaItem;
@@ -77,6 +80,7 @@ class PlayerBackground extends StatelessWidget {
                             children: [
                               InkWell(
                                 onTap: () {
+                                  print("111");
                                   onTapped();
                                 },
                                 child: const RotatedBox(

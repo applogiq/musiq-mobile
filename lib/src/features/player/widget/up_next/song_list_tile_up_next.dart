@@ -104,6 +104,7 @@ class SongListTileUpNext extends StatelessWidget {
               ),
             ),
             ReorderableSongListPopUpMenu(
+              curentindex: currentIndex,
               metadata: metadata,
               index: index,
             )

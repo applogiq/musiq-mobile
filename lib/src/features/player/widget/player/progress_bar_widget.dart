@@ -32,6 +32,7 @@ class ProgressBarWidget extends StatelessWidget {
               if (state?.sequence.isEmpty ?? true) {
                 return const SizedBox.shrink();
               }
+              // ignore: unused_local_variable
               final metadata = state!.currentSource!.tag as MediaItem;
               return Column(
                 children: [

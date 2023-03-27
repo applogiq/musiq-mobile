@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -36,6 +38,7 @@ class UpNextController extends StatelessWidget {
                             builder: (context, snapshot) {
                               final state = snapshot.data;
                               if (state?.sequence.isEmpty ?? true) {
+                                log("2object");
                                 return const ColoredBox(
                                   color: Colors.black,
                                 );
@@ -52,9 +55,12 @@ class UpNextController extends StatelessWidget {
                                         : state!.currentIndex;
                                 metadata = state.effectiveSequence[index + 1]
                                     .tag as MediaItem;
+
+                                log(metadata.title);
                               } catch (e) {
                                 debugPrint(e.toString());
-                                metadata = null;
+                                metadata = state!.effectiveSequence[0].tag
+                                    as MediaItem;
                               }
                               return Text(
                                 metadata != null

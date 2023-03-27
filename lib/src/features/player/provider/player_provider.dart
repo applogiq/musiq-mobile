@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:audio_service/audio_service.dart';
@@ -244,6 +246,7 @@ class PlayerProvider extends ChangeNotifier {
         }
       }
       var res = objectbox.getAllQueueSong();
+      print("........................");
       if (res.isNotEmpty) {
         queueIdList.clear();
         List<PlayerSongListModel> playerSongList = [];
@@ -420,6 +423,7 @@ class PlayerProvider extends ChangeNotifier {
       player.positionStream.listen((event) {
         try {
           progressDurationValue = event.inMilliseconds;
+          // log(progressDurationValue.to);
           notifyListeners();
         } catch (e) {
           print("position stream");
@@ -482,6 +486,7 @@ class PlayerProvider extends ChangeNotifier {
                   context
                       .read<ViewAllProvider>()
                       .getViewAll(ViewAllStatus.recentlyPlayed);
+                  // ignore: empty_catches
                 } catch (e) {}
               }
               await storage.write(key: "currentIndex", value: event.toString());

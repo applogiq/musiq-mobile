@@ -97,6 +97,8 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     final double panelMaxSize = MediaQuery.of(context).size.height;
     return WillPopScope(
       onWillPop: () async {
+        controller.hide();
+        // Navigator.pop(context);
         // SystemNavigator.pop();
         // Minimize the app
         // SystemNavigator.pop();
@@ -105,14 +107,14 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
         // WidgetsBinding.instance?.pauseFrame();
         return false;
       },
-      child: SafeArea(
-        child: Scaffold(
-          body: Column(
-            children: [
-              Provider.of<InternetConnectionStatus>(context) ==
-                      InternetConnectionStatus.disconnected
-                  ? const OfflineScreen()
-                  : Expanded(
+      child: Provider.of<InternetConnectionStatus>(context) ==
+              InternetConnectionStatus.disconnected
+          ? const OfflineScreen()
+          : SafeArea(
+              child: Scaffold(
+                body: Column(
+                  children: [
+                    Expanded(
                       child:
                           Consumer<PlayerProvider>(builder: (context, pro, _) {
                         return WeSlide(
@@ -147,21 +149,21 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                         );
                       }),
                     ),
-              // : Column(
-              //     children: [
-              //       Expanded(
-              //         child: Consumer<BottomNavigationBarProvider>(
-              //           builder: (context, provider, _) {
-              //             return provider.pages[provider.selectedBottomIndex];
-              //           },
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-            ],
-          ),
-        ),
-      ),
+                    // : Column(
+                    //     children: [
+                    //       Expanded(
+                    //         child: Consumer<BottomNavigationBarProvider>(
+                    //           builder: (context, provider, _) {
+                    //             return provider.pages[provider.selectedBottomIndex];
+                    //           },
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                  ],
+                ),
+              ),
+            ),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:musiq/src/core/utils/size_config.dart';
 import 'package:musiq/src/features/player/provider/player_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -130,8 +131,8 @@ class ArtistGridView extends StatelessWidget {
                 children: [
                   (artistModel.records[index].isImage == false)
                       ? Container(
-                          height: 185,
-                          width: 163.5,
+                          height: getProportionateScreenHeight(175),
+                          width: getProportionateScreenWidth(163.5),
                           decoration: BoxDecoration(
                               color: CustomColor.defaultCard,
                               borderRadius: BorderRadius.circular(12),
@@ -145,22 +146,24 @@ class ArtistGridView extends StatelessWidget {
                             fit: BoxFit.fill,
                           ),
                         )
-                      : CustomColorContainer(
-                          child: Image.network(
-                          generateArtistImageUrl(
-                              artistModel.records[index].artistId),
-                          // "${APIConstants.baseUrl}${pro.artistModel.records[index].artistId}.png",
-                          height: 185,
-                          width: 163.5,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
-                              Image.asset(
-                            "assets/images/default/no_artist.png",
-                            width: 185,
-                            height: 163.5,
-                            fit: BoxFit.fill,
-                          ),
-                        )),
+                      : Expanded(
+                          child: CustomColorContainer(
+                              child: Image.network(
+                            generateArtistImageUrl(
+                                artistModel.records[index].artistId),
+                            // "${APIConstants.baseUrl}${pro.artistModel.records[index].artistId}.png",
+                            height: getProportionateScreenHeight(160),
+                            width: getProportionateScreenWidth(163.5),
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Image.asset(
+                              "assets/images/default/no_artist.png",
+                              width: 185,
+                              height: 163.5,
+                              fit: BoxFit.fill,
+                            ),
+                          )),
+                        ),
                   const SizedBox(
                     height: 6,
                   ),

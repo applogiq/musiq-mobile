@@ -47,10 +47,18 @@ extension PlayerControllerExtension on PlayerProvider {
   }
 
   void playNext() {
-    player.seekToNext();
+    if (player.hasNext) {
+      player.seekToNext();
+    } else {
+      player.seek(Duration.zero, index: 0);
+    }
   }
 
   void playPrev() {
-    player.seekToPrevious();
+    if (player.hasPrevious) {
+      player.seekToPrevious();
+    } else {
+      player.seek(Duration.zero, index: 0);
+    }
   }
 }

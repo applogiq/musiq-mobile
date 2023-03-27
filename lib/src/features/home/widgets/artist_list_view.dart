@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/features/home/screens/artist_view_all/preferable_artist.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';
@@ -7,7 +8,6 @@ import '../../../core/constants/images.dart';
 import '../../../core/constants/style.dart';
 import '../../../core/enums/enums.dart';
 import '../../../core/utils/url_generate.dart';
-import '../../artist/domain/models/artist_model.dart';
 import '../provider/view_all_provider.dart';
 import '../screens/artist_view_all/artist_view_all_screen.dart';
 import '../screens/sliver_app_bar/view_all_screen.dart';
@@ -18,7 +18,7 @@ class ArtistListView extends StatelessWidget {
     required this.artist,
   }) : super(key: key);
 
-  final ArtistModel artist;
+  final Preferableartistmodel artist;
 
   @override
   Widget build(BuildContext context) {
