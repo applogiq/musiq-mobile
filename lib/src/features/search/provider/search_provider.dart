@@ -112,6 +112,7 @@ class SearchProvider extends ChangeNotifier {
         var res = await searchRepository.getSongSearch(data.trim());
 
         if (res.statusCode == 200) {
+          print(res.body.toString());
           searchSongModel =
               SearchSongModel.fromMap(jsonDecode(res.body.toString()));
 

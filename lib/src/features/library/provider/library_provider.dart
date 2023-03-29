@@ -168,6 +168,7 @@ class LibraryProvider extends ChangeNotifier {
   }
 
   void addToQueue(int id, BuildContext context) async {
+    log("message");
     var response =
         await LibraryRepository().getPlayListSongListdata(id.toString());
 
@@ -189,7 +190,9 @@ class LibraryProvider extends ChangeNotifier {
       context
           .read<PlayerProvider>()
           .addSongToQueueSongList(playSongListModel, context);
+      notifyListeners();
     }
+    notifyListeners();
   }
 
   getPlayListSongList(int id) async {

@@ -54,6 +54,7 @@ showAlertDialog(BuildContext context) {
                   .isButtonEnable = true;
               await Navigation.removeAllScreenFromStack(
                   context, const OnboardingScreen());
+              // context.read<HomeProvider>().goToHome(context);
             },
             child: Container(
               height: getProportionateScreenHeight(44),

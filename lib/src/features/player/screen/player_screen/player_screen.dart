@@ -86,6 +86,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                     )
                                 : InkWell(
                                     onTap: () {
+                                      // print("111111111111111111111111");
                                       Navigator.pop(context);
                                     },
                                     child: const Padding(

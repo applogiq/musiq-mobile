@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/buttons/text_with_button.dart';
 import '../../../../common_widgets/image/logo_image.dart';
-import '../../../../common_widgets/text/forgot_password.dart';
 import '../../../../common_widgets/text_field/custom_password_text_field.dart';
 import '../../../../common_widgets/text_field/custom_text_field.dart';
 import '../../../../core/constants/constant.dart';
@@ -75,15 +74,26 @@ class LoginForm extends StatelessWidget {
                 });
           }),
           Consumer<LoginProvider>(builder: (context, pro, child) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: InkWell(
-                  onTap: () {
-                    Navigation.navigateToScreen(
-                        context, RouteName.forgotPassword);
-                    pro.isErr();
-                  },
-                  child: const ForgotPassword()),
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox.shrink(),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: InkWell(
+                    onTap: () {
+                      Navigation.navigateToScreen(
+                          context, RouteName.forgotPassword);
+                      pro.isErr();
+                    },
+                    child: Text(
+                      ConstantText.forgotPassword,
+                      style: fontWeight500(
+                          color: CustomColor.subTitle2, size: 13.0),
+                    ),
+                  ),
+                ),
+              ],
             );
           }),
           const PasswordChangeSuccessWidget(),

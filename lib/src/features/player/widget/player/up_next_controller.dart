@@ -21,6 +21,7 @@ class UpNextController extends StatelessWidget {
         return pro.isUpNextShow
             ? const SizedBox.shrink()
             : Container(
+                padding: const EdgeInsets.all(8),
                 decoration: topLeftRightDecoration(),
                 child: ListTile(
                   onTap: () {
@@ -31,6 +32,9 @@ class UpNextController extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const UpNext(),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       Consumer<PlayerProvider>(
                         builder: (context, playerProvider, _) {
                           return StreamBuilder<SequenceState?>(

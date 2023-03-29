@@ -42,7 +42,8 @@ extension PlayerControllerExtension on PlayerProvider {
     if (res.statusCode == 200) {
       toastMessage("Added to $playListName", Colors.grey, Colors.white);
     } else if (res.statusCode == 400) {
-      toastMessage("Song already in $playListName", Colors.grey, Colors.white);
+      toastMessage(
+          "Song already in ''$playListName''", Colors.grey, Colors.white);
     }
   }
 

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -61,16 +62,16 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void _onSearchChange() {
     debouncing(
-      fn: () {
-        if (mounted) {
-          context.read<SearchProvider>().getSearch(
-              _controller.text,
-              widget.searchRequestModel.searchStatus,
-              widget.searchRequestModel.playlistId,
-              context);
-        }
-      },
-    );
+        fn: () {
+          if (mounted) {
+            context.read<SearchProvider>().getSearch(
+                _controller.text,
+                widget.searchRequestModel.searchStatus,
+                widget.searchRequestModel.playlistId,
+                context);
+          }
+        },
+        waitForMs: 10);
   }
 
   @override
@@ -120,6 +121,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       searchRequestModel: widget.searchRequestModel,
                       controller: _controller,
                       onChanged: (value) {
+                        log("searchListView");
                         _onSearchChange();
                       },
                     ),

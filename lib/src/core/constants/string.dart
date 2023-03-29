@@ -22,7 +22,8 @@ class ConstantText {
   static String fullName = "Full Name";
   static String incorrectEmail = "Email address doesn't exist";
   static String invalidEmail = "Please enter a valid email";
-  static String invalidEmailAndPassword = "Your email or password is Incorrect";
+  // static String invalidEmailAndPassword = "Your email or password is Incorrect";
+  static String invalidEmailAndPassword = "Invalid Credentials";
   static String invalidFormat = "Password Format is invalid";
   static String invalidOTP = 'The OTP you have entered is invalid';
   static String invalidUserName = "User name does not contain space";
@@ -39,7 +40,7 @@ class ConstantText {
   static String passwordNotMatch = "Password doesn't match";
   static String passwordResetSuccess = 'Password reset successful';
   static String passwordToolTip =
-      "The password must contain alteast 8 characters, include 1 uppercase, 1 lowercase, 1 number and 1 special character.";
+      "The password must contain atleast 8 characters, include 1 uppercase, 1 lowercase, 1 number and 1 special character.";
 
   static const String playAll = "Play All";
   static const String deleteInQueue = "Delete in Queue";
@@ -77,7 +78,7 @@ class ConstantText {
 
   static const String remove = "Remove";
 
-  static const String loginSuccess = "Login Successfully";
+  static const String loginSuccess = "Login Successfull";
 
   static const String unFollow = "Unfollow";
   static const String follow = "Follow";

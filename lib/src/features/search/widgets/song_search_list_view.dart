@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:musiq/src/core/constants/local_storage_constants.dart';
 import 'package:musiq/src/features/payment/screen/subscription_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +21,10 @@ class SongSearchListView extends StatelessWidget {
     required this.provider,
   }) : super(key: key);
   final SearchProvider provider;
+  final storage = const FlutterSecureStorage();
+  store() async {
+    return await storage.read(key: LocalStorageConstant.premierStatus);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +39,22 @@ class SongSearchListView extends StatelessWidget {
                     var rec = provider.searchSongModel.records[index];
 
                     return InkWell(
-                      onTap: () {
-                        if (rec.premiumStatus != "free") {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  const SubscriptionsScreen()));
-                        } else {
+                      onTap: () async {
+                        log("1111111111111111");
+                        log("1111111111111111");
+                        log("1111111111111111");
+                        log("1111111111111111");
+                        log("1111111111111111");
+                        log("1111111111111111");
+                        log("1111111111111111");
+                        log("1111111111111111");
+                        log("1111111111111111");
+                        log("1111111111111111");
+                        log("1111111111111111");
+                        log("1111111111111111");
+                        var ram = await storage.read(
+                            key: LocalStorageConstant.premierStatus);
+                        if (rec.premiumStatus == "free") {
                           context.read<SearchProvider>().searchSongStore();
                           Record rec = context
                               .read<SearchProvider>()
@@ -56,6 +74,34 @@ class SongSearchListView extends StatelessWidget {
                           context
                               .read<PlayerProvider>()
                               .playSingleSong(context, playerSongListModel);
+                        } else if (rec.premiumStatus != "free" &&
+                            ram != "free") {
+                          context.read<SearchProvider>().searchSongStore();
+                          Record rec = context
+                              .read<SearchProvider>()
+                              .searchSongModel
+                              .records[index];
+                          PlayerSongListModel playerSongListModel =
+                              PlayerSongListModel(
+                                  id: rec.id,
+                                  albumName: rec.albumName,
+                                  title: rec.songName,
+                                  imageUrl: generateSongImageUrl(
+                                      rec.albumName, rec.albumId),
+                                  musicDirectorName: rec.musicDirectorName[0],
+                                  duration: rec.duration,
+                                  premium: rec.premiumStatus,
+                                  isImage: rec.isImage);
+                          context
+                              .read<PlayerProvider>()
+                              .playSingleSong(context, playerSongListModel);
+                        } else {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const SubscriptionsScreen(),
+                            ),
+                          );
+                          FocusScope.of(context).unfocus();
                         }
                       },
                       child: SongListTile(
@@ -92,8 +138,68 @@ class SongSearchListView extends StatelessWidget {
                           var rec = provider.searchSongModel.records[index];
 
                           return InkWell(
-                            onTap: () {
-                              if (rec.premiumStatus != "free") {
+                            onTap: () async {
+                              var ram = await storage.read(
+                                  key: LocalStorageConstant.premierStatus);
+                              print("jangriiiiii");
+                              print("jangriiiiii");
+                              print("jangriiiiii");
+                              print("jangriiiiii");
+                              print("jangriiiiii");
+                              print("jangriiiiii");
+                              print(ram);
+                              print(ram);
+                              print(ram);
+                              print(ram);
+                              print(ram);
+                              print(ram);
+
+                              if (rec.premiumStatus == "free") {
+                                context
+                                    .read<SearchProvider>()
+                                    .searchSongStore();
+                                Record rec = context
+                                    .read<SearchProvider>()
+                                    .searchSongModel
+                                    .records[index];
+                                PlayerSongListModel playerSongListModel =
+                                    PlayerSongListModel(
+                                        id: rec.id,
+                                        albumName: rec.albumName,
+                                        title: rec.songName,
+                                        imageUrl: generateSongImageUrl(
+                                            rec.albumName, rec.albumId),
+                                        musicDirectorName:
+                                            rec.musicDirectorName[0],
+                                        duration: rec.duration,
+                                        premium: rec.premiumStatus,
+                                        isImage: rec.isImage);
+                                context.read<PlayerProvider>().playSingleSong(
+                                    context, playerSongListModel);
+                              } else if (rec.premiumStatus != "free" &&
+                                  ram != "free") {
+                                context
+                                    .read<SearchProvider>()
+                                    .searchSongStore();
+                                Record rec = context
+                                    .read<SearchProvider>()
+                                    .searchSongModel
+                                    .records[index];
+                                PlayerSongListModel playerSongListModel =
+                                    PlayerSongListModel(
+                                        id: rec.id,
+                                        albumName: rec.albumName,
+                                        title: rec.songName,
+                                        imageUrl: generateSongImageUrl(
+                                            rec.albumName, rec.albumId),
+                                        musicDirectorName:
+                                            rec.musicDirectorName[0],
+                                        duration: rec.duration,
+                                        premium: rec.premiumStatus,
+                                        isImage: rec.isImage);
+                                context.read<PlayerProvider>().playSingleSong(
+                                    context, playerSongListModel);
+                              } else {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) =>
@@ -101,34 +207,6 @@ class SongSearchListView extends StatelessWidget {
                                   ),
                                 );
                                 FocusScope.of(context).unfocus();
-                              } else {
-                                FocusScope.of(context).unfocus();
-                                if (s.extras!["song_id"] ==
-                                    provider
-                                        .searchSongModel.records[index].id) {
-                                } else {
-                                  context
-                                      .read<SearchProvider>()
-                                      .searchSongStore();
-                                  Record rec = context
-                                      .read<SearchProvider>()
-                                      .searchSongModel
-                                      .records[index];
-                                  PlayerSongListModel playerSongListModel =
-                                      PlayerSongListModel(
-                                          id: rec.id,
-                                          albumName: rec.albumName,
-                                          title: rec.songName,
-                                          imageUrl: generateSongImageUrl(
-                                              rec.albumName, rec.albumId),
-                                          musicDirectorName:
-                                              rec.musicDirectorName[0],
-                                          duration: rec.duration,
-                                          premium: rec.premiumStatus,
-                                          isImage: rec.isImage);
-                                  context.read<PlayerProvider>().playSingleSong(
-                                      context, playerSongListModel);
-                                }
                               }
                             },
                             child: SongListTile(
@@ -155,12 +233,8 @@ class SongSearchListView extends StatelessWidget {
                         var rec = provider.searchSongModel.records[index];
 
                         return InkWell(
-                          onTap: () {
-                            if (rec.premiumStatus != "free") {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      const SubscriptionsScreen()));
-                            } else {
+                          onTap: () async {
+                            if (rec.premiumStatus == "free") {
                               context.read<SearchProvider>().searchSongStore();
                               Record rec = context
                                   .read<SearchProvider>()
@@ -177,10 +251,45 @@ class SongSearchListView extends StatelessWidget {
                                           rec.musicDirectorName[0],
                                       duration: rec.duration,
                                       premium: rec.premiumStatus,
-                                      isImage: false);
+                                      isImage: rec.isImage);
                               context
                                   .read<PlayerProvider>()
                                   .playSingleSong(context, playerSongListModel);
+                            } else if (rec.premiumStatus != "free" &&
+                                storage
+                                        .read(
+                                            key: LocalStorageConstant
+                                                .premierStatus)
+                                        .toString() !=
+                                    "free") {
+                              context.read<SearchProvider>().searchSongStore();
+                              Record rec = context
+                                  .read<SearchProvider>()
+                                  .searchSongModel
+                                  .records[index];
+                              PlayerSongListModel playerSongListModel =
+                                  PlayerSongListModel(
+                                      id: rec.id,
+                                      albumName: rec.albumName,
+                                      title: rec.songName,
+                                      imageUrl: generateSongImageUrl(
+                                          rec.albumName, rec.albumId),
+                                      musicDirectorName:
+                                          rec.musicDirectorName[0],
+                                      duration: rec.duration,
+                                      premium: rec.premiumStatus,
+                                      isImage: rec.isImage);
+                              context
+                                  .read<PlayerProvider>()
+                                  .playSingleSong(context, playerSongListModel);
+                            } else {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const SubscriptionsScreen(),
+                                ),
+                              );
+                              FocusScope.of(context).unfocus();
                             }
                           },
                           child: SongListTile(

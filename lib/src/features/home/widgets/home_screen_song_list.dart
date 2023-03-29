@@ -79,6 +79,7 @@ class HomeScreenSongList extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           if (songList[index].premiumStatus == "free") {
+                            print("143");
                             context.read<ViewAllProvider>().getViewAll(
                                 title == "New Releases"
                                     ? ViewAllStatus.newRelease
@@ -87,6 +88,8 @@ class HomeScreenSongList extends StatelessWidget {
                                 goToNextfunction: true,
                                 index: index);
                           } else {
+                            print("1434");
+
                             print(context
                                     .read<LoginProvider>()
                                     .userModel!
@@ -99,6 +102,8 @@ class HomeScreenSongList extends StatelessWidget {
                                     .records
                                     .premiumStatus !=
                                 "free") {
+                              print("14345");
+
                               context.read<ViewAllProvider>().getViewAll(
                                   title == "New Releases"
                                       ? ViewAllStatus.newRelease
@@ -107,6 +112,8 @@ class HomeScreenSongList extends StatelessWidget {
                                   goToNextfunction: true,
                                   index: index);
                             } else {
+                              print("143456");
+
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) =>
                                       const SubscriptionsScreen()));

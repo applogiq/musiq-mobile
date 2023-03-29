@@ -170,7 +170,7 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
         UserModel user = UserModel.fromMap(data);
         await storeResponseData(user);
         Fluttertoast.showToast(
-            msg: "Account Created",
+            msg: "Account created successfully",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.SNACKBAR,
             timeInSecForIosWeb: 1,

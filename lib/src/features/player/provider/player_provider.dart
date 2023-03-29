@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
@@ -167,15 +168,23 @@ class PlayerProvider extends ChangeNotifier {
         }
       }
       toastMessage(
-          "Song removed from favourite list", Colors.grey, Colors.white);
+          "Song removed from favorite list", Colors.grey, Colors.white);
     } else if (res.statusCode == 404) {
       //  loadFavourites();
-      toastMessage("Favourites not found", Colors.grey, Colors.white);
+      toastMessage("Favorites not found", Colors.grey, Colors.white);
     }
   }
 
 // Add single song to queue
   void queueSong(PlayerSongListModel e) async {
+    log("11111111111111111111111111111");
+    log("222222222222222222222222222");
+    log("11111111111111111111111111111");
+    log("11111111111111111111111111111");
+    log("11111111111111111111111111111");
+    log("11111111111111111111111111111");
+    log("11111111111111111111111111111");
+    log("11111111111111111111111111111");
     try {
       List<SongListModel> songListModels = [];
 
@@ -215,12 +224,12 @@ class PlayerProvider extends ChangeNotifier {
     var res = await playerRepo.addToFavourite(params);
 
     if (res.statusCode == 200) {
-      toastMessage("Song added to favourite list", Colors.grey, Colors.white);
+      toastMessage("Song added to favorite list", Colors.grey, Colors.white);
       objectbox.addFavouritesSong(FavouriteSong(songUniqueId: id));
     } else if (res.statusCode == 400) {
       // loadFavourites();
 
-      toastMessage("Song already in favourite list", Colors.grey, Colors.white);
+      toastMessage("Song already in favorite list", Colors.grey, Colors.white);
     }
   }
 
@@ -480,6 +489,8 @@ class PlayerProvider extends ChangeNotifier {
                 print("EEE");
                 if (context.mounted) {
                   context.read<HomeProvider>().recentSongList();
+
+                  log("mysong");
                 }
                 try {
                   print("SSS");
@@ -520,6 +531,7 @@ class PlayerProvider extends ChangeNotifier {
 
             if (res.statusCode == 200) {
               if (context.mounted) {
+                log("------------------------------------------------------");
                 context.read<HomeProvider>().recentSongList();
               }
             }
@@ -693,5 +705,64 @@ class PlayerProvider extends ChangeNotifier {
     player.seek(Duration.zero, index: index);
   }
 
-  void addQueueToLocalDb(PlayerSongListModel playerSongListModel) {}
+  addQueueToLocalDb(PlayerSongListModel e, BuildContext context) async {
+    log("789");
+    log("789");
+    log("789");
+    log("789");
+    log("789");
+    log("789");
+    log("789");
+    log("789");
+    log("789");
+    log("789");
+    log("789");
+    log("789");
+    log("789");
+    log("789");
+    log("789");
+    log("789");
+    log("789");
+    log("789");
+    log("789");
+    log("789");
+    try {
+      List<SongListModel> songListModels = [];
+      List<PlayerSongListModel> addQueues = [];
+      addQueues.add(e);
+
+      songListModels.add(SongListModel(
+          songId: e.id,
+          albumName: e.albumName,
+          title: e.title,
+          musicDirectorName: e.musicDirectorName,
+          imageUrl: e.imageUrl,
+          songUrl: generateSongUrl(e.id),
+          duration: e.duration,
+          isImage: e.isImage));
+      var item = MediaItem(
+          id: generateSongUrl(e.id),
+          album: e.albumName,
+          title: e.title,
+          artist: e.musicDirectorName,
+          duration: Duration(milliseconds: totalDuration(e.duration)),
+          artUri: Uri.parse(e.imageUrl),
+          extras: {"song_id": e.id, "isImage": e.isImage});
+      await playlist.add(AudioSource.uri(
+          Uri.parse(
+            generateSongUrl(e.id),
+          ),
+          tag: item));
+
+      player.setAudioSource(playlist);
+      objectbox.addSongListQueue(songListModels);
+      context.read<PlayerProvider>().addSongToQueueSongList(addQueues, context);
+      notifyListeners();
+      log("879");
+    } catch (e) {
+      log("10,11,12");
+
+      debugPrint(e.toString());
+    }
+  }
 }

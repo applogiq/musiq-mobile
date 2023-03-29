@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:musiq/src/core/enums/enums.dart';
@@ -7,7 +9,6 @@ import 'package:musiq/src/features/payment/provider/payment_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/box/vertical_box.dart';
-import '../../../common_widgets/buttons/custom_button.dart';
 import '../../../common_widgets/loader.dart';
 import '../../../core/constants/constant.dart';
 import '../../payment/widgets/flash_image_widget.dart';
@@ -23,6 +24,7 @@ class SubscriptionOnboard extends StatefulWidget {
 }
 
 class _SubscriptionOnboardState extends State<SubscriptionOnboard> {
+  bool isbuttonLoad = true;
   @override
   void initState() {
     super.initState();
@@ -73,23 +75,64 @@ class _SubscriptionOnboardState extends State<SubscriptionOnboard> {
         bottomNavigationBar:
             Consumer<PaymentProvider>(builder: (context, pro, _) {
           return GestureDetector(
-            onTap: () {
-              if (pro.subscriptionPlan != SubscriptionPlan.free) {
-                context
-                    .read<PaymentProvider>()
-                    .createPayment(context, isFromProfile: false);
-              } else {
-                context.read<HomeProvider>().goToHome(context);
-              }
-            },
-            child: CustomButton(
-              isLoading: pro.isPaymentLoad,
-              label: pro.subscriptionPlan != SubscriptionPlan.free
-                  ? ConstantText.payNow
-                  : ConstantText.continueWithFreePlan,
-              horizontalMargin: 4,
-            ),
-          );
+              onTap: () {
+                isbuttonLoad = true;
+                setState(() {});
+                log("musiqqqqqqqq");
+                if (pro.subscriptionPlan != SubscriptionPlan.free) {
+                  context
+                      .read<PaymentProvider>()
+                      .createPayment(context, isFromProfile: false);
+                } else {
+                  context.read<HomeProvider>().goToHome(context);
+                }
+                isbuttonLoad = false;
+                setState(() {});
+              },
+              child: Container(
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                width: MediaQuery.of(context).size.width,
+                height: 52,
+                decoration: BoxDecoration(
+                  color: CustomColor.secondaryColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      pro.isSubsciptionLoad || pro.isplanLoad
+                          ? const Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 6.0, horizontal: 8),
+                              child: SizedBox(
+                                height: 24,
+                                width: 24,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 3,
+                                ),
+                              ),
+                            )
+                          : Text(
+                              pro.subscriptionPlan != SubscriptionPlan.free
+                                  ? ConstantText.payNow
+                                  : ConstantText.continueWithFreePlan,
+                              style: fontWeight500(size: 16.0),
+                            ),
+                    ],
+                  ),
+                ),
+              )
+              //  CustomButton(
+              //   isLoading: pro.isPaymentLoad,
+              //   label: pro.subscriptionPlan != SubscriptionPlan.free
+              //       ? ConstantText.payNow
+              //       : ConstantText.continueWithFreePlan,
+              //   horizontalMargin: 4,
+              // ),
+              );
         }),
       ),
     );

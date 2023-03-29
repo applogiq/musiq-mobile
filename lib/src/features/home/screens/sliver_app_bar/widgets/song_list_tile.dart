@@ -205,9 +205,9 @@ class SongListTile extends StatelessWidget {
                                       isPremium != true ? "free" : "premium",
                                   isImage: isImage);
 
-                          context.read<PlayerProvider>().addQueueToLocalDb(
-                                playerSongListModel,
-                              );
+                          context
+                              .read<PlayerProvider>()
+                              .addQueueToLocalDb(playerSongListModel, context);
                         }
                         break;
                     }
@@ -216,7 +216,7 @@ class SongListTile extends StatelessWidget {
                     return [
                       const PopupMenuItem(
                         value: 1,
-                        child: Text('Add to Favourites'),
+                        child: Text('Add to Favorites'),
                       ),
                       const PopupMenuItem(
                         value: 2,

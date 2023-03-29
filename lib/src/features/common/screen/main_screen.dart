@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/features/common/provider/pop_up_provider.dart';
+import 'package:musiq/src/features/library/provider/library_provider.dart';
 import 'package:musiq/src/features/player/screen/player_screen/player_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
@@ -98,6 +99,7 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
     return WillPopScope(
       onWillPop: () async {
         controller.hide();
+        context.read<LibraryProvider>().getFavouritesList();
         // Navigator.pop(context);
         // SystemNavigator.pop();
         // Minimize the app
@@ -132,6 +134,9 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
                             return pro.isPlaying
                                 ? PlayerScreen(onTap: () {
                                     controller.hide();
+                                    context
+                                        .read<LibraryProvider>()
+                                        .getFavouritesList();
                                   })
                                 : const SizedBox.shrink();
                           }),

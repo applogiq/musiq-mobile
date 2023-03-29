@@ -153,6 +153,7 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body);
+      log("message");
       recentlyPlayed = RecentlyPlayed.fromMap(data);
       for (int i = 0; i < recentlyPlayed.records.length; i++) {
         recentSongListModel.add(SongListModel(

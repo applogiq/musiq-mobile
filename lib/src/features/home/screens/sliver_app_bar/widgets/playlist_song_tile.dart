@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -152,6 +154,7 @@ class PlaylistSongListTile extends StatelessWidget {
                                 builder: (context) =>
                                     const SubscriptionsScreen()));
                       } else {
+                        log("123456789");
                         PlayerSongListModel playerSongListModel =
                             PlayerSongListModel(
                                 id: songId,

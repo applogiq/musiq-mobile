@@ -188,14 +188,14 @@ class ProfileProvider extends ChangeNotifier {
       }
 
       successToastMessage(
-        "Profile update successfully",
+        "Profile updated successfully",
       );
       Navigator.pop(context);
       getProfileDetails();
     } else if (res.statusCode == 400) {
       var jsonData = json.decode(res.body);
       if (jsonData["detail"] == "Username already exist") {
-        userNameErrorMessage = "Username already exist";
+        userNameErrorMessage = "Username already exists";
       }
     } else {}
 

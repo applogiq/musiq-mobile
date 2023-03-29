@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -21,6 +22,7 @@ class PaymentProvider extends ChangeNotifier {
   String currentPlan = "Free";
   bool isPaymentLoad = false;
   bool isSubsciptionLoad = true;
+  bool isplanLoad = true;
   //Create Payment repository instance
   PaymentRepository paymentRepository = PaymentRepository();
 
@@ -140,6 +142,8 @@ class PaymentProvider extends ChangeNotifier {
 // Continue with free plan API call and navigate to main screen
   void continueWithFreePlanSubscription(BuildContext context,
       {bool isFromDialog = false}) async {
+    isplanLoad = true;
+    notifyListeners();
     Map params = {};
 
     params["premier_status"] = "free";
@@ -148,6 +152,7 @@ class PaymentProvider extends ChangeNotifier {
     var res = await paymentRepository.createPayment(params);
 
     if (res.statusCode == 201) {
+      log("mickyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
       FlutterSecureStorage secureStorage = const FlutterSecureStorage();
       await secureStorage.write(
           key: LocalStorageConstant.subscriptionEndDate, value: null);
@@ -164,6 +169,8 @@ class PaymentProvider extends ChangeNotifier {
     if (isFromDialog) {
       Navigator.pop(context);
     }
+    isplanLoad = false;
+    notifyListeners();
   }
 
 // View plan navigtation in subscription end dialog

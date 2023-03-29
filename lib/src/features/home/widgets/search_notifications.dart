@@ -39,31 +39,44 @@ class SearchAndNotifications extends StatelessWidget {
                 searchStatus: searchStatus,
               ),
             ),
+
             // const SizedBox(
             //   width: 8,
             // ),
             // CustomColorContainer(
             //   bgColor: CustomColor.textfieldBg,
-            //   left: 12,
+            //   left: 6,
             //   verticalPadding: 6,
-            //   child: Center(
-            //     child: Stack(
-            //       children: [
-            //         const Icon(Icons.notifications),
-            //         Positioned(
-            //           right: 2,
-            //           child: Container(
-            //             padding: const EdgeInsets.all(4.5),
-            //             decoration: BoxDecoration(
-            //               color: CustomColor.secondaryColor,
-            //               shape: BoxShape.circle,
-            //             ),
-            //           ),
-            //         )
-            //       ],
-            //     ),
+            //   child: const Center(
+            //     child: Icon(Icons.notifications),
             //   ),
             // )
+            const SizedBox(
+              width: 8,
+            ),
+            CustomColorContainer(
+              bgColor: CustomColor.textfieldBg,
+              left: 5,
+              right: 5,
+              verticalPadding: 6,
+              child: Center(
+                child: Stack(
+                  children: [
+                    const Icon(Icons.notifications),
+                    Positioned(
+                      right: 2,
+                      child: Container(
+                        padding: const EdgeInsets.all(4.5),
+                        decoration: BoxDecoration(
+                          color: CustomColor.secondaryColor,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),

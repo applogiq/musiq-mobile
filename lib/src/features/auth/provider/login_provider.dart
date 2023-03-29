@@ -78,9 +78,13 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
 
 // Validate email address and password
   validate() {
+    RegExp regex =
+        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
     changeErrorStatus();
     bool emailValidate = emailAddress.isNotEmpty && isEmailValid(emailAddress);
-    if (emailValidate && password.isNotEmpty) {
+    bool passwordValidate = password.isNotEmpty && regex.hasMatch(password);
+    // bool isEmailandPasswordValidate = emailValidate != passwordValidate;
+    if (emailValidate && passwordValidate) {
       isLoginButtonEnable = true;
     } else {
       isLoginButtonEnable = false;
