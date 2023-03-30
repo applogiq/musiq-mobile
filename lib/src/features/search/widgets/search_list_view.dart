@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/core/constants/images.dart';
 import 'package:musiq/src/features/search/widgets/playlist_song_seach_list_view.dart';
 import 'package:musiq/src/features/search/widgets/search_artist_history.dart';
 import 'package:musiq/src/features/search/widgets/search_artist_preference.dart';
@@ -58,9 +59,26 @@ class SearchListView extends StatelessWidget {
                                     searchRequestModel: searchRequestModel,
                                     pro: pro,
                                   )
-                                : SongSearchListView(
-                                    provider: pro,
-                                  );
+                                : pro.isSearch
+                                    ? Expanded(
+                                        child: Container(
+                                          height: MediaQuery.of(context)
+                                              .size
+                                              .height,
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          color: Colors.black.withOpacity(.5),
+                                          child: Center(
+                                            child: Image.asset(
+                                              Images.loaderImage,
+                                              height: 70,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : SongSearchListView(
+                                        provider: pro,
+                                      );
                       }
                     },
                   );

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/common_widgets/box/vertical_box.dart';
+import 'package:musiq/src/core/constants/style.dart';
 import 'package:musiq/src/features/library/screens/playlist/view_playlist_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -66,6 +67,7 @@ class _MyProfileState extends State<MyProfile> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Column(
+                              // crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 ProfileImageEdit(key: UniqueKey(), size: size),
                                 Consumer<ProfileProvider>(
@@ -85,6 +87,52 @@ class _MyProfileState extends State<MyProfile> {
                                         provider.profileNameChanged(text);
                                       });
                                 }),
+                                const VerticalBox(height: 8),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    "Email Address",
+                                    style: fontWeight500(
+                                        size: getProportionateScreenHeight(16)),
+                                  ),
+                                ),
+                                const VerticalBox(height: 4),
+                                Consumer<ProfileProvider>(
+                                  builder: (context, provider, child) =>
+                                      Container(
+                                    height: getProportionateScreenHeight(47),
+                                    width: double.maxFinite,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        color: const Color.fromRGBO(
+                                            36, 35, 42, 1)),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const SizedBox.shrink(),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 16),
+                                          child: Text(
+                                            provider.profileAPIModel.records!
+                                                .email!,
+                                            style: fontWeight500(
+                                                color: const Color.fromRGBO(
+                                                    255, 255, 255, 0.4),
+                                                size:
+                                                    getProportionateScreenHeight(
+                                                  16,
+                                                )),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const VerticalBox(height: 8),
                                 Consumer<ProfileProvider>(
                                     builder: (context, provider, _) {
                                   return TextFieldWithError(

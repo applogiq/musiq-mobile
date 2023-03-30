@@ -33,12 +33,26 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   late TextEditingController _controller;
   Timer? _debounceTimer;
+  final FocusNode _focusNode = FocusNode();
+  bool _isTextFieldFocused = false;
+
+  void _onFocusChange() {
+    if (_focusNode.hasFocus) {
+      // TextField is currently focused, enable onChanged function
+      _isTextFieldFocused = true;
+    } else {
+      // TextField is not currently focused, disable onChanged function
+      _isTextFieldFocused = false;
+    }
+  }
 
   @override
   void dispose() {
     _debounceTimer?.cancel();
     _controller.removeListener(_onSearchChange);
     _controller.dispose();
+    _focusNode.removeListener(_onFocusChange);
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -71,7 +85,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 context);
           }
         },
-        waitForMs: 10);
+        waitForMs: 5);
+    // FocusScope.of(context).unfocus();
   }
 
   @override

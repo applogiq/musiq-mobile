@@ -24,8 +24,10 @@ class PlayerScreen extends StatefulWidget {
   State<PlayerScreen> createState() => _PlayerScreenState();
 }
 
-class _PlayerScreenState extends State<PlayerScreen> {
+class _PlayerScreenState extends State<PlayerScreen>
+    with WidgetsBindingObserver {
   final WeSlideController controller = WeSlideController();
+  AudioPlayer player = AudioPlayer();
 
   @override
   void initState() {
@@ -33,6 +35,13 @@ class _PlayerScreenState extends State<PlayerScreen> {
       // context.read<PlayerProvider>().loadSong(widget.playerModel);
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    player.pause();
+    super.dispose();
   }
 
   @override

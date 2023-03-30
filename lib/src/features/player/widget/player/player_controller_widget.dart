@@ -41,6 +41,11 @@ class PlayerControllerWidget extends StatelessWidget {
                     style:
                         fontWeight400(size: 14.0, color: CustomColor.subTitle),
                   ),
+                  Text(
+                    metadata.artist!,
+                    style:
+                        fontWeight400(size: 14.0, color: CustomColor.subTitle),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Consumer<PlayerProvider>(

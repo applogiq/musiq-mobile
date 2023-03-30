@@ -486,7 +486,7 @@ class PlayerProvider extends ChangeNotifier {
               var res = await PlayerRepo().recentList(params);
               print(res.body);
               if (res.statusCode == 200) {
-                print("EEE");
+                log("EEEeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
                 if (context.mounted) {
                   context.read<HomeProvider>().recentSongList();
 
@@ -520,9 +520,10 @@ class PlayerProvider extends ChangeNotifier {
           debugPrint(e.toString());
         }
       });
+      bool apiCallMade = false;
       player.playerStateStream.listen((event) async {
         try {
-          if (event.processingState == ProcessingState.ready) {
+          if (event.processingState == ProcessingState.ready && !apiCallMade) {
             var metaData = player.sequenceState!
                 .effectiveSequence[player.currentIndex!].tag as MediaItem;
 
@@ -530,8 +531,11 @@ class PlayerProvider extends ChangeNotifier {
             var res = await PlayerRepo().recentList(params);
 
             if (res.statusCode == 200) {
+              apiCallMade = true;
+              notifyListeners();
               if (context.mounted) {
-                log("------------------------------------------------------");
+                log("ffffffffffffffffffffffffffffffffffffffffff");
+
                 context.read<HomeProvider>().recentSongList();
               }
             }
