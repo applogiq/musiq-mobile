@@ -42,18 +42,15 @@ class CustomButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            isIcon ? const Icon(Icons.play_arrow_rounded) : const SizedBox(),
+            isIcon
+                ? const Icon(
+                    Icons.play_arrow_rounded,
+                    size: 30,
+                  )
+                : const SizedBox(),
             isLoading
-                ? const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 8),
-                    child: SizedBox(
-                      height: 24,
-                      width: 24,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 3,
-                      ),
-                    ),
+                ? const CircularProgressIndicator(
+                    color: Colors.white,
                   )
                 : Text(
                     label,

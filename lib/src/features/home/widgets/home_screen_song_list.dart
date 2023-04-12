@@ -28,7 +28,7 @@ class HomeScreenSongList extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.only(left: 16, right: 16),
           child: Row(
             children: [
               Text(
@@ -121,7 +121,7 @@ class HomeScreenSongList extends StatelessWidget {
                           }
                         },
                         child: Container(
-                          padding: const EdgeInsets.fromLTRB(6, 8, 6, 0),
+                          padding: const EdgeInsets.fromLTRB(6, 10, 6, 0),
                           width: 135,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -194,7 +194,9 @@ class HomeScreenSongList extends StatelessWidget {
                                 maxLines: 1,
                                 // overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
-                                    fontWeight: FontWeight.w400, fontSize: 12),
+                                    color: Color.fromRGBO(255, 255, 255, 0.4),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12),
                               ),
                             ],
                           ),

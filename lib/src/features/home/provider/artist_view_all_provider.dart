@@ -31,9 +31,9 @@ class ArtistViewAllProvider extends ChangeNotifier {
       key: "access_token",
     );
     try {
-      var response = await http.get(
-          Uri.parse(
-              "https://api-musiq.applogiq.org/api/v1/artist/homepage/{artist_id}"),
+      var response = await http.get(Uri.parse(
+              // "https://api-musiq.applogiq.org/api/v1/artist/homepage/{artist_id}"),
+              "http://192.168.29.94:6060/api/v1/artist/homepage/{artist_id}"),
           headers: {
             'Content-type': 'application/json',
             'Accept': 'application/json',

@@ -9,6 +9,7 @@ import 'package:musiq/src/core/constants/local_storage_constants.dart';
 import 'package:musiq/src/core/extensions/context_extension.dart';
 import 'package:musiq/src/core/local/model/queue_model.dart';
 import 'package:musiq/src/core/utils/time.dart';
+import 'package:musiq/src/core/utils/toast_message.dart';
 import 'package:musiq/src/core/utils/url_generate.dart';
 import 'package:musiq/src/features/library/provider/library_provider.dart';
 import 'package:musiq/src/features/player/domain/model/player_song_list_model.dart';
@@ -24,8 +25,12 @@ class PopUpProvider extends ChangeNotifier {
   ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: []);
   AudioPlayer player = AudioPlayer();
 
-  deleteInQueue(int index, BuildContext context) {
-    context.read<PlayerProvider>().deleteSongInQueue(index);
+  deleteInQueue(
+    int index,
+    BuildContext context,
+  ) async {
+    await context.read<PlayerProvider>().deleteSongInQueue(index);
+    // objectbox.removeQueueSong(id);
   }
 
   addToFavourites(int songId, BuildContext context) async {
@@ -41,66 +46,113 @@ class PopUpProvider extends ChangeNotifier {
     Navigation.navigateToScreen(context, RouteName.songInfo, args: songId);
   }
 
+  Set<String> addedSongs = {};
   addToQueue(PlayerSongListModel e, BuildContext context) async {
     log("789");
-    log("789");
-    log("789");
-    log("789");
-    log("789");
-    log("789");
-    log("789");
-    log("789");
-    log("789");
-    log("789");
-    log("789");
-    log("789");
-    log("789");
-    log("789");
-    log("789");
-    log("789");
-    log("789");
-    log("789");
-    log("789");
-    log("789");
-    try {
-      List<SongListModel> songListModels = [];
-      List<PlayerSongListModel> addQueues = [];
-      addQueues.add(e);
+    if (addedSongs.contains(e.id.toString())) {
+      return toastMessage("Song already added", Colors.white, Colors.black);
+    } else {
+      try {
+        List<SongListModel> songListModels = [];
+        List<PlayerSongListModel> addQueues = [];
+        for (var song in songListModels) {
+          if (song.songId == e.id) {
+            return;
+          }
+        }
+        addQueues.add(e);
 
-      songListModels.add(SongListModel(
-          songId: e.id,
-          albumName: e.albumName,
-          title: e.title,
-          musicDirectorName: e.musicDirectorName,
-          imageUrl: e.imageUrl,
-          songUrl: generateSongUrl(e.id),
-          duration: e.duration,
-          isImage: e.isImage));
-      var item = MediaItem(
-          id: generateSongUrl(e.id),
-          album: e.albumName,
-          title: e.title,
-          artist: e.musicDirectorName,
-          duration: Duration(milliseconds: totalDuration(e.duration)),
-          artUri: Uri.parse(e.imageUrl),
-          extras: {"song_id": e.id, "isImage": e.isImage});
-      await playlist.add(AudioSource.uri(
-          Uri.parse(
-            generateSongUrl(e.id),
-          ),
-          tag: item));
+        songListModels.add(SongListModel(
+            songId: e.id,
+            albumName: e.albumName,
+            title: e.title,
+            musicDirectorName: e.musicDirectorName,
+            imageUrl: e.imageUrl,
+            songUrl: generateSongUrl(e.id),
+            duration: e.duration,
+            isImage: e.isImage));
+        var item = MediaItem(
+            id: generateSongUrl(e.id),
+            album: e.albumName,
+            title: e.title,
+            artist: e.musicDirectorName,
+            duration: Duration(milliseconds: totalDuration(e.duration)),
+            artUri: Uri.parse(e.imageUrl),
+            extras: {"song_id": e.id, "isImage": e.isImage});
+        await playlist.add(AudioSource.uri(
+            Uri.parse(
+              generateSongUrl(e.id),
+            ),
+            tag: item));
 
-      player.setAudioSource(playlist);
-      objectbox.addSongListQueue(songListModels);
-      context.read<PlayerProvider>().addSongToQueueSongList(addQueues, context);
-      notifyListeners();
-      log("879");
-    } catch (e) {
-      log("10,11,12");
+        player.setAudioSource(playlist);
+        objectbox.addSongListQueue(songListModels);
+        context
+            .read<PlayerProvider>()
+            .addSongToQueueSongList(addQueues, context);
+        notifyListeners();
+        log("879/////////////////////////////////////////////////////");
+      } catch (e) {
+        log("10,11,12");
 
-      debugPrint(e.toString());
+        debugPrint(e.toString());
+      }
     }
   }
+
+  // addToQueue(PlayerSongListModel e, BuildContext context) async {
+  //   // Create empty lists and add the new song to the addQueues list
+  //   try {
+  //     // Get the current position of the player
+  //     final currentPosition = player.position;
+
+  //     // Create the songListModels and addQueues lists
+  //     List<SongListModel> songListModels = [];
+  //     List<PlayerSongListModel> addQueues = [];
+  //     addQueues.add(e);
+
+  //     // Create a new SongListModel instance and add it to the songListModels list
+  //     songListModels.add(SongListModel(
+  //         songId: e.id,
+  //         albumName: e.albumName,
+  //         title: e.title,
+  //         musicDirectorName: e.musicDirectorName,
+  //         imageUrl: e.imageUrl,
+  //         songUrl: generateSongUrl(e.id),
+  //         duration: e.duration,
+  //         isImage: e.isImage));
+
+  //     // Create a new MediaItem instance and add it to the playlist
+  //     var item = MediaItem(
+  //         id: generateSongUrl(e.id),
+  //         album: e.albumName,
+  //         title: e.title,
+  //         artist: e.musicDirectorName,
+  //         duration: Duration(milliseconds: totalDuration(e.duration)),
+  //         artUri: Uri.parse(e.imageUrl),
+  //         extras: {"song_id": e.id, "isImage": e.isImage});
+  //     await playlist
+  //         .add(AudioSource.uri(Uri.parse(generateSongUrl(e.id)), tag: item));
+
+  //     // Set the player's audio source to the new playlist
+  //     player.setAudioSource(playlist);
+
+  //     // Restore the player's position to the saved position
+  //     await player.seek(currentPosition);
+
+  //     // Add the songListModels list to the objectbox instance
+  //     objectbox.addSongListQueue(songListModels);
+
+  //     // Add the addQueues list to the PlayerProvider instance using the context
+  //     context.read<PlayerProvider>().addSongToQueueSongList(addQueues, context);
+
+  //     // Notify any listeners that the object has been updated
+  //     notifyListeners();
+  //   } catch (e) {
+  //     // Handle any errors
+  //     debugPrint(e.toString());
+  //   }
+  // }
 
   void queueSong(PlayerSongListModel e) async {
     log("message");

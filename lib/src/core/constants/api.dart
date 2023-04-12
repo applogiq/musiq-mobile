@@ -1,7 +1,6 @@
-import '../config/api_config.dart';
-
 class APIConstants {
-  static String baseUrl = hostConfig["api_url"];
+  static String baseUrl = "http://192.168.29.94:6060/";
+
   static String kAlbumList = "$baseUrl${versionUrl}albums/";
   static String kAlbumSongList = "$baseUrl${versionUrl}songs?album_id=";
   static String kArtistFollowing = "$baseUrl${versionUrl}users/follow";
@@ -45,7 +44,8 @@ class APIConstants {
       "$baseUrl${versionUrl}premium?limit=100";
   static String versionUrl = "api/v1/";
   static String preferenceartistUrl =
-      "https://api-musiq.applogiq.org/api/v1/artist/homepage/{artist_id}";
+      // "https://api-musiq.applogiq.org/api/v1/artist/homepage/{artist_id}";
+      "http://192.168.29.94:6060/api/v1/artist/homepage/{artist_id}";
 
 // https://api-musiq.applogiq.org/api/v1/playlist-song/40
   getRecentlyPlayedUrl(String userId, int limit) {

@@ -24,6 +24,7 @@ class CustomColor {
   static var textfieldBg = const Color.fromRGBO(255, 255, 255, 0.1);
 
   static List<Color> miniPlayerBackgroundColors = [
+    const Color.fromRGBO(138, 133, 131, 1),
     const Color.fromRGBO(71, 92, 108, 1),
     const Color.fromRGBO(138, 133, 131, 1),
     const Color.fromRGBO(205, 139, 98, 1),

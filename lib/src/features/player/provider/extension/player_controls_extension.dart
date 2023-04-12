@@ -30,7 +30,7 @@ extension PlayerControllerExtension on PlayerProvider {
     // isShuffle = !isShuffle;
   }
 
-  void deleteSongInQueue(int index) {
+  deleteSongInQueue(int index) {
     playlist.removeAt(index);
   }
 
@@ -47,19 +47,33 @@ extension PlayerControllerExtension on PlayerProvider {
     }
   }
 
-  void playNext() {
+  void playNext() async {
     if (player.hasNext) {
       player.seekToNext();
+      player.play();
     } else {
       player.seek(Duration.zero, index: 0);
+      player.play();
+    }
+  }
+
+  void playNextinSwipe() async {
+    if (player.hasNext) {
+      player.seek(Duration.zero, index: player.currentIndex! + 1);
+      player.play();
+    } else {
+      player.seek(Duration.zero, index: 0);
+      player.play();
     }
   }
 
   void playPrev() {
     if (player.hasPrevious) {
       player.seekToPrevious();
+      player.play();
     } else {
       player.seek(Duration.zero, index: 0);
+      player.play();
     }
   }
 }

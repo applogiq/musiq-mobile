@@ -38,6 +38,14 @@ class ProgressBarWidget extends StatelessWidget {
                 children: [
                   StreamBuilder<Duration>(builder: (context, snapshot) {
                     // final position = snapshot.data;
+                    // log("1");
+                    // log(pro.progressDurationValue.toString());
+                    // // log("2");
+
+                    // log(pro.bufferDurationValue.toString());
+                    // // log("3");
+
+                    // log(pro.totalDurationValue.toString());
                     return ProgressBar(
                       progress:
                           Duration(milliseconds: pro.progressDurationValue),

@@ -12,9 +12,16 @@ import '../../../home/provider/artist_view_all_provider.dart';
 import '../../domain/model/player_song_list_model.dart';
 import '../../provider/player_provider.dart';
 
-class PlayerBackground extends StatelessWidget {
+class PlayerBackground extends StatefulWidget {
   const PlayerBackground({super.key, required this.onTapped});
   final Function onTapped;
+
+  @override
+  State<PlayerBackground> createState() => _PlayerBackgroundState();
+}
+
+class _PlayerBackgroundState extends State<PlayerBackground> {
+  bool isDragging = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,55 +51,77 @@ class PlayerBackground extends StatelessWidget {
                       musicDirectorName: metadata.artist!,
                       premium: 'free',
                       isImage: metadata.extras!["isImage"]);
-                  return Container(
-                    decoration: metadata.extras!["isImage"]
-                        ? BoxDecoration(
-                            image: DecorationImage(
-                                image: NetworkImage(
-                                  metadata.artUri.toString(),
-                                ),
-                                fit: BoxFit.fill))
-                        : BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(Images.noSong
-                                    // metadata.artUri.toString(),
-                                    ),
-                                fit: BoxFit.fill)),
-                    child: Stack(
-                      children: [
-                        Container(
-                          decoration: playerDownImageDecoration(),
-                        ),
-                        Column(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                decoration: playerUpImageDecoration(),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(12.0, 12.0, 0.0, 0.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  return GestureDetector(
+                    onHorizontalDragUpdate: (details) {
+                      if (!isDragging) {
+                        isDragging = true;
+                        setState(() {});
+                        if (details.delta.direction > 0) {
+                          print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                          Provider.of<PlayerProvider>(context, listen: false)
+                              .playNext();
+                        } else if (details.delta.direction <= 0) {
+                          Provider.of<PlayerProvider>(context, listen: false)
+                              .playPrev();
+                        }
+
+                        Future.delayed(const Duration(milliseconds: 500), () {
+                          isDragging = false;
+                        });
+                        setState(() {});
+                      }
+                    },
+                    child: Container(
+                      decoration: metadata.extras!["isImage"]
+                          ? BoxDecoration(
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                    metadata.artUri.toString(),
+                                  ),
+                                  fit: BoxFit.fill))
+                          : BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(Images.noSong
+                                      // metadata.artUri.toString(),
+                                      ),
+                                  fit: BoxFit.fill)),
+                      child: Stack(
+                        children: [
+                          Container(
+                            decoration: playerDownImageDecoration(),
+                          ),
+                          Column(
                             children: [
-                              InkWell(
-                                onTap: () {
-                                  print("111");
-                                  onTapped();
-                                },
-                                child: const RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Icon(Icons.arrow_back_ios_new_rounded),
+                              Expanded(
+                                child: Container(
+                                  decoration: playerUpImageDecoration(),
                                 ),
                               ),
-                              PlayerPopUpMenu(metadata: playerSongListModel)
                             ],
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding:
+                                const EdgeInsets.fromLTRB(12.0, 12.0, 0.0, 0.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    print("111");
+                                    widget.onTapped();
+                                  },
+                                  child: const RotatedBox(
+                                    quarterTurns: 3,
+                                    child:
+                                        Icon(Icons.arrow_back_ios_new_rounded),
+                                  ),
+                                ),
+                                PlayerPopUpMenu(metadata: playerSongListModel)
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },

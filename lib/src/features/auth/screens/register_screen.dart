@@ -50,7 +50,7 @@ class RegisterScreen extends StatelessWidget {
                         errorMessage: registerProvider.fullNameError),
                     TextFieldWithError(
                         initialValue: "",
-                        label: ConstantText.email,
+                        label: "Email Address",
                         onChange: (value) {
                           registerProvider.emailChanged(value);
                         },

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:musiq/src/core/constants/images.dart';
 import 'package:musiq/src/features/player/screen/add_playlist_screen.dart';
@@ -41,7 +43,7 @@ class SongListTile extends StatelessWidget {
         color: CustomColor.bg,
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(left: 16, top: 16, right: 8),
         child: Row(
           children: [
             Align(
@@ -49,8 +51,8 @@ class SongListTile extends StatelessWidget {
               child: CustomColorContainer(
                 child: Image.network(
                   imageUrl,
-                  height: 70,
-                  width: 70,
+                  height: 60,
+                  width: 60,
                   fit: BoxFit.fill,
                   errorBuilder: (context, error, stackTrace) {
                     return Image.asset(
@@ -92,11 +94,12 @@ class SongListTile extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: fontWeight400(
-                            size: 12.0,
-                            color: isPlay
-                                ? CustomColor.secondaryColor
-                                : Colors.white),
-                      ),
+                          size: 12.0,
+                          color: isPlay
+                              ? CustomColor.secondaryColor
+                              : const Color.fromRGBO(255, 255, 255, 0.6),
+                        ),
+                      )
                     ],
                   ),
                 )),
@@ -148,6 +151,7 @@ class SongListTile extends StatelessWidget {
                               builder: (context) =>
                                   const SubscriptionsScreen()));
                         } else {
+                          log("object");
                           PlayerSongListModel playerSongListModel =
                               PlayerSongListModel(
                                   id: songId,

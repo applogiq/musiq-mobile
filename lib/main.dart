@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:musiq/src/app.dart';
 import 'package:musiq/src/core/local/helper/object_box.dart';
 import 'package:musiq/src/core/utils/my_http_overrides.dart';
@@ -16,13 +17,13 @@ Future<void> main() async {
   // init();
   // Objectbox crearte
   objectbox = await ObjectBox.create();
-  // await JustAudioBackground.init(
-  //   androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
-  //   androidNotificationChannelName: 'Audio playback',
-  //   androidNotificationIcon: 'mipmap/ic_notification',
-  //   androidShowNotificationBadge: true,
-  //   androidNotificationOngoing: true,
-  // );
+  await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.ryanheise.bg_demo.channel.audio',
+    androidNotificationChannelName: 'Audio playback',
+    androidNotificationIcon: 'mipmap/ic_notification',
+    androidShowNotificationBadge: true,
+    androidNotificationOngoing: true,
+  );
 
   runApp(const MyApp());
 }

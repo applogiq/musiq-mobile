@@ -10,7 +10,6 @@ import '../../../common_widgets/loader.dart';
 import '../../../core/utils/size_config.dart';
 import '../provider/home_provider.dart';
 import '../widgets/artist_list_view.dart';
-import '../widgets/current_mood.dart';
 import '../widgets/home_screen_song_list.dart';
 import '../widgets/top_album_list.dart';
 import '../widgets/trending_hits.dart';
@@ -62,6 +61,8 @@ class _HomeScreenState extends State<HomeScreen> {
           const SearchAndNotifications(
             searchStatus: SearchStatus.song,
           ),
+          const VerticalBox(height: 8),
+
           pro.recentlyPlayed.success == false
               ? const SizedBox.shrink()
               : HomeScreenSongList(
@@ -78,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
             isViewAll: true,
             songList: pro.newReleaseListModel,
           ),
-          CurrentMood(auraModel: pro.auraListModel),
+          // CurrentMood(auraModel: pro.auraListModel),
           TopAlbum(album: pro.albumListModel),
           const SizedBox(
             height: 24,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import '../../../../view_all/widgets/gradient_cover.dart';
@@ -107,6 +109,7 @@ class SliverCustomAppBar extends StatelessWidget {
                             callback();
                           },
                           addToQueue: () {
+                            log("ef222222222222222222222222222222222222222222222222");
                             addToQueue();
                           },
                           isPremium: isPremium,

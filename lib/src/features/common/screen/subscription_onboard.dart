@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:musiq/src/common_widgets/buttons/custom_button.dart';
 import 'package:musiq/src/core/enums/enums.dart';
 import 'package:musiq/src/core/utils/size_config.dart';
 import 'package:musiq/src/features/home/provider/home_provider.dart';
@@ -24,7 +25,7 @@ class SubscriptionOnboard extends StatefulWidget {
 }
 
 class _SubscriptionOnboardState extends State<SubscriptionOnboard> {
-  bool isbuttonLoad = true;
+  bool isbuttonLoad = false;
   @override
   void initState() {
     super.initState();
@@ -75,34 +76,77 @@ class _SubscriptionOnboardState extends State<SubscriptionOnboard> {
         bottomNavigationBar:
             Consumer<PaymentProvider>(builder: (context, pro, _) {
           return GestureDetector(
-              onTap: () {
-                isbuttonLoad = true;
-                setState(() {});
-                log("musiqqqqqqqq");
-                if (pro.subscriptionPlan != SubscriptionPlan.free) {
-                  context
-                      .read<PaymentProvider>()
-                      .createPayment(context, isFromProfile: false);
-                } else {
-                  context.read<HomeProvider>().goToHome(context);
-                }
-                isbuttonLoad = false;
-                setState(() {});
-              },
+              onTap: isbuttonLoad == true
+                  ? () {}
+                  : () async {
+                      isbuttonLoad = true;
+                      setState(() {});
+                      log("musiqqqqqqqq");
+                      if (pro.subscriptionPlan != SubscriptionPlan.free) {
+                        await context
+                            .read<PaymentProvider>()
+                            .createPayment(context, isFromProfile: false);
+                      } else {
+                        await context.read<HomeProvider>().goToHome(context);
+                        await Future.delayed(const Duration(seconds: 4));
+                      }
+                      isbuttonLoad = false;
+                      setState(() {});
+                    },
               child: Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                width: MediaQuery.of(context).size.width,
-                height: 52,
-                decoration: BoxDecoration(
-                  color: CustomColor.secondaryColor,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      pro.isSubsciptionLoad || pro.isplanLoad
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  width: MediaQuery.of(context).size.width,
+                  height: 52,
+                  decoration: BoxDecoration(
+                    color: CustomColor.secondaryColor,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Center(
+                      // child: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     children: [
+                      //   //         pro.isPaymentLoad && pro.isplanLoad
+                      //   //             ? const Padding(
+                      //   //                 padding: EdgeInsets.symmetric(
+                      //   //                     vertical: 6.0, horizontal: 8),
+                      //   //                 child: SizedBox(
+                      //   //                   height: 24,
+                      //   //                   width: 24,
+                      //   //                   child: CircularProgressIndicator(
+                      //   //                     color: Colors.white,
+                      //   //                     strokeWidth: 3,
+                      //   //                   ),
+                      //   //                 ),
+                      //   //               )
+                      //   //             : Text(
+                      //   //                 pro.subscriptionPlan != SubscriptionPlan.free
+                      //   //                     ? ConstantText.payNow
+                      //   //                     : ConstantText.continueWithFreePlan,
+                      //   //                 style: fontWeight500(size: 16.0),
+                      //   //               )
+                      //   //       ],
+                      //   //     ),
+                      //   //   ),
+                      //   // )
+
+                      // ]))));
+
+                      // child: pro.isplanLoad
+                      //     ? const Padding(
+                      //         padding: EdgeInsets.symmetric(
+                      //             vertical: 6.0, horizontal: 8),
+                      //         child: SizedBox(
+                      //           height: 24,
+                      //           width: 24,
+                      //           child: CircularProgressIndicator(
+                      //             color: Colors.white,
+                      //             strokeWidth: 3,
+                      //           ),
+                      //         ),
+                      //       )
+                      // :
+                      child: isbuttonLoad
                           ? const Padding(
                               padding: EdgeInsets.symmetric(
                                   vertical: 6.0, horizontal: 8),
@@ -115,24 +159,15 @@ class _SubscriptionOnboardState extends State<SubscriptionOnboard> {
                                 ),
                               ),
                             )
-                          : Text(
-                              pro.subscriptionPlan != SubscriptionPlan.free
-                                  ? ConstantText.payNow
-                                  : ConstantText.continueWithFreePlan,
-                              style: fontWeight500(size: 16.0),
-                            ),
-                    ],
-                  ),
-                ),
-              )
-              //  CustomButton(
-              //   isLoading: pro.isPaymentLoad,
-              //   label: pro.subscriptionPlan != SubscriptionPlan.free
-              //       ? ConstantText.payNow
-              //       : ConstantText.continueWithFreePlan,
-              //   horizontalMargin: 4,
-              // ),
-              );
+                          : CustomButton(
+                              height: 100,
+                              isLoading: false,
+                              label:
+                                  pro.subscriptionPlan != SubscriptionPlan.free
+                                      ? ConstantText.payNow
+                                      : ConstantText.continueWithFreePlan,
+                              horizontalMargin: 4,
+                            ))));
         }),
       ),
     );

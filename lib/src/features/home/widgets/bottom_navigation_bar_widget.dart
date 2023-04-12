@@ -43,7 +43,43 @@ class MiniPlayer extends StatefulWidget {
   State<MiniPlayer> createState() => _MiniPlayerState();
 }
 
-class _MiniPlayerState extends State<MiniPlayer> {
+class _MiniPlayerState extends State<MiniPlayer> with WidgetsBindingObserver {
+  final player = AudioPlayer();
+  bool _isPausedOnAppPause = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    // player.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    switch (state) {
+      case AppLifecycleState.paused:
+        // Pause the player when the app is paused
+        _isPausedOnAppPause = true;
+        await player.pause();
+        break;
+      case AppLifecycleState.resumed:
+        // Resume the player if it was paused when the app was paused
+        if (_isPausedOnAppPause) {
+          _isPausedOnAppPause = false;
+          await player.play();
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
   Color miniPlayerColor = const Color.fromRGBO(22, 21, 28, 1);
   Random random = Random();
 
@@ -289,10 +325,16 @@ class CircularNotificationPlayerWidget extends StatelessWidget {
   }
 }
 
-class MiniPlayerController extends StatelessWidget {
+class MiniPlayerController extends StatefulWidget {
   const MiniPlayerController({super.key, required this.onTap});
   final Function onTap;
 
+  @override
+  State<MiniPlayerController> createState() => _MiniPlayerControllerState();
+}
+
+class _MiniPlayerControllerState extends State<MiniPlayerController> {
+  bool isDragging = false;
   @override
   Widget build(BuildContext context) {
     return Consumer<PlayerProvider>(builder: (context, pro, _) {
@@ -313,13 +355,12 @@ class MiniPlayerController extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         pro.isUpNextShow = false;
-                        onTap();
+                        widget.onTap();
                       },
                       child: Container(
-                        height: 60,
-                        width: 60,
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 6, horizontal: 12),
+                        width: 40,
+                        margin:
+                            const EdgeInsets.only(left: 12, top: 6, bottom: 12),
                         clipBehavior: Clip.hardEdge,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12)),
@@ -339,48 +380,77 @@ class MiniPlayerController extends StatelessWidget {
                         behavior: HitTestBehavior.opaque,
                         onTap: () {
                           context.read<PlayerProvider>().isUpNextShow = false;
-                          onTap();
+                          widget.onTap();
                         },
                         child: SizedBox(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                pro.isPlayingLoad
-                                    ? ""
-                                    : metadata.title
-                                        .toString()
-                                        .capitalizeFirstLetter(),
-                                maxLines: 1,
-                                style: const TextStyle(
-                                  overflow: TextOverflow.ellipsis,
+                          child: GestureDetector(
+                            onHorizontalDragUpdate: (details) {
+                              if (!isDragging) {
+                                isDragging = true;
+                                setState(() {});
+                                if (details.delta.direction > 0) {
+                                  print(
+                                      "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                                  Provider.of<PlayerProvider>(context,
+                                          listen: false)
+                                      .playNext();
+                                } else if (details.delta.direction <= 0) {
+                                  Provider.of<PlayerProvider>(context,
+                                          listen: false)
+                                      .playPrev();
+                                }
+
+                                Future.delayed(
+                                    const Duration(milliseconds: 500), () {
+                                  isDragging = false;
+                                });
+                                setState(() {});
+                              }
+                            },
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  pro.isPlayingLoad
+                                      ? ""
+                                      : metadata.title
+                                          .toString()
+                                          .capitalizeFirstLetter(),
+                                  maxLines: 1,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                pro.isPlayingLoad
-                                    ? ""
-                                    : metadata.album
-                                        .toString()
-                                        .capitalizeFirstLetter(),
-                                maxLines: 1,
-                                style: const TextStyle(
-                                  overflow: TextOverflow.ellipsis,
+                                Text(
+                                  pro.isPlayingLoad
+                                      ? ""
+                                      : metadata.album
+                                          .toString()
+                                          .capitalizeFirstLetter(),
+                                  maxLines: 1,
+                                  style: const TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      color: Color.fromRGBO(255, 255, 255, 0.5),
+                                      fontSize: 10),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
                     IconButton(
                       padding: const EdgeInsets.all(0),
-                      onPressed: pro.player.hasPrevious
-                          ? () {
-                              pro.playPrev();
-                            }
-                          : null,
+                      onPressed:
+                          //  pro.player.hasPrevious
+                          //     ?
+                          () {
+                        pro.playPrev();
+                      },
+                      // : null,
                       icon: const Icon(Icons.skip_previous_rounded),
                     ),
                     StreamBuilder<PlayerState>(
@@ -417,11 +487,13 @@ class MiniPlayerController extends StatelessWidget {
                         }),
                     IconButton(
                       padding: const EdgeInsets.all(0),
-                      onPressed: pro.player.hasNext
-                          ? () {
-                              pro.playNext();
-                            }
-                          : null,
+                      onPressed:
+                          //  pro.player.hasNext
+                          //     ?
+                          () {
+                        pro.playNext();
+                      },
+                      // : null,
                       icon: const Icon(Icons.skip_next_rounded),
                     ),
                   ],

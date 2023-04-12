@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musiq/src/features/home/widgets/bottom_navigation_bar_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/constant.dart';
-import '../../../home/widgets/bottom_navigation_bar_widget.dart';
 import '../../provider/player_provider.dart';
 import 'player_widgets.dart';
 

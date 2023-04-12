@@ -39,6 +39,8 @@ class PaymentProvider extends ChangeNotifier {
 
 //Create payment API request
   createPayment(BuildContext context, {bool isFromProfile = true}) async {
+    isplanLoad = true;
+    notifyListeners();
     Map params = {};
     params["payment_price"] = planPrice * 100;
     params["premier_status"] = planName;
@@ -58,6 +60,8 @@ class PaymentProvider extends ChangeNotifier {
         ),
       );
     }
+    isplanLoad = false;
+    notifyListeners();
   }
 
 // Confirm payment API call

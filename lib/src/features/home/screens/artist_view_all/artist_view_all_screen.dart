@@ -93,7 +93,7 @@ class ArtistGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0),
+      padding: const EdgeInsets.fromLTRB(8.0, 0, 0.0, 0),
       child: GridView.builder(
         semanticChildCount: 2,
         shrinkWrap: true,
@@ -124,57 +124,60 @@ class ArtistGridView extends StatelessWidget {
               //             artistModel.records[index].artistName.toString(),
               //         isImage: artistModel.records[index].isImage));
             },
-            child: Center(
-              child: Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  (artistModel.records[index].isImage == false)
-                      ? Container(
-                          height: getProportionateScreenHeight(175),
-                          width: getProportionateScreenWidth(163.5),
-                          decoration: BoxDecoration(
-                              color: CustomColor.defaultCard,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                  color: CustomColor.defaultCardBorder,
-                                  width: 2.0)),
-                          child: Image.asset(
-                            "assets/images/default/no_artist.png",
-                            height: 185,
-                            width: 163.5,
-                            fit: BoxFit.fill,
-                          ),
-                        )
-                      : Expanded(
-                          child: CustomColorContainer(
-                              child: Image.network(
-                            generateArtistImageUrl(
-                                artistModel.records[index].artistId),
-                            // "${APIConstants.baseUrl}${pro.artistModel.records[index].artistId}.png",
-                            height: getProportionateScreenHeight(160),
+            child: Padding(
+              padding: const EdgeInsets.only(top: 16),
+              child: Center(
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    (artistModel.records[index].isImage == false)
+                        ? Container(
+                            height: getProportionateScreenHeight(175),
                             width: getProportionateScreenWidth(163.5),
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) =>
-                                Image.asset(
+                            decoration: BoxDecoration(
+                                color: CustomColor.defaultCard,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                    color: CustomColor.defaultCardBorder,
+                                    width: 2.0)),
+                            child: Image.asset(
                               "assets/images/default/no_artist.png",
-                              width: 185,
-                              height: 163.5,
+                              height: 185,
+                              width: 163.5,
                               fit: BoxFit.fill,
                             ),
-                          )),
-                        ),
-                  const SizedBox(
-                    height: 6,
-                  ),
-                  Text(
-                    artistModel.records[index].artistName,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.start,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w400, fontSize: 14),
-                  ),
-                ],
+                          )
+                        : Expanded(
+                            child: CustomColorContainer(
+                                child: Image.network(
+                              generateArtistImageUrl(
+                                  artistModel.records[index].artistId),
+                              // "${APIConstants.baseUrl}${pro.artistModel.records[index].artistId}.png",
+                              height: getProportionateScreenHeight(160),
+                              width: getProportionateScreenWidth(163.5),
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Image.asset(
+                                "assets/images/default/no_artist.png",
+                                width: 185,
+                                height: 163.5,
+                                fit: BoxFit.fill,
+                              ),
+                            )),
+                          ),
+                    const SizedBox(
+                      height: 6,
+                    ),
+                    Text(
+                      artistModel.records[index].artistName,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w400, fontSize: 14),
+                    ),
+                  ],
+                ),
               ),
             ),
           );

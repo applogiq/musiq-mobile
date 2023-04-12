@@ -249,7 +249,7 @@ class LibraryProvider extends ChangeNotifier {
             musicDirectorName: element.musicDirectorName[0],
             duration: element.duration,
             premium: element.premiumStatus,
-            isImage: false),
+            isImage: element.isImage),
       );
     }
 

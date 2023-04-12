@@ -49,7 +49,7 @@ class ArtistListView extends StatelessWidget {
               ],
             )),
         Container(
-          padding: const EdgeInsets.only(top: 4),
+          padding: const EdgeInsets.only(top: 0),
           height: 300,
           child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -60,7 +60,7 @@ class ArtistListView extends StatelessWidget {
                     children: [
                       index == 0
                           ? const SizedBox(
-                              width: 12,
+                              width: 7,
                             )
                           : const SizedBox(),
                       Container(

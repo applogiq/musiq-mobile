@@ -29,7 +29,7 @@ class CustomColorContainer extends StatelessWidget {
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
             borderRadius:
-                shape == BoxShape.circle ? null : BorderRadius.circular(12),
+                shape == BoxShape.circle ? null : BorderRadius.circular(10),
             color: bgColor ?? Colors.transparent,
             shape: shape),
         child: child);

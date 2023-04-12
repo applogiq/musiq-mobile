@@ -32,6 +32,8 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
     fullName = value;
     if (value.isEmpty) {
       fullNameError = ConstantText.fieldRequired;
+    } else if (value.contains(" ")) {
+      fullNameError = "Full name does not contain space";
     } else {
       fullNameError = "";
     }
@@ -254,6 +256,7 @@ class RegisterProvider extends ChangeNotifier with InputValidationMixin {
     bool userVali = userName.isNotEmpty && userName.contains("");
     bool cpass = confirmPassword.isNotEmpty && (password == confirmPassword);
     if (fullName.isNotEmpty &&
+        userName.contains("") &&
         emailvalidate &&
         userVali &&
         ppasswordvalidate &&

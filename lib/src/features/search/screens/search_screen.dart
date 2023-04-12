@@ -166,10 +166,10 @@ class SearchFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      padding: const EdgeInsets.only(right: 16, top: 12, left: 16),
       child: Row(
         children: [
-          Padding(padding: const EdgeInsets.only(right: 16), child: pop
+          Padding(padding: const EdgeInsets.only(right: 5), child: pop
               //  InkWell(
               //     onTap: () {
               //       Navigator.pop(context);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/common_widgets/box/horizontal_box.dart';
 import 'package:musiq/src/core/constants/images.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +29,7 @@ class PlaylistTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(left: 16, top: 16),
       child: InkWell(
         onTap: () {
           callBack();
@@ -37,8 +38,8 @@ class PlaylistTile extends StatelessWidget {
           children: [
             record[index].noOfSongs == 0
                 ? Container(
-                    height: 70,
-                    width: 70,
+                    height: 60,
+                    width: 60,
                     decoration: playListNoImageDecoration(),
                     child: Center(
                       child: Text(
@@ -56,27 +57,28 @@ class PlaylistTile extends StatelessWidget {
                           : Colors.transparent,
                       child: record[index].noOfSongs == 0
                           ? Container(
-                              height: 70,
-                              width: 70,
+                              height: 60,
+                              width: 60,
                               alignment: Alignment.center,
                               child: Text(record[index].playlistName[0]))
                           : Image.network(
                               generateSongImageUrl(
                                   record[index].albumName.toString(),
                                   record[index].albumId.toString()),
-                              height: 70,
-                              width: 70,
+                              height: 60,
+                              width: 60,
                               fit: BoxFit.fill,
                               errorBuilder: (context, error, stackTrace) =>
                                   Image.asset(
                                 Images.noSong,
-                                height: 70,
-                                width: 70,
+                                height: 60,
+                                width: 60,
                                 fit: BoxFit.fill,
                               ),
                             ),
                     ),
                   ),
+            const HorizontalBox(width: 7),
             Expanded(
                 flex: 9,
                 child: Padding(

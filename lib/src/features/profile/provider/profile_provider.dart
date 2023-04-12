@@ -343,13 +343,13 @@ class ProfileProvider extends ChangeNotifier {
     );
 
     try {
-      var response = await http.get(
-          Uri.parse("https://api-musiq.applogiq.org/api/v1/users/$id"),
-          headers: {
-            'Content-type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': 'Bearer $accessToken'
-          });
+      var response = await http.get(Uri.parse(
+          // "https://api-musiq.applogiq.org/api/v1/users/$id"
+          "http://192.168.29.94:6060/api/v1/users/$id"), headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $accessToken'
+      });
 
       profileAPI =
           ProfileAPIModel.fromJson(jsonDecode(response.body.toString()));
@@ -358,7 +358,9 @@ class ProfileProvider extends ChangeNotifier {
       profileImage = profileAPI!.records!.isImage.toString();
       registerid = profileAPI!.records!.registerId.toString();
       updatedImage =
-          "https://api-musiq.applogiq.org/api/v1/public/users/$registerid.png";
+          // "https://api-musiq.applogiq.org/api/v1/public/users/$registerid.png";
+          "http://192.168.29.94:6060/api/v1/public/users/$registerid.png";
+
       // var d = jsonDecode(response.body.toString());
       // if()
 
@@ -401,8 +403,10 @@ class ProfileProvider extends ChangeNotifier {
     var resgisterId = await secureStorage.read(
       key: "register_id",
     );
+
     String url =
-        "https://api-musiq.applogiq.org/public/users/${resgisterId.toString()}.png";
+        // "https://api-musiq.applogiq.org/public/users/${resgisterId.toString()}.png";
+        "http://192.168.29.94:6060/public/users/${resgisterId.toString()}.png";
     return url;
   }
 

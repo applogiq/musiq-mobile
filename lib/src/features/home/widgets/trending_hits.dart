@@ -52,13 +52,15 @@ class TrendingHitsWidget extends StatelessWidget {
               )
             ],
           ),
-          Container(
-            padding: const EdgeInsets.only(top: 16, right: 12, left: 12),
+          const SizedBox(
+            height: 16,
+          ),
+          SizedBox(
             height: 260,
             width: double.maxFinite,
             child: IntrinsicHeight(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TrendingHitsHomeContainer(
@@ -68,7 +70,7 @@ class TrendingHitsWidget extends StatelessWidget {
                     index: 0,
                   ),
                   const SizedBox(
-                    width: 20,
+                    width: 12,
                   ),
                   Align(
                     alignment: Alignment.centerRight,

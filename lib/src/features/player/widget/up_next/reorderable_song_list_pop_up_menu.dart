@@ -19,6 +19,18 @@ class ReorderableSongListPopUpMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // PlayerSongListModel playerSongListModel =
+    //                                 PlayerSongListModel(
+    //                                     id: int.parse(metadata.id),
+    //                                     albumName: metadata.albumName.toString(),
+    //                                     title:metadata.title
+    //                                     imageUrl: generateSongImageUrl(
+    //                                         metadata.album, metadata.a),
+    //                                     musicDirectorName:
+    //                                         rec.musicDirectorName[0],
+    //                                     duration: rec.duration,
+    //                                     premium: rec.premiumStatus,
+    //                                     isImage: rec.isImage);
     return index != curentindex
         ? Expanded(
             flex: 1,
@@ -29,7 +41,10 @@ class ReorderableSongListPopUpMenu extends StatelessWidget {
               onSelected: (value) {
                 switch (value) {
                   case PopUpConstants.deleteInQueue:
-                    context.read<PopUpProvider>().deleteInQueue(index, context);
+                    context.read<PopUpProvider>().deleteInQueue(
+                          index,
+                          context,
+                        );
                     break;
                   case PopUpConstants.addToFavourites:
                     context.read<PopUpProvider>().addToFavourites(
@@ -80,7 +95,10 @@ class ReorderableSongListPopUpMenu extends StatelessWidget {
               onSelected: (value) {
                 switch (value) {
                   case PopUpConstants.deleteInQueue:
-                    context.read<PopUpProvider>().deleteInQueue(index, context);
+                    context.read<PopUpProvider>().deleteInQueue(
+                          index,
+                          context,
+                        );
                     break;
                   case PopUpConstants.addToFavourites:
                     context.read<PopUpProvider>().addToFavourites(

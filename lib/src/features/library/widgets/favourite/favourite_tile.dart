@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/features/library/provider/library_provider.dart';
 import 'package:musiq/src/features/payment/screen/subscription_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -8,7 +9,6 @@ import '../../../../core/constants/images.dart';
 import '../../../../core/utils/url_generate.dart';
 import '../../../auth/provider/login_provider.dart';
 import '../../domain/models/favourite_model.dart';
-import '../../provider/library_provider.dart';
 import 'favourite_widgets.dart';
 
 class FavouriteTile extends StatelessWidget {
@@ -37,7 +37,7 @@ class FavouriteTile extends StatelessWidget {
         }
       },
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(left: 16, top: 16),
         child: Row(
           children: [
             Align(
@@ -46,8 +46,8 @@ class FavouriteTile extends StatelessWidget {
                 child: Image.network(
                   generateSongImageUrl(
                       record[index].albumName, record[index].albumId),
-                  height: 70,
-                  width: 70,
+                  height: 60,
+                  width: 60,
                   fit: BoxFit.fill,
                   errorBuilder: (context, error, stackTrace) => Image.asset(
                       Images.noSong,

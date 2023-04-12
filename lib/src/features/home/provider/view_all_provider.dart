@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:musiq/src/core/utils/toast_message.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/enums/enums.dart';
@@ -205,90 +206,134 @@ class ViewAllProvider extends ChangeNotifier {
     context.read<PlayerProvider>().goToPlayer(context, playerSongList, index);
   }
 
+  Set<String> addedSongs = {};
   addQueue(
     ViewAllStatus status,
     BuildContext context,
   ) {
     List<PlayerSongListModel> playerSongList = [];
+
     switch (status) {
       case ViewAllStatus.newRelease:
         for (var record in newReleaseModel.records) {
-          playerSongList.add(PlayerSongListModel(
-              id: record.id,
-              albumName: record.albumName.toString(),
-              title: record.songName.toString(),
-              imageUrl: generateSongImageUrl(record.albumName, record.albumId),
-              musicDirectorName: record.musicDirectorName[0].toString(),
-              duration: record.duration,
-              premium: record.premiumStatus,
-              isImage: record.isImage));
+          var existSong = addedSongs.contains(record.id.toString());
+          if (existSong) {
+            return toastMessage(
+                "Song already added", Colors.white, Colors.black);
+          } else {
+            playerSongList.add(PlayerSongListModel(
+                id: record.id,
+                albumName: record.albumName.toString(),
+                title: record.songName.toString(),
+                imageUrl:
+                    generateSongImageUrl(record.albumName, record.albumId),
+                musicDirectorName: record.musicDirectorName[0].toString(),
+                duration: record.duration,
+                premium: record.premiumStatus,
+                isImage: record.isImage));
+          }
         }
         break;
       case ViewAllStatus.recentlyPlayed:
         for (var record in recentlyPlayed.records) {
-          playerSongList.add(PlayerSongListModel(
-              id: record[0].id,
-              albumName: record[0].albumName.toString(),
-              title: record[0].songName.toString(),
-              imageUrl:
-                  generateSongImageUrl(record[0].albumName, record[0].albumId),
-              musicDirectorName: record[0].musicDirectorName[0].toString(),
-              duration: record[0].duration,
-              premium: record[0].premiumStatus,
-              isImage: record[0].isImage));
+          var existSong = addedSongs.contains(record[0].id.toString());
+          if (existSong) {
+            return toastMessage(
+                "Song already added", Colors.white, Colors.black);
+          } else {
+            playerSongList.add(PlayerSongListModel(
+                id: record[0].id,
+                albumName: record[0].albumName.toString(),
+                title: record[0].songName.toString(),
+                imageUrl: generateSongImageUrl(
+                    record[0].albumName, record[0].albumId),
+                musicDirectorName: record[0].musicDirectorName[0].toString(),
+                duration: record[0].duration,
+                premium: record[0].premiumStatus,
+                isImage: record[0].isImage));
+          }
         }
         break;
       case ViewAllStatus.trendingHits:
         for (var record in trendingHitsModel.records) {
-          playerSongList.add(PlayerSongListModel(
-              id: record.id,
-              albumName: record.albumName.toString(),
-              title: record.songName.toString(),
-              imageUrl: generateSongImageUrl(record.albumName, record.albumId),
-              musicDirectorName: record.musicDirectorName[0].toString(),
-              duration: record.duration,
-              premium: record.premiumStatus,
-              isImage: record.isImage));
+          var exsistSong = addedSongs.contains(record.id.toString());
+          if (exsistSong) {
+            return toastMessage(
+                "Song already added", Colors.white, Colors.black);
+          } else {
+            playerSongList.add(PlayerSongListModel(
+                id: record.id,
+                albumName: record.albumName.toString(),
+                title: record.songName.toString(),
+                imageUrl:
+                    generateSongImageUrl(record.albumName, record.albumId),
+                musicDirectorName: record.musicDirectorName[0].toString(),
+                duration: record.duration,
+                premium: record.premiumStatus,
+                isImage: record.isImage));
+          }
         }
         break;
 
       case ViewAllStatus.album:
         for (var record in albumSongListModel.records) {
-          playerSongList.add(PlayerSongListModel(
-              id: record.id,
-              albumName: record.albumName.toString(),
-              title: record.songName.toString(),
-              imageUrl: generateSongImageUrl(record.albumName, record.albumId),
-              musicDirectorName: record.musicDirectorName[0].toString(),
-              duration: record.duration,
-              premium: record.premiumStatus,
-              isImage: record.isImage));
+          var exsistSong = addedSongs.contains(record.id.toString());
+          if (exsistSong) {
+            return toastMessage(
+                "Song already added", Colors.white, Colors.black);
+          } else {
+            playerSongList.add(PlayerSongListModel(
+                id: record.id,
+                albumName: record.albumName.toString(),
+                title: record.songName.toString(),
+                imageUrl:
+                    generateSongImageUrl(record.albumName, record.albumId),
+                musicDirectorName: record.musicDirectorName[0].toString(),
+                duration: record.duration,
+                premium: record.premiumStatus,
+                isImage: record.isImage));
+          }
         }
         break;
       case ViewAllStatus.aura:
         for (var record in auraSongListModel.records) {
-          playerSongList.add(PlayerSongListModel(
-              id: record.auraSongs.songId,
-              albumName: record.albumName.toString(),
-              title: record.songName.toString(),
-              imageUrl: generateSongImageUrl(record.albumName, record.albumId),
-              musicDirectorName: record.musicDirectorName[0].toString(),
-              duration: record.duration,
-              premium: record.premiumStatus,
-              isImage: record.isImage));
+          var exsistSong =
+              addedSongs.contains(record.auraSongs.songId.toString());
+          if (exsistSong) {
+            return toastMessage(
+                "Song already added", Colors.white, Colors.black);
+          } else {
+            playerSongList.add(PlayerSongListModel(
+                id: record.auraSongs.songId,
+                albumName: record.albumName.toString(),
+                title: record.songName.toString(),
+                imageUrl:
+                    generateSongImageUrl(record.albumName, record.albumId),
+                musicDirectorName: record.musicDirectorName[0].toString(),
+                duration: record.duration,
+                premium: record.premiumStatus,
+                isImage: record.isImage));
+          }
         }
         break;
       case ViewAllStatus.artist:
         for (var record in collectionViewAllModel.records) {
-          playerSongList.add(PlayerSongListModel(
-              id: record!.id,
-              albumName: record.albumName.toString(),
-              title: record.songName.toString(),
-              imageUrl: generateSongImageUrl(record.albumName, record.albumId),
-              musicDirectorName: record.musicDirectorName![0].toString(),
-              duration: record.duration,
-              premium: record.premiumStatus,
-              isImage: record.isImage));
+          var exsistSong = addedSongs.contains(record!.id);
+          if (exsistSong) {
+            return toastMessage(
+                "Song already added", Colors.white, Colors.black);
+          } else {
+            playerSongList.add(PlayerSongListModel(
+                id: record.id,
+                albumName: record.albumName.toString(),
+                title: record.songName.toString(),
+                imageUrl:
+                    generateSongImageUrl(record.albumName, record.albumId),
+                musicDirectorName: record.musicDirectorName![0].toString(),
+                duration: record.duration,
+                premium: record.premiumStatus,
+                isImage: record.isImage));
+          }
         }
         break;
       default:

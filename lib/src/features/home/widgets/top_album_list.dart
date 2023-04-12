@@ -34,7 +34,7 @@ class TopAlbum extends StatelessWidget {
         : Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.only(left: 16),
                 child: Row(
                   children: const [
                     Text(

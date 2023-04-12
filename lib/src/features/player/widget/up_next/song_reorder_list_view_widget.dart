@@ -43,6 +43,8 @@ class _SongReorderListViewWidgetState extends State<SongReorderListViewWidget> {
                 itemBuilder: (context, index) {
                   var metadata =
                       state.effectiveSequence[index].tag as MediaItem;
+                  print("👍👍👍");
+                  print("upnext${metadata.displayTitle}");
                   return SongListTileUpNext(
                     state: state,
                     metadata: metadata,
@@ -64,7 +66,8 @@ class _SongReorderListViewWidgetState extends State<SongReorderListViewWidget> {
                 itemBuilder: (context, index) {
                   var metadata =
                       state.effectiveSequence[index].tag as MediaItem;
-
+                  print("👍👍👍");
+                  print("upnext${metadata.title.toString()}");
                   return ReorderableSongListTile(
                     key: Key(index.toString()),
                     state: state,

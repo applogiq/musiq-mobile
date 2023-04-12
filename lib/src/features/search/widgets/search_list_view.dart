@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/core/constants/images.dart';
+import 'package:musiq/src/common_widgets/box/horizontal_box.dart';
+import 'package:musiq/src/common_widgets/box/vertical_box.dart';
+import 'package:musiq/src/core/constants/constant.dart';
+import 'package:musiq/src/core/utils/size_config.dart';
+import 'package:musiq/src/features/common/packages/shimmer/shimmer.dart';
 import 'package:musiq/src/features/search/widgets/playlist_song_seach_list_view.dart';
 import 'package:musiq/src/features/search/widgets/search_artist_history.dart';
 import 'package:musiq/src/features/search/widgets/search_artist_preference.dart';
@@ -60,21 +64,10 @@ class SearchListView extends StatelessWidget {
                                     pro: pro,
                                   )
                                 : pro.isSearch
-                                    ? Expanded(
-                                        child: Container(
-                                          height: MediaQuery.of(context)
-                                              .size
-                                              .height,
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          color: Colors.black.withOpacity(.5),
-                                          child: Center(
-                                            child: Image.asset(
-                                              Images.loaderImage,
-                                              height: 70,
-                                            ),
-                                          ),
-                                        ),
+                                    ? Column(
+                                        children: [
+                                          getNotReached(context),
+                                        ],
                                       )
                                     : SongSearchListView(
                                         provider: pro,
@@ -85,4 +78,98 @@ class SearchListView extends StatelessWidget {
       },
     );
   }
+}
+
+Shimmer getNotReached(BuildContext context) {
+  SizeConfig().init(context);
+
+  return Shimmer.fromColors(
+      baseColor: Colors.grey[600]!,
+      highlightColor: const Color.fromRGBO(255, 255, 255, 0.1),
+      child: ListView.builder(
+        itemCount: 6,
+        physics: const BouncingScrollPhysics(),
+        shrinkWrap: true,
+        scrollDirection: Axis.vertical,
+        itemBuilder: (BuildContext context, int index) {
+          return Padding(
+            padding: EdgeInsets.only(
+                right: 16,
+                left: 16,
+                bottom: getProportionateScreenHeight(16),
+                top: getProportionateScreenHeight(20)),
+            child: Row(
+              children: [
+                Container(
+                  height: getProportionateScreenHeight(60),
+                  width: getProportionateScreenWidth(60),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: CustomColor.activeIconBgColor,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color.fromRGBO(5, 31, 50, 0.08),
+                        blurRadius: 15.0,
+                      ),
+                    ],
+                  ),
+                ),
+                const HorizontalBox(width: 16),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: getProportionateScreenHeight(13),
+                      width: getProportionateScreenWidth(150),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: CustomColor.activeIconBgColor,
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color.fromRGBO(5, 31, 50, 0.08),
+                            blurRadius: 15.0,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const VerticalBox(height: 15),
+                    Container(
+                      height: getProportionateScreenHeight(13),
+                      width: getProportionateScreenWidth(180),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: CustomColor.activeIconBgColor,
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color.fromRGBO(5, 31, 50, 0.08),
+                            blurRadius: 15.0,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                const Spacer(),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Container(
+                    height: getProportionateScreenHeight(30),
+                    width: getProportionateScreenWidth(10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: CustomColor.activeIconBgColor,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color.fromRGBO(5, 31, 50, 0.08),
+                          blurRadius: 15.0,
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
+        },
+      ));
 }

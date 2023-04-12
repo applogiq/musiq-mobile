@@ -34,6 +34,8 @@ generateProfileImageUrl(userRegisterId) {
 //?Generate song url using song id
 generateSongUrl(int songId) {
   String url =
-      "https://api-musiq.applogiq.org/api/v1/audio?song_id=${songId.toString()}";
+      // "https://api-musiq.applogiq.org/api/v1/audio?song_id=${songId.toString()}";
+      "http://192.168.29.94:6060/api/v1/audio?song_id=${songId.toString()}";
+
   return url;
 }

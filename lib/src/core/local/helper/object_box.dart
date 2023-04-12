@@ -11,12 +11,23 @@ class ObjectBox {
   late final Store store;
 
   late final Box<FavouriteSong> favouriteBox;
+  // late final Box<SongListModel> removeQueue;
   late final Box<SongListModel> songListBox;
   late final Box<SearchArtistLocalModel> searchArtistBox;
   late final Box<SearchSongLocalModel> searchSongBox;
   late final Box<User> userBox;
   late final Box<ProfileImage> profileBox;
-
+// static Future<void> init() async {
+//     final appDocumentDir = await getApplicationDocumentsDirectory();
+//     final dbPath = p.join(appDocumentDir.path, 'my_database');
+//     store = Store(getObjectBoxModel(), directory: dbPath);
+//   }
+//   static Store get() {
+//     if (_store == null) {
+//       throw Exception('ObjectBoxProvider not initialized!');
+//     }
+//     return _store;
+//   }
   ObjectBox._create(this.store) {
     favouriteBox = Box<FavouriteSong>(store);
     songListBox = Box<SongListModel>(store);
@@ -83,6 +94,8 @@ class ObjectBox {
 
   List<SongListModel> getAllQueueSong() {
     var songList = songListBox.getAll();
+    print("💕💕💕");
+    print(songList.toString());
     return songList;
   }
 
@@ -138,6 +151,10 @@ class ObjectBox {
 
   void removeFavourite(int songId) {
     favouriteBox.remove(songId);
+  }
+
+  void removeQueueSong(int songId) {
+    songListBox.remove(songId);
   }
 
   void removeAllFavourite() {

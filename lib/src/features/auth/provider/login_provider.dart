@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -95,10 +96,13 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
 
 // Login API call with request body
   login(BuildContext context) async {
+    log("1");
     Map params = {"email": emailAddress, "password": password};
+
     isLoading = true;
     notifyListeners();
     var response = await AuthRepository().login(params);
+    log(response.statusCode.toString());
     isLoading = false;
     notifyListeners();
     print(response.body);

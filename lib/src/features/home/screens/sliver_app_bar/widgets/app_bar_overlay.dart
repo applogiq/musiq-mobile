@@ -83,10 +83,10 @@ class AppBarOverlayContent extends StatelessWidget {
               //  "",
               style: fontWeight400(
                 size: size < 0.3
-                    ? 22.0
+                    ? 14.0
                     : size > 0.48
                         ? 0.0
-                        : 18.0,
+                        : 14.0,
                 color: CustomColor.subTitle2,
               ),
             ),
