@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:musiq/src/features/library/widgets/favourite/alert_packages/show_dialog_package.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/dialog/playlist_dialog_box.dart';
@@ -54,28 +55,64 @@ class ViewAllPlaylistPopUpMenu extends StatelessWidget {
           //         searchStatus: SearchStatus.playlist, playlistId: id));
         } else if (value == 2) {
           context.read<LibraryProvider>().reset();
-          showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return PlaylistDialogBox(
-                  onChanged: (v) {
-                    context.read<LibraryProvider>().checkPlayListName(v);
-                  },
-                  callBack: () async {
-                    await context
-                        .read<LibraryProvider>()
-                        .updatePlayListName(context, id, mainContext);
-                  },
-                  initialText: title,
-                  title: ConstantText.renamePlaylist,
-                  fieldName: ConstantText.name,
-                  buttonText: ConstantText.rename,
-                  errorValue: "",
-                  isError: false,
-                  // callback: libraryController.createPlaylist(context),
-                );
-              });
+
+          showAnimatedDialog(
+            context: context,
+
+            barrierDismissible: true,
+
+            builder: (BuildContext context) {
+              return PlaylistDialogBox(
+                onChanged: (v) {
+                  context.read<LibraryProvider>().checkPlayListName(v);
+                },
+                callBack: () async {
+                  await context
+                      .read<LibraryProvider>()
+                      .updatePlayListName(context, id, mainContext);
+                },
+                initialText: title,
+                title: ConstantText.renamePlaylist,
+                fieldName: ConstantText.name,
+                buttonText: ConstantText.rename,
+                errorValue: "",
+                isError: false,
+                // callback: libraryController.createPlaylist(context),
+              );
+            },
+
+            animationType: DialogTransitionType.slideFromBottom,
+
+            curve: Curves.fastOutSlowIn,
+
+            // duration: const Duration(seconds: 1),
+          );
+
+          // showDialog(
+          //     context: context,
+          //     barrierDismissible: false,
+          //     builder: (BuildContext context) {
+          //       return
+
+          //        PlaylistDialogBox(
+          //         onChanged: (v) {
+          //           context.read<LibraryProvider>().checkPlayListName(v);
+          //         },
+          //         callBack: () async {
+          //           await context
+          //               .read<LibraryProvider>()
+          //               .updatePlayListName(context, id, mainContext);
+          //         },
+          //         initialText: title,
+          //         title: ConstantText.renamePlaylist,
+          //         fieldName: ConstantText.name,
+          //         buttonText: ConstantText.rename,
+          //         errorValue: "",
+          //         isError: false,
+          //         // callback: libraryController.createPlaylist(context),
+          //       );
+          //     });
+
         } else if (value == 3) {
           await context.read<LibraryProvider>().deletePlayList(id);
           Navigation.navigateReplaceToScreen(context, RouteName.mainScreen);

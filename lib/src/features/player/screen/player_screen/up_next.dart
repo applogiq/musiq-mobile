@@ -36,7 +36,8 @@ class UpNext extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       ConstantText.upNext,
-      style: fontWeight500(size: 16.0),
+      style: fontWeight500(
+          size: 16.0, color: const Color.fromRGBO(255, 255, 255, 0.7)),
     );
   }
 }

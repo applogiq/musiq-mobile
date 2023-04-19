@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:musiq/src/common_widgets/box/horizontal_box.dart';
-import 'package:musiq/src/common_widgets/box/vertical_box.dart';
 import 'package:musiq/src/core/constants/constant.dart';
 import 'package:musiq/src/core/utils/size_config.dart';
 import 'package:musiq/src/features/common/packages/shimmer/shimmer.dart';
@@ -50,10 +48,12 @@ class SearchListView extends StatelessWidget {
                               SearchStatus.artistPreference) {
                         return pro.artistModel.message == "No records"
                             ? const NoRecordWidget()
-                            : ArtistPrefereneSearchListView(
-                                searchRequestModel: searchRequestModel,
-                                pro: pro,
-                              );
+                            : pro.isArtistSearch
+                                ? loader(context)
+                                : ArtistPrefereneSearchListView(
+                                    searchRequestModel: searchRequestModel,
+                                    pro: pro,
+                                  );
                       } else {
                         return pro.searchSongModel.message == "No records"
                             ? const NoRecordWidget()
@@ -66,7 +66,7 @@ class SearchListView extends StatelessWidget {
                                 : pro.isSearch
                                     ? Column(
                                         children: [
-                                          getNotReached(context),
+                                          loader(context),
                                         ],
                                       )
                                     : SongSearchListView(
@@ -80,29 +80,26 @@ class SearchListView extends StatelessWidget {
   }
 }
 
-Shimmer getNotReached(BuildContext context) {
+Shimmer loader(BuildContext context) {
   SizeConfig().init(context);
 
   return Shimmer.fromColors(
       baseColor: Colors.grey[600]!,
       highlightColor: const Color.fromRGBO(255, 255, 255, 0.1),
       child: ListView.builder(
-        itemCount: 6,
+        itemCount: 3,
         physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
         itemBuilder: (BuildContext context, int index) {
-          return Padding(
-            padding: EdgeInsets.only(
-                right: 16,
-                left: 16,
-                bottom: getProportionateScreenHeight(16),
-                top: getProportionateScreenHeight(20)),
-            child: Row(
-              children: [
-                Container(
-                  height: getProportionateScreenHeight(60),
-                  width: getProportionateScreenWidth(60),
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 18, top: 16),
+                child: Container(
+                  height: getProportionateScreenHeight(160),
+                  width: getProportionateScreenWidth(160),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     color: CustomColor.activeIconBgColor,
@@ -114,61 +111,25 @@ Shimmer getNotReached(BuildContext context) {
                     ],
                   ),
                 ),
-                const HorizontalBox(width: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: getProportionateScreenHeight(13),
-                      width: getProportionateScreenWidth(150),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: CustomColor.activeIconBgColor,
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color.fromRGBO(5, 31, 50, 0.08),
-                            blurRadius: 15.0,
-                          ),
-                        ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 16, left: 18, top: 16),
+                child: Container(
+                  height: getProportionateScreenHeight(160),
+                  width: getProportionateScreenWidth(160),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: CustomColor.activeIconBgColor,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color.fromRGBO(5, 31, 50, 0.08),
+                        blurRadius: 15.0,
                       ),
-                    ),
-                    const VerticalBox(height: 15),
-                    Container(
-                      height: getProportionateScreenHeight(13),
-                      width: getProportionateScreenWidth(180),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: CustomColor.activeIconBgColor,
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color.fromRGBO(5, 31, 50, 0.08),
-                            blurRadius: 15.0,
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                const Spacer(),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
-                    height: getProportionateScreenHeight(30),
-                    width: getProportionateScreenWidth(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: CustomColor.activeIconBgColor,
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromRGBO(5, 31, 50, 0.08),
-                          blurRadius: 15.0,
-                        ),
-                      ],
-                    ),
+                    ],
                   ),
-                )
-              ],
-            ),
+                ),
+              ),
+            ],
           );
         },
       ));

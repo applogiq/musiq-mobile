@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/library/provider/library_provider.dart';
+import 'package:musiq/src/features/library/widgets/favourite/alert_packages/show_dialog_package.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/dialog/playlist_dialog_box.dart';
@@ -17,11 +18,19 @@ class PlayListAddButton extends StatelessWidget {
         onPressed: () {
           pro.isPlayListError = false;
           pro.playListName = "";
-          showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return PlaylistDialogBox(
+
+          showAnimatedDialog(
+            context: context,
+            barrierDismissible: false,
+
+            animationType: DialogTransitionType.slideFromLeft,
+            curve: Curves.fastOutSlowIn,
+            builder: (BuildContext context) {
+              return SizedBox(
+                height: 10,
+                width: double.maxFinite,
+                // color: const Color.fromRGBO(22, 21, 28, 0.8),
+                child: PlaylistDialogBox(
                   onChanged: (v) {
                     // pro.checkPlayListName(v);
                   },
@@ -34,8 +43,37 @@ class PlayListAddButton extends StatelessWidget {
                   errorValue: pro.playListError,
                   isError: pro.isPlayListError,
                   // callback: libraryController.createPlaylist(context),
-                );
-              });
+                ),
+              );
+            },
+            // duration: const Duration(seconds: 1),
+          );
+
+          // showDialog(
+          //     context: context,
+          //     barrierDismissible: false,
+          //     builder: (BuildContext context) {
+          //       return
+          //        Container(
+          //         height: 10,
+          //         width: double.maxFinite,
+          //         color: const Color.fromRGBO(22, 21, 28, 0.8),
+          //         child: PlaylistDialogBox(
+          //           onChanged: (v) {
+          //             // pro.checkPlayListName(v);
+          //           },
+          //           callBack: () async {
+          //             await pro.createPlayList(context);
+          //           },
+          //           title: ConstantText.createPlaylist,
+          //           fieldName: ConstantText.name,
+          //           buttonText: ConstantText.create,
+          //           errorValue: pro.playListError,
+          //           isError: pro.isPlayListError,
+          //           // callback: libraryController.createPlaylist(context),
+          //         ),
+          //       );
+          //     });
         },
         child: Container(
           decoration: BoxDecoration(

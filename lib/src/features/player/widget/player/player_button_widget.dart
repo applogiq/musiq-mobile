@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class PlayButtonWidget extends StatelessWidget {
   const PlayButtonWidget(
       {Key? key,
-      this.bgColor = const Color.fromRGBO(255, 255, 255, 0.8),
+      this.bgColor = const Color.fromRGBO(255, 255, 255, 0.9),
       this.iconColor = const Color.fromRGBO(254, 86, 49, 1),
       this.size = 20.0,
       this.padding = 6.0,

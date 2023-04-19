@@ -6,6 +6,7 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/core/utils/size_config.dart';
 import 'package:musiq/src/features/common/provider/pop_up_provider.dart';
 import 'package:musiq/src/features/library/provider/library_provider.dart';
+import 'package:musiq/src/features/library/widgets/favourite/alert_packages/show_dialog_package.dart';
 import 'package:musiq/src/features/player/screen/player_screen/player_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
@@ -186,14 +187,16 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
   }
 
   showAlertDialog(BuildContext context) {
-    showDialog(
+    showAnimatedDialog(
       context: context,
+      barrierDismissible: true,
+
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: const Color.fromRGBO(33, 33, 44, 1),
           title: const SizedBox.shrink(),
           content: const Padding(
-            padding: EdgeInsets.only(left: 12),
+            padding: EdgeInsets.only(left: 12, right: 12),
             child: Text(
               "Do you want to Exit app?",
               style: TextStyle(fontSize: 16),
@@ -216,18 +219,6 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
             GestureDetector(
               onTap: () async {
                 SystemNavigator.pop();
-                // Auth auth = Auth();
-                // await auth.logOut(context);
-                // await context.read<PlayerProvider>().removeAllData();
-                // await context.read<PlayerProvider>().playlist.clear();
-                // context.read<PlayerProvider>().inQueue = false;
-
-                // Provider.of<RegisterProvider>(context, listen: false)
-                //     .clearError();
-                // Provider.of<RegisterProvider>(context, listen: false)
-                //     .isButtonEnable = true;
-                // await Navigation.removeAllScreenFromStack(
-                //     context, const OnboardingScreen());
               },
               child: Container(
                 height: getProportionateScreenHeight(44),
@@ -244,6 +235,73 @@ class _MainScreenState extends State<MainScreen> with WidgetsBindingObserver {
           ],
         );
       },
+
+      animationType: DialogTransitionType.size,
+
+      curve: Curves.fastOutSlowIn,
+
+// duration: const Duration(seconds: 1),
     );
+
+    // showDialog(
+    //   context: context,
+    //   builder: (BuildContext context) {
+    //     return
+    //     AlertDialog(
+    //       backgroundColor: const Color.fromRGBO(33, 33, 44, 1),
+    //       title: const SizedBox.shrink(),
+    //       content: const Padding(
+    //         padding: EdgeInsets.only(left: 12),
+    //         child: Text(
+    //           "Do you want to Exit app?",
+    //           style: TextStyle(fontSize: 16),
+    //         ),
+    //       ),
+    //       actions: [
+    //         GestureDetector(
+    //           onTap: () {
+    //             Navigator.pop(context);
+    //           },
+    //           child: Container(
+    //             height: getProportionateScreenHeight(44),
+    //             width: getProportionateScreenWidth(120),
+    //             decoration: BoxDecoration(
+    //                 borderRadius: BorderRadius.circular(12),
+    //                 color: const Color.fromRGBO(255, 255, 255, 0.1)),
+    //             child: const Center(child: Text("Cancel")),
+    //           ),
+    //         ),
+    //         GestureDetector(
+    //           onTap: () async {
+    //             SystemNavigator.pop();
+    //             // Auth auth = Auth();
+    //             // await auth.logOut(context);
+    //             // await context.read<PlayerProvider>().removeAllData();
+    //             // await context.read<PlayerProvider>().playlist.clear();
+    //             // context.read<PlayerProvider>().inQueue = false;
+
+    //             // Provider.of<RegisterProvider>(context, listen: false)
+    //             //     .clearError();
+    //             // Provider.of<RegisterProvider>(context, listen: false)
+    //             //     .isButtonEnable = true;
+    //             // await Navigation.removeAllScreenFromStack(
+    //             //     context, const OnboardingScreen());
+    //           },
+    //           child: Container(
+    //             height: getProportionateScreenHeight(44),
+    //             width: getProportionateScreenWidth(120),
+    //             decoration: BoxDecoration(
+    //                 borderRadius: BorderRadius.circular(12),
+    //                 color: const Color.fromRGBO(254, 86, 49, 1)),
+    //             child: const Center(child: Text("Confirm")),
+    //           ),
+    //         ),
+    //         SizedBox(
+    //           width: getProportionateScreenWidth(5),
+    //         )
+    //       ],
+    //     );
+    //   },
+    // );
   }
 }

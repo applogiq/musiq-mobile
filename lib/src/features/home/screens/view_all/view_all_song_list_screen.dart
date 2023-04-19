@@ -43,6 +43,7 @@ class _ViewAllSongListScreenState extends State<ViewAllSongListScreen> {
         : (MediaQuery.of(context).size.width / 320) * 50;
     infoBoxHeight = 180;
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(22, 21, 28, 1),
       body: Consumer<ViewAllProvider>(builder: (context, pro, _) {
         return pro.isLoad
             ? const LoaderScreen()

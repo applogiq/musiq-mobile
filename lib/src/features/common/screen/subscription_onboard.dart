@@ -6,6 +6,7 @@ import 'package:musiq/src/common_widgets/buttons/custom_button.dart';
 import 'package:musiq/src/core/enums/enums.dart';
 import 'package:musiq/src/core/utils/size_config.dart';
 import 'package:musiq/src/features/home/provider/home_provider.dart';
+import 'package:musiq/src/features/library/widgets/favourite/alert_packages/show_dialog_package.dart';
 import 'package:musiq/src/features/payment/provider/payment_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -175,14 +176,16 @@ class _SubscriptionOnboardState extends State<SubscriptionOnboard> {
 }
 
 showAlertDialog(BuildContext context) {
-  showDialog(
+  showAnimatedDialog(
     context: context,
+    barrierDismissible: true,
+
     builder: (BuildContext context) {
       return AlertDialog(
         backgroundColor: const Color.fromRGBO(33, 33, 44, 1),
         title: const SizedBox.shrink(),
         content: const Padding(
-          padding: EdgeInsets.only(left: 12),
+          padding: EdgeInsets.only(left: 12, right: 12),
           child: Text(
             "Do you want to Exit app?",
             style: TextStyle(fontSize: 16),
@@ -205,18 +208,6 @@ showAlertDialog(BuildContext context) {
           GestureDetector(
             onTap: () async {
               SystemNavigator.pop();
-              // Auth auth = Auth();
-              // await auth.logOut(context);
-              // await context.read<PlayerProvider>().removeAllData();
-              // await context.read<PlayerProvider>().playlist.clear();
-              // context.read<PlayerProvider>().inQueue = false;
-
-              // Provider.of<RegisterProvider>(context, listen: false)
-              //     .clearError();
-              // Provider.of<RegisterProvider>(context, listen: false)
-              //     .isButtonEnable = true;
-              // await Navigation.removeAllScreenFromStack(
-              //     context, const OnboardingScreen());
             },
             child: Container(
               height: getProportionateScreenHeight(44),
@@ -233,5 +224,11 @@ showAlertDialog(BuildContext context) {
         ],
       );
     },
+
+    animationType: DialogTransitionType.scale,
+
+    curve: Curves.fastOutSlowIn,
+
+// duration: const Duration(seconds: 1),
   );
 }

@@ -32,6 +32,7 @@ class PlaylistDialogBox extends StatelessWidget {
     return Consumer(
       builder: (context, pro, _) {
         return Container(
+          width: double.maxFinite,
           padding: const EdgeInsets.all(16),
           decoration: dialogBoxDecoration(),
           child: Column(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/features/home/screens/my_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common_widgets/container/custom_color_container.dart';
@@ -16,7 +17,7 @@ class SearchAndNotifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(right: 16, left: 16),
       child: IntrinsicHeight(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -54,26 +55,32 @@ class SearchAndNotifications extends StatelessWidget {
             const SizedBox(
               width: 8,
             ),
-            CustomColorContainer(
-              bgColor: CustomColor.textfieldBg,
-              left: 5,
-              right: 5,
-              verticalPadding: 6,
-              child: Center(
-                child: Stack(
-                  children: [
-                    const Icon(Icons.notifications),
-                    Positioned(
-                      right: 2,
-                      child: Container(
-                        padding: const EdgeInsets.all(4.5),
-                        decoration: BoxDecoration(
-                          color: CustomColor.secondaryColor,
-                          shape: BoxShape.circle,
+            InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MyWidget()));
+              },
+              child: CustomColorContainer(
+                bgColor: CustomColor.textfieldBg,
+                left: 5,
+                right: 5,
+                verticalPadding: 6,
+                child: Center(
+                  child: Stack(
+                    children: [
+                      const Icon(Icons.notifications),
+                      Positioned(
+                        right: 2,
+                        child: Container(
+                          padding: const EdgeInsets.all(4.5),
+                          decoration: BoxDecoration(
+                            color: CustomColor.secondaryColor,
+                            shape: BoxShape.circle,
+                          ),
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             )

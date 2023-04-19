@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+// import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:musiq/src/features/library/provider/library_provider.dart';
+import 'package:musiq/src/features/library/widgets/favourite/favourite_widgets.dart';
 import 'package:musiq/src/features/payment/screen/subscription_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -9,7 +11,6 @@ import '../../../../core/constants/images.dart';
 import '../../../../core/utils/url_generate.dart';
 import '../../../auth/provider/login_provider.dart';
 import '../../domain/models/favourite_model.dart';
-import 'favourite_widgets.dart';
 
 class FavouriteTile extends StatelessWidget {
   const FavouriteTile({
@@ -95,6 +96,85 @@ class FavouriteTile extends StatelessWidget {
                     ],
                   ),
                 )),
+            // Padding(
+            //   padding: const EdgeInsets.only(right: 8),
+            //   child: SizedBox(
+            //       child: InkWell(
+            //           onTap: () {
+            //             showAnimatedDialog(
+            //               // barrierColor: Colors.red,
+            //               context: context,
+            //               barrierDismissible: true,
+            //               builder: (BuildContext context) {
+            //                 return Center(
+            //                     child: Container(
+            //                   height: 250,
+            //                   width: 200,
+            //                   decoration: BoxDecoration(
+            //                       borderRadius: BorderRadius.circular(15),
+            //                       color: const Color.fromRGBO(33, 33, 44, 1)),
+            //                   child: Column(
+            //                     mainAxisAlignment: MainAxisAlignment.center,
+            //                     crossAxisAlignment: CrossAxisAlignment.center,
+            //                     children: const [
+            //                       Text(
+            //                         ConstantText.playNext,
+            //                         style: TextStyle(
+            //                           decoration: TextDecoration.none,
+            //                           color: Colors.white,
+            //                           fontSize: 18,
+            //                         ),
+            //                       ),
+            //                       VerticalBox(height: 20),
+            //                       Text(
+            //                         ConstantText.addToQueue,
+            //                         style: TextStyle(
+            //                           decoration: TextDecoration.none,
+            //                           color: Colors.white,
+            //                           fontSize: 18,
+            //                         ),
+            //                       ),
+            //                       VerticalBox(height: 20),
+            //                       Text(
+            //                         ConstantText.remove,
+            //                         style: TextStyle(
+            //                           decoration: TextDecoration.none,
+            //                           color: Colors.white,
+            //                           fontSize: 18,
+            //                         ),
+            //                       ),
+            //                       VerticalBox(height: 20),
+            //                       Text(
+            //                         ConstantText.songInfo,
+            //                         style: TextStyle(
+            //                           decoration: TextDecoration.none,
+            //                           color: Colors.white,
+            //                           fontSize: 18,
+            //                         ),
+            //                       ),
+            //                     ],
+            //                   ),
+            //                 ));
+
+            //                 // ClassicGeneralDialogWidget(
+            //                 //   titleText: 'Title',
+            //                 //   contentText: 'content',
+            //                 //   onPositiveClick: () {
+            //                 //     Navigator.of(context).pop();
+            //                 //   },
+            //                 //   onNegativeClick: () {
+            //                 //     Navigator.of(context).pop();
+            //                 //   },
+            //                 // );
+            //               },
+            //             );
+            //           },
+            //           child: const Icon(Icons.more_vert))),
+            // ),
+            // const Icon(
+            //   Icons.more_vert,
+            //   color: Colors.white,
+            // )
             FavouritesPopUpMenuButton(
               record: record,
               index: index,

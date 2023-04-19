@@ -144,6 +144,7 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
             InternetConnectionStatus.disconnected
         ? const OfflineScreen()
         : Scaffold(
+            backgroundColor: const Color.fromRGBO(22, 21, 28, 1),
             bottomNavigationBar:
                 Consumer<PlayerProvider>(builder: (context, pro, _) {
               return pro.isPlaying

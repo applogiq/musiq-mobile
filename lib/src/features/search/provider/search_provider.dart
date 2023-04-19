@@ -28,6 +28,7 @@ class SearchProvider extends ChangeNotifier {
   List<int> playlistSongId = [];
   var userFollowedArtist = [];
   bool isSearch = true;
+  bool isArtistSearch = true;
 
   String searchQuery = "";
   late Store store;
@@ -96,6 +97,8 @@ class SearchProvider extends ChangeNotifier {
       notifyListeners();
       if (status == SearchStatus.artist ||
           status == SearchStatus.artistPreference) {
+        isArtistSearch = true;
+        notifyListeners();
         var res = await searchRepository.getArtistSearch(data.trim());
         if (res.statusCode == 200) {
           log(res.body.toString());
@@ -108,6 +111,8 @@ class SearchProvider extends ChangeNotifier {
               records: [],
               totalRecords: 0);
         }
+        isArtistSearch = false;
+
         notifyListeners();
 
         log(res.body.toString());

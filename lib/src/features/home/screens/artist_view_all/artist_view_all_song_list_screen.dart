@@ -51,6 +51,7 @@ class _ViewAllSongListScreenState extends State<ArtistViewAllSongListScreen> {
               InternetConnectionStatus.disconnected
           ? const OfflineScreen()
           : Scaffold(
+              backgroundColor: const Color.fromRGBO(22, 21, 28, 1),
               body: Consumer<ArtistViewAllProvider>(builder: (context, pro, _) {
                 return pro.isLoad
                     ? const LoaderScreen()

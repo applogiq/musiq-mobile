@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:musiq/src/common_widgets/box/vertical_box.dart';
 import 'package:musiq/src/features/player/widget/player/player_widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -112,6 +113,7 @@ class PlayerControllerWidget extends StatelessWidget {
                     }),
                   ),
                   const ProgressBarWidget(),
+                  const VerticalBox(height: 30),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(

@@ -21,7 +21,7 @@ class UpNextController extends StatelessWidget {
         return pro.isUpNextShow
             ? const SizedBox.shrink()
             : Container(
-                padding: const EdgeInsets.all(8),
+                padding: const EdgeInsets.only(top: 8, bottom: 8),
                 decoration: topLeftRightDecoration(),
                 child: ListTile(
                   onTap: () {

@@ -1,6 +1,7 @@
 // import 'package:audio_service/audio_service.dart';
 import 'dart:math';
 
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -113,7 +114,8 @@ class _MiniPlayerState extends State<MiniPlayer> with WidgetsBindingObserver {
           child: MiniPlayerController(
             onTap: widget.onChange,
           ),
-        )
+        ),
+
         // StreamBuilder<int?>(
         //     stream: context.read<PlayerProvider>().player.currentIndexStream,
         //     builder: (context, snapshot) {
@@ -315,8 +317,8 @@ class CircularNotificationPlayerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 24,
-      height: 24,
+      width: 50,
+      height: 50,
       // margin: const EdgeInsets.all(12.0),
       child: CircularProgressIndicator(
         color: CustomColor.secondaryColor,
@@ -350,6 +352,7 @@ class _MiniPlayerControllerState extends State<MiniPlayerController> {
             final metadata = state!.currentSource!.tag as MediaItem;
             return Stack(
               children: [
+                const MiniProgressBarWidget(),
                 Row(
                   children: [
                     GestureDetector(
@@ -361,16 +364,21 @@ class _MiniPlayerControllerState extends State<MiniPlayerController> {
                         width: 40,
                         margin:
                             const EdgeInsets.only(left: 12, top: 6, bottom: 12),
-                        clipBehavior: Clip.hardEdge,
+                        // clipBehavior: Clip.antiAliasWithSaveLayer,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12)),
                         child: pro.isPlayingLoad
-                            ? Image.asset(Images.loaderImage)
-                            : Image.network(
-                                metadata.artUri.toString(),
-                                fit: BoxFit.fill,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    Image.asset(Images.noSong),
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(6),
+                                child: Image.asset(Images.loaderImage))
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(6),
+                                child: Image.network(
+                                  metadata.artUri.toString(),
+                                  fit: BoxFit.fill,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Image.asset(Images.noSong),
+                                ),
                               ),
                       ),
                     ),
@@ -443,7 +451,7 @@ class _MiniPlayerControllerState extends State<MiniPlayerController> {
                       ),
                     ),
                     IconButton(
-                      padding: const EdgeInsets.all(0),
+                      // padding: const EdgeInsets.all(0),
                       onPressed:
                           //  pro.player.hasPrevious
                           //     ?
@@ -451,7 +459,10 @@ class _MiniPlayerControllerState extends State<MiniPlayerController> {
                         pro.playPrev();
                       },
                       // : null,
-                      icon: const Icon(Icons.skip_previous_rounded),
+                      icon: const Icon(
+                        Icons.skip_previous_rounded,
+                        size: 30,
+                      ),
                     ),
                     StreamBuilder<PlayerState>(
                         stream: pro.player.playerStateStream,
@@ -468,7 +479,13 @@ class _MiniPlayerControllerState extends State<MiniPlayerController> {
                                         ProcessingState.loading ||
                                     processingState ==
                                         ProcessingState.buffering)
-                                ? const CircularNotificationPlayerWidget()
+                                ? SizedBox(
+                                    height: 32,
+                                    width: 32,
+                                    child: CircularProgressIndicator(
+                                      color: CustomColor.secondaryColor,
+                                    ),
+                                  )
                                 : PlayButtonWidget(
                                     size: 24.0,
                                     padding: 4.0,
@@ -494,7 +511,10 @@ class _MiniPlayerControllerState extends State<MiniPlayerController> {
                         pro.playNext();
                       },
                       // : null,
-                      icon: const Icon(Icons.skip_next_rounded),
+                      icon: const Icon(
+                        Icons.skip_next_rounded,
+                        size: 30,
+                      ),
                     ),
                   ],
                 ),
@@ -504,6 +524,71 @@ class _MiniPlayerControllerState extends State<MiniPlayerController> {
                         color: Colors.grey.withOpacity(0.4),
                       ))
                     : const SizedBox.shrink()
+              ],
+            );
+          });
+    });
+  }
+}
+
+class PositionData {
+  final Duration position;
+  final Duration bufferedPosition;
+  final Duration duration;
+
+  PositionData(this.position, this.bufferedPosition, this.duration);
+}
+
+class MiniProgressBarWidget extends StatelessWidget {
+  const MiniProgressBarWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<PlayerProvider>(builder: (context, pro, _) {
+      return StreamBuilder<SequenceState?>(
+          stream: pro.player.sequenceStateStream,
+          builder: (context, snapshot) {
+            final state = snapshot.data;
+            if (state?.sequence.isEmpty ?? true) {
+              return const SizedBox.shrink();
+            }
+            // ignore: unused_local_variable
+            final metadata = state!.currentSource!.tag as MediaItem;
+            return Column(
+              children: [
+                StreamBuilder<Duration>(builder: (context, snapshot) {
+                  // final position = snapshot.data;
+                  // log("1");
+                  // log(pro.progressDurationValue.toString());
+                  // // log("2");
+
+                  // log(pro.bufferDurationValue.toString());
+                  // // log("3");
+
+                  // log(pro.totalDurationValue.toString());
+                  return ProgressBar(
+                    timeLabelLocation: TimeLabelLocation.none,
+
+                    progress: Duration(milliseconds: pro.progressDurationValue),
+                    buffered: Duration(milliseconds: pro.bufferDurationValue),
+                    total: Duration(milliseconds: pro.totalDurationValue),
+                    // total: Duration(
+                    //     milliseconds:
+                    //         totalDuration(metadata.duration.toString())),
+                    progressBarColor: const Color.fromRGBO(254, 86, 49, 1),
+                    baseBarColor: Colors.white.withOpacity(0.24),
+                    bufferedBarColor: Colors.transparent,
+                    thumbColor: Colors.white,
+                    barHeight: 3.0,
+                    thumbRadius: 0.0,
+                    onSeek: (duration) {
+                      pro.seekDuration(duration);
+                      // songController.seekDuration(duration);
+                    },
+                  );
+                }),
               ],
             );
           });

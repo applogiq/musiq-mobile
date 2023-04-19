@@ -54,6 +54,13 @@ class HomeProvider extends ChangeNotifier {
     totalrecords: 0,
   );
   HomeRepository homeRepository = HomeRepository();
+  bool isRecentSongList = true;
+  bool isartistList = true;
+  bool ispreferableArtistList = true;
+  bool istrendingHitsSongList = true;
+  bool isnewRelease = true;
+  bool isauraSongList = true;
+  bool isalbumList = true;
   getSongData() async {
     try {
       premiumStatus = await storage.read(key: "premier_status") ?? "free";
@@ -74,11 +81,56 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
+  initiallist() async {
+    try {
+      premiumStatus = await storage.read(key: "premier_status") ?? "free";
+
+      await changeLoadState(true);
+      await recentSongList();
+      await artistList();
+      await preferableArtistList();
+      await trendingHitsSongList();
+      // await newRelease();
+      // await auraSongList();
+      // await albumList();
+      // print("ALBUM");
+      // print(albumListModel.records);
+      changeLoadState(false);
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
   refreshPremiumStatus() async {
     premiumStatus = await storage.read(key: "premier_status") ?? "free";
   }
 
+  getMoreData() async {
+    List homeApi = [
+      //  await changeLoadState(true);
+      await recentSongList(),
+      await artistList(),
+      await preferableArtistList(),
+      await trendingHitsSongList(),
+      await newRelease(),
+      await auraSongList(),
+      await albumList(),
+    ];
+  }
+
+  // List homeApi = [
+  //   //  await changeLoadState(true);
+  //      recentSongList(),
+  //      artistList(),
+  //      preferableArtistList();
+  //      trendingHitsSongList();
+  //      newRelease();
+  //      auraSongList();
+  //      albumList();
+  // ];
   albumList() async {
+    isalbumList = false;
+    notifyListeners();
     try {
       var res = await homeRepository.getAlbum();
 
@@ -102,9 +154,13 @@ class HomeProvider extends ChangeNotifier {
       print("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
       debugPrint(e.toString());
     }
+    isalbumList = true;
+    notifyListeners();
   }
 
   preferableArtistList() async {
+    ispreferableArtistList = false;
+    notifyListeners();
     var accessToken = await secureStorage.read(
       key: "access_token",
     );
@@ -127,7 +183,7 @@ class HomeProvider extends ChangeNotifier {
         var data = jsonDecode(response.body);
         preferableartistmodel = Preferableartistmodel.fromJson(data);
       }
-
+      ispreferableArtistList = true;
       notifyListeners();
     } catch (e) {
       rethrow;
@@ -135,6 +191,8 @@ class HomeProvider extends ChangeNotifier {
   }
 
   artistList() async {
+    isartistList = false;
+    notifyListeners();
     var res = await homeRepository.getArtist(limit: 10);
     log(res.body);
     artistModel.records.clear();
@@ -143,9 +201,13 @@ class HomeProvider extends ChangeNotifier {
 
       artistModel = ArtistModel.fromMap(data);
     }
+    isartistList = true;
+    notifyListeners();
   }
 
   recentSongList() async {
+    isRecentSongList = false;
+    notifyListeners();
     var res = await homeRepository.getRecentPlayedList(10);
     recentlyPlayed.records.clear();
     recentSongListModel.clear();
@@ -174,11 +236,14 @@ class HomeProvider extends ChangeNotifier {
           records: [],
           totalrecords: 0);
     }
+    isRecentSongList = true;
     isRecentlyPlayedLoad = false;
     notifyListeners();
   }
 
   trendingHitsSongList() async {
+    istrendingHitsSongList = false;
+    notifyListeners();
     try {
       var res = await homeRepository.getTrendingSongList(10);
 
@@ -210,6 +275,8 @@ class HomeProvider extends ChangeNotifier {
             records: [],
             totalrecords: 0);
       }
+      istrendingHitsSongList = true;
+      // notifyListeners();
       notifyListeners();
     } catch (e) {
       print("ERRROR");
@@ -218,6 +285,8 @@ class HomeProvider extends ChangeNotifier {
   }
 
   auraSongList() async {
+    isauraSongList = false;
+    notifyListeners();
     try {
       var res = await homeRepository.getAura();
 
@@ -228,6 +297,8 @@ class HomeProvider extends ChangeNotifier {
       }
       // ignore: empty_catches
     } catch (e) {}
+    isauraSongList = true;
+    notifyListeners();
   }
 
   changeLoadState(bool status) {
@@ -241,6 +312,8 @@ class HomeProvider extends ChangeNotifier {
   }
 
   newRelease() async {
+    isnewRelease = false;
+    notifyListeners();
     var res = await homeRepository.getNewRelease();
 
     newReleaseModel.records.clear();
@@ -260,6 +333,8 @@ class HomeProvider extends ChangeNotifier {
       }
       log(newReleaseListModel.toString());
     }
+    isnewRelease = true;
+    notifyListeners();
   }
 
   SubscriptionPlan getPremierStatus() {

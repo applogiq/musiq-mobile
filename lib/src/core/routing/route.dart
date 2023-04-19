@@ -55,8 +55,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
           builder: (BuildContext context) => const RegisterScreen());
     case RouteName.home:
-      return MaterialPageRoute(
-          builder: (BuildContext context) => const HomeScreen());
+      return MaterialPageRoute(builder: (BuildContext context) => HomeScreen());
     case RouteName.myProfile:
       return MaterialPageRoute(
           builder: (BuildContext context) => const MyProfile());

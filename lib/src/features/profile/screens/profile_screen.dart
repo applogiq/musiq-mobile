@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/auth/provider/login_provider.dart';
 import 'package:musiq/src/features/payment/screen/subscription_screen.dart';
+import 'package:musiq/src/features/profile/screens/Equalizer/equalizer_screen.dart';
 import 'package:musiq/src/features/profile/screens/my_profile_screen.dart';
 import 'package:musiq/src/features/profile/screens/preference_screen.dart';
 import 'package:provider/provider.dart';
@@ -58,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     return pro.myProfileLoading
                         ? Center(
                             child: Image.asset(
-                            'assets/gifs/image_loader2.gif',
+                            'assets/gifs/ZKZg.gif',
                             height: 90,
                           ))
                         : pro.profileAPIModel.records == null
@@ -87,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: getProportionateScreenHeight(48)),
+                padding: EdgeInsets.only(top: getProportionateScreenHeight(20)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: List.generate(
@@ -112,6 +113,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                 ),
               ),
+              ListTile(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Equalizer()));
+                  },
+                  title: const Text(
+                    "Equalizer",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500, color: Colors.white),
+                  ),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 20,
+                  )),
               Consumer<ProfileProvider>(builder: (context, provider, _) {
                 return Column(
                   children: [
@@ -167,10 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 );
               }),
-              Padding(
-                padding: EdgeInsets.only(top: getProportionateScreenHeight(70)),
-                child: const SignOutWidget(),
-              ),
+              const SignOutWidget(),
               const SizedBox(
                 height: 24,
               )

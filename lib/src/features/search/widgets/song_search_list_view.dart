@@ -298,8 +298,17 @@ class SongSearchListView extends StatelessWidget {
                               }
                             },
                             child: SongListTile(
-                              isPremium:
-                                  rec.premiumStatus != "free" ? true : false,
+                              isPremium: rec.premiumStatus == "free"
+                                  ? true
+                                  : rec.premiumStatus != "free" &&
+                                          storage
+                                                  .read(
+                                                      key: LocalStorageConstant
+                                                          .premierStatus)
+                                                  .toString() !=
+                                              "free"
+                                      ? true
+                                      : false,
                               albumName: rec.albumName,
                               imageUrl: generateSongImageUrl(
                                   rec.albumName, rec.albumId),

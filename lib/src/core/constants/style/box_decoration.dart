@@ -60,7 +60,7 @@ BoxDecoration topLeftRightDecoration() {
 BoxDecoration dialogBoxDecoration() {
   return BoxDecoration(
     shape: BoxShape.rectangle,
-    color: CustomColor.appBarColor,
+    color: const Color.fromRGBO(33, 33, 44, 1),
     borderRadius: BorderRadius.circular(12),
     boxShadow: const [
       BoxShadow(color: Colors.black, offset: Offset(0, 10), blurRadius: 10),

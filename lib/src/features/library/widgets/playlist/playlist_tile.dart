@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:musiq/src/common_widgets/box/horizontal_box.dart';
 import 'package:musiq/src/core/constants/images.dart';
+import 'package:musiq/src/features/library/widgets/favourite/alert_packages/show_dialog_package.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/container/custom_color_container.dart';
@@ -128,8 +129,9 @@ class PlaylistTile extends StatelessWidget {
 
                               break;
                             case 3:
-                              showDialog(
+                              showAnimatedDialog(
                                 context: context,
+                                barrierDismissible: true,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     backgroundColor:
@@ -197,7 +199,81 @@ class PlaylistTile extends StatelessWidget {
                                     ],
                                   );
                                 },
+                                animationType:
+                                    DialogTransitionType.slideFromLeft,
+                                curve: Curves.fastOutSlowIn,
+                                // duration: const Duration(seconds: 1),
                               );
+                              // showDialog(
+                              //   context: context,
+                              //   builder: (BuildContext context) {
+                              //     return AlertDialog(
+                              //       backgroundColor:
+                              //           const Color.fromRGBO(33, 33, 44, 1),
+                              //       title: const Center(
+                              //           child: Text("Delete Playlist")),
+                              //       content: Column(
+                              //         mainAxisSize: MainAxisSize.min,
+                              //         children: [
+                              //           const Text(
+                              //             "Are you sure you want to delete playlist",
+                              //             style: TextStyle(fontSize: 14),
+                              //           ),
+                              //           Text(
+                              //             "${record[index].playlistName} ?",
+                              //             style: const TextStyle(
+                              //                 fontSize: 16,
+                              //                 fontWeight: FontWeight.bold),
+                              //           ),
+                              //         ],
+                              //       ),
+                              //       actions: [
+                              //         GestureDetector(
+                              //           onTap: () {
+                              //             Navigator.pop(context);
+                              //           },
+                              //           child: Container(
+                              //             height:
+                              //                 getProportionateScreenHeight(44),
+                              //             width:
+                              //                 getProportionateScreenWidth(120),
+                              //             decoration: BoxDecoration(
+                              //                 borderRadius:
+                              //                     BorderRadius.circular(12),
+                              //                 color: const Color.fromRGBO(
+                              //                     255, 255, 255, 0.1)),
+                              //             child: const Center(
+                              //                 child: Text("Cancel")),
+                              //           ),
+                              //         ),
+                              //         GestureDetector(
+                              //           onTap: () async {
+                              //             context
+                              //                 .read<LibraryProvider>()
+                              //                 .deletePlayList(record[index].id);
+                              //             Navigator.pop(context);
+                              //           },
+                              //           child: Container(
+                              //             height:
+                              //                 getProportionateScreenHeight(44),
+                              //             width:
+                              //                 getProportionateScreenWidth(120),
+                              //             decoration: BoxDecoration(
+                              //                 borderRadius:
+                              //                     BorderRadius.circular(12),
+                              //                 color: const Color.fromRGBO(
+                              //                     254, 86, 49, 1)),
+                              //             child: const Center(
+                              //                 child: Text("Confirm")),
+                              //           ),
+                              //         ),
+                              //         SizedBox(
+                              //           width: getProportionateScreenWidth(5),
+                              //         )
+                              //       ],
+                              //     );
+                              //   },
+                              // );
 
                               break;
                           }

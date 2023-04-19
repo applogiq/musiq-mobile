@@ -47,6 +47,8 @@ class ProgressBarWidget extends StatelessWidget {
 
                     // log(pro.totalDurationValue.toString());
                     return ProgressBar(
+                      thumbGlowRadius: 20,
+                      // thumbGlowColor: Colors.white.withOpacity(0.1),
                       progress:
                           Duration(milliseconds: pro.progressDurationValue),
                       buffered: Duration(milliseconds: pro.bufferDurationValue),
@@ -58,8 +60,8 @@ class ProgressBarWidget extends StatelessWidget {
                       baseBarColor: Colors.white.withOpacity(0.24),
                       bufferedBarColor: Colors.transparent,
                       thumbColor: Colors.white,
-                      barHeight: 6.0,
-                      thumbRadius: 6.0,
+                      barHeight: 3.0,
+                      thumbRadius: 4.0,
                       onSeek: (duration) {
                         pro.seekDuration(duration);
                         // songController.seekDuration(duration);

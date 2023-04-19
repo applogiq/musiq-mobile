@@ -65,12 +65,12 @@ class FavouritesAndPlaylistsTab extends StatelessWidget {
         Tab(
             icon: Text(
           "Favorites",
-          style: TextStyle(fontWeight: FontWeight.w400),
+          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 17),
         )),
         Tab(
           icon: Text(
             "Playlists",
-            style: TextStyle(fontWeight: FontWeight.w400),
+            style: TextStyle(fontWeight: FontWeight.w400, fontSize: 17),
           ),
         ),
       ],

@@ -4,20 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:musiq/src/common_widgets/box/vertical_box.dart';
 import 'package:musiq/src/common_widgets/buttons/custom_button.dart';
 import 'package:musiq/src/core/constants/images.dart';
+import 'package:musiq/src/core/utils/auth.dart';
+import 'package:musiq/src/core/utils/navigation.dart';
+import 'package:musiq/src/core/utils/size_config.dart';
+import 'package:musiq/src/features/auth/provider/register_provider.dart';
 import 'package:musiq/src/features/common/screen/onboarding_screen.dart';
+import 'package:musiq/src/features/library/widgets/favourite/alert_packages/show_dialog_package.dart';
 import 'package:musiq/src/features/payment/provider/payment_provider.dart';
 import 'package:musiq/src/features/player/provider/player_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/constant.dart';
-import '../../../core/utils/auth.dart';
-import '../../../core/utils/navigation.dart';
-import '../../../core/utils/size_config.dart';
-import '../../auth/provider/register_provider.dart';
 
 showAlertDialog(BuildContext context) {
-  showDialog(
+  showAnimatedDialog(
     context: context,
+    barrierDismissible: true,
     builder: (BuildContext context) {
       return AlertDialog(
         backgroundColor: const Color.fromRGBO(33, 33, 44, 1),
@@ -71,7 +73,66 @@ showAlertDialog(BuildContext context) {
         ],
       );
     },
+    animationType: DialogTransitionType.slideFromLeft,
+    curve: Curves.fastOutSlowIn,
+    // duration: const Duration(seconds: 1),
   );
+  // showDialog(
+  //   context: context,
+  //   builder: (BuildContext context) {
+  //     return AlertDialog(
+  //       backgroundColor: const Color.fromRGBO(33, 33, 44, 1),
+  //       title: const Center(child: Text("Sign Out")),
+  //       content: const Text(
+  //         "Are you sure you want to Sign Out?",
+  //         style: TextStyle(fontSize: 12),
+  //       ),
+  //       actions: [
+  //         GestureDetector(
+  //           onTap: () {
+  //             Navigator.pop(context);
+  //           },
+  //           child: Container(
+  //             height: getProportionateScreenHeight(44),
+  //             width: getProportionateScreenWidth(120),
+  //             decoration: BoxDecoration(
+  //                 borderRadius: BorderRadius.circular(12),
+  //                 color: const Color.fromRGBO(255, 255, 255, 0.1)),
+  //             child: const Center(child: Text("Cancel")),
+  //           ),
+  //         ),
+  //         GestureDetector(
+  //           onTap: () async {
+  //             Auth auth = Auth();
+  //             await auth.logOut(context);
+  //             await context.read<PlayerProvider>().removeAllData();
+  //             await context.read<PlayerProvider>().playlist.clear();
+  //             context.read<PlayerProvider>().inQueue = false;
+
+  //             Provider.of<RegisterProvider>(context, listen: false)
+  //                 .clearError();
+  //             Provider.of<RegisterProvider>(context, listen: false)
+  //                 .isButtonEnable = true;
+  //             await Navigation.removeAllScreenFromStack(
+  //                 context, const OnboardingScreen());
+  //             // context.read<HomeProvider>().goToHome(context);
+  //           },
+  //           child: Container(
+  //             height: getProportionateScreenHeight(44),
+  //             width: getProportionateScreenWidth(120),
+  //             decoration: BoxDecoration(
+  //                 borderRadius: BorderRadius.circular(12),
+  //                 color: const Color.fromRGBO(254, 86, 49, 1)),
+  //             child: const Center(child: Text("Confirm")),
+  //           ),
+  //         ),
+  //         SizedBox(
+  //           width: getProportionateScreenWidth(5),
+  //         )
+  //       ],
+  //     );
+  //   },
+  // );
 }
 
 showSubscriptionDialog(BuildContext context) {
