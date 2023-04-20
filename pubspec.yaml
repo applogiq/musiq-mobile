@@ -38,6 +38,7 @@ dependencies:
   share_plus: ^6.3.0
   flutter_cache_manager: ^3.3.0
   audio_session: ^0.1.11
+  equalizer_flutter: ^0.0.1
   dependencies:
   # flutter_animated_dialog: ^2.0.1
 

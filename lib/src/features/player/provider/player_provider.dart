@@ -820,4 +820,36 @@ class PlayerProvider extends ChangeNotifier {
     objectbox.removeQueueSong(e.id);
     notifyListeners();
   }
+
+  // init() async {
+  //   final session = await AudioSession.instance;
+  //   await session.configure(const AudioSessionConfiguration.music());
+  //   try {
+  //     // var ram = AudioSource.uri(
+  //     //   Uri.parse(
+  //     //     generateSongUrl(9),
+  //     //   ),
+  //     // );
+  //     // for (int i = 0; i <= player.androidAudioSessionId!; i++) {
+  //     //   log(i.toString());
+
+  //     // }
+  //     // var item = MediaItem(id: generateSongUrl(e.id), title: e.title);
+  //     // player.setAudioSource(item);
+  //     // log(player.setAudioSource(playlist).toString());
+  //     for (int i = 0;
+  //         i <= await player.androidAudioSessionIdStream;
+  //         i++) {
+  //       var ram = AudioSource.uri(
+  //         Uri.parse(
+  //           generateSongUrl(i),
+  //         ),
+  //       );
+  //       return await player.setAudioSource(ram);
+  //     }
+  //     // return
+  //   } catch (e) {
+  //     print("Error loading audio source: $e");
+  //   }
+  // }
 }
