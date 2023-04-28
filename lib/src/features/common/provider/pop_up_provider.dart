@@ -23,7 +23,8 @@ import '../../player/provider/player_provider.dart';
 
 class PopUpProvider extends ChangeNotifier {
   ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: []);
-  AudioPlayer player = AudioPlayer();
+  final player = AudioPlayer();
+  var header = {'icy-br': '10'};
 
   deleteInQueue(
     int index,
@@ -78,12 +79,19 @@ class PopUpProvider extends ChangeNotifier {
             artist: e.musicDirectorName,
             duration: Duration(milliseconds: totalDuration(e.duration)),
             artUri: Uri.parse(e.imageUrl),
-            extras: {"song_id": e.id, "isImage": e.isImage});
+            extras: {
+              "song_id": e.id,
+              "isImage": e.isImage,
+            });
+        // player.quality
+        // player.quality = AudioQuality.high;
         await playlist.add(AudioSource.uri(
-            Uri.parse(
-              generateSongUrl(e.id),
-            ),
-            tag: item));
+          Uri.parse(
+            generateSongUrl(e.id),
+          ),
+          tag: item,
+          headers: header,
+        ));
 
         player.setAudioSource(playlist);
         objectbox.addSongListQueue(songListModels);
@@ -180,7 +188,8 @@ class PopUpProvider extends ChangeNotifier {
           Uri.parse(
             generateSongUrl(e.id),
           ),
-          tag: item));
+          tag: item,
+          headers: header));
 
       player.setAudioSource(playlist);
       objectbox.addSongListQueue(songListModels);

@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/core/utils/navigation.dart';
+import 'package:musiq/src/features/artist/screens/artist_preference_screen/artist_preference_screen.dart';
 import 'package:musiq/src/features/common/screen/coming_soon_screen.dart';
+import 'package:musiq/src/features/profile/provider/preference_provider.dart';
 import 'package:musiq/src/features/profile/screens/artist_preference.dart';
 import 'package:provider/provider.dart';
 
@@ -43,16 +45,16 @@ class PreferenceScreen extends StatelessWidget {
                         navigationScreen2: ComingSoonScreen(),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
-                      child: PreferenceMainHeaderWidget(
-                        mainTitle: "Podcast Preference",
-                        subTitle1: "Artist Preference",
-                        navigationScreen1: ComingSoonScreen(),
-                        subTitle2: "Audio Quality",
-                        navigationScreen2: ComingSoonScreen(),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
+                    //   child: PreferenceMainHeaderWidget(
+                    //     mainTitle: "Podcast Preference",
+                    //     subTitle1: "Artist Preference",
+                    //     navigationScreen1: ComingSoonScreen(),
+                    //     subTitle2: "Audio Quality",
+                    //     navigationScreen2: ComingSoonScreen(),
+                    //   ),
+                    // ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0.0),
                       child: NotificationPreferenceHeaderWidget(
@@ -98,15 +100,46 @@ class PreferenceMainHeaderWidget extends StatelessWidget {
           child: PreferenceListTile(
             label: subTitle1,
             navigationRoute: navigationScreen1,
+            icon: InkWell(
+              onTap: () {
+                Navigation.navigateToScreenWithoutNamed(
+                    context, const ArtistPreferenceScreen());
+              },
+              child: const Icon(
+                Icons.arrow_forward_ios_rounded,
+                size: 20,
+              ),
+            ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 12.0),
-          child: PreferenceListTile(
-            label: subTitle2,
-            navigationRoute: navigationScreen2,
-          ),
-        ),
+        Consumer<PreferenceProvider>(builder: (context, pro, child) {
+          return Padding(
+              padding: const EdgeInsets.only(top: 12.0),
+              child: PreferenceListTile(
+                label: subTitle2,
+                navigationRoute: navigationScreen2,
+                icon: DropdownButton<String>(
+                  value: pro.initialAudioQualityValue,
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'high',
+                      child: Text('High'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'medium',
+                      child: Text('Medium'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'low',
+                      child: Text('Low'),
+                    ),
+                  ],
+                  onChanged: (value) async {
+                    pro.qualityPreferenceOnchanged(value!);
+                  },
+                ),
+              ));
+        }),
       ],
     );
   }
@@ -196,33 +229,31 @@ class PreferenceListTile extends StatelessWidget {
     Key? key,
     required this.label,
     required this.navigationRoute,
+    required this.icon,
   }) : super(key: key);
 
   final String label;
   final Widget navigationRoute;
+  final Widget icon;
+  // final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigation.navigateToScreenWithoutNamed(context, navigationRoute);
-        // Navigator.of(context).pushNamed(navigationRoute);
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              label,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-            ),
-            const Icon(
-              Icons.arrow_forward_ios_rounded,
-              size: 20,
-            ),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          ),
+          icon
+          // const Icon(
+          //   Icons.arrow_forward_ios_rounded,
+          //   size: 20,
+          // ),
+        ],
       ),
     );
     // return ListTile(

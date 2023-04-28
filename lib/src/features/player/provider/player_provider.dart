@@ -75,6 +75,8 @@ class PlayerProvider extends ChangeNotifier {
   bool isUpNextShow = false;
   bool issongInfoDetailsLoad = true;
   int loopStatus = 0;
+  var header = {'icy-br': '10'};
+
   final WeSlideController controller = WeSlideController();
 
   Color miniPlayerBackground = CustomColor.miniPlayerBackgroundColors[0];
@@ -126,7 +128,7 @@ class PlayerProvider extends ChangeNotifier {
             "isImage": playerSongListModel.isImage
           });
       playlist.insert(player.currentIndex! + 1,
-          AudioSource.uri(Uri.parse(item.id), tag: item));
+          AudioSource.uri(Uri.parse(item.id), tag: item, headers: header));
     }
   }
 
@@ -216,7 +218,8 @@ class PlayerProvider extends ChangeNotifier {
           Uri.parse(
             generateSongUrl(e.id),
           ),
-          tag: item));
+          tag: item,
+          headers: header));
 
       player.setAudioSource(playlist);
       objectbox.addSongListQueue(songListModels);
@@ -296,7 +299,8 @@ class PlayerProvider extends ChangeNotifier {
                 Uri.parse(
                   generateSongUrl(e.songId),
                 ),
-                tag: item),
+                tag: item,
+                headers: header),
           );
         }
         player.setAudioSource(playlist);
@@ -376,7 +380,8 @@ class PlayerProvider extends ChangeNotifier {
                 Uri.parse(
                   generateSongUrl(e.id),
                 ),
-                tag: item),
+                tag: item,
+                headers: header),
           );
         } else if (context
                 .read<LoginProvider>()
@@ -411,7 +416,8 @@ class PlayerProvider extends ChangeNotifier {
                 Uri.parse(
                   generateSongUrl(e.id),
                 ),
-                tag: item),
+                tag: item,
+                headers: header),
           );
         } else {
           if (i <= index) {
@@ -611,7 +617,8 @@ class PlayerProvider extends ChangeNotifier {
                 Uri.parse(
                   generateSongUrl(e.id),
                 ),
-                tag: item));
+                tag: item,
+                headers: header));
           }
         }
       }
@@ -710,7 +717,8 @@ class PlayerProvider extends ChangeNotifier {
         Uri.parse(
           generateSongUrl(e.id),
         ),
-        tag: item));
+        tag: item,
+        headers: header));
     player.setAudioSource(playlist);
 
     play(context);
@@ -794,7 +802,8 @@ class PlayerProvider extends ChangeNotifier {
               Uri.parse(
                 generateSongUrl(e.id),
               ),
-              tag: item));
+              tag: item,
+              headers: header));
 
           player.setAudioSource(playlist);
           objectbox.addSongListQueue(songListModels);

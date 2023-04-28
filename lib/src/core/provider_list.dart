@@ -3,6 +3,7 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/features/common/provider/pop_up_provider.dart';
 import 'package:musiq/src/features/payment/provider/payment_provider.dart';
 import 'package:musiq/src/features/player/provider/player_audio_provider.dart';
+import 'package:musiq/src/features/profile/provider/preference_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -78,5 +79,8 @@ List<SingleChildWidget> providersList = [
   ),
   ChangeNotifierProvider(
     create: (BuildContext context) => SearchProvider(),
+  ),
+  ChangeNotifierProvider(
+    create: (BuildContext context) => PreferenceProvider(),
   ),
 ];

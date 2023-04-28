@@ -41,7 +41,6 @@ class _PlayerBackgroundState extends State<PlayerBackground> {
                     return const SizedBox();
                   }
                   final metadata = state!.currentSource!.tag as MediaItem;
-
                   PlayerSongListModel playerSongListModel = PlayerSongListModel(
                       id: metadata.extras!["song_id"],
                       duration: metadata.duration.toString(),
