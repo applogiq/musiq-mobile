@@ -37,7 +37,7 @@ class _ProfileArtistPreferenceScreenState
             bottomNavigationBar: const BottomMiniPlayer(),
             appBar: AppBar(
               automaticallyImplyLeading: true,
-              title: const Text("Artist Preference"),
+              title: const Text("Artist Preferences"),
             ),
             body: Consumer<ArtistPreferenceProvider>(
               builder: (context, pro, _) {
