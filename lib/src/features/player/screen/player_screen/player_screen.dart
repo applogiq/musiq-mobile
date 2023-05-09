@@ -118,7 +118,7 @@ class _PlayerScreenState extends State<PlayerScreen>
                                   PlayerBackground(
                                     onTapped: widget.onTap,
                                   ),
-                                  const PlayerController(),
+                                  const PlayerControllers(),
                                   const UpNextController()
                                 ],
                               ),

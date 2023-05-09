@@ -42,7 +42,7 @@ class RegisterScreen extends StatelessWidget {
                   children: [
                     TextFieldWithError(
                         initialValue: "",
-                        label: ConstantText.fullName,
+                        label: "Full Name *",
                         onChange: (value) {
                           registerProvider.fullNameChanged(value);
                         },
@@ -50,7 +50,7 @@ class RegisterScreen extends StatelessWidget {
                         errorMessage: registerProvider.fullNameError),
                     TextFieldWithError(
                         initialValue: "",
-                        label: "Email Address",
+                        label: "Email Address *",
                         onChange: (value) {
                           registerProvider.emailChanged(value);
                         },
@@ -61,7 +61,7 @@ class RegisterScreen extends StatelessWidget {
                     TextFieldWithError(
                         initialValue: "",
                         // isPassword: true,
-                        label: ConstantText.userName,
+                        label: "Username *",
                         onChange: (value) {
                           registerProvider.userNameChanged(value);
                         },

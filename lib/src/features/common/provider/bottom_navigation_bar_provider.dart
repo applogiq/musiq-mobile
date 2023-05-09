@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/features/podcast/screens/podcast_screen.dart';
 
 import '../../../common_widgets/model/bottom_nav_model.dart';
 import '../../../core/constants/color.dart';
@@ -14,9 +15,15 @@ class BottomNavigationBarProvider extends ChangeNotifier {
   List<BottomNavBarModel> bottomItems = [
     BottomNavBarModel(iconData: Icons.home_rounded, labelData: "Home"),
     BottomNavBarModel(iconData: Icons.music_note_rounded, labelData: "Library"),
+    BottomNavBarModel(iconData: Icons.podcasts, labelData: "Podcasts"),
     BottomNavBarModel(iconData: Icons.person_rounded, labelData: "Profile"),
   ];
-  List pages = [HomeScreen(), const LibraryScreen(), const ProfileScreen()];
+  List pages = [
+    const HomeScreen(),
+    const LibraryScreen(),
+    const PodCastScreen(),
+    const ProfileScreen()
+  ];
   var selectedBottomIndex = 0;
   int index = 0;
   // var initialIndex = 0;

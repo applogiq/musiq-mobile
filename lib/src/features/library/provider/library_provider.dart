@@ -155,7 +155,17 @@ class LibraryProvider extends ChangeNotifier {
       isPlayListError = false;
     }
     playListName = name;
+    // validate();
     notifyListeners();
+  }
+
+  validate() {
+    log("efrrrrfr");
+    if (playListName.isNotEmpty) {
+      isPlayListError = false;
+    } else {
+      isPlayListError = false;
+    }
   }
 
   deletePlayList(int playlistId) async {

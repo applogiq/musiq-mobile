@@ -98,7 +98,7 @@ class _SubscriptionOnboardState extends State<SubscriptionOnboard> {
                   margin:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   width: MediaQuery.of(context).size.width,
-                  height: 52,
+                  height: 58,
                   decoration: BoxDecoration(
                     color: CustomColor.secondaryColor,
                     borderRadius: BorderRadius.circular(12),

@@ -127,6 +127,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
                           }
                         : () {},
                     child: CustomButton(
+                      height: 55,
                       isValid:
                           getPayNowState(loginProvider, pro) ? true : false,
                       label: ConstantText.payNow,

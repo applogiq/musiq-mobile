@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/core/utils/navigation.dart';
-import 'package:musiq/src/features/artist/screens/artist_preference_screen/artist_preference_screen.dart';
+import 'package:musiq/src/features/artist/screens/Music_artist_preference%20screen.dart';
 import 'package:musiq/src/features/common/screen/coming_soon_screen.dart';
 import 'package:musiq/src/features/profile/provider/preference_provider.dart';
 import 'package:musiq/src/features/profile/screens/artist_preference.dart';
@@ -103,7 +103,7 @@ class PreferenceMainHeaderWidget extends StatelessWidget {
             icon: InkWell(
               onTap: () {
                 Navigation.navigateToScreenWithoutNamed(
-                    context, const ArtistPreferenceScreen());
+                    context, const MusicArtistPreferenceScreen());
               },
               child: const Icon(
                 Icons.arrow_forward_ios_rounded,

@@ -23,6 +23,7 @@ class PlayPauseController extends StatelessWidget {
             final playerState = snapshot.data;
             final processingState = playerState?.processingState;
             final playing = playerState?.playing;
+            // pro.player.quality = AudioQ
             return GestureDetector(
                 onTap: () {
                   context

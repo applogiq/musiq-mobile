@@ -31,9 +31,6 @@ class PlayListAddButton extends StatelessWidget {
                 width: double.maxFinite,
                 // color: const Color.fromRGBO(22, 21, 28, 0.8),
                 child: PlaylistDialogBox(
-                  onChanged: (v) {
-                    // pro.checkPlayListName(v);
-                  },
                   callBack: () async {
                     await pro.createPlayList(context);
                   },
@@ -42,6 +39,9 @@ class PlayListAddButton extends StatelessWidget {
                   buttonText: ConstantText.create,
                   errorValue: pro.playListError,
                   isError: pro.isPlayListError,
+                  onChanged: (String value) {
+                    pro.checkPlayListName(value);
+                  },
                   // callback: libraryController.createPlaylist(context),
                 ),
               );

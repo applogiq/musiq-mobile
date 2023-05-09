@@ -6,7 +6,7 @@ import '../../core/constants/constant.dart';
 import '../buttons/custom_button.dart';
 import '../container/custom_color_container.dart';
 
-class PlaylistDialogBox extends StatelessWidget {
+class PlaylistDialogBox extends StatefulWidget {
   const PlaylistDialogBox({
     Key? key,
     required this.title,
@@ -28,6 +28,11 @@ class PlaylistDialogBox extends StatelessWidget {
   final bool isError;
   final ValueChanged<String> onChanged;
 
+  @override
+  State<PlaylistDialogBox> createState() => _PlaylistDialogBoxState();
+}
+
+class _PlaylistDialogBoxState extends State<PlaylistDialogBox> {
   contentBox(context) {
     return Consumer(
       builder: (context, pro, _) {
@@ -44,7 +49,7 @@ class PlaylistDialogBox extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        title,
+                        widget.title,
                         style: fontWeight500(),
                       ),
                       InkWell(
@@ -64,7 +69,7 @@ class PlaylistDialogBox extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(left: 8),
                           child: Text(
-                            fieldName,
+                            widget.fieldName,
                             style: fontWeight500(size: 14.0),
                           ),
                         ),
@@ -79,7 +84,7 @@ class PlaylistDialogBox extends StatelessWidget {
                               constraints: const BoxConstraints.expand(
                                   height: 46, width: double.maxFinite),
                               child: TextFormField(
-                                initialValue: initialText,
+                                initialValue: widget.initialText,
                                 cursorColor: Colors.white,
                                 inputFormatters: const [
                                   // FilteringTextInputFormatter.allow(
@@ -114,11 +119,11 @@ class PlaylistDialogBox extends StatelessWidget {
                       onTap: playerProvider.isPlayListError
                           ? () {}
                           : () {
-                              callBack();
+                              widget.callBack();
                             },
                       child: CustomButton(
                         isValid: !playerProvider.isPlayListError,
-                        label: buttonText,
+                        label: widget.buttonText,
                         horizontalMargin: 60,
                         verticalMargin: 8,
                       ),

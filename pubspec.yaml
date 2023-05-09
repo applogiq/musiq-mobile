@@ -40,6 +40,11 @@ dependencies:
   audio_session: ^0.1.11
   equalizer_flutter: ^0.0.1
   dependencies:
+  # audio_waveforms: ^1.0.4
+  # just_waveform: ^0.0.4
+  flutter_audio_waveforms: ^1.2.1+8
+  # audio_wave: ^0.1.5
+  # wave_progress_bars: ^0.1.0
   # flutter_animated_dialog: ^2.0.1
 
 dev_dependencies:

@@ -3,7 +3,7 @@ class ConstantText {
   static const String addToQueue = "Add to queue";
   static String appName = "MusiQ";
   static var browseSong = "Browse songs";
-  static String confirmPassword = "Confirm Password";
+  static String confirmPassword = "Confirm Password *";
   static String continueButton = "Continue";
   static String create = 'Create';
   static String createAccount = "Create account";
@@ -13,14 +13,14 @@ class ConstantText {
   static String expiredOTP =
       'The OTP you have entered has been expired. Please click "Resend OTP"';
 
-  static String fieldRequired = "Field is required";
+  static String fieldRequired = "Field is Required";
   static String forgotPassword = "Forgot password ?";
   static String forgotPassword2 = "Forgot password";
   static String forgotPasswordMain =
       "Please enter your email address linked with your account. We will send an OTP to your mail.";
 
   static String fullName = "Full Name";
-  static String incorrectEmail = "Email address doesn't exist";
+  static String incorrectEmail = "Please enter registered email";
   static String invalidEmail = "Please enter a valid email";
   // static String invalidEmailAndPassword = "Your email or password is Incorrect";
   static String invalidEmailAndPassword = "Invalid Credentials";
@@ -36,7 +36,7 @@ class ConstantText {
   static String noSongHere = "No Songs Here";
   static String noSongInPlayList = "Your songs will appear here";
   static String otp = "Enter OTP";
-  static String password = "Password";
+  static String password = "Password *";
   static String passwordNotMatch = "Password doesn't match";
   static String passwordResetSuccess = 'Password reset successful';
   static String passwordToolTip =
@@ -84,7 +84,7 @@ class ConstantText {
   static const String follow = "Follow";
 
   static const String subscription = "Subscription";
-  static const String getExclusiveContent = "Get Exclusive content";
+  static const String getExclusiveContent = "Get Exclusive Content";
   static const String getExclusiveSubTopic =
       "Enjoy immediate access to exclusive content deepen your connection with your favourite music and discover new artists without any delay.";
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:musiq/src/common_widgets/box/horizontal_box.dart';
 import 'package:musiq/src/features/home/widgets/bottom_navigation_bar_widget.dart';
 import 'package:musiq/src/features/player/screen/player_screen/player_screen.dart';
 import 'package:provider/provider.dart';
@@ -228,6 +229,43 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                                     },
                                     imageUrl: getImageUrl(widget.status, pro),
                                     addToQueue: () {}),
+                                Consumer<PlayerProvider>(
+                                    builder: (context, pro, _) {
+                                  return SliverToBoxAdapter(
+                                    child: Container(
+                                      color:
+                                          const Color.fromRGBO(22, 21, 28, 1),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 16, left: 16, right: 16),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            const Text("36 episodes"),
+                                            Row(
+                                              children: const [
+                                                Icon(
+                                                  Icons.north,
+                                                  size: 10,
+                                                ),
+                                                Icon(
+                                                  Icons.south,
+                                                  size: 10,
+                                                  color: Color.fromRGBO(
+                                                      255, 255, 255, 0.4),
+                                                ),
+                                                HorizontalBox(width: 8),
+                                                Text('Sort'),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }),
+
                                 AlbumSongsList(
                                   isPremium: widget.isPremium,
                                   status: widget.status,

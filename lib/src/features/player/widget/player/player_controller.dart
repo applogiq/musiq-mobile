@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../../common_widgets/box/vertical_box.dart';
 import 'player_widgets.dart';
 
-class PlayerController extends StatelessWidget {
-  const PlayerController({super.key});
+class PlayerControllers extends StatelessWidget {
+  const PlayerControllers({super.key});
 
   @override
   Widget build(BuildContext context) {

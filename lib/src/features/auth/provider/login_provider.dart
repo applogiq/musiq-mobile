@@ -50,7 +50,7 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
   emailAddressChanged(value) {
     emailAddress = value;
     if (value.isEmpty) {
-      emailAddressErrorMessage = "Field is required";
+      emailAddressErrorMessage = "Field is Required";
     } else if (!isEmailValid(value)) {
       emailAddressErrorMessage = ConstantText.invalidEmail;
     } else {
@@ -67,7 +67,7 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
         RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
     password = value;
     if (value.isEmpty) {
-      passwordErrorMessage = "Field is required";
+      passwordErrorMessage = "Field is Required";
     } else if (!regex.hasMatch(value)) {
       passwordErrorMessage = "Enter valid password";
     } else {
@@ -154,7 +154,7 @@ class LoginProvider extends ChangeNotifier with InputValidationMixin {
 // Password field tap trigger passwordTap
   passwordTap() {
     if (emailAddress.isEmpty) {
-      emailAddressErrorMessage = "Field is required";
+      emailAddressErrorMessage = "Field is Required";
     } else if (!isEmailValid(emailAddress)) {
       emailAddressErrorMessage = ConstantText.invalidEmail;
     } else {

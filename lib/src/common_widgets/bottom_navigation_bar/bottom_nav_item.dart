@@ -17,7 +17,7 @@ class NavBarItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 50,
-      width: width / 3,
+      width: width / 4,
       child: Consumer<BottomNavigationBarProvider>(
         builder: (context, provider, _) {
           return InkWell(

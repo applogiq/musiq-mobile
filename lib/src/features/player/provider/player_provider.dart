@@ -84,6 +84,7 @@ class PlayerProvider extends ChangeNotifier {
       success: false, message: "No records", records: [], totalRecords: 0);
 
   AudioPlayer player = AudioPlayer();
+
   PlayerRepo playerRepo = PlayerRepo();
   ConcatenatingAudioSource playlist = ConcatenatingAudioSource(children: []);
   Stream<Duration>? positionStream = const Stream.empty();
@@ -828,6 +829,11 @@ class PlayerProvider extends ChangeNotifier {
     context.read<PlayerProvider>().deleteSongInQueue(index);
     objectbox.removeQueueSong(e.id);
     notifyListeners();
+  }
+
+  sort() {
+    // playlist.children.toList()..sort((b, a) => a.);
+    // playlist.so
   }
 
   // init() async {

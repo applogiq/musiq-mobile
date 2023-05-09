@@ -47,9 +47,23 @@ class SearchListView extends StatelessWidget {
                           searchRequestModel.searchStatus ==
                               SearchStatus.artistPreference) {
                         return pro.artistModel.message == "No records"
-                            ? const NoRecordWidget()
-                            : pro.isArtistSearch
-                                ? loader(context)
+                            ? SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.8,
+                                width: double.infinity,
+                                child: const Center(child: NoRecordWidget()))
+                            : pro.artistModel.records.isEmpty
+                                ? SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.8,
+                                    width: double.infinity,
+                                    child: Center(
+                                        child: Text(
+                                      "Search preferred Artist",
+                                      style: fontWeight500(),
+                                    )))
+                                // : pro.isArtistSearch
+                                //     ? loader(context)
                                 : ArtistPrefereneSearchListView(
                                     searchRequestModel: searchRequestModel,
                                     pro: pro,

@@ -35,7 +35,7 @@ class ForgotPasswordProvider extends ChangeNotifier with InputValidationMixin {
   void emailChanged(String value) {
     emailAddress = value;
     if (value.isEmpty) {
-      emailAddressErrorMessage = "Field is required";
+      emailAddressErrorMessage = "Field is Required";
       buttonEmailStatus(false);
     } else if (!isEmailValid(value)) {
       emailAddressErrorMessage = ConstantText.invalidEmail;

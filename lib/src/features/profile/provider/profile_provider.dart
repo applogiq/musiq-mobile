@@ -288,7 +288,7 @@ class ProfileProvider extends ChangeNotifier {
   nameChanged(value) {
     name = value;
     if (value.isEmpty) {
-      nameError = "Field is required";
+      nameError = "Field is Required";
     } else {
       nameError = "";
     }
@@ -298,7 +298,7 @@ class ProfileProvider extends ChangeNotifier {
   userNameChanged(value) {
     userName = value;
     if (value.isEmpty) {
-      userNameError = "Field is required";
+      userNameError = "Field is Required";
     } else {
       userNameError = "";
     }
