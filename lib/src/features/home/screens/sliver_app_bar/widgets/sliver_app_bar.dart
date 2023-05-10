@@ -20,6 +20,10 @@ class SliverCustomAppBar extends StatelessWidget {
     required this.addToQueue,
     required this.popUpMenu,
     this.isPremium = false,
+    required this.istitleAndDescriptionVisible,
+    required this.podcastTitle,
+    required this.podcastSubtitle,
+    required this.podcastAuthor,
   }) : super(key: key);
 
   final double maxAppBarHeight;
@@ -31,6 +35,10 @@ class SliverCustomAppBar extends StatelessWidget {
   final Function addToQueue;
   final Widget popUpMenu;
   final bool isPremium;
+  final bool istitleAndDescriptionVisible;
+  final String podcastTitle;
+  final String podcastSubtitle;
+  final String podcastAuthor;
 
   @override
   Widget build(BuildContext context) {
@@ -120,6 +128,9 @@ class SliverCustomAppBar extends StatelessWidget {
                   shrinkToMaxAppBarHeightRatio > 0.6
                       ? const SizedBox.shrink()
                       : AppBarOverlayContent(
+                          podcastTitle: podcastTitle,
+                          podcastSubtitle: podcastSubtitle,
+                          podcastAuthor: podcastAuthor,
                           popUpMenu: popUpMenu,
                           title: title,
                           count: songCounts,
@@ -131,6 +142,8 @@ class SliverCustomAppBar extends StatelessWidget {
                             addToQueue();
                           },
                           isPremium: isPremium,
+                          istitleAndDescriptionVisible:
+                              istitleAndDescriptionVisible,
                         ),
                 ],
               );

@@ -78,14 +78,21 @@ class TopAlbum extends StatelessWidget {
                                       } else {
                                         Navigator.of(context).push(
                                             MaterialPageRoute(
-                                                builder: (context) => ViewAllScreen(
-                                                    status: ViewAllStatus.album,
-                                                    id: album.records[index].id,
-                                                    isPremium: getPremiumStatus(
-                                                        context,
-                                                        album.records[index],
-                                                        index)
-                                                    // index == 1 ? true : false,
+                                                builder: (context) =>
+                                                    ViewAllScreen(
+                                                      status:
+                                                          ViewAllStatus.album,
+                                                      id: album
+                                                          .records[index].id,
+                                                      isPremium:
+                                                          getPremiumStatus(
+                                                              context,
+                                                              album.records[
+                                                                  index],
+                                                              index),
+                                                      istitleAndDescriptionVisible:
+                                                          false,
+                                                      // index == 1 ? true : false,
                                                     )));
                                       }
                                     },

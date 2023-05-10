@@ -358,6 +358,11 @@ class PlayerProvider extends ChangeNotifier {
       // // for (var e in playerSongList) {
       for (int i = 0; i < playerSongList.length; i++) {
         var e = playerSongList[i];
+        log(e.id.toString());
+        log(e.title.toString());
+        log(e.title.toString());
+        log(e.premium.toString());
+        print(generateSongUrl(e.id));
         if (e.premium == "free") {
           songListModels.add(SongListModel(
               songId: e.id,

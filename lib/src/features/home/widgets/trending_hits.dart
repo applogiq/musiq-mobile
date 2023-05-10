@@ -40,6 +40,7 @@ class TrendingHitsWidget extends StatelessWidget {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => const ViewAllScreen(
                             status: ViewAllStatus.trendingHits,
+                            istitleAndDescriptionVisible: false,
                           )));
                 },
                 child: Text(

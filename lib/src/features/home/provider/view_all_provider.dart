@@ -1,7 +1,11 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:musiq/src/core/utils/toast_message.dart';
+import 'package:musiq/src/features/podcast/domain/model/get_all_podcasts_model.dart';
+import 'package:musiq/src/features/podcast/domain/model/get_specific_album.dart';
+import 'package:musiq/src/features/podcast/domain/repo/podcast_repo.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/enums/enums.dart';
@@ -19,6 +23,7 @@ import '../domain/repository/home_repo.dart';
 class ViewAllProvider extends ChangeNotifier {
   bool isLoad = true;
   HomeRepository homeRepository = HomeRepository();
+  PodcastReposiory podcastRepo = PodcastReposiory();
   TrendingHitsModel trendingHitsModel = TrendingHitsModel(
       success: false, message: "No records", records: [], totalrecords: 0);
 
@@ -34,7 +39,10 @@ class ViewAllProvider extends ChangeNotifier {
       success: false, message: "No records", records: [], totalRecords: 0);
   CollectionViewAllModel collectionViewAllModel = CollectionViewAllModel(
       success: false, message: "No records", records: [], totalrecords: 0);
-
+  GetAllPodcasts getAllpodcasts = GetAllPodcasts(
+      success: false, message: "No records ", records: [], totalrecords: 0);
+  GetSpecificPodcasts getSpecificPodcasts = GetSpecificPodcasts(
+      success: false, message: "No records", records: [], totalRecords: 0);
   loaderEnable() {
     isLoad = true;
     notifyListeners();
@@ -106,6 +114,14 @@ class ViewAllProvider extends ChangeNotifier {
         collectionViewAllModel = CollectionViewAllModel.fromMap(data);
         notifyListeners();
       }
+    } else if (status == ViewAllStatus.podCastAll) {
+      var res = await podcastRepo.viewPodcastList(100, id.toString());
+      if (res.statusCode == 200) {
+        getSpecificPodcasts =
+            GetSpecificPodcasts.fromJson(jsonDecode(res.body.toString()));
+        log("message${getSpecificPodcasts.records}");
+        notifyListeners();
+      }
     }
     if (goToNextfunction) {
       navigateToPlayerScreen(context!, status, index: index!);
@@ -115,7 +131,7 @@ class ViewAllProvider extends ChangeNotifier {
   }
 
   navigateToPlayerScreen(BuildContext context, ViewAllStatus viewAllStatus,
-      {int index = 0}) async {
+      {int index = 0, String artistname = "", String artistId = ""}) async {
     List<PlayerSongListModel> playerSongList = [];
     switch (viewAllStatus) {
       case ViewAllStatus.newRelease:
@@ -196,6 +212,23 @@ class ViewAllProvider extends ChangeNotifier {
               duration: record.duration,
               premium: record.premiumStatus,
               isImage: record.isImage));
+        }
+
+        break;
+      case ViewAllStatus.podCastAll:
+        for (var record in getSpecificPodcasts.records) {
+          log("fjirgrnhgnhtgjtjgnt${record.id}");
+
+          print(record.duration!.toString());
+          playerSongList.add(PlayerSongListModel(
+              id: record.id!,
+              albumName: record.description!,
+              title: record.episodeTitle.toString(),
+              imageUrl: generatePodcastImageUrl(artistname, artistId),
+              musicDirectorName: "sxssd",
+              duration: record.duration!,
+              premium: "free",
+              isImage: true));
         }
         break;
       default:

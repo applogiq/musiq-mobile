@@ -76,6 +76,7 @@ class ArtistListView extends StatelessWidget {
                                       title: artist.records[index].artistName
                                           .toString(),
                                       isImage: artist.records[index].isImage,
+                                      istitleAndDescriptionVisible: false,
                                     )));
 
                             // Navigation.navigateToScreen(

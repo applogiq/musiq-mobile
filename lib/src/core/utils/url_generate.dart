@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:musiq/src/core/constants/api.dart';
 
 //?Generate artist image url using artist id
@@ -37,7 +35,16 @@ generateProfileImageUrl(userRegisterId) {
 generateSongUrl(int songId) {
   String url =
       // "https://api-musiq.applogiq.org/api/v1/audio?song_id=${songId.toString()}";
-      "http://192.168.29.94:6060/api/v1/audio?song_id=${songId.toString()}";
-  log("123$url");
+      // "http://192.168.29.94:6060/api/v1/audio?song_id=${songId.toString()}";
+      "http://192.168.29.94:6060/api/v1/podcast-audio?id=${songId.toString()}";
+  // log("123$url");
+  return url;
+}
+
+generatePodcastImageUrl(String artistname, String podcastId) {
+  String firstLetter = artistname.substring(0, 1);
+  var url =
+      "${APIConstants.baseUrl}${APIConstants.versionUrl}public/podcast/$firstLetter/$artistname/image/$podcastId.png";
+  // log(url.toString());
   return url;
 }

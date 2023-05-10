@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:musiq/src/features/home/screens/sliver_app_bar/widgets/song_list_tile.dart';
 import 'package:musiq/src/features/payment/screen/subscription_screen.dart';
 import 'package:musiq/src/features/player/provider/player_provider.dart';
+import 'package:musiq/src/features/podcast/domain/model/get_specific_album.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/enums/enums.dart';
@@ -26,9 +29,13 @@ class AlbumSongsList extends StatelessWidget {
     this.auraSongListModel,
     this.collectionViewAllModel,
     this.isPremium = false,
+    this.getall,
+    this.artisttitle,
+    this.artistId,
   }) : super(key: key);
 
   final AlbumSongListModel? albumSongListModel;
+  final GetSpecificPodcasts? getall;
   final AuraSongListModel? auraSongListModel;
   final CollectionViewAllModel? collectionViewAllModel;
   final NewReleaseModel? newReleaseModel;
@@ -36,6 +43,8 @@ class AlbumSongsList extends StatelessWidget {
   final ViewAllStatus status;
   final TrendingHitsModel? trendingHitsModel;
   final bool isPremium;
+  final String? artisttitle;
+  final String? artistId;
   bool getPremiumStatusUtil(
       BuildContext context, String premiumStatus, int index) {
     if (premiumStatus == "premium" &&
@@ -59,11 +68,12 @@ class AlbumSongsList extends StatelessWidget {
         return trendingHitsModel!.records.length;
       case ViewAllStatus.album:
         return albumSongListModel!.totalrecords;
-
       case ViewAllStatus.aura:
         return auraSongListModel!.records.length;
       case ViewAllStatus.artist:
         return collectionViewAllModel!.records.length;
+      case ViewAllStatus.podCastAll:
+        return getall!.records.length;
       default:
         return 0;
     }
@@ -84,6 +94,8 @@ class AlbumSongsList extends StatelessWidget {
             auraSongListModel!.records[index].auraSongs.songId.toString());
       case ViewAllStatus.artist:
         return collectionViewAllModel!.records[index]!.id;
+      case ViewAllStatus.podCastAll:
+        return getall!.records[index].id!.toInt();
       default:
         return 0;
     }
@@ -111,6 +123,9 @@ class AlbumSongsList extends StatelessWidget {
         return generateSongImageUrl(
             collectionViewAllModel!.records[index]!.albumName,
             collectionViewAllModel!.records[index]!.albumId);
+
+      case ViewAllStatus.podCastAll:
+        return generatePodcastImageUrl(artisttitle!, artistId!);
       default:
         return 0;
     }
@@ -131,6 +146,8 @@ class AlbumSongsList extends StatelessWidget {
         return auraSongListModel!.records[index].musicDirectorName[0];
       case ViewAllStatus.artist:
         return collectionViewAllModel!.records[index]!.musicDirectorName![0];
+      case ViewAllStatus.podCastAll:
+        return "fdfrf";
       default:
         return 0;
     }
@@ -151,6 +168,8 @@ class AlbumSongsList extends StatelessWidget {
         return auraSongListModel!.records[index].songName;
       case ViewAllStatus.artist:
         return collectionViewAllModel!.records[index]!.songName;
+      case ViewAllStatus.podCastAll:
+        return getall!.records[index].episodeTitle;
       default:
         return 0;
     }
@@ -171,6 +190,8 @@ class AlbumSongsList extends StatelessWidget {
         return auraSongListModel!.records[index].duration;
       case ViewAllStatus.artist:
         return collectionViewAllModel!.records[index]!.duration;
+      case ViewAllStatus.podCastAll:
+        return getall!.records[index].duration;
       default:
         return "0";
     }
@@ -192,6 +213,8 @@ class AlbumSongsList extends StatelessWidget {
         return auraSongListModel!.records[index].albumName;
       case ViewAllStatus.artist:
         return collectionViewAllModel!.records[index]!.albumName;
+      case ViewAllStatus.podCastAll:
+        return getall!.records[index].description;
       default:
         return 0;
     }
@@ -222,6 +245,8 @@ class AlbumSongsList extends StatelessWidget {
       case ViewAllStatus.artist:
         return getPremiumStatusUtil(context,
             collectionViewAllModel!.records[index]!.premiumStatus, index);
+      case ViewAllStatus.podCastAll:
+        return false;
 
       default:
         return false;
@@ -244,6 +269,8 @@ class AlbumSongsList extends StatelessWidget {
         return auraSongListModel!.records[index].isImage;
       case ViewAllStatus.artist:
         return collectionViewAllModel!.records[index]!.isImage;
+      case ViewAllStatus.podCastAll:
+        return true;
       default:
         return false;
     }
@@ -261,10 +288,14 @@ class AlbumSongsList extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 0),
                 child: InkWell(
                   onTap: () {
+                    log(index.toString());
+                    log(status.toString());
                     if (!getPremiumStatus(status, index, context)) {
                       context.read<ViewAllProvider>().navigateToPlayerScreen(
                           context, status,
-                          index: index);
+                          index: index,
+                          artistId: artistId!,
+                          artistname: artisttitle!);
                     } else {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const SubscriptionsScreen()));

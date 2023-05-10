@@ -50,6 +50,7 @@ class CurrentMood extends StatelessWidget {
                                         auraId: auraModel.records[index].auraId,
                                         title:
                                             auraModel.records[index].auraName,
+                                        istitleAndDescriptionVisible: false,
                                       )));
                             },
                             child: CustomColorContainer(

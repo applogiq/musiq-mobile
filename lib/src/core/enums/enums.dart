@@ -7,7 +7,8 @@ enum ViewAllStatus {
   album,
   aura,
   artist,
-  playlist
+  playlist,
+  podCastAll
 }
 
 enum SubscriptionPlan { free, threeMonths, sixMonths }

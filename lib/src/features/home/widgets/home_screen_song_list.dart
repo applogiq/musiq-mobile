@@ -47,6 +47,7 @@ class HomeScreenSongList extends StatelessWidget {
                                   status: title == "New Releases"
                                       ? ViewAllStatus.newRelease
                                       : ViewAllStatus.recentlyPlayed,
+                                  istitleAndDescriptionVisible: false,
                                 )));
                       },
                       child: Text(

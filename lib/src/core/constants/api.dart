@@ -70,4 +70,20 @@ class APIConstants {
 
     return url;
   }
+
+//podcast Url
+
+  getAllPodcasturl(int limit) {
+    var url = "$baseUrl${versionUrl}podcast/?limit=${limit.toString()}";
+
+    return url;
+  }
+
+  viewPodcastListUrl(int limit, String id) {
+    var url =
+        "$baseUrl${versionUrl}podcast-episode/list/${id.toString()}?limit=${limit.toString()}";
+
+    return url;
+  }
+// http://192.168.29.94:6060/api/v1/podcast-episode/list/2?limit=100
 }

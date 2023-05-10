@@ -1,36 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:musiq/src/common_widgets/box/horizontal_box.dart';
+import 'package:musiq/src/core/constants/constant.dart';
+import 'package:musiq/src/features/home/screens/sliver_app_bar/widgets/album_song_list.dart';
 import 'package:musiq/src/features/home/widgets/bottom_navigation_bar_widget.dart';
 import 'package:musiq/src/features/player/screen/player_screen/player_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common_widgets/loader.dart';
-import '../../../../core/constants/color.dart';
 import '../../../../core/enums/enums.dart';
 import '../../../../core/utils/url_generate.dart';
 import '../../../common/screen/offline_screen.dart';
 import '../../../payment/screen/subscription_screen.dart';
 import '../../../player/provider/player_provider.dart';
 import '../../provider/view_all_provider.dart';
-import 'widgets/album_song_list.dart';
 import 'widgets/sliver_app_bar.dart';
 
 class ViewAllScreen extends StatefulWidget {
-  const ViewAllScreen(
-      {super.key,
-      required this.status,
-      this.id,
-      this.auraId,
-      this.title,
-      this.isImage = true,
-      this.isPremium = false});
+  const ViewAllScreen({
+    super.key,
+    required this.status,
+    this.id,
+    this.auraId,
+    this.title,
+    this.isImage = true,
+    this.isPremium = false,
+    this.artisttitle,
+    this.artistId,
+    required this.istitleAndDescriptionVisible,
+    this.podcastTitle = "",
+    this.podcastSubtitle = "",
+    this.podcastAuthor = "",
+  });
   final ViewAllStatus status;
   final int? id;
   final String? auraId;
   final String? title;
   final bool isImage;
   final bool isPremium;
+  final String? artisttitle;
+  final String? artistId;
+  final bool istitleAndDescriptionVisible;
+  final String podcastTitle;
+  final String podcastSubtitle;
+  final String podcastAuthor;
 
   @override
   State<ViewAllScreen> createState() => _ViewAllScreenState();
@@ -72,6 +85,8 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
         return widget.title;
       case ViewAllStatus.aura:
         return widget.title;
+      case ViewAllStatus.podCastAll:
+        return widget.title;
       default:
         return "";
     }
@@ -95,6 +110,8 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
           pro.albumSongListModel.records[0].albumName,
           pro.albumSongListModel.records[0].albumId,
         );
+      case ViewAllStatus.podCastAll:
+        return generatePodcastImageUrl(widget.artisttitle!, widget.artistId!);
 
       case ViewAllStatus.aura:
         return generateAuraImageUrl(widget.auraId);
@@ -125,6 +142,12 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
             .length;
       case ViewAllStatus.aura:
         return context.read<ViewAllProvider>().auraSongListModel.records.length;
+      case ViewAllStatus.podCastAll:
+        return context
+            .read<ViewAllProvider>()
+            .getSpecificPodcasts
+            .records
+            .length;
       case ViewAllStatus.artist:
         return context
             .read<ViewAllProvider>()
@@ -184,89 +207,106 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                               controller: scrollController,
                               slivers: [
                                 SliverCustomAppBar(
-                                    isPremium: widget.isPremium,
-                                    popUpMenu: PopupMenuButton(
-                                      iconSize: 26,
-                                      color: CustomColor.appBarColor,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(8.0),
-                                          bottomRight: Radius.circular(8.0),
-                                          topLeft: Radius.circular(8.0),
-                                          topRight: Radius.circular(8.0),
-                                        ),
+                                  isPremium: widget.isPremium,
+                                  popUpMenu: PopupMenuButton(
+                                    iconSize: 26,
+                                    color: CustomColor.appBarColor,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(8.0),
+                                        bottomRight: Radius.circular(8.0),
+                                        topLeft: Radius.circular(8.0),
+                                        topRight: Radius.circular(8.0),
                                       ),
-                                      padding: const EdgeInsets.fromLTRB(
-                                          0.0, 0.0, 0.0, 0.0),
-                                      onSelected: (value) {
-                                        if (widget.isPremium) {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const SubscriptionsScreen()));
-                                        } else {
-                                          context
-                                              .read<ViewAllProvider>()
-                                              .addQueue(widget.status, context);
-                                        }
-                                      },
-                                      itemBuilder: (ctx) => [
-                                        const PopupMenuItem(
-                                          value: 1,
-                                          child: Text('Add to Queue'),
-                                        ),
-                                      ],
                                     ),
-                                    maxAppBarHeight: maxAppBarHeight,
-                                    minAppBarHeight: minAppBarHeight,
-                                    title: getTitle(widget.status),
-                                    songCounts: getSongCount(widget.status),
-                                    callback: () {
-                                      context
-                                          .read<ViewAllProvider>()
-                                          .navigateToPlayerScreen(
-                                              context, widget.status);
+                                    padding: const EdgeInsets.fromLTRB(
+                                        0.0, 0.0, 0.0, 0.0),
+                                    onSelected: (value) {
+                                      if (widget.isPremium) {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const SubscriptionsScreen()));
+                                      } else {
+                                        context
+                                            .read<ViewAllProvider>()
+                                            .addQueue(widget.status, context);
+                                      }
                                     },
-                                    imageUrl: getImageUrl(widget.status, pro),
-                                    addToQueue: () {}),
-                                Consumer<PlayerProvider>(
-                                    builder: (context, pro, _) {
-                                  return SliverToBoxAdapter(
-                                    child: Container(
-                                      color:
-                                          const Color.fromRGBO(22, 21, 28, 1),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 16, left: 16, right: 16),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            const Text("36 episodes"),
-                                            Row(
-                                              children: const [
-                                                Icon(
-                                                  Icons.north,
-                                                  size: 10,
-                                                ),
-                                                Icon(
-                                                  Icons.south,
-                                                  size: 10,
-                                                  color: Color.fromRGBO(
-                                                      255, 255, 255, 0.4),
-                                                ),
-                                                HorizontalBox(width: 8),
-                                                Text('Sort'),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
+                                    itemBuilder: (ctx) => [
+                                      const PopupMenuItem(
+                                        value: 1,
+                                        child: Text('Add to Queue'),
                                       ),
-                                    ),
-                                  );
-                                }),
+                                    ],
+                                  ),
+                                  maxAppBarHeight: maxAppBarHeight,
+                                  minAppBarHeight: minAppBarHeight,
+                                  title: getTitle(widget.status),
+                                  songCounts: getSongCount(widget.status),
+                                  callback: () {
+                                    context
+                                        .read<ViewAllProvider>()
+                                        .navigateToPlayerScreen(
+                                            context, widget.status);
+                                  },
+                                  imageUrl: getImageUrl(widget.status, pro),
+                                  addToQueue: () {},
+                                  istitleAndDescriptionVisible:
+                                      widget.istitleAndDescriptionVisible,
+                                  podcastAuthor: widget.podcastAuthor,
+                                  podcastTitle: widget.podcastTitle,
+                                  podcastSubtitle: widget.podcastSubtitle,
+                                ),
+
+                                widget.istitleAndDescriptionVisible
+                                    ? Consumer<ViewAllProvider>(
+                                        builder: (context, pro, _) {
+                                        return SliverToBoxAdapter(
+                                          child: Container(
+                                            color: const Color.fromRGBO(
+                                                22, 21, 28, 1),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 16, left: 16, right: 16),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    "${pro.getSpecificPodcasts.records.length.toString()} episodes",
+                                                    style: fontWeight500(),
+                                                  ),
+                                                  Row(
+                                                    children: const [
+                                                      Icon(
+                                                        Icons.north,
+                                                        size: 10,
+                                                      ),
+                                                      Icon(
+                                                        Icons.south,
+                                                        size: 10,
+                                                        color: Color.fromRGBO(
+                                                            255, 255, 255, 0.4),
+                                                      ),
+                                                      HorizontalBox(width: 8),
+                                                      Text('Sort'),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      })
+                                    : const SliverToBoxAdapter(
+                                        child: SizedBox.shrink()),
 
                                 AlbumSongsList(
+                                  getall: pro.getSpecificPodcasts,
+                                  artisttitle: widget.artisttitle,
+                                  artistId: widget.artistId,
                                   isPremium: widget.isPremium,
                                   status: widget.status,
                                   newReleaseModel: pro.newReleaseModel,

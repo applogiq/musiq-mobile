@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:musiq/src/common_widgets/box/vertical_box.dart';
 import 'package:musiq/src/core/constants/constant.dart';
 import 'package:musiq/src/core/constants/images.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,11 @@ class AppBarOverlayContent extends StatelessWidget {
       required this.size,
       required this.addQueue,
       required this.popUpMenu,
-      required this.isPremium})
+      required this.isPremium,
+      required this.istitleAndDescriptionVisible,
+      this.podcastTitle = "",
+      this.podcastSubtitle = "",
+      this.podcastAuthor = ""})
       : super(key: key);
 
   final String title;
@@ -26,6 +31,10 @@ class AppBarOverlayContent extends StatelessWidget {
   final double size;
   final Widget popUpMenu;
   final bool isPremium;
+  final bool istitleAndDescriptionVisible;
+  final String podcastTitle;
+  final String podcastSubtitle;
+  final String podcastAuthor;
 
   @override
   Widget build(BuildContext context) {
@@ -70,26 +79,64 @@ class AppBarOverlayContent extends StatelessWidget {
                       ],
                     ),
                   ),
-                  count <= 0
+                  istitleAndDescriptionVisible
                       ? const SizedBox.shrink()
-                      : size < 0.6
-                          ? popUpMenu
-                          : const SizedBox.shrink()
+                      : count <= 0
+                          ? const SizedBox.shrink()
+                          : size < 0.6
+                              ? popUpMenu
+                              : const SizedBox.shrink()
                 ],
               ),
             ),
-            Text(
-              "$count Songs",
-              //  "",
-              style: fontWeight400(
-                size: size < 0.3
-                    ? 14.0
-                    : size > 0.48
-                        ? 0.0
-                        : 14.0,
-                color: CustomColor.subTitle2,
-              ),
-            ),
+            istitleAndDescriptionVisible
+                ? const VerticalBox(height: 5)
+                : const SizedBox.shrink(),
+            istitleAndDescriptionVisible
+                ? Text(
+                    podcastAuthor,
+                    //  "",
+                    style: fontWeight400(
+                      size: size < 0.3
+                          ? 14.0
+                          : size > 0.48
+                              ? 0.0
+                              : 14.0,
+                      color: const Color.fromRGBO(255, 255, 255, 0.8),
+                    ),
+                  )
+                : const SizedBox.shrink(),
+            istitleAndDescriptionVisible
+                ? const VerticalBox(height: 12)
+                : const SizedBox.shrink(),
+            istitleAndDescriptionVisible
+                ? Text(
+                    podcastSubtitle,
+                    //  "",
+                    style: fontWeight400(
+                        size: size < 0.3
+                            ? 14.0
+                            : size > 0.48
+                                ? 0.0
+                                : 14.0,
+                        color: const Color.fromRGBO(255, 255, 255, 0.5)),
+                    overflow: TextOverflow.visible,
+                  )
+                : const SizedBox.shrink(),
+            istitleAndDescriptionVisible
+                ? const SizedBox.shrink()
+                : Text(
+                    "$count Songs",
+                    //  "",
+                    style: fontWeight400(
+                      size: size < 0.3
+                          ? 14.0
+                          : size > 0.48
+                              ? 0.0
+                              : 14.0,
+                      color: CustomColor.subTitle2,
+                    ),
+                  ),
             count <= 0
                 ? const SizedBox.shrink()
                 : AnimatedOpacity(
@@ -144,22 +191,6 @@ class AppBarOverlayContent extends StatelessWidget {
                                 onTap: () {
                                   callback();
                                 },
-                                // onTap: () {
-                                //   List songId = [];
-                                //   for (var record
-                                //       in pro.collectionViewAllModel.records) {
-                                //     songId.add(record!.id.toString());
-                                //   }
-
-                                //
-                                //   Navigation.navigateToScreen(
-                                //       context, RouteName.player,
-                                //       args: PlayerModel(
-                                //           collectionViewAllModel:
-                                //               pro.collectionViewAllModel,
-                                //           songList: songId,
-                                //           selectedSongIndex: 0));
-                                // },
                                 child: CustomButton(
                                     isIcon: true,
                                     label: "Play All ",

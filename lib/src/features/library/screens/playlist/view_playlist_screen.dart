@@ -93,31 +93,36 @@ class _ViewPlaylistSongScreenState extends State<ViewPlaylistSongScreen> {
                                   controller: scrollController,
                                   slivers: [
                                     SliverCustomAppBar(
-                                        popUpMenu: ViewAllPlaylistPopUpMenu(
-                                          id: widget.id!,
-                                          title: pro.playlistSongListModel
-                                              .records[0].playlistName,
-                                          mainContext: context,
-                                        ),
-                                        maxAppBarHeight: maxAppBarHeight,
-                                        minAppBarHeight: minAppBarHeight,
+                                      popUpMenu: ViewAllPlaylistPopUpMenu(
+                                        id: widget.id!,
                                         title: pro.playlistSongListModel
                                             .records[0].playlistName,
-                                        songCounts: pro.playlistSongListModel
-                                            .records.length,
-                                        callback: () {
-                                          context
-                                              .read<LibraryProvider>()
-                                              .navigateToPlayerScreen(
-                                                  context, widget.id!);
-                                        },
-                                        imageUrl: generateSongImageUrl(
-                                                pro.playlistSongListModel
-                                                    .records[0].albumName,
-                                                pro.playlistSongListModel
-                                                    .records[0].albumId) ??
-                                            "",
-                                        addToQueue: () {}),
+                                        mainContext: context,
+                                      ),
+                                      maxAppBarHeight: maxAppBarHeight,
+                                      minAppBarHeight: minAppBarHeight,
+                                      title: pro.playlistSongListModel
+                                          .records[0].playlistName,
+                                      songCounts: pro
+                                          .playlistSongListModel.records.length,
+                                      callback: () {
+                                        context
+                                            .read<LibraryProvider>()
+                                            .navigateToPlayerScreen(
+                                                context, widget.id!);
+                                      },
+                                      imageUrl: generateSongImageUrl(
+                                              pro.playlistSongListModel
+                                                  .records[0].albumName,
+                                              pro.playlistSongListModel
+                                                  .records[0].albumId) ??
+                                          "",
+                                      addToQueue: () {},
+                                      istitleAndDescriptionVisible: false,
+                                      podcastAuthor: '',
+                                      podcastTitle: "",
+                                      podcastSubtitle: "",
+                                    ),
                                     SliverList(
                                       delegate: SliverChildBuilderDelegate(
                                         childCount: pro.playlistSongListModel

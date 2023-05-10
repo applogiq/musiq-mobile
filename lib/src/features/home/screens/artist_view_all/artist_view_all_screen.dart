@@ -114,6 +114,7 @@ class ArtistGridView extends StatelessWidget {
                         auraId: artistModel.records[index].artistId,
                         title: artistModel.records[index].artistName.toString(),
                         isImage: artistModel.records[index].isImage,
+                        istitleAndDescriptionVisible: false,
                       )));
               // Navigation.navigateToScreen(
               //     context, RouteName.artistViewAllSongListScreen,
