@@ -1,9 +1,9 @@
 Map environmentList = {
-  'local': ' http://127.0.0.1:6060/', //Local base url
+  'local': 'http://127.0.0.1:6060/', //Local base url
   'develop': 'https://api-musiq.applogiq.org/', //Develop base url
   'production': 'http://192.168.29.50:4020/' //Production base url
 };
 
-String environment = "develop";
+String environment = "local";
 
 var hostConfig = {"api_url": environmentList[environment]};

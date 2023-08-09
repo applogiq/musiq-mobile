@@ -48,8 +48,30 @@ class _ArtistPreferenceScreenState extends State<ArtistPreferenceScreen> {
                             Size(MediaQuery.of(context).size.width, 80),
                         child: const ArtistPreferenceAppBarWidget(),
                       ),
-                      body: const ArtistPreferenceScreenBody(
-                        artistList: [],
+                      body: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 16),
+                                child: Text(
+                                  "Followed Artists",
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                              ),
+                              Text(
+                                provider.userFollowedArtist.length.toString(),
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                            ],
+                          ),
+                          const Expanded(
+                            child: ArtistPreferenceScreenBody(
+                              artistList: [],
+                            ),
+                          ),
+                        ],
                       ),
                       bottomNavigationBar: Consumer<ArtistPreferenceProvider>(
                           builder: (context, pro, _) {

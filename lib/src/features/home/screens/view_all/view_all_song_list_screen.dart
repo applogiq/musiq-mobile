@@ -68,7 +68,7 @@ class _ViewAllSongListScreenState extends State<ViewAllSongListScreen> {
                       slivers: [
                         SliverCustomAppBarSong(
                           title: widget.status == ViewAllStatus.recentlyPlayed
-                              ? "Recently Played"
+                              ? "Recently Plfeferferfayed"
                               : "fdf",
                           maxAppBarHeight: maxAppBarHeight,
                           minAppBarHeight: minAppBarHeight,

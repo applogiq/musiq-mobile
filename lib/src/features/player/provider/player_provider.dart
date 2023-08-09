@@ -342,8 +342,9 @@ class PlayerProvider extends ChangeNotifier {
     }
   }
 
-  void goToPlayer(BuildContext context,
-      List<PlayerSongListModel> playerSongList, int index) async {
+  void goToPlayer(
+      BuildContext context, List<PlayerSongListModel> playerSongList, int index,
+      {bool viewAllStatus = false}) async {
     try {
       if (player.playing) {
         await player.stop();
@@ -370,11 +371,15 @@ class PlayerProvider extends ChangeNotifier {
               title: e.title,
               musicDirectorName: e.musicDirectorName,
               imageUrl: e.imageUrl,
-              songUrl: generateSongUrl(e.id),
+              songUrl: viewAllStatus
+                  ? generatePodcastUrl(e.id)
+                  : generateSongUrl(e.id),
               duration: e.duration,
               isImage: e.isImage));
           final item = MediaItem(
-              id: generateSongUrl(e.id),
+              id: viewAllStatus
+                  ? generatePodcastUrl(e.id)
+                  : generateSongUrl(e.id),
               album: e.albumName,
               title: e.title,
               artist: e.musicDirectorName,
@@ -402,12 +407,16 @@ class PlayerProvider extends ChangeNotifier {
                 title: e.title,
                 musicDirectorName: e.musicDirectorName,
                 imageUrl: e.imageUrl,
-                songUrl: generateSongUrl(e.id),
+                songUrl: viewAllStatus
+                    ? generatePodcastUrl(e.id)
+                    : generateSongUrl(e.id),
                 duration: e.duration,
                 isImage: e.isImage),
           );
           final item = MediaItem(
-            id: generateSongUrl(e.id),
+            id: viewAllStatus
+                ? generatePodcastUrl(e.id)
+                : generateSongUrl(e.id),
             album: e.albumName,
             title: e.title,
             artist: e.musicDirectorName,

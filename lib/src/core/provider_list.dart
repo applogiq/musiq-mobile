@@ -6,6 +6,7 @@ import 'package:musiq/src/features/player/provider/player_audio_provider.dart';
 import 'package:musiq/src/features/podcast/provider/podcast_provider.dart';
 import 'package:musiq/src/features/profile/provider/preference_provider.dart';
 import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 import '../features/artist/provider/artist_provider.dart';

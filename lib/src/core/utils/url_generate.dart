@@ -35,6 +35,15 @@ generateProfileImageUrl(userRegisterId) {
 generateSongUrl(int songId) {
   String url =
       // "https://api-musiq.applogiq.org/api/v1/audio?song_id=${songId.toString()}";
+      "http://192.168.29.94:6060/api/v1/audio?song_id=${songId.toString()}";
+  // "http://192.168.29.94:6060/api/v1/podcast-audio?id=${songId.toString()}";
+  // log("123$url");
+  return url;
+}
+
+generatePodcastUrl(int songId) {
+  String url =
+      // "https://api-musiq.applogiq.org/api/v1/audio?song_id=${songId.toString()}";
       // "http://192.168.29.94:6060/api/v1/audio?song_id=${songId.toString()}";
       "http://192.168.29.94:6060/api/v1/podcast-audio?id=${songId.toString()}";
   // log("123$url");

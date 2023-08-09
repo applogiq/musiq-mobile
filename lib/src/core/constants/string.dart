@@ -3,7 +3,7 @@ class ConstantText {
   static const String addToQueue = "Add to queue";
   static String appName = "MusiQ";
   static var browseSong = "Browse songs";
-  static String confirmPassword = "Confirm Password *";
+  static String confirmPassword = "Confirm Password*";
   static String continueButton = "Continue";
   static String create = 'Create';
   static String createAccount = "Create account";
@@ -36,7 +36,7 @@ class ConstantText {
   static String noSongHere = "No Songs Here";
   static String noSongInPlayList = "Your songs will appear here";
   static String otp = "Enter OTP";
-  static String password = "Password *";
+  static String password = "Password*";
   static String passwordNotMatch = "Password doesn't match";
   static String passwordResetSuccess = 'Password reset successful';
   static String passwordToolTip =
@@ -111,7 +111,7 @@ class ConstantText {
   static const String viewPlans = "View ";
   static const String subscriptionExpiredContent =
       "Your last subscription has been expired. Your plan will now change to free plan. Subscribe now to continue listening to our premium content.";
-  static const String continueWithFreePlan = "Continue With Free Plan";
+  static const String continueWithFreePlan = "Continue ith Free Plan";
 
   static const String enjoyPremiumContent =
       "Enjoy immediate access to exclusive content deepen your connection with your favourite music and discover new artists without any delay.";

@@ -290,6 +290,7 @@ class AlbumSongsList extends StatelessWidget {
                   onTap: () {
                     log(index.toString());
                     log(status.toString());
+                    log(artistId.toString());
                     if (!getPremiumStatus(status, index, context)) {
                       context.read<ViewAllProvider>().navigateToPlayerScreen(
                           context, status,

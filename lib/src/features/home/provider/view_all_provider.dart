@@ -236,7 +236,8 @@ class ViewAllProvider extends ChangeNotifier {
     }
     notifyListeners();
 
-    context.read<PlayerProvider>().goToPlayer(context, playerSongList, index);
+    context.read<PlayerProvider>().goToPlayer(context, playerSongList, index,
+        viewAllStatus: viewAllStatus == ViewAllStatus.podCastAll);
   }
 
   Set<String> addedSongs = {};
